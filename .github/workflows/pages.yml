@@ -1,9 +1,10 @@
-name: Cong khai 5 giao dien TTH tren GitHub Pages
+name: Xuat ban 5 giao dien TTH
 on:
   push:
     branches: [main]
     paths:
       - 'tth-site.zip'
+      - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
@@ -15,7 +16,6 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
-    if: ${{ hashFiles('tth-site.zip') != '' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -23,22 +23,34 @@ jobs:
     steps:
       - name: Lay ma nguon
         uses: actions/checkout@v4
-      - name: Giai nen 5 giao dien
+      - name: Giai nen dung cau truc ZIP
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p _site
-          unzip -q tth-site.zip -d _site
-          test -f _site/index.html
+          if [[ -f tth-site.zip ]]; then
+            unzip -q tth-site.zip -d _site
+          elif [[ -f TTH_5_Giao_Dien_GitLab_Pages_Free.zip ]]; then
+            mkdir -p _input
+            unzip -q TTH_5_Giao_Dien_GitLab_Pages_Free.zip -d _input
+            cp -a _input/public/. _site/
+          else
+            echo "Thieu tep ZIP voi 5 giao dien" >&2
+            exit 1
+          fi
+          test -s _site/index.html
           for route in khung-marketing trinh-chieu-marketing crm-da-kenh healthcare-app healthcare-website; do
-            test -s "_site/$route/index.html" || exit 1
+            test -s "_site/$route/index.html" || { echo "Thieu giao dien $route" >&2; exit 1; }
           done
+          touch _site/.nojekyll
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Tai tai nguyen Pages
+      - name: Tai site len GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-      - name: Xuat ban cong khai
+      - name: Trien khai cong khai
         id: deployment
         uses: actions/deploy-pages@v4
