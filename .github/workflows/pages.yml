@@ -1,0 +1,44 @@
+name: Cong khai 5 giao dien TTH tren GitHub Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tth-site.zip'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    if: ${{ hashFiles('tth-site.zip') != '' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Lay ma nguon
+        uses: actions/checkout@v4
+      - name: Giai nen 5 giao dien
+        run: |
+          mkdir -p _site
+          unzip -q tth-site.zip -d _site
+          test -f _site/index.html
+          for route in khung-marketing trinh-chieu-marketing crm-da-kenh healthcare-app healthcare-website; do
+            test -s "_site/$route/index.html" || exit 1
+          done
+      - name: Cau hinh GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Tai tai nguyen Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Xuat ban cong khai
+        id: deployment
+        uses: actions/deploy-pages@v4
