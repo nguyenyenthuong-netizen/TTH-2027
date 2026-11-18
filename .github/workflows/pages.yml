@@ -45,8 +45,6 @@ jobs:
           touch _site/.nojekyll
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Tai site len GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
