@@ -6,6 +6,7 @@ on:
       - 'tth-site.zip'
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
+      - 'scripts/layout_fix.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -43,6 +44,8 @@ jobs:
             test -s "_site/$route/index.html" || { echo "Thieu giao dien $route" >&2; exit 1; }
           done
           touch _site/.nojekyll
+      - name: Sua loi chong nut, che noi dung va o nhap App
+        run: python3 scripts/layout_fix.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
