@@ -120,7 +120,7 @@ css=r"""
 }
 @media(max-width:900px){
  #main .jd-d[open]>.jd-head,#main .pp-h{
-  top:0!important;max-width:100%!important;
+  top:108px!important;max-width:100%!important;
  }
  #main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head){
   padding:10px 12px!important;
