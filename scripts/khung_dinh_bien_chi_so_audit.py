@@ -86,8 +86,10 @@ alerts = [
      str(has_owner) + " bước có trường chủ trì; dữ liệu vẫn có mã chức năng dùng chung, chưa chắc đã ánh xạ tới nhân sự duy nhất."),
     ("Văn bản cần quản lý", str(len(docs)) + " văn bản",
      str(lead_doc["cvt"]) + " văn bản ghi Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở chủ trì xây dựng; " + str(lead_doc["cvt-2"]) + " ghi Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số. Cần tách người chủ trì xây dựng và người chịu trách nhiệm chuyên môn."),
-    ("Quản lý nghiệp vụ hai Chuyên viên trưởng", "Cần đồng bộ",
-     "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số chưa được gắn bước chủ trì trong quy trình mẫu; không suy từ đó rằng vị trí này không có trách nhiệm chuyên môn."),
+    ("Phân tuyến quản trị hai chức danh Chuyên viên trưởng", "Đối chiếu thực tế",
+     str(lead_step["cvt"]) + " bước ghi chủ trì " + next(x["ten"] for x in roles if x["id"]=="cvt") + "; " +
+     str(lead_step["cvt-2"]) + " bước ghi chủ trì " + next(x["ten"] for x in roles if x["id"]=="cvt-2") +
+     ". Số bước chủ trì không đồng nghĩa số sản phẩm tác nghiệp, quyền phê duyệt hoặc giờ công; kiểm chứng tuyến quản trị, tải và ủy quyền hiệu lực riêng."),
     ("Định lượng giờ công Media cơ sở", "Chưa có đủ dữ liệu",
      "Ngưỡng kế hoạch không đồng nghĩa giờ đã sử dụng hoặc giờ còn dư; phải đối soát nhật ký đầu việc của từng cơ sở."),
     ("Quy trình phải nắm theo vị trí", "Chưa có ma trận nghiệm thu riêng",
