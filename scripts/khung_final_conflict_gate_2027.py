@@ -106,7 +106,7 @@ for q in Q:
      "tuyen_noi_dung_va_marketing_co_so":"cvt",
      "tuyen_truyen_thong_thuong_hieu_va_tang_truong_so":"cvt-2",
      "dieu_kien":"Chọn duy nhất theo mã người và quyết định điều chuyển/tiếp nhận"}
-    z["tuyen_quan_ly_01"]="Trưởng phòng Marketing → đúng một Chuyên viên trưởng theo tuyến của vị trí được tiếp nhận"
+    z["tuyen_quan_ly_01"]="Trưởng phòng Marketing → "+ND+" hoặc "+TT+"; CHỈ MỘT tuyến theo vị trí được tiếp nhận"
     flags.append("CHẶN: chưa chọn mã nhân sự và tuyến quản lý đúng chức danh trong bước nhận việc")
    if role=="mkt-tct":
     mkt_tct+=1
