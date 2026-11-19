@@ -19,6 +19,18 @@ assert len(R)==26 and len(D["quy_trinh"])==60
 
 def key(text):return str(text).split("|",1)[0]
 def family(code):
+    # Mã chứa dấu gạch ngang là định danh đầy đủ: cvt-2 KHÔNG phải cvt,
+    # mkt-tct KHÔNG phải mkt-coso, Media cơ sở KHÔNG phải Media TCT.
+    precise={
+      "cvt":R["cvt"]["ten"],"cvt-2":R["cvt-2"]["ten"],
+      "mkt-coso":"Marketing cơ sở","mkt-tct":"Marketing TCT",
+      "tt-nd":"Tổ trưởng Nội dung","tt-th":"Tổ trưởng Truyền thông và Thương hiệu",
+      "tt-ts":"Tổ trưởng Tăng trưởng số",
+      "mdcs-a":"Media cơ sở","mdcs-b":"Media cơ sở",
+      "qlml":"Quản lý mạng lưới Marketing cơ sở","dmpk":"Đầu mối phòng khám",
+      "qhcs":"Truyền thông cơ sở",
+    }
+    if code in precise:return precise[code]
     return {
     "bt":"Biên tập","tk":"Thiết kế","md":"Media",
     "qc":"Quảng cáo – kênh số","qlth":"Quản lý thương hiệu",
@@ -85,7 +97,22 @@ action_by_family={
  "Số hóa":"Tài liệu và biên bản kỹ thuật website, App hoặc tích hợp",
  "Trưởng phòng":"Tờ trình, quyết định điều phối hoặc hồ sơ kiểm tra thuộc thẩm quyền đã phân cấp",
  "Giám đốc cơ sở":"Xác nhận nguồn và quyết định thuộc phạm vi cơ sở",
+ "Tổ trưởng Truyền thông và Thương hiệu":"Bảng giao việc, phối hợp PR/OOH/kênh và nhật ký ngoại lệ trong tổ, không tự duyệt sản phẩm mình làm",
+ "Tổ trưởng Tăng trưởng số":"Lịch vận hành quảng cáo, kênh, đối soát tải tổ và bàn giao điểm nghẽn vượt tuyến",
+ "Quản lý mạng lưới Marketing cơ sở":"Biên bản hỗ trợ và đánh giá cấp 1 của Trưởng nhóm thuộc danh sách đã bàn giao có hiệu lực",
+ "Đầu mối phòng khám":"Thông tin nhu cầu, dữ liệu nguồn và hồ sơ phối hợp theo quyền của phòng khám",
 }
+action_by_family[R["cvt"]["ten"]]=(
+ "Bảng tải và cải tiến năng lực sản xuất/Marketing cơ sở; đánh giá Trưởng nhóm chưa bàn giao "
+ "theo tuyến; không trùng giờ giao việc hằng ngày của Tổ trưởng"
+)
+action_by_family[R["cvt-2"]["ten"]]=(
+ "Bằng chứng kiểm chuẩn nghiệp vụ truyền thông/số, quản trị hiệu suất hai tổ, xử lý rủi ro "
+ "và cải tiến quy trình theo số liệu; không nhận sản lượng chuyên viên hay quyền duyệt tự động"
+)
+assert family("cvt-2")==R["cvt-2"]["ten"] and family("cvt")==R["cvt"]["ten"]
+assert family("mkt-tct")!=family("mkt-coso")
+assert family("mdcs-a")!="Media"
 def normalize(text,max_len=150):
  text=re.sub(r'\s+',' ',text).strip().strip(".; ")
  return text[:max_len].rstrip(" ,.;") if len(text)>max_len else text
