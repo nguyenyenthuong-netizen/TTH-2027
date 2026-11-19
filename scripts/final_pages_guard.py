@@ -100,6 +100,18 @@ for page, css in targets.items():
         for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row", "mkt-org-line-to-local", "Tuyến quản lý trực tiếp", "tth-org-skills-controls-1911", "function buildOrgShortDetails()", "id=\"jd-cvt-2\"", "data-vt=\"cvt-2\"", "Kỹ năng phụ", "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số"):
             if term not in s:
                 raise ValueError(f"{page}: critical baseline not found: {term}")
+        # Guard against the old two-column layout leaving empty space below
+        # the right-hand Chief. Both right-hand teams must share two columns.
+        for rule in (
+            "#v-org .org-cols{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important",
+            "#v-org .org-cols>.org-left{grid-column:1 / span 1!important}",
+            "#v-org .org-cols>.org-right{grid-column:2 / span 2!important}",
+            "#v-org .org-right-teams{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important",
+        ):
+            if rule not in s:
+                raise ValueError("Organization three-column layout regression: "+rule)
+        if s.count('class="org-right-teams"')!=1:
+            raise ValueError("Missing or duplicated right-team organization container")
         # 26 positions, 26 distinct job descriptions, both chiefs, and draft KPI source.
         import re, json
         source = re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>', s)
