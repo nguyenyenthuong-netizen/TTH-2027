@@ -129,16 +129,21 @@ if len(D.get("vi_du_van_hanh_hai_chuyen_vien_truong_2027",[]))!=14:
  errors.append({"ma":"THIEU_TINH_HUONG"})
 # Còn việc cần chốt bằng tài liệu thực tế, không tự nhận là đã hoàn thành.
 for qid,i,b in all_steps:
- if b.get("phan_cong_thuc_thi_2027"):
-  stats["buoc_vai_tro_tong_quat_chua_chon_ca_nhan"]+=1
+ if b.get("ma_vi_tri_nhom_1_2027") and b.get("ma_vi_tri_nhom_2_2027"):
+  stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]+=1
+ if b.get("chu_tri_thuc_te_theo_tuyen_cvt_2027"):
+  stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]+=1
  if b.get("chan_trung_nguoi_2027"):
   stats["buoc_kiem_tra_nguoi_doc_lap"]+=1
 stats["dau_ra_cho_ho_so"]=sum(
  z.get("trang_thai_nghiem_thu_2027")=="CHƯA NGHIỆM THU HỒ SƠ THỰC TẾ"
  for _,_,b in all_steps for z in b.get("doi_soat_tung_dau_ra_2027",[]))
-if stats["buoc_vai_tro_tong_quat_chua_chon_ca_nhan"]:
- warnings.append({"ma":"PHAN_TUYEN_THEO_MA_VIEC","so_buoc":stats["buoc_vai_tro_tong_quat_chua_chon_ca_nhan"],
-  "ghi_chu":"Chỉ chốt chức danh và cá nhân khi có nhóm/cơ sở/mã người"})
+assert stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]==95
+assert stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]==5
+warnings.append({"ma":"PHAN_VAI_TRO_THEO_NHOM","so_buoc":95,
+  "ghi_chu":"Chọn nhóm, cơ sở, chức danh và mã nhân sự thật trước khi giao"})
+warnings.append({"ma":"CHOT_CHUYEN_VIEN_TRUONG_THEO_NGUOI_NHAN_VIEC","so_buoc":5,
+  "ghi_chu":"Năm bước tiếp nhận nhân sự mới phải chọn một trong hai tuyến CVT theo tổ/vị trí, không mặc định Nội dung"})
 if stats["buoc_kiem_tra_nguoi_doc_lap"]:
  warnings.append({"ma":"CHUA_XAC_NHAN_HAI_NGUOI_KHAC_NHAU","so_buoc":stats["buoc_kiem_tra_nguoi_doc_lap"]})
 if stats["dau_ra_cho_ho_so"]:
