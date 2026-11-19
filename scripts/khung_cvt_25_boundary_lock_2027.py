@@ -28,7 +28,7 @@ M={
  ("nghi-viec",6):("Kiểm kê kho tư liệu và bàn giao file sản xuất","Kiểm quyền kênh, quảng cáo sau thu hồi","Chỉ tham gia đúng loại tài sản","Công nghệ/Quản lý sản phẩm số thao tác theo đúng quyền hệ thống"),
  ("phap-luat",3):("Cung cấp phần nguồn file sản xuất khi chính sách ảnh hưởng nội dung, hình ảnh","Kiểm chuẩn chính sách quảng cáo, nền tảng và áp dụng trên kênh","Tuyến Nội dung chỉ tham gia khi phải sửa file sản xuất","Quản lý sản phẩm số cập nhật; Pháp chế xác nhận pháp luật"),
  ("su-kien-co-so",2):("Đánh giá năng lực sản xuất, triển khai cơ sở khi có yêu cầu","Kiểm chuẩn nghiệp vụ truyền thông, PR và kênh sự kiện","Chỉ phối hợp đúng nguồn lực và loại rủi ro liên quan","Ban Giám đốc cơ sở quyết định phần thuộc thẩm quyền; phát hành/y khoa tách riêng"),
- ("chuyen-quyen",1):("Đối chiếu danh mục file, kho tư liệu sản xuất","Chủ trì danh mục kênh/tài khoản quảng cáo, đối soát quyền kênh","Chỉ giao một đầu mối hồ sơ tổng hợp; tách chứng từ tài sản","Chuyên viên trưởng Truyền thông và Tăng trưởng số lập hồ sơ; quyền cấp/thu hồi riêng"),
+ ("chuyen-quyen",1):("Đối chiếu danh mục file, kho tư liệu sản xuất","Chủ trì danh mục kênh/tài khoản quảng cáo, đối soát quyền kênh","Chỉ giao một đầu mối hồ sơ tổng hợp; tách chứng từ tài sản","Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số lập hồ sơ; quyền cấp/thu hồi riêng"),
  ("chuyen-quyen",2):("Cung cấp danh sách quyền kho sản xuất theo phân quyền","Kiểm chuẩn yêu cầu quyền kênh, tài khoản quảng cáo","Theo loại tài sản và quyền cần cấp","Trưởng phòng hoặc người được chỉ định có hiệu lực cấp quyền đúng ma trận"),
  ("chuyen-quyen",7):("Bàn giao phiếu đối chiếu kho tư liệu sản xuất","Chủ trì biên bản chuyển quyền kênh và danh sách quyền","Một biên bản tổng hợp, không hai đầu mối chủ trì","Phê duyệt/cấp/thu hồi quyền theo ma trận, không mặc nhiên giao CVT"),
  ("xung-dot-lich",3):("Điều phối phần năng lực sản xuất và nhân sự cơ sở trong tuyến","Xác nhận tải, mức ưu tiên và rủi ro của hai tổ mình quản lý","Chỉ khi phát sinh tranh chấp hai tuyến hoặc nguồn lực chung","Trưởng phòng quyết định xung đột vượt hai tuyến; lưu phiếu ưu tiên duy nhất"),
@@ -136,7 +136,8 @@ for x in report:
  box.append('<p><b>'+escape(ND)+':</b> '+escape(x["cvt_noi_dung"])+'</p>')
  box.append('<p><b>'+escape(TT)+':</b> '+escape(x["cvt_truyen_thong"])+'</p>')
  box.append('<p><b>Điều kiện phối hợp:</b> '+escape(x["dieu_kien_cung_tham_gia"])+'</p>')
- box.append('<p><b>Chủ trì và quyền:</b> '+escape(x["chu_tri_thuc_thi_va_quyen"])+'</p></details>')
+ box.append('<p><b>Chủ trì và quyền:</b> '+escape(x["chu_tri_thuc_thi_va_quyen"])+'</p>')
+ box.append('<p><a href="#vh-qt-'+escape(x["quy_trinh"])+'" style="color:#0837A1;text-decoration:underline">Mở quy trình gốc</a></p></details>')
 box.append('<p><b>Đối soát ngữ nghĩa:</b> '+str(needs)+' trong 568 đầu ra vẫn cần xác nhận đặc thù; không được coi là đã nghiệm thu. <a href="danh-sach-568-dau-ra-can-doi-chieu-2027.csv">Tải danh mục đối soát đầu ra (CSV)</a>.</p></details>')
 s=s[:pos]+''.join(box)+s[pos:]
 assert s.count('id="tth-cvt-cross-25-review-2027"')==1
