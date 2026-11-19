@@ -20,6 +20,7 @@ on:
       - 'scripts/khung_title_always_on_guard_2027.py'
       - 'scripts/khung_cvt_role_names_boundary_2027.py'
       - 'scripts/khung_cnnv_chuan_hoa_2027.py'
+      - 'scripts/khung_cvt_boundary_integrity_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -99,6 +100,8 @@ jobs:
           assert 'tth-floating-arrow' in s and 'tth-slide-once-19112026' in s
           print('PASS: Khu ng',len(k),'ki tu; slide 27 trang',len(s),'ki tu')
           PY
+      - name: Loai loi ten CVT va phan dinh chu quan ly truoc kiem thu
+        run: python3 scripts/khung_cvt_boundary_integrity_2027.py _site pre
       - name: Doi chieu CVT1 CVT2 tren tat ca bang chuc danh va quy trinh
         run: python3 scripts/khung_cvt_deep_audit_2027.py _site
       - name: Doi chieu mau thuan 26 chuc danh, 60 quy trinh va dinh bien
@@ -143,6 +146,8 @@ jobs:
         run: python3 scripts/khung_cvt_role_names_boundary_2027.py _site
       - name: Chuan hoa CNNV, MTCV, quan ly quy chuan, phan quyen va tai viec
         run: python3 scripts/khung_cnnv_chuan_hoa_2027.py _site
+      - name: Kiem thu ket thuc khong CVT chung, khong hai cap quan ly
+        run: python3 scripts/khung_cvt_boundary_integrity_2027.py _site post
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
