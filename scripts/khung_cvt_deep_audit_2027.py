@@ -44,6 +44,15 @@ cvt2_doc_ids={
  "QT-PT-HT": "Chuẩn phát thanh nội viện; xác nhận nội dung và cấp phát hành theo ma trận"
 }
 shared_docs={
+ "QT.7":"CVT2 phối hợp quản lý vắng mặt nhân sự thuộc hai tổ; không tự duyệt nghỉ ngoài phân cấp",
+ "QT.9":"CVT2 xác nhận chuẩn truyền thông/OOH/màn hình/kênh số trong phương án cơ sở mới; CVT1 điều phối nguồn lực cơ sở",
+ "QT.15":"CVT2 chịu trách nhiệm đầu vào kế hoạch, tải và hiệu quả hai tổ; CVT1 tổng hợp tải sản xuất/cơ sở; Trưởng phòng duyệt",
+ "QT.17":"CVT2 quản lý bàn giao chuyên môn khi nhân sự hai tổ nghỉ việc; cấp/thu hồi quyền theo ma trận",
+ "QT.18":"CVT2 phụ trách chuẩn chính sách kênh và quảng cáo; Pháp chế chịu trách nhiệm căn cứ pháp luật",
+ "QT.58":"CVT2 cung cấp báo cáo hiệu quả/kết quả hai tổ; CVT1 cung cấp tải sản xuất/cơ sở",
+ "QT.59":"CVT2 hướng dẫn người mới thuộc hai tổ; CVT1 hướng dẫn người mới thuộc Nội dung và Marketing cơ sở",
+ "QyĐ.02.MKT":"CVT2 rà soát vai trò, tải và mô tả hai tổ; CVT1 rà soát nội dung và Marketing cơ sở",
+ "QCPH-MKT":"CVT2 và CVT1 cùng rà soát luồng giao việc, quyền kiểm chuẩn và quy tắc chống lệnh trùng",
  "QT.12":"CVT2 kiểm chuẩn báo chí, kênh và truyền thông sự kiện; CVT1 quản lý sản xuất và nguồn lực",
  "QT.16":"CVT2 kiểm chuẩn truyền thông, tài trợ ngoại viện; CVT1 điều phối Marketing cơ sở",
  "QT.23":"CVT2 kiểm chuẩn quản trị kênh/quảng cáo; CVT1 quản lý kho sản phẩm, nhân sự và bàn giao",
@@ -110,6 +119,18 @@ for x in d.get("lich_van_hanh",[]):
         x["phu_trach"]=y.replace(old,"Tổ trưởng được giao của từng tổ; "+second+" quản lý chuyên môn hai tổ, không tự kiêm Tổ trưởng")
 # Process participation: only specialist inspection on a relevant step, never final approval.
 technical={
+    "vang-mat":(2,"Xác nhận năng lực và người thay chuyên môn của hai tổ; duyệt nghỉ theo quy chế hiện hành"),
+    "nghi-viec":(2,"Xác nhận bàn giao người thuộc hai tổ, quyền và tài liệu chuyên môn"),
+    "ke-hoach-nam":(2,"Bổ sung nhu cầu, tải giờ và kế hoạch nghiệp vụ hai tổ, không thay người duyệt ngân sách"),
+    "co-so-moi":(4,"Kiểm chuẩn OOH, màn hình, phát thanh, quảng cáo và kênh số tại cơ sở mới"),
+    "bao-cao-giao-ban":(2,"Báo cáo tiến độ, chất lượng và hiệu quả hai tổ theo tuyến chuyên môn"),
+    "dieu-chinh-ke-hoach":(2,"Xác nhận tác động đến hoạt động truyền thông, thương hiệu và tăng trưởng số"),
+    "danh-gia":(4,"Kiểm chuẩn xử lý khủng hoảng và phát ngôn; Trưởng phòng chủ trì khủng hoảng liên nhóm"),
+    "crm":(2,"Kiểm tra chỉ tiêu tăng trưởng số và các điểm tiếp xúc khách hàng, không thay chủ dữ liệu"),
+    "gui-tin":(2,"Kiểm chuẩn thông điệp và kênh gửi tin, không thay kiểm tra dữ liệu cá nhân"),
+    "he-thong-gian-doan":(2,"Phối hợp xác nhận gián đoạn kênh số, quảng cáo, dữ liệu đo lường"),
+    "hang-muc-toan-he-thong":(4,"Kiểm chuẩn truyền thông/thương hiệu và kênh số theo từng nhóm khi phát sinh"),
+    "bgd-coso-de-nghi":(2,"Phối hợp xử lý nội dung chuyên môn truyền thông/kênh số; nhân sự cơ sở do CVT1 quản lý"),
     "bo-nhan-dien":(2,"Kiểm chuẩn thương hiệu, không thay người kiểm kỹ thuật file"),
     "mao-danh":(1,"Kiểm chuẩn xử lý mạo danh, phát ngôn và đối ứng kênh"),
     "phat-thanh-man-hinh":(2,"Kiểm chuẩn kế hoạch phát, màn hình, phát thanh nội viện"),
@@ -225,6 +246,12 @@ for id,scope in [
     summary_html+='<div style="border:1px solid #d4e3f1;border-radius:10px;padding:12px"><h4 style="margin:0 0 6px;color:#0837A1">'+escape(p[id]["ten"])+'</h4>'
     summary_html+='<p>'+escape(scope)+'</p><p><b>KPI:</b> '+escape(k["trang_thai_phe_duyet"])+'</p>'
     summary_html+=documents(id)+learn(id)+'</div>'
+shared=[v for v in docs if v.get("phoi_hop_chuyen_mon_1911")]
+summary_html+='<details style="margin-top:10px"><summary><b>Quy trình hai Chuyên viên trưởng cần phối hợp nghiệp vụ ('+str(len(shared))+' văn bản)</b></summary><ol>'
+for v in shared:
+    summary_html+='<li><b>'+escape(v["ma"])+'</b> – '+escape(v["ten"])+'<br>'+escape(v["phoi_hop_chuyen_mon_1911"])+'</li>'
+summary_html+='</ol></details>'
+
 summary_html+='</div><p style="margin-bottom:0"><b>Giới hạn:</b> Chủ trì lập/sửa quy trình ≠ người duyệt sản phẩm; người hướng dẫn chuyên môn ≠ quản lý trực tiếp nhân sự cơ sở; kiểm chuẩn quảng cáo ≠ duyệt phát hành/chi phí. Mọi quyết định thực thi căn cứ văn bản phê duyệt có hiệu lực.</p></section>'
 src=src[:mm.start(2)]+json.dumps(d,ensure_ascii=False,separators=(",",":")).replace("</script>","<\\/script>")+src[mm.end(2):]
 if 'id="tth-cvt-deep-audit-1911"' not in src:
