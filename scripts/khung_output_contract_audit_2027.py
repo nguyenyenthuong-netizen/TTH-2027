@@ -235,6 +235,18 @@ panel=(
 )
 if 'id="tth-output-contracts-2027"' not in s:s=s.replace(marker,panel+marker,1)
 
+# Đưa các khung đối soát THỰC SỰ vào nội dung mục 4.3 (không để ở ngoài
+# section bị ẩn khi chuyển tab). Bảo toàn ID và màu đã chốt.
+for panel_id in ("tth-operations-integrity-2027","tth-output-contracts-2027"):
+    found=re.search(r'<div id="'+re.escape(panel_id)+r'"[^>]*>[\s\S]*?</div>',s)
+    if not found:raise RuntimeError("Thiếu khung kiểm soát "+panel_id)
+    block=found.group(0)
+    s=s[:found.start()]+s[found.end():]
+    location=s.index(marker)
+    h3=s.find("</h3>",location)
+    if h3<0 or h3-location>1200:raise RuntimeError("Không tìm thấy đề mục 4.3")
+    s=s[:h3+5]+block+s[h3+5:]
+
 check=json.loads(RX.search(s).group(2))
 assert sum(len(b["doi_soat_tung_dau_ra_2027"]) for q in check["quy_trinh"] for b in q["buoc"])==output_count
 assert s.count('id="tth-output-contracts-2027"')==1
