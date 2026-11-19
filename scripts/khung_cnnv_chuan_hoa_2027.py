@@ -274,6 +274,28 @@ s=s[:m.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("
 key_roles=["cvt","cvt-2","qlth-bc","qlsps","bt-ac"]
 for role in key_roles:
     x=V[role]
+    perf_html=""
+    if role=="cvt-2":
+        sectors=[]
+        for item in D["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]["pham_vi"]:
+            metrics="".join("<li>"+escape(metric)+"</li>" for metric in item["chi_so"])
+            sectors.append(
+                '<section style="flex:1 1 280px;min-width:0;max-width:100%;border:1px solid #d7e2ef;'
+                'border-radius:8px;padding:10px;box-sizing:border-box;background:#fff">'
+                '<strong style="color:#0837A1">'+escape(item["to"])+'</strong>'
+                '<ul style="padding-left:20px;margin:7px 0;overflow-wrap:anywhere">'+metrics+'</ul>'
+                '<p style="margin:8px 0"><b>Đầu ra cải tiến:</b> '+escape(item["dau_ra_cai_tien"])+'</p>'
+                '<p style="margin:8px 0"><b>Nguồn kiểm chứng:</b> '+escape(item["chu_nguon_so_lieu"])+'</p>'
+                '</section>'
+            )
+        perf_html=(
+            '<details id="cvt-2-perf-metrics-2027" style="max-width:100%;min-width:0;'
+            'box-sizing:border-box;border:1px solid #d7e2ef;border-radius:8px;padding:10px;margin:10px 0;background:#fff">'
+            '<summary style="cursor:pointer;color:#0837A1;font-weight:700">Chỉ số và đầu ra cải tiến hiệu suất của hai tổ</summary>'
+            '<div style="display:flex;flex-wrap:wrap;gap:10px;margin:12px 0">'+''.join(sectors)+'</div>'
+            '<p><b>Điều kiện chốt chỉ tiêu:</b> '+escape(D["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]["dieu_kien"])+'</p>'
+            '</details>'
+        )
     note=(
       '<div class="cnnv-vt" id="cnnv-vt-'+role+'" '
       'style="background:#f5f9ff;border:1px solid #d3e1f2;border-left:4px solid #0837A1;'
@@ -287,6 +309,7 @@ for role in key_roles:
       '<p><b>Chu trình cải tiến và trách nhiệm:</b> '+escape(x["chu_trinh_cai_tien"])+'</p>'
       '<p><b>Ranh giới trách nhiệm và KPI:</b> '+escape(x["ranh_gioi_kpi"])+'</p>'
       if role=="cvt-2" else '')
+      +perf_html
       +'<small>Đối chiếu với CNNV phòng tại mục 4.1. Chưa thay văn bản MTCV do Phòng Nhân lực ban hành.</small>'
       '</div>'
     )
@@ -332,6 +355,7 @@ assert len(check["vi_tri"])==26 and len(check["quy_trinh"])==60 and len(check["d
 assert sum(len(q["buoc"]) for q in check["quy_trinh"])==407
 assert all("cnnv_2027" in x for x in check["vi_tri"])
 assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
+assert s.count('id="cvt-2-perf-metrics-2027"')==1
 assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "giảm lãng phí" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
