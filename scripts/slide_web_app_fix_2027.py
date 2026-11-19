@@ -707,3 +707,63 @@ if heading_marker not in slide_doc:
         raise AssertionError("Slide heading repair changed slide count")
     slide.write_text(slide_doc,"utf-8")
     print("PASS-SLIDE-HEADINGS: measured overflow fallback installed, 27 slides preserved")
+
+
+# TTH_WEBSITE_FACILITY_IMAGE_REPAIR_20261119
+# Three pages reuse the same six cards. Their inline facs[] arrays use
+# /_blob/<hash> URLs from the editor runtime; those endpoints do not exist on
+# static GitHub Pages. These are different from the image references checked
+# by the earlier AUDIT-IMAGES pass. Replace each URL with a bundled AI
+# illustration, then let the existing parent-shell go() replace the
+# ../assets/img/<filename> reference with the matching data URI.
+webfile=root/"healthcare-website"/"index.html"
+web=webfile.read_text("utf-8")
+img_match=re.search(
+ r'(<script\b[^>]*\bid=["\']imagesData["\'][^>]*>)(.*?)(</script>)',
+ web,flags=re.S|re.I)
+if not img_match:raise AssertionError("Missing embedded website image catalog")
+image_catalog=json.loads(img_match.group(2))
+facility_fallbacks={
+ "f076225bd9d4fc858d12ce16102e3d08":"csBenhVien.jpg",   # TTH Vinh
+ "203615c52fc8f4cef2fc0e8b8d634f73":"csBenhVien2.jpg",  # TTH Ha Tinh
+ "0711a3df9be804964020a6b302c02e5a":"matTien.jpg",      # TTH Quang Binh
+ "fee1390c29d132559a6836c49b3a44a2":"phoiCanh.jpg",    # TTH Hue (planned)
+ "50554d39c7a3bbf954e235095824bd5c":"csPhongKham.jpg", # TTH Khe Tre
+ "0a0d52fa4fc32da88995ce5963db6888":"tiepDon.jpg"      # TTH A Luoi
+}
+for file in facility_fallbacks.values():
+ if file not in image_catalog or not image_catalog[file].startswith("data:image/"):
+  raise AssertionError("Bundled AI illustration unavailable: "+file)
+page_match=re.search(
+ r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',
+ web,flags=re.S|re.I)
+if not page_match:raise AssertionError("Missing embedded website page catalog")
+pages=json.loads(page_match.group(2))
+pages_to_check=("HeThongYTe.html","Truc_TTHHospital.html","Truc_TTHClinic.html")
+changed={}
+for page in pages_to_check:
+ if page not in pages:raise AssertionError("Missing website facility page: "+page)
+ doc=pages[page]
+ n=0
+ for img_hash,file in facility_fallbacks.items():
+  obsolete="/_blob/"+img_hash
+  if doc.count(obsolete)!=1:
+   raise AssertionError("Expected exactly one facility image reference on "+page+": "+obsolete)
+  doc=doc.replace(obsolete,"../assets/img/"+file,1)
+  n+=1
+ if "/_blob/" in doc:raise AssertionError("Unmapped image URL remains in "+page)
+ pages[page]=doc
+ changed[page]=n
+if sum(changed.values())!=18:
+ raise AssertionError("Expected exactly 18 fixed image references across 3 facility pages")
+for page,doc in pages.items():
+ if "/_blob/" in doc:
+  raise AssertionError("Additional unsupported /_blob/ image reference in "+page)
+encoded=(json.dumps(pages,ensure_ascii=False,separators=(",",":"))
+ .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
+web=web[:page_match.start(2)]+encoded+web[page_match.end(2):]
+assert all(("/_blob/"+token) not in web for token in facility_fallbacks)
+webfile.write_text(web,"utf-8")
+print("PASS WEBSITE FACILITY IMAGES",changed,
+ "bundled-image-count",len(image_catalog),
+ "unresolved-blob-links",0)
