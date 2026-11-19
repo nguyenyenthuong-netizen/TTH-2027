@@ -185,11 +185,11 @@ elif mode=="post":
         "không mặc nhiên giao quyền phê duyệt cho "+ND+" hoặc "+TT
     )
     pat=re.compile(
-        r'(<div class="cnnv-vt" id="cnnv-vt-bt-ac"[\\s\\S]*?</div>)',
+        r'(<div class="cnnv-vt" id="cnnv-vt-bt-ac"[\s\S]*?</div>)',
         re.I
     )
     src=pat.sub(lambda m: re.sub(
-        r'Chuyên viên trưởng(?!\\s+(?:Nội dung|Truyền thông))',
+        r'Chuyên viên trưởng(?!\s+(?:Nội dung|Truyền thông))',
         ND,m.group(0),flags=re.I),src)
     d=get_data()
     v=check_shape(d)
