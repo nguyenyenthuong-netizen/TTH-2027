@@ -330,7 +330,10 @@ navjs=r"""<script id="tth-slide-chief-line-and-nav-2027">
 </script>"""
 if "tth-slide-chief-line-and-nav-2027" in s:raise AssertionError("Final controls already present unexpectedly")
 if "</head>" not in s or "</body>" not in s:raise AssertionError("Missing slide boundaries")
-s=s.replace("</head>",css+"</head>",1).replace("</body>",navjs+"</body>",1)
+# Preserve native slide navigation. Do not inject extra buttons that
+# overlap the slide gutter or duplicate native controls.
+s=s.replace("</head>",css+"</head>",1)
+assert s.count('<section class="slide')==27
 if s.count('<section class="slide')!=27 or 'tth-chief-strip' not in s or 'ĐANG XÂY DỰNG' not in s:
     raise AssertionError("Post-update slide QA failed")
 slide.write_text(s,"utf-8")
