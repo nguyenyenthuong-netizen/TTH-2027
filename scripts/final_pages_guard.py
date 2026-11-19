@@ -102,11 +102,11 @@ for page, css in targets.items():
                 raise ValueError(f"{page}: critical baseline not found: {term}")
         # 26 positions, 26 distinct job descriptions, both chiefs, and draft KPI source.
         import re, json
-        source = re.search(r'<script id="csdl" type="application/json">([\\s\\S]*?)</script>', s)
+        source = re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>', s)
         if not source: raise ValueError("Marketing framework has no embedded position data")
         D = json.loads(source.group(1))
         source_ids = [p["id"] for p in D["vi_tri"]]
-        cards = re.findall(r'<article class="jd"[^>]*\\bid="jd-([^"]+)"', s)
+        cards = re.findall(r'<article class="jd"[^>]*\bid="jd-([^"]+)"', s)
         if len(source_ids)!=26 or len(cards)!=26 or set(source_ids)!=set(cards) or len(cards)!=len(set(cards)):
             raise ValueError("Position/JD mismatch: source %s, JD %s" % (source_ids,cards))
         for key in ("cvt","cvt-2"):
