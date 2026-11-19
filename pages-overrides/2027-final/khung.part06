@@ -1,0 +1,909 @@
+ phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Nhận nguồn chuyên môn đơn vị nhóm 2; giao sản phẩm theo phiếu cho Media, Thiết kế, Quảng cáo","kiem_duyet":"Đầu ra của Biên tập được người khác kiểm độc lập theo cấp độ rủi ro; bác sĩ/đơn vị chuyên môn xác nhận mọi nội dung y khoa; Quản lý thương hiệu nghiệm thu đầu ra; người có thẩm quyền duyệt phát hành. Biên tập không tự phê duyệt sản phẩm mình viết."},{"id":"tk-a","vi_tri":"Chuyên viên thiết kế nhóm 1","pham_vi":"TCT – thiết kế nhóm 1; 02 người phân công hệ thống/bệnh viện","chu_tri_dau_ra":"Thiết kế bản số và bản in không thuộc danh sách cố định của Thiết kế ngoại tuyến; bộ nhận diện TTH, ứng dụng web/App","khong_thuoc_trach_nhiem":"Không thi công, quản trị biển bảng, dựng video, đăng kênh; không làm thay thiết kế cố định ngoại tuyến","ban_giao_dau_vao":"Nhận nội dung đã kiểm; giao file đúng thông số cho Quảng cáo, Media hoặc Truyền thông; bàn giao kiểm file in","kiem_duyet":"Người yêu cầu nghiệm thu; kiểm độc lập và người duyệt theo loại sản phẩm"},{"id":"tk-b","vi_tri":"Chuyên viên thiết kế nhóm 2","pham_vi":"TCT – thiết kế nhóm 2","chu_tri_dau_ra":"Thiết kế sản phẩm nhóm 2 ngoài danh sách cố định ngoại tuyến; chủ trì thiết kế hệ nhận diện của nhóm 2 theo phân công","khong_thuoc_trach_nhiem":"Không tự thay mẫu nhận diện được duyệt; không tự duyệt in/thi công; không phụ trách sản phẩm nhóm 1","ban_giao_dau_vao":"Nhận nội dung nhóm 2; giao file đến Media/Kênh số/Truyền thông; phối hợp Thiết kế ngoại tuyến phần cố định","kiem_duyet":"Quản lý thương hiệu nhóm 2 nghiệm thu, cấp có thẩm quyền duyệt nhận diện"},{"id":"tk-nt","vi_tri":"Chuyên viên thiết kế ngoại tuyến","pham_vi":"TCT – chuyên môn ngoại tuyến dùng chung cả 02 nhóm","chu_tri_dau_ra":"Thiết kế danh sách cố định: biển bảng, trang trí cố định, lễ Tết; giữ quy chuẩn in, danh mục và kiểm nhận diện độc lập","khong_thuoc_trach_nhiem":"Không giữ toàn bộ thiết kế in; không tự nghiệm thu cuối sản phẩm do chính mình thiết kế; không trực tiếp vận hành biển bảng tại cơ sở","ban_giao_dau_vao":"Nhận số đo/ảnh hiện trạng từ Truyền thông cơ sở, yêu cầu Chuyên viên truyền thông; chuyển file kỹ thuật để triển khai","kiem_duyet":"Người kiểm độc lập (nếu tự làm), cấp duyệt biển bảng theo QyĐ.48"},{"id":"md-ac","vi_tri":"Chuyên viên media nhóm 1","pham_vi":"TCT – media nhóm 1; 02 người phân công hệ thống/bệnh viện","chu_tri_dau_ra":"Chủ trì kịch bản phân cảnh, shot-list, quay/dựng, âm thanh, hình ảnh, hậu kỳ kỹ thuật và chuẩn kỹ thuật Media; kiểm kỹ thuật độc lập V2/V3 do Media cơ sở dựng; trực tiếp sản xuất V3 vượt mẫu và V4. Không là người chủ trì kịch bản lời/thoại.","khong_thuoc_trach_nhiem":"Không thay Biên tập viết kịch bản lời/thoại; không thay bác sĩ xác nhận chuyên môn; không thay người có thẩm quyền duyệt phát hành; không trực tiếp vận hành biển bảng, màn hình, phát thanh ở cơ sở.","ban_giao_dau_vao":"Nhận kịch bản đã kiểm từ Biên tập và tư liệu từ Media cơ sở; xuất bản hoàn chỉnh cho Kênh số/Truyền thông","kiem_duyet":"Chỉ kiểm kỹ thuật hình/âm/dựng và tuân thủ B-7/QC-4 của bản dựng khác người làm; không tự duyệt bản dựng do chính mình sản xuất và không duyệt nội dung y khoa hoặc phát hành."},{"id":"md-b","vi_tri":"Chuyên viên media nhóm 2","pham_vi":"TCT – media nhóm 2","chu_tri_dau_ra":"Chủ trì kịch bản phân cảnh, shot-list, quay/dựng, âm thanh, hình ảnh, hậu kỳ kỹ thuật và chuẩn kỹ thuật Media; kiểm kỹ thuật độc lập V2/V3 do Media cơ sở dựng; trực tiếp sản xuất V3 vượt mẫu và V4. Không là người chủ trì kịch bản lời/thoại.","khong_thuoc_trach_nhiem":"Không thay Biên tập viết kịch bản lời/thoại; không thay bác sĩ xác nhận chuyên môn; không thay người có thẩm quyền duyệt phát hành; không trực tiếp vận hành biển bảng, màn hình, phát thanh ở cơ sở.","ban_giao_dau_vao":"Nhận tư liệu Media cơ sở và kịch bản lời nhóm 2; giao file phát hành","kiem_duyet":"Chỉ kiểm kỹ thuật hình/âm/dựng và tuân thủ B-7/QC-4 của bản dựng khác người làm; không tự duyệt bản dựng do chính mình sản xuất và không duyệt nội dung y khoa hoặc phát hành."},{"id":"qc-a","vi_tri":"Chuyên viên quảng cáo và kênh số nhóm 1","pham_vi":"TCT – quảng cáo/kênh số nhóm 1; 02 người phân công hệ thống/bệnh viện","chu_tri_dau_ra":"Chạy quảng cáo trả phí, đăng/quản trị kênh số, lịch gửi nhóm 1, tối ưu theo dữ liệu nền tảng","khong_thuoc_trach_nhiem":"Không quyết định chiến lược thương hiệu, không chốt KPI tài chính chính thức, không sửa dữ liệu gốc/đăng CMS cấu trúc","ban_giao_dau_vao":"Nhận nội dung, thiết kế, media đã duyệt; gắn đo theo hướng dẫn; báo số liệu cho Đo lường và đối soát","kiem_duyet":"Quản lý thương hiệu nghiệm thu lịch; Chuyên viên trưởng quản quyền theo ma trận"},{"id":"qc-b","vi_tri":"Chuyên viên quảng cáo và kênh số nhóm 2","pham_vi":"TCT – quảng cáo/kênh số nhóm 2","chu_tri_dau_ra":"Chạy quảng cáo, quản trị kênh số, lịch đăng/gửi tin của thương hiệu nhóm 2","khong_thuoc_trach_nhiem":"Không thay Truyền thông xử lý báo chí/KOL; không đổi chính sách nền tảng hoặc dữ liệu có cấu trúc website","ban_giao_dau_vao":"Nhận gói sản phẩm nhóm 2 đã duyệt; phản hồi chi phí, Lead về Đo lường","kiem_duyet":"Quản lý thương hiệu nhóm 2 nghiệm thu lịch; cấp duyệt kinh phí"},{"id":"dl-1","vi_tri":"Chuyên viên đo lường và đối soát","pham_vi":"TCT – dữ liệu hiệu quả dùng chung","chu_tri_dau_ra":"Đối soát nguồn khách, chi phí, KPI, báo cáo chốt kỳ toàn hệ thống; phát hiện lệch số","khong_thuoc_trach_nhiem":"Không thay Quảng cáo tối ưu tài khoản; không tự sửa dữ liệu nguồn; không thay Quản lý thương hiệu quyết định ngân sách","ban_giao_dau_vao":"Nhận số nền tảng từ Quảng cáo, số tiếp đón/HIS và chứng từ, khóa kỳ và bàn giao báo cáo","kiem_duyet":"Trưởng phòng duyệt bản chốt kỳ; đối soát độc lập"},{"id":"dl-2","vi_tri":"Chuyên viên dữ liệu khách hàng và thị trường","pham_vi":"TCT – dữ liệu khách hàng, thị trường, CRM","chu_tri_dau_ra":"Chủ chất lượng dữ liệu, phân nhóm khách hàng, quyền riêng tư/lịch gửi, khảo sát, yêu cầu nghiệp vụ CRM","khong_thuoc_trach_nhiem":"Không làm thay Đo lường chốt KPI; không vận hành Contact Center; không thay Số hóa lập trình ứng dụng","ban_giao_dau_vao":"Nhận dữ liệu hợp lệ, phân nhóm/kiểm trùng, gửi tiêu chí cho Kênh số/Contact Center đúng quyền","kiem_duyet":"Cấp phụ trách dữ liệu và pháp lý xác nhận điều kiện sử dụng; chưa đủ consent thì chặn"},{"id":"qlsps","vi_tri":"Quản lý sản phẩm số","pham_vi":"TCT – sản phẩm số và đầu mối Số hóa; kiêm Tổ trưởng Tăng trưởng số","chu_tri_dau_ra":"Chủ nghiệp vụ website/App/trang đích, cấu trúc CMS, SEO tự nhiên, thay đổi sản phẩm số; công bố dữ liệu có cấu trúc mảng 43 sau kiểm độc lập","khong_thuoc_trach_nhiem":"Không viết lời thay Biên tập; không làm kỹ thuật thay Phòng Số hóa; không xác nhận dữ liệu gốc; không tự có quyền duyệt chỉ vì kiêm Tổ trưởng","ban_giao_dau_vao":"Nhận nội dung đã duyệt và dữ liệu có xác nhận; gửi yêu cầu kỹ thuật đến Số hóa; nghiệm thu nghiệp vụ, kiểm công bố","kiem_duyet":"Trưởng phòng/cấp có thẩm quyền duyệt thay đổi lớn; nguồn và người kiểm độc lập duyệt dữ liệu"},{"id":"qlml","vi_tri":"Quản lý mạng lưới Marketing cơ sở theo vùng (01 suất dự kiến, chờ phân vùng)","pham_vi":"TCT – quản lý vùng, chỉ khi đã phê duyệt phạm vi","chu_tri_dau_ra":"Giám sát Trưởng nhóm Marketing cơ sở trong vùng danh sách đã duyệt; hỗ trợ đánh giá, chuẩn hóa vận hành","khong_thuoc_trach_nhiem":"Không tự giành chủ Hạng mục của Quản lý thương hiệu; không chỉ đạo chuyên môn ngoài vùng chưa giao. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Nhận báo cáo cơ sở, chuyển nhu cầu và vấn đề lên Chuyên viên trưởng","kiem_duyet":"Chuyên viên trưởng phê duyệt phân công theo văn bản/phạm vi"},{"id":"tn-a","vi_tri":"Trưởng nhóm Marketing cơ sở – bệnh viện nhóm 1","pham_vi":"Bệnh viện nhóm 1 – đầu mối Marketing tại chỗ","chu_tri_dau_ra":"Tiếp nhận yêu cầu khoa phòng, lấy xác nhận nguồn, điều phối nhân sự cơ sở; tin Facebook bệnh viện trong danh mục; kiêm vận hành biển bảng/màn hình/phát thanh nếu cơ sở 02 người","khong_thuoc_trach_nhiem":"Không tự đổi chiến lược/nhận diện/chiến dịch TCT, không tự duyệt bài vượt danh mục; không tự sửa dữ liệu giá/chứng chỉ; chỉ có quyền đăng tin V1 thuộc danh mục Facebook bệnh viện khi có quyền đăng hợp lệ, không tự đăng dịch vụ/giá/khuyến mại/ca bệnh lên bất kỳ kênh nào; không quản trị các kênh khác. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Chuyển thông tin đã xác nhận cho TCT theo một luồng; nhận kế hoạch đã duyệt; trả ảnh, nhật ký triển khai","kiem_duyet":"Ban Giám đốc cơ sở xác nhận thông tin gốc; TCT/cấp duyệt nội dung theo phân cấp"},{"id":"tn-b","vi_tri":"Trưởng nhóm Marketing cơ sở – bệnh viện nhóm 2 (kiêm nhiệm truyền thông cơ sở)","pham_vi":"Bệnh viện nhóm 2 – đầu mối tại chỗ kiêm PR","chu_tri_dau_ra":"Điều phối nguồn khoa phòng, tổ chức hiện trường và quan hệ cộng đồng; kiểm/vận hành biển bảng, màn hình, phát thanh tại cơ sở 02 người; kiêm triển khai decor, theo dõi hiện trạng biển bảng theo tháng, ảnh nghiệm thu và báo cáo theo phân quyền","khong_thuoc_trach_nhiem":"Không chuyển việc kiểm định kỳ thiết bị cho Media; không thay chuyên viên Truyền thông TCT quyết định lịch/hợp đồng hệ thống; chỉ có quyền đăng tin V1 thuộc danh mục Facebook bệnh viện khi có quyền đăng hợp lệ, không tự đăng dịch vụ/giá/khuyến mại/ca bệnh lên bất kỳ kênh nào; không quản trị các kênh khác. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Bàn giao thông tin đã xác nhận, tư liệu, nhật ký nghiệm thu cho TCT nhóm 2","kiem_duyet":"Ban Giám đốc cơ sở xác nhận thực tế; TCT nghiệm thu sản phẩm/lịch"},{"id":"mdcs-a","vi_tri":"Chuyên viên Marketing cơ sở – media, bệnh viện nhóm 1","pham_vi":"Bệnh viện nhóm 1 – Media tại chỗ","chu_tri_dau_ra":"Quay, chụp, thu thập tư liệu hiện trường; cắt dựng V1 và sản xuất V2/V3 thuộc mẫu B-7 theo kịch bản lời đã có của Biên tập đúng nhóm và phân cảnh do Media TCT cung cấp; lưu nguồn, giấy đồng ý và giờ công; V3 vượt mẫu và V4 chuyển Media TCT.","khong_thuoc_trach_nhiem":"Không viết kịch bản lời, không phê duyệt lời/chuyên môn/phát hành; không chủ trì kiểm biển bảng, vận hành màn hình, phát thanh hoặc chụp ảnh nghiệp vụ nghiệm thu công trình; không tự làm V4. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Nhận lịch/kịch bản qua cổng; phối hợp bác sĩ, nhân vật và địa điểm; giao tư liệu gốc, căn cứ sử dụng hình ảnh, bản dựng V2/V3 và nhật ký giờ công riêng cho TCT.","kiem_duyet":"Media TCT đúng nhóm kiểm kỹ thuật bản dựng; bác sĩ/đơn vị chuyên môn xác nhận y khoa; người có thẩm quyền riêng duyệt phát hành. Không tự duyệt sản phẩm mình làm."},{"id":"mdcs-b","vi_tri":"Chuyên viên Marketing cơ sở – media, bệnh viện nhóm 2","pham_vi":"Bệnh viện nhóm 2 – Media tại chỗ","chu_tri_dau_ra":"Quay, chụp, thu thập tư liệu hiện trường; cắt dựng V1 và sản xuất V2/V3 thuộc mẫu B-7 theo kịch bản lời đã có của Biên tập đúng nhóm và phân cảnh do Media TCT cung cấp; lưu nguồn, giấy đồng ý và giờ công; V3 vượt mẫu và V4 chuyển Media TCT.","khong_thuoc_trach_nhiem":"Không viết kịch bản lời, không phê duyệt lời/chuyên môn/phát hành; không chủ trì kiểm biển bảng, vận hành màn hình, phát thanh hoặc chụp ảnh nghiệp vụ nghiệm thu công trình; không tự làm V4. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Nhận lịch/kịch bản qua cổng; phối hợp bác sĩ, nhân vật và địa điểm; giao tư liệu gốc, căn cứ sử dụng hình ảnh, bản dựng V2/V3 và nhật ký giờ công riêng cho TCT.","kiem_duyet":"Media TCT đúng nhóm kiểm kỹ thuật bản dựng; bác sĩ/đơn vị chuyên môn xác nhận y khoa; người có thẩm quyền riêng duyệt phát hành. Không tự duyệt sản phẩm mình làm."},{"id":"qhcs","vi_tri":"Chuyên viên Marketing cơ sở – truyền thông, bệnh viện nhóm 1","pham_vi":"Bệnh viện nhóm 1 đủ 03 người – Quan hệ công chúng tại chỗ","chu_tri_dau_ra":"Chủ trì tổ chức sự kiện và quan hệ cộng đồng tại cơ sở; kiểm tra hiện trạng biển bảng hằng tuần, tổng hợp hằng tháng, báo hỏng trong ngày, chụp ảnh và số đo, ảnh nghiệm thu thi công/tuân thủ nhận diện; trực tiếp vận hành màn hình và phát thanh theo lịch đã duyệt, ghi nhật ký. Cơ sở 02 người do Trưởng nhóm kiêm nhiệm.","khong_thuoc_trach_nhiem":"Không thiết kế mẫu, không viết kịch bản phát thanh chính thức, không ký hợp đồng truyền thông hệ thống, không duyệt lịch phát mới, ngân sách hoặc nghiệm thu tài chính; không thay Phòng Nhân lực/Công đoàn chủ trì các hoạt động nội bộ ngoài Marketing.; không viết lời, thiết kế, đăng bài/quản trị kênh số hoặc có quyền phê duyệt phát hành chỉ vì đang vận hành thiết bị phát. Không chủ trì soạn, quản lý phiên bản hoặc phê duyệt kịch bản tư vấn Contact Center; chỉ cung cấp nội dung đã duyệt, thông tin được xác nhận trong đúng phạm vi phụ trách.","ban_giao_dau_vao":"Nhận lịch/mẫu từ Chuyên viên Truyền thông TCT đúng nhóm; bàn giao báo cáo kiểm tra biển bảng hằng tháng, ảnh hiện trạng, ảnh nghiệm thu trang trí, màn hình, phát thanh và sự kiện cho Truyền thông TCT và Thiết kế ngoại tuyến.","kiem_duyet":"Ban Giám đốc cơ sở duyệt phần địa phương; TCT duyệt theo phạm vi/mẫu"},{"id":"dmpk","vi_tri":"Đầu mối kiêm nhiệm tại phòng khám (nhóm 1)","pham_vi":"Phòng khám nhóm 1 – đầu mối kiêm nhiệm","chu_tri_dau_ra":"Nhận thông tin, ảnh, lịch, sự kiện, nhu cầu tại phòng khám; chuyển một đầu mối về Marketing TCT","khong_thuoc_trach_nhiem":"Không là bộ máy marketing độc lập, không tự đăng/sửa dữ liệu có điều kiện, không tự phát hành sản phẩm khi thiếu duyệt","ban_giao_dau_vao":"Gửi nguồn có xác nhận của phòng khám cho Quản lý thương hiệu nhóm 1/Chuyên viên trưởng","kiem_duyet":"Đơn vị chủ dữ liệu/phòng khám xác nhận; TCT duyệt sản phẩm theo quy trình"}],"doi_chieu_vi_tri_gan_nhau_17112026":[{"cap_vi_tri":"Quản lý thương hiệu ↔ Chuyên viên truyền thông","nguoi_1":"Quản lý thương hiệu nắm mục tiêu, KPI, ngân sách và yêu cầu của Hạng mục","nguoi_2":"Chuyên viên truyền thông lập/triển khai PR, báo chí, KOL/KOC, tài trợ và ngoại tuyến, lịch nội viện","diem_ban_giao":"Truyền thông báo đầu ra và nghiệm thu tại chỗ; Quản lý thương hiệu xác nhận phù hợp mục tiêu; cấp có thẩm quyền duyệt"},{"cap_vi_tri":"Quản lý thương hiệu nhóm 1 ↔ nhóm 2","nguoi_1":"Mỗi người có kết quả, ngân sách, định vị riêng theo nhóm đã chốt","nguoi_2":"Việc liên quan hai nhóm: Trưởng phòng phân chủ nhiệm vụ và tỷ lệ kết quả, không mặc định nhóm 1 chủ trì tất cả","diem_ban_giao":"Hạng mục liên nhóm phải có phiếu chỉ rõ chủ việc, chủ chi phí, KPI và phần mỗi nhóm"},{"cap_vi_tri":"Tổ trưởng Truyền thông và Thương hiệu ↔ Quản lý thương hiệu nhóm 1","nguoi_1":"Quản lý thương hiệu nhóm 2 kiêm Tổ trưởng, điều phối lịch và xung đột nguồn lực tổ 04 người","nguoi_2":"Quản lý thương hiệu nhóm 1 vẫn tự giữ kết quả nhóm 1; Tổ trưởng không có quyền duyệt sản phẩm/nhân sự nhóm 1 chỉ nhờ kiêm nhiệm","diem_ban_giao":"Xung đột chuyên môn, ưu tiên ngân sách, quyền đánh giá: chuyển Trưởng phòng"},{"cap_vi_tri":"Chuyên viên truyền thông ↔ Chuyên viên biên tập","nguoi_1":"Truyền thông viết thông cáo, bài gửi báo, điều phối đối tác/PR; giữ thông điệp khi phát ngôn","nguoi_2":"Biên tập viết bài kênh sở hữu, nội dung y khoa, kịch bản lời, bài website; kiểm nguồn nội dung","diem_ban_giao":"Nội dung truyền thông lên kênh có đầu ra được kiểm và nghiệm thu; không chuyển toàn bộ thông cáo sang Biên tập"},{"cap_vi_tri":"Biên tập ↔ Media TCT","nguoi_1":"Biên tập viết lời/câu chữ có nội dung chuyên môn, gói dịch vụ, giá, ưu đãi","nguoi_2":"Media viết phân cảnh và tổ chức quay, dựng, chỉnh ảnh/video; kịch bản hình không thay trách nhiệm lời","diem_ban_giao":"Bản lời chuyên môn đủ xác nhận mới quay/phát hành; Media không tự sửa cam kết y khoa"},{"cap_vi_tri":"Media TCT ↔ Thiết kế TCT","nguoi_1":"Media sở hữu ảnh chụp, dựng phim, chỉnh màu và hậu kỳ video","nguoi_2":"Thiết kế tạo bố cục, typography, banner, đồ họa tĩnh/động theo phân công","diem_ban_giao":"Sản phẩm có cả hai phần cần giao đầu ra rõ: file ảnh/video gốc → file đồ họa → bản kiểm cuối"},{"cap_vi_tri":"Thiết kế nhóm ↔ Thiết kế ngoại tuyến","nguoi_1":"Thiết kế nhóm làm sản phẩm số + in không nằm danh sách cố định; nhận diện thương hiệu của nhóm","nguoi_2":"Thiết kế ngoại tuyến làm biển bảng, vật phẩm cố định, trang trí lễ Tết, giữ quy chuẩn in và kiểm nhận diện","diem_ban_giao":"Không dùng vật liệu in làm tiêu chí duy nhất; xác định theo danh mục cố định mảng 6/15.2"},{"cap_vi_tri":"Quảng cáo & kênh số ↔ Truyền thông","nguoi_1":"Quảng cáo giữ tài khoản, lịch đăng, ngân sách quảng cáo trả phí, kỹ thuật nền tảng, phân phối số","nguoi_2":"Truyền thông giữ quan hệ báo chí, KOL/KOC, hợp đồng/nghĩa vụ PR, ngoại tuyến","diem_ban_giao":"Với KOL: Truyền thông chủ người/hợp đồng; Quảng cáo chủ quảng bá trả phí; Quản lý thương hiệu chủ KPI"},{"cap_vi_tri":"Quảng cáo & kênh số ↔ Quản lý sản phẩm số","nguoi_1":"Quảng cáo quản trị kênh social, tài khoản quảng cáo, Trang doanh nghiệp trên Google và trang đích quảng cáo theo mẫu","nguoi_2":"Quản lý sản phẩm số chủ nghiệp vụ website/App, CMS cấu trúc và SEO tự nhiên; Phòng Số hóa làm kỹ thuật","diem_ban_giao":"Không tự chuyển trách nhiệm đăng/sửa dữ liệu người hành nghề, bảng giá sang người chạy quảng cáo"},{"cap_vi_tri":"Quản lý sản phẩm số ↔ Biên tập","nguoi_1":"Biên tập chịu chất lượng câu chữ và bằng chứng nội dung trên website/App","nguoi_2":"Quản lý sản phẩm số chịu cấu trúc, triển khai CMS/dữ liệu định dạng, nghiệm thu và công bố sau đủ xác nhận","diem_ban_giao":"Một thay đổi nguồn có hai trường: trường dữ liệu có cấu trúc do Quản lý sản phẩm số; mô tả, bài viết do Biên tập"},{"cap_vi_tri":"Đo lường và đối soát ↔ Quảng cáo","nguoi_1":"Quảng cáo tối ưu theo dữ liệu nền tảng hàng ngày, cung cấp log chi phí/Lead","nguoi_2":"Đo lường độc lập đối chiếu tiếp đón, HIS, CRM, chi phí và chốt báo cáo KPI chính thức","diem_ban_giao":"Không dùng số quản trị quảng cáo làm số doanh thu/KPI chính thức khi chưa đối soát"},{"cap_vi_tri":"Đo lường và đối soát ↔ Dữ liệu khách hàng & thị trường","nguoi_1":"Đo lường chịu chốt số, KPI, đối soát và báo cáo hiệu quả","nguoi_2":"Dữ liệu khách hàng chịu chất lượng tệp, bảo vệ dữ liệu, phân nhóm, lịch gửi, khảo sát và CRM","diem_ban_giao":"Giai đoạn chưa đủ nhân sự có thể kiêm nhưng trách nhiệm chốt số và kiểm dữ liệu tách hai công việc"},{"cap_vi_tri":"Quản lý sản phẩm số ↔ Dữ liệu khách hàng/CRM","nguoi_1":"Quản lý sản phẩm số là đầu mối website/App và công việc kỹ thuật với Phòng Số hóa","nguoi_2":"Dữ liệu khách hàng là chủ nghiệp vụ dữ liệu Marketing/CRM và yêu cầu chức năng liên quan khách hàng","diem_ban_giao":"Không chuyển quyền vận hành tổng đài, tư vấn sang Marketing; CRM liên phòng do Trưởng phòng chủ trì theo khung"},{"cap_vi_tri":"Chuyên viên trưởng ↔ Tổ trưởng các tổ","nguoi_1":"Chuyên viên trưởng giữ chính sách, quy trình, phân công liên tổ/chi nhánh và xử lý xung đột","nguoi_2":"Tổ trưởng kiêm nhiệm điều phối công việc trong phạm vi được phân công, không mặc nhiên duyệt nội dung/chi phí","diem_ban_giao":"Yêu cầu ngoài phạm vi, người thay, vượt giờ hoặc trùng người chuyển Chuyên viên trưởng rồi Trưởng phòng"},{"cap_vi_tri":"Người giữ chuẩn ↔ Người làm sản phẩm","nguoi_1":"Người giữ chuẩn cập nhật tiêu chí, quy trình, hướng dẫn và đào tạo","nguoi_2":"Người thực hiện chịu sản phẩm cụ thể; người kiểm phải độc lập với người làm","diem_ban_giao":"Không đồng nhất chủ trì văn bản/quy trình với chủ trì mọi công việc nghiệp vụ (Phụ lục 8)"}],"ma_tran_TCT_chi_nhanh_17112026":[{"so":"01","dau_viec":"Kế hoạch Hạng mục/chương trình","TCT":"Quản lý thương hiệu của nhóm lập mục tiêu, ngân sách, KPI, hồ sơ và giao sản phẩm","chi_nhanh":"Trưởng nhóm/đầu mối phòng khám cung cấp nhu cầu, năng lực tiếp nhận, lịch bác sĩ; triển khai hiện trường","xac_nhan_duyet":"Trưởng phòng/cấp có thẩm quyền duyệt kế hoạch; chuyên môn xác nhận năng lực cung ứng","quy_tac_chan":"Không có chủ Hạng mục, KPI, chủ chi phí, đơn vị triển khai → không mở Hạng mục"},{"so":"02","dau_viec":"Bài viết/chương trình có nội dung y tế","TCT":"Biên tập nhóm viết; bác sĩ xác nhận chuyên môn; kiểm pháp lý theo tầng; Quản lý thương hiệu nghiệm thu mục tiêu","chi_nhanh":"Trưởng nhóm cung cấp hồ sơ bác sĩ, căn cứ, đề bài, ảnh đồng ý; không tự duyệt chuyên môn y khoa thay bác sĩ","xac_nhan_duyet":"Kiểm độc lập và người duyệt nội dung theo mục 14.16","quy_tac_chan":"Thiếu nguồn/chuyên môn đồng ý hoặc chưa kiểm pháp lý → chặn phát hành"},{"so":"03","dau_viec":"Tin hoạt động trong ngày tại bệnh viện","TCT":"TCT cung cấp danh mục tin chuẩn, mẫu, ranh giới pháp lý; bài ngoài danh mục do Biên tập xử lý","chi_nhanh":"Trưởng nhóm đăng tin V1 đúng danh mục lên Facebook bệnh viện khi có quyền; Media cơ sở cung cấp ảnh/clip và chỉ đăng thay nếu có phân quyền hợp lệ, không tự phát hành ở các kênh khác.","xac_nhan_duyet":"Danh sách kiểm tra tự động và nhật ký; nội dung ngoài danh mục phải qua quy trình duyệt","quy_tac_chan":"Chưa đủ quyền đăng, không khớp danh mục V1, nguồn không hợp lệ hoặc có nội dung nhạy cảm → chuyển duyệt nội dung, không đăng nhanh."},{"so":"04","dau_viec":"Ảnh, video V2/V3 địa phương","TCT":"Biên tập đúng nhóm chủ trì lời mọi V2/V3; Media TCT đúng nhóm viết phân cảnh, giữ bộ mẫu B-7, kiểm kỹ thuật bản dựng và nhận phần vượt mẫu; không mặc định dựng lại toàn bộ.","chi_nhanh":"Media cơ sở chủ trì quay/dựng V2/V3 thuộc mẫu B-7 dựa trên lời của Biên tập và phân cảnh của Media TCT; gửi tư liệu, bản dựng, giấy đồng ý và nhật ký giờ công.","xac_nhan_duyet":"Media TCT kiểm kỹ thuật khi cơ sở dựng; bác sĩ xác nhận nội dung y khoa; cấp duyệt phát hành theo rủi ro nội dung, không theo nhãn V2/V3.","quy_tac_chan":"Thiếu kịch bản cần thiết, căn cứ sử dụng hình ảnh, bản dựng được kiểm độc lập hoặc cấp duyệt phát hành → chặn; không chuyển việc cho TCT chỉ vì sản phẩm đăng kênh TCT"},{"so":"05","dau_viec":"Video chiến dịch V4/phim thương hiệu","TCT":"Biên tập đúng nhóm viết toàn bộ lời/thông điệp; Media TCT lập phân cảnh, chủ trì hậu kỳ V4; Thiết kế phụ trách đồ họa.","chi_nhanh":"Media cơ sở cung cấp footage và sắp xếp nhân vật, địa điểm, giấy đồng ý","xac_nhan_duyet":"Đơn vị chuyên môn, người nghiệm thu và cấp duyệt theo quy trình","quy_tac_chan":"Không giao Media cơ sở tự làm/duyệt video V4"},{"so":"06","dau_viec":"Ấn phẩm thiết kế số/tờ rơi không cố định","TCT":"Thiết kế theo nhóm chịu sản phẩm; Biên tập giao chữ đã kiểm","chi_nhanh":"Trưởng nhóm/đầu mối phòng khám gửi yêu cầu, số lượng, vị trí, ảnh hiện trường","xac_nhan_duyet":"Người gửi yêu cầu nghiệm thu, kiểm độc lập và cấp duyệt phù hợp","quy_tac_chan":"Không chuyển sang Thiết kế ngoại tuyến chỉ vì sản phẩm được in"},{"so":"07","dau_viec":"Biển bảng, bảng hiệu, trang trí cố định","TCT":"Truyền thông TCT giữ kế hoạch, thi công, nghiệm thu; Thiết kế ngoại tuyến giữ mẫu/file in/quy chuẩn","chi_nhanh":"Truyền thông cơ sở kiểm hiện trạng, gửi số đo, ảnh, báo hỏng, giám sát tại chỗ; cơ sở 02 người Trưởng nhóm kiêm","xac_nhan_duyet":"Quyết định 48 và thẩm quyền chi/thi công; kiểm file độc lập","quy_tac_chan":"Media cơ sở không chủ trì kiểm biển/ảnh nghiệm thu; thiếu ảnh hiện trạng, số đo, kiểm file độc lập hoặc duyệt theo QyĐ.48 → dừng thi công."},{"so":"08","dau_viec":"Màn hình nội viện","TCT":"Truyền thông TCT của nhóm giữ lịch; Biên tập/Thiết kế/Media TCT cung cấp sản phẩm đã duyệt","chi_nhanh":"Truyền thông cơ sở hoặc Trưởng nhóm kiêm vận hành phát, kiểm âm thanh/hình và báo lỗi","xac_nhan_duyet":"Chuyên viên truyền thông nghiệm thu lịch và nội dung; cấp duyệt phát hành theo loại","quy_tac_chan":"Media cơ sở không phải người vận hành; không phát file chưa duyệt"},{"so":"09","dau_viec":"Phát thanh nội viện","TCT":"Truyền thông TCT chốt lịch; Biên tập soạn kịch bản mẫu; Media TCT thu âm khi cần","chi_nhanh":"Truyền thông cơ sở (03 người) hoặc Trưởng nhóm cơ sở (02 người) phát theo lịch, ghi nhật ký","xac_nhan_duyet":"Trưởng nhóm kiểm áp dụng đúng mẫu; kiểm nội dung theo phân cấp","quy_tac_chan":"Không để Media cơ sở là người chịu trách nhiệm phát thanh"},{"so":"10","dau_viec":"Sự kiện địa phương ngoài Hạng mục","TCT":"Truyền thông TCT tư vấn chuẩn PR khi cần; Tổ sản xuất nhận yêu cầu sản phẩm","chi_nhanh":"Truyền thông cơ sở hoặc Trưởng nhóm kiêm chủ trì tổ chức sự kiện, địa điểm và đối tác tại chỗ","xac_nhan_duyet":"Ban Giám đốc cơ sở duyệt kế hoạch/chi phí, nội dung theo phân cấp","quy_tac_chan":"Có báo chí/cấp hệ thống thì báo lên Trưởng phòng trước triển khai"},{"so":"11","dau_viec":"Sự kiện cơ sở nằm trong Hạng mục","TCT":"Quản lý thương hiệu chủ kết quả/đầu ra, Truyền thông chủ phần PR, Tổ Nội dung sản xuất","chi_nhanh":"Truyền thông cơ sở chủ phần tổ chức, hậu cần và ảnh nghiệm thu","xac_nhan_duyet":"BGĐ cơ sở/cấp có thẩm quyền duyệt theo phạm vi, Quản lý thương hiệu nghiệm thu Hạng mục","quy_tac_chan":"Không chuyển toàn bộ hậu cần sang Media/Thiết kế hoặc báo chí sang Biên tập"},{"so":"12","dau_viec":"Hội nghị/sự kiện cấp hệ thống","TCT":"Quản lý thương hiệu nhóm chủ Hạng mục; Truyền thông liên hệ báo chí; Tổ sản xuất làm nội dung","chi_nhanh":"Marketing cơ sở cùng nhóm hỗ trợ hiện trường; nơi không có Marketing cơ sở: Quản lý thương hiệu điều phối hậu cần","xac_nhan_duyet":"Trưởng phòng/Ban Tổng Giám đốc theo thẩm quyền","quy_tac_chan":"Trường hợp trụ sở đặt tại cơ sở của nhóm khác vẫn xử lý theo chủ Hạng mục, không tự động đổi nhóm"},{"so":"13","dau_viec":"Báo chí/khủng hoảng/mạo danh","TCT":"Truyền thông TCT đúng nhóm chủ phát hiện/xác minh/đề xuất; Quảng cáo xử lý báo cáo vi phạm nền tảng","chi_nhanh":"Cơ sở và Contact Center báo tin, lưu ảnh/bằng chứng, không tự phát ngôn vượt thẩm quyền","xac_nhan_duyet":"Trưởng phòng/cấp được ủy quyền duyệt thông điệp; Pháp chế xử lý phần cơ quan nhà nước","quy_tac_chan":"Không tự trả lời vụ việc nhạy cảm từ tài khoản cơ sở khi chưa có chỉ đạo"},{"so":"14","dau_viec":"KOL/KOC","TCT":"Truyền thông TCT chọn, thẩm định, giữ quan hệ/hợp đồng; Quảng cáo giữ chạy trả phí; Quản lý thương hiệu chủ KPI","chi_nhanh":"Cơ sở xác nhận khả năng tiếp nhận, điều phối nhân vật/địa điểm tại chỗ","xac_nhan_duyet":"Quản lý thương hiệu và cấp duyệt chi phí/nội dung theo phân cấp","quy_tac_chan":"Không giao bộ phận quảng cáo tự ký hợp đồng PR"},{"so":"15","dau_viec":"Bài đăng và quảng cáo số","TCT":"Quảng cáo & kênh số nhóm sở hữu tài khoản/lịch đăng và tối ưu; Biên tập/Thiết kế/Media giao sản phẩm đã duyệt","chi_nhanh":"Trưởng nhóm gửi đề bài và kiểm hiện trường; riêng tin trong ngày theo quy định","xac_nhan_duyet":"Quản lý thương hiệu nghiệm thu lịch, cấp duyệt sản phẩm và chi phí","quy_tac_chan":"Chưa duyệt nội dung hoặc thiếu nguồn, quyền kênh → không đăng/chạy"},{"so":"16","dau_viec":"Trang doanh nghiệp trên Google","TCT":"Quảng cáo & kênh số nhóm chịu cập nhật hồ sơ Trang doanh nghiệp trên Google","chi_nhanh":"Trưởng nhóm cơ sở gửi thay đổi có xác nhận của đơn vị chủ dữ liệu","xac_nhan_duyet":"Kiểm khớp nguồn, phê duyệt nội dung theo phân cấp","quy_tac_chan":"Không tự sửa giờ hoạt động/điện thoại theo lời nhắn miệng"},{"so":"17","dau_viec":"Website: bài viết, mô tả dịch vụ","TCT":"Biên tập nhóm chịu câu chữ và nguồn; Quản lý sản phẩm số quản trị luồng CMS, SEO/nghiệp vụ","chi_nhanh":"Trưởng nhóm gửi thông tin và xác nhận chuyên môn, đối chiếu cơ sở","xac_nhan_duyet":"Bác sĩ/cấp duyệt xác nhận; người nhập không tự xác nhận nguồn","quy_tac_chan":"Không công bố dữ liệu có điều kiện chưa được xác nhận"},{"so":"18","dau_viec":"Website: giá, người hành nghề, kỹ thuật/dịch vụ được phép","TCT":"Quản lý sản phẩm số đối chiếu bộ chứng từ, nhập/công bố dữ liệu có cấu trúc sau kiểm độc lập; Pháp chế kiểm điều kiện","chi_nhanh":"Kế toán/giá, Nhân lực/chuyên môn, Pháp chế cấp và xác nhận nguồn; Trưởng nhóm chuyển một lần đủ hồ sơ; Ban Giám đốc cơ sở xác nhận hiệu lực","xac_nhan_duyet":"Nguồn dữ liệu và người kiểm độc lập duyệt trước công bố; không giao Biên tập tự sửa số liệu","quy_tac_chan":"Thiếu bản nguồn/đã hết hạn/sai với dữ liệu được phép → chặn công bố"},{"so":"19","dau_viec":"Lịch bác sĩ trước/sau HIS","TCT":"Biên tập nhóm cập nhật nội dung hiển thị trước kết nối; Quản lý sản phẩm số kiểm nguồn đồng bộ khi đã có HIS","chi_nhanh":"Đơn vị chủ dữ liệu/lịch bác sĩ xác nhận từng thay đổi; Trưởng nhóm chuyển có chứng cứ","xac_nhan_duyet":"Chủ dữ liệu xác nhận, kiểm độc lập trước công bố","quy_tac_chan":"Đã kết nối HIS thì không ghi đè thủ công dữ liệu đồng bộ"},{"so":"20","dau_viec":"CRM, dữ liệu khách hàng","TCT":"Dữ liệu khách hàng là chủ nghiệp vụ Marketing CRM; Số hóa/Công nghệ lập trình theo phạm vi; Chuyên viên trưởng giữ quy trình phần mềm Marketing","chi_nhanh":"Cơ sở, tiếp đón, Contact Center cung cấp dữ liệu theo quyền hợp pháp, không tạo tệp ngoài luồng","xac_nhan_duyet":"Trưởng phòng chủ dự án; quyền sử dụng dữ liệu theo quy định","quy_tac_chan":"Thiếu căn cứ xử lý dữ liệu/đồng ý phù hợp → không nhập/gửi"},{"so":"21","dau_viec":"Tiếp nhận đa kênh và kịch bản tư vấn","TCT":"Contact Center tập trung chủ trì xây dựng, quản lý phiên bản, đào tạo và vận hành kịch bản tư vấn. Marketing TCT chỉ cung cấp thông điệp/chương trình đã duyệt, tiêu chí Lead hợp lệ.","chi_nhanh":"Bộ phận dịch vụ/tiếp đón cơ sở lập đầu vào, đề xuất tình huống và câu trả lời; bác sĩ/chuyên môn xác nhận nội dung y tế; đầu mối có thẩm quyền xác nhận gói, giá, điều kiện, lịch. Marketing cơ sở hỗ trợ thông tin chương trình, không chủ trì viết kịch bản nghiệp vụ.","xac_nhan_duyet":"Cơ sở/chuyên môn xác nhận nguồn; người được phân quyền ở đơn vị chủ quản Contact Center duyệt kịch bản nghiệp vụ; Marketing kiểm tra thông điệp truyền thông khi liên quan.","quy_tac_chan":"Không giao Biên tập/Truyền thông Marketing quyền tự soạn hoặc duyệt kịch bản nghiệp vụ; thiếu xác nhận/duyệt, hết hiệu lực hoặc có câu hỏi vượt chuyên môn → không tư vấn, chuyển tuyến."},{"so":"22","dau_viec":"Thủ tục pháp lý quảng cáo","TCT":"Pháp chế chủ hồ sơ pháp lý, yêu cầu thành phần/nộp/theo dõi; Biên tập Marketing giao nội dung, phiên bản và minh chứng","chi_nhanh":"Bác sĩ/chủ cơ sở cung cấp xác nhận chuyên môn, giấy phép và thông tin nền","xac_nhan_duyet":"Trưởng phòng duyệt phần Marketing; Pháp chế kiểm điều kiện và hồ sơ; cơ quan nhà nước xử lý theo thủ tục","quy_tac_chan":"Marketing không tự nộp thay Pháp chế khi chưa có phân quyền"},{"so":"23","dau_viec":"Thu thập số liệu, báo cáo KPI","TCT":"Đo lường và đối soát chốt kỳ; Quảng cáo cung cấp số nền tảng; Quản lý thương hiệu chịu kết quả Hạng mục","chi_nhanh":"Tiếp đón/HIS cung cấp nguồn khách; Trưởng nhóm cơ sở kiểm bằng chứng và chênh lệch","xac_nhan_duyet":"Trưởng phòng duyệt số liệu chốt kỳ","quy_tac_chan":"Không chốt KPI từ ảnh chụp quảng cáo khi chưa đối soát"},{"so":"24","dau_viec":"Kiểm nhận diện toàn hệ thống","TCT":"Thiết kế ngoại tuyến lập lịch/kiểm độc lập; Truyền thông TCT theo dõi khắc phục biển bảng; Thiết kế nhóm kiểm thay nếu file do Thiết kế ngoại tuyến tự làm","chi_nhanh":"Truyền thông cơ sở hoặc Trưởng nhóm kiêm cung cấp ảnh, số đo, vị trí, nhật ký","xac_nhan_duyet":"Quản lý thương hiệu nhóm nghiệm thu biện pháp khắc phục","quy_tac_chan":"Người làm không tự kiểm cuối sản phẩm của mình"},{"so":"25","dau_viec":"Tuyển dụng, truyền thông nội bộ","TCT":"Nhân lực/Hành chính cung cấp chủ trương; Biên tập/Thiết kế/Media nhóm làm nội dung; Quảng cáo nhóm đăng; Truyền thông phụ trách tương tác nội bộ theo nhóm","chi_nhanh":"Trưởng nhóm cơ sở lấy thông tin thực tế, hỗ trợ truyền thông tại bệnh viện","xac_nhan_duyet":"Đơn vị chủ trì nội dung và cấp duyệt sản phẩm","quy_tac_chan":"Không coi Marketing là chủ điều kiện tuyển dụng hay chính sách nhân sự"},{"so":"26","dau_viec":"Nhà cung cấp, hồ sơ mua sắm","TCT":"Quản lý thương hiệu nhóm chủ hồ sơ Hạng mục/chi trong hạn mức; Truyền thông khảo sát thi công/PR; Thiết kế ngoại tuyến kiểm file; Đo lường cộng nhu cầu","chi_nhanh":"Cơ sở cung cấp đo đạc, xác nhận khối lượng và hiện trạng, phối hợp nghiệm thu","xac_nhan_duyet":"Tài chính – Kế hoạch và cấp có thẩm quyền theo quy định mua sắm","quy_tac_chan":"Không tự ký/chi khi chưa đủ thẩm quyền, hợp đồng, chứng từ"},{"so":"27","dau_viec":"Tài trợ thương hiệu và từ thiện","TCT":"Truyền thông của nhóm chủ hồ sơ tài trợ có đối ứng; Quản lý thương hiệu chủ tài trợ trong Hạng mục; không có đối ứng: Tổ Công tác xã hội","chi_nhanh":"Truyền thông cơ sở chủ tài trợ địa phương trong phạm vi được duyệt","xac_nhan_duyet":"BGĐ cơ sở, Trưởng phòng/BTGĐ tùy loại/giá trị","quy_tac_chan":"Không đưa từ thiện không đối ứng vào KPI Marketing như tài trợ truyền thông"},{"so":"28","dau_viec":"Phòng khám – quy trình một đầu mối","TCT":"Quản lý thương hiệu nhóm 1 tiếp nhận yêu cầu, chia cho chuyên môn TCT; Chuyên viên trưởng hỗ trợ chuẩn","chi_nhanh":"Đầu mối kiêm nhiệm tại từng phòng khám gửi nội dung/ảnh/nhu cầu có xác nhận của phòng khám","xac_nhan_duyet":"TCT duyệt sản phẩm; phòng khám xác nhận thông tin gốc","quy_tac_chan":"Không tạo một quy trình, quyền đăng, bộ mẫu riêng không theo hệ thống"}],"nguyen_tac_phan_dinh_17112026":"Đơn vị chủ dữ liệu xác nhận dữ liệu gốc; TCT giữ chuẩn, chủ trì sản phẩm chuyên môn và kết quả theo nhóm; chi nhánh chịu hiện trường theo định biên. Mỗi việc có chủ, người làm, người kiểm độc lập và cấp duyệt riêng. Tổ trưởng chỉ điều phối. Hai người cùng chức danh được giao đầu việc một người chịu trách nhiệm chính trên phiếu/lịch sản xuất. Các ma trận là chi tiết hóa phương án trình, không tự thay văn bản phân quyền đã ban hành.","phan_dinh_vai_tro_17112026":"Cập nhật ranh giới 25 vị trí, 15 cặp gần nhau, 28 luồng phối hợp TCT/chi nhánh; thống nhất Tổ trưởng Tổ Truyền thông và Thương hiệu; sửa mảng 14/37/43.","phan_cap_duyet_17112026":{"trang_thai":"Dự thảo chờ cấp có thẩm quyền ban hành/ủy quyền","cac_cua_kiem_soat":[{"buoc":"G0 – Khởi tạo hồ sơ","nguoi_lam":"Người giao việc xác định mã yêu cầu, nhóm thương hiệu, cơ sở, đầu ra, kênh, hạn, ngân sách và nguồn; chuyển chủ trì theo ma trận 25 vị trí","quy_tac_chan":"Thiếu thông tin tối thiểu thì không vào lịch sản xuất"},{"buoc":"G1 – Kiểm đầu vào","nguoi_lam":"Người chủ dữ liệu và đầu mối cơ sở xác nhận nguồn; Biên tập kiểm câu chữ; với nội dung y khoa, bác sĩ/đơn vị chuyên môn kiểm chuyên môn","quy_tac_chan":"Thiếu giấy phép/hình ảnh đồng ý/chứng cứ y khoa ⇒ dừng"},{"buoc":"G2 – Kiểm sản xuất","nguoi_lam":"Người khác với người làm kiểm kỹ thuật, nhận diện, phiên bản; tổ trưởng chỉ điều phối, không tự có quyền duyệt","quy_tac_chan":"Không đạt QC ⇒ trả sửa; trường hợp thiếu người kiểm độc lập thì chuyển phân công, không bỏ bước"},{"buoc":"G3 – Nghiệm thu theo yêu cầu","nguoi_lam":"Quản lý thương hiệu cùng nhóm xác nhận đúng brief, thông điệp, định dạng, số lượng và hạn; đây là nghiệm thu, không phải quyền phê duyệt phát hành","quy_tac_chan":"Không đạt ⇒ tối đa 02 vòng chỉnh trong cùng phạm vi; thay đổi mục tiêu/brief phải mở phiên bản mới"},{"buoc":"G4 – Phê duyệt phát hành","nguoi_lam":"Người có thẩm quyền được gắn theo loại sản phẩm và phạm vi; lãnh đạo, chuyên môn, Pháp chế, BGĐ cơ sở/BTGĐ tham gia đúng từng lĩnh vực","quy_tac_chan":"Không có ủy quyền hiệu lực ⇒ chặn; không tự chuyển cấp khi quá hạn"},{"buoc":"G5 – Công bố/thực thi","nguoi_lam":"Quảng cáo và kênh số đăng/trả phí; Truyền thông thực hiện phát hành báo chí/ngoại tuyến; Quản lý sản phẩm số quản trị công bố dữ liệu website; cơ sở phát nội viện theo lịch","quy_tac_chan":"Người thực thi kiểm mã phiên bản được duyệt, quyền kênh và ngân sách; thiếu bất kỳ điều kiện thì không phát"},{"buoc":"G6 – Đối soát sau phát hành","nguoi_lam":"Người vận hành lưu URL, ảnh chứng cứ, nhật ký; đo lường và đối soát chốt số độc lập; Quản lý thương hiệu chịu kết quả Hạng mục","quy_tac_chan":"Sự cố phải có bản ghi thu hồi/đính chính và phân tích nguyên nhân"}],"ma_tran_16_loai":[{"ma":"01","noi_dung_duyet":"Kế hoạch Hạng mục, kế hoạch tháng","lap_kiem_thuc_hien":"Quản lý thương hiệu đúng nhóm lập; cơ sở xác nhận nhu cầu; Chuyên viên trưởng đối chiếu tải và nguồn lực","duyet":"Trưởng phòng Marketing duyệt kế hoạch trong phạm vi được giao; Ban Tổng Giám đốc duyệt phạm vi, ngân sách hoặc chủ trương thuộc thẩm quyền cấp trên","chan":"Không triển khai Hạng mục hoặc phát sinh chi vượt hạn mức nếu chưa được cấp có thẩm quyền thông qua"},{"ma":"02","noi_dung_duyet":"Bài viết, tin, thông điệp và kịch bản thông thường","lap_kiem_thuc_hien":"Biên tập đúng nhóm lập; người Biên tập khác kiểm độc lập; bác sĩ/đơn vị chuyên môn xác nhận các mệnh đề y khoa; Quản lý thương hiệu nghiệm thu đúng yêu cầu","duyet":"Sản phẩm mẫu, thường xuyên: Chuyên viên trưởng chỉ ký duyệt phát hành khi có văn bản phân quyền. Sản phẩm mới, vượt thông điệp, nhạy cảm hoặc cấp hệ thống: Trưởng phòng; trường hợp vượt thẩm quyền chuyển Ban Tổng Giám đốc","chan":"Không dùng “nghiệm thu” hoặc “kiểm tra” thay chữ ký phê duyệt phát hành"},{"ma":"03","noi_dung_duyet":"Ảnh, video, phóng sự và phim chiến dịch","lap_kiem_thuc_hien":"Media đúng nhóm sản xuất; người có năng lực được phân công kiểm kỹ thuật độc lập; Biên tập kiểm lời và pháp lý; người phụ trách chuyên môn xác nhận nội dung y khoa; Quản lý thương hiệu nghiệm thu","duyet":"Video mẫu đã duyệt: người được Trưởng phòng phân quyền duyệt phát hành; phim mới, quảng cáo y tế hoặc hình ảnh rủi ro cao: Trưởng phòng và cấp có thẩm quyền chuyên môn/pháp lý theo từng trường hợp","chan":"Không tự duyệt bản dựng; khi dùng hình ảnh người bệnh phải có căn cứ đồng ý phù hợp"},{"ma":"04","noi_dung_duyet":"Thiết kế số, ấn phẩm in và ứng dụng nhận diện","lap_kiem_thuc_hien":"Thiết kế đúng nhóm làm; người kiểm độc lập kiểm quy chuẩn, nội dung; Biên tập kiểm chữ; Quản lý thương hiệu nghiệm thu theo yêu cầu","duyet":"Biến thể đúng mẫu đã phê duyệt: Chuyên viên trưởng theo ủy quyền và QyĐ.03.MKT; sản phẩm mới, ngoại viện, thay đổi nhận diện hoặc cấp hệ thống: Trưởng phòng/cấp được giao","chan":"Chưa có xác nhận file chốt, bản in và thẩm quyền chi thì không đặt in hoặc đưa thi công"},{"ma":"05","noi_dung_duyet":"Quảng cáo trả phí, lịch đăng, trang đích","lap_kiem_thuc_hien":"Quảng cáo và kênh số lập lịch, bộ thông số và cấu hình; Biên tập, Thiết kế, Media giao sản phẩm đã duyệt; Quản lý thương hiệu nghiệm thu thông điệp và lịch","duyet":"Duyệt phát hành nội dung theo cấp 02–04; ngân sách và điều chỉnh chi do người có thẩm quyền chi theo R28 duyệt riêng; vận hành quảng cáo do người được cấp quyền kênh thực hiện","chan":"Không cho chạy chỉ vì đã có lịch; tắt hoặc tạm dừng vi phạm ngay, lưu nhật ký và thông báo"},{"ma":"06","noi_dung_duyet":"Thông cáo báo chí, phát ngôn, KOL/KOC, quan hệ công chúng","lap_kiem_thuc_hien":"Chuyên viên Truyền thông TCT đúng nhóm chủ trì báo chí, kiểm nguồn và đề xuất đối tác; Biên tập hỗ trợ sản xuất nội dung; Quản lý thương hiệu xác nhận thông điệp","duyet":"Trưởng phòng duyệt phương án trong thẩm quyền; phát ngôn, thông tin nhạy cảm, đại diện Tập đoàn và cam kết hợp đồng do người phát ngôn/đại diện có thẩm quyền phê duyệt; chi phí theo R28","chan":"Chuyên viên Truyền thông không mặc nhiên là người phát ngôn hoặc người duyệt nội dung chính thức"},{"ma":"07","noi_dung_duyet":"Sự kiện cơ sở, sự kiện cấp hệ thống","lap_kiem_thuc_hien":"Truyền thông cơ sở chủ trì hiện trường; Chuyên viên Truyền thông TCT chủ phần báo chí/PR; Tổ Nội dung và Sáng tạo sản xuất; Quản lý thương hiệu chủ Hạng mục","duyet":"Sự kiện địa phương: Ban Giám đốc cơ sở duyệt tổ chức, hiện trường và chi phí theo phân cấp; sự kiện hệ thống hoặc báo chí quy mô lớn: Trưởng phòng, Ban Tổng Giám đốc theo phạm vi; nội dung y khoa có xác nhận chuyên môn","chan":"Không lấy duyệt hậu cần thay duyệt thông điệp, hoặc ngược lại"},{"ma":"08","noi_dung_duyet":"Biển bảng, màn hình, phát thanh và vật phẩm ngoại tuyến","lap_kiem_thuc_hien":"Chuyên viên Truyền thông TCT quản lý kênh/lịch, thi công và nghiệm thu phạm vi hệ thống; Thiết kế ngoại tuyến giữ file và thông số; Truyền thông cơ sở kiểm hiện trạng, vận hành theo lịch","duyet":"Trưởng phòng duyệt mẫu/chiến dịch toàn hệ thống; Ban Giám đốc cơ sở xác nhận địa điểm, điều kiện tại chỗ và phần thuộc phân cấp; người có thẩm quyền chi duyệt hợp đồng/thi công theo R28","chan":"Media chi nhánh không chủ trì kiểm biển bảng hoặc phê duyệt lịch phát thanh"},{"ma":"09","noi_dung_duyet":"Tin hoạt động trong ngày tại chi nhánh","lap_kiem_thuc_hien":"Quan hệ công chúng hoặc đầu mối Marketing cơ sở cung cấp nguồn, ảnh, sự kiện; Biên tập kiểm theo danh mục tin nhanh; người có quyền kênh thực hiện đăng","duyet":"Chỉ được áp dụng cơ chế nhanh khi danh mục và mẫu đã được Trưởng phòng phê duyệt, Ban Giám đốc cơ sở xác nhận đúng sự kiện; người duyệt phát hành theo ủy quyền kênh còn hiệu lực","chan":"Ngoài danh mục, có quảng cáo dịch vụ y tế, người bệnh hoặc nội dung nhạy cảm: quay về quy trình thông thường"},{"ma":"10","noi_dung_duyet":"Website/App: bài viết, dịch vụ, SEO, giao diện","lap_kiem_thuc_hien":"Biên tập chủ câu chữ; cơ sở/chuyên môn sở hữu nguồn thông tin; Quản lý sản phẩm số quản trị CMS, trạng thái và quyền đăng; Công nghệ thực hiện thay đổi kỹ thuật","duyet":"Đơn vị sở hữu dữ liệu/chuyên môn xác nhận sự thật; Trưởng phòng hoặc người được ủy quyền duyệt nội dung Marketing; thay đổi cấu trúc lớn do Trưởng phòng và bộ phận kỹ thuật liên quan duyệt đúng phần","chan":"Quản lý sản phẩm số không tự xác nhận sự thật y khoa hoặc giá; có quyền kỹ thuật đăng không đồng nghĩa quyền duyệt nội dung"},{"ma":"11","noi_dung_duyet":"Website/App: giá, người hành nghề, danh mục kỹ thuật, giấy phép, thời gian làm việc","lap_kiem_thuc_hien":"Kế toán/chủ giá, Nhân lực/chủ hồ sơ hành nghề, Ban chuyên môn/chủ kỹ thuật, Pháp chế/chủ điều kiện pháp lý cung cấp bản gốc; Marketing cơ sở chuyển hồ sơ; Quản lý sản phẩm số nhập dữ liệu","duyet":"Ban Giám đốc cơ sở xác nhận bản áp dụng tại cơ sở; đơn vị chủ dữ liệu và Pháp chế xác nhận tính hợp lệ; người có thẩm quyền công bố được chỉ định phê duyệt cuối trước khi mở hiển thị","chan":"Thiếu bản nguồn, hết hạn hoặc sai phạm vi giấy phép: chặn công bố; Biên tập không tự sửa số liệu"},{"ma":"12","noi_dung_duyet":"Kịch bản tư vấn, bàn giao Contact Center","lap_kiem_thuc_hien":"Marketing cung cấp thông tin dịch vụ/chiến dịch, nguồn và thông điệp đã kiểm; Contact Center chủ nghiệp vụ hội thoại, tư vấn, hướng dẫn xử lý","duyet":"Trưởng phòng duyệt thông tin Marketing cung cấp; người quản lý nghiệp vụ Contact Center được phân quyền duyệt kịch bản tư vấn; cơ sở/chuyên môn xác nhận điều kiện khám chữa bệnh","chan":"Không giao Biên tập quyền duyệt nghiệp vụ tư vấn hoặc trực tiếp phê duyệt lời hứa chuyên môn"},{"ma":"13","noi_dung_duyet":"Thông tin nội bộ, đào tạo, nhân sự, chế độ","lap_kiem_thuc_hien":"Đơn vị chủ trì (Nhân lực, chuyên môn, hành chính...) cung cấp và chịu nội dung; Biên tập/Thiết kế/Media chỉ hỗ trợ sản phẩm khi có yêu cầu","duyet":"Thủ trưởng đơn vị chủ trì duyệt nội dung thuộc thẩm quyền; phần sản phẩm Marketing kiểm QC, người được phân quyền phát hành thực hiện","chan":"Không mặc nhiên yêu cầu Phòng Marketing ký duyệt nội dung thuộc chuyên môn đơn vị khác"},{"ma":"14","noi_dung_duyet":"Sự cố, khủng hoảng, thông tin mạo danh và đính chính","lap_kiem_thuc_hien":"Truyền thông TCT xác minh, thu bằng chứng và soạn phương án; Biên tập hỗ trợ câu chữ; Pháp chế/ban chuyên môn xác nhận phần liên quan; cơ sở khóa nguồn phát tán","duyet":"Trưởng phòng điều phối khẩn; nội dung phát ngôn/đính chính do người phát ngôn hoặc người được Ban Tổng Giám đốc ủy quyền phê duyệt; thông báo cơ quan nhà nước theo thẩm quyền pháp luật","chan":"Không tự phát ngôn; quá hạn không có nghĩa được tự duyệt; trường hợp nguy cơ tức thì có thể tạm ẩn/tạm dừng và lập nhật ký"},{"ma":"15","noi_dung_duyet":"Quyền kênh, quyền đăng, thay người duyệt","lap_kiem_thuc_hien":"Quản lý sản phẩm số/đầu mối quản trị kênh lập yêu cầu quyền; Chuyên viên trưởng kiểm sơ đồ vai trò, người thay, thời hạn; người vận hành chỉ dùng quyền đã cấp","duyet":"Trưởng phòng duyệt quyền quản trị cao nhất và ma trận phân quyền; Chuyên viên trưởng cấp/thu hồi quyền thao tác trong ma trận đã duyệt; duyệt thay chỉ có giá trị theo ủy quyền cụ thể","chan":"Không dùng quyền quản trị hệ thống để tự cấp quyền phê duyệt nội dung hoặc bỏ nhật ký"},{"ma":"16","noi_dung_duyet":"Đổi phạm vi, duyệt lại, thu hồi hoặc sửa sau đăng","lap_kiem_thuc_hien":"Người yêu cầu ghi lý do, phiên bản cũ/mới; Biên tập/Media/Thiết kế sửa đúng phần; Quản lý thương hiệu nghiệm thu thay đổi; người kênh lưu dấu vết","duyet":"Thay đổi thông điệp, căn cứ chuyên môn, chi phí hoặc phạm vi thì chuyển lại cấp duyệt tương ứng của lần phát hành; sửa lỗi kỹ thuật không đổi bản chất được xử lý theo ủy quyền và lưu nhật ký","chan":"Không tự ghi đè hồ sơ đã duyệt; sửa sau phát hành không xóa dấu vết quyết định cũ"}],"phan_biet_diem_ky":"Kiểm QC, xác nhận chuyên môn, nghiệm thu brief, phê duyệt phát hành, phê duyệt chi và quyền đăng là các quyền khác nhau; người lập không được tự duyệt."},"ghi_chu_truyen_thong_17112026":"Chuyên viên Truyền thông thuộc Tổ Truyền thông và Thương hiệu vì chủ nghiệp vụ PR, báo chí, khủng hoảng, ngoại tuyến và nội viện; tổ sản xuất chỉ tạo sản phẩm. Không đồng nhất nghiệm thu triển khai với quyền ký duyệt phát hành.","bo_quy_chuan_da_dong_bo":[{"ma":"Content","chu_tri":"Một Biên tập TCT được phân công, Biên tập hai nhóm phụ trách phần nhóm","kiem":"Chuyên viên trưởng và Biên tập khác; bác sĩ kiểm mệnh đề y khoa","phe_duyet":"Trưởng phòng Marketing","phan_biet":"Nội dung và văn phong"},{"ma":"QC-4","chu_tri":"Media TCT nhóm 1 làm đầu mối chung, Media TCT nhóm 2 phần riêng","kiem":"Media của nhóm khác người làm và Chuyên viên trưởng","phe_duyet":"Trưởng phòng Marketing","phan_biet":"Kỹ thuật video, không phải quyền duyệt phát hành"},{"ma":"Xuat-ban-nen-tang","chu_tri":"Một Chuyên viên Kênh số TCT đầu mối, chuyên viên hai nhóm cập nhật phần riêng","kiem":"Quản lý sản phẩm số tổng hợp; Chuyên viên trưởng kiểm","phe_duyet":"Trưởng phòng Marketing","phan_biet":"Cách xuất bản và quyền kênh, không thay phê duyệt nội dung"},{"ma":"DS-3","chu_tri":"Quản lý sản phẩm số giữ danh mục/phiên bản; Kênh số hai nhóm theo dõi nguồn","kiem":"Chuyên viên trưởng kiểm","phe_duyet":"Chuyên viên trưởng đối với cập nhật thường xuyên theo phân quyền; Trưởng phòng đối với thay đổi quy chuẩn nội bộ","phan_biet":"Chính sách của nền tảng, không tự ban hành quy định"}],"phan_loai_video_v1_v4":[{"ma":"V1","san_pham":"Tin nhanh tại cơ sở theo danh mục đã duyệt; ví dụ clip hiện trường, sự kiện trong ngày, không tạo lời/khẳng định mới. Không được dùng V1 để bỏ qua kiểm tra người bệnh, y khoa, giá hoặc chương trình.","kich_ban":"Mẫu tin nhanh và nguồn đã được xác nhận; không bắt buộc kịch bản video đầy đủ nếu đúng danh mục. Chuyển Biên tập khi vượt danh mục.","dung":"Media cơ sở quay, cắt cơ bản","duyet":"Chỉ đăng Facebook bệnh viện với quyền đăng hợp lệ và danh sách kiểm đạt; danh sách kiểm không phải giấy ủy quyền. Vượt danh mục thì theo cấp duyệt nội dung.","dang":"Facebook bệnh viện trong danh mục/ủy quyền; kênh khác do TCT"},{"ma":"V2","san_pham":"Video ngắn theo bộ mẫu dựng B7: V2-01 giới thiệu bác sĩ/khoa phòng; V2-02 cơ sở vật chất; V2-03 hướng dẫn thủ tục; V2-04 sự kiện; V2-05 dịch vụ; V2-06 giá/ưu đãi; V2-07 kiến thức sức khỏe chuẩn. V2 được xác định bởi cách sản xuất theo mẫu, không phải không có y khoa hoặc giá.","kich_ban":"Biên tập TCT đúng nhóm chủ trì viết mọi lời/thoại, lời dẫn, thông điệp và chữ trên hình; Media TCT đúng nhóm lập phân cảnh/shot-list. Nội dung y khoa, dịch vụ, giá, ưu đãi phải có nguồn và xác nhận chuyên môn/pháp lý theo phân loại rủi ro.","dung":"Media cơ sở chủ trì quay/dựng hoàn chỉnh theo B-7, Media TCT đúng nhóm kiểm kỹ thuật và hỗ trợ hậu kỳ vượt năng lực; không mặc định dựng lại.","duyet":"Người có thẩm quyền theo nội dung/rủi ro; không suy ra quyền duyệt từ nhãn V2. Chuyên môn phải xác nhận khi có yếu tố y khoa.","dang":"Kênh số TCT đăng đa kênh theo lịch và quyền; cơ sở chỉ được đăng Facebook bệnh viện với nội dung đúng danh mục/ủy quyền và bản đã duyệt."},{"ma":"V3","san_pham":"Video có câu chuyện, nhân vật/phỏng vấn, kịch bản riêng: V3-A01 chuyện nhân sự/đối tác/cộng đồng không có khẳng định y khoa; V3-B01 bác sĩ trao đổi chuyên môn; V3-B02 người bệnh/ca bệnh. Không tự đổi thành V2 chỉ vì ngắn.","kich_ban":"Biên tập TCT đúng nhóm viết lời, câu hỏi phỏng vấn, thông điệp, chữ trên hình; Media TCT lập phân cảnh. V3-B bắt buộc bác sĩ/đơn vị chuyên môn xác nhận nội dung; dữ liệu, hình ảnh người bệnh phải có căn cứ và giấy đồng ý hợp lệ.","dung":"Media cơ sở có thể quay/dựng V3 theo mẫu B-7 và kịch bản đã duyệt; Media TCT đúng nhóm kiểm kỹ thuật, trực tiếp hậu kỳ phần vượt mẫu/phức tạp.","duyet":"V3-A duyệt theo rủi ro nội dung thực tế; V3-B phải qua kiểm chứng y tế, pháp lý và cấp phát hành tương ứng. Loại V3 không tự quyết định thẩm quyền.","dang":"Kênh số/Truyền thông TCT quản lý việc đăng đa kênh; cơ sở không tự đăng ca bệnh, giá, kỹ thuật mới."},{"ma":"V4","san_pham":"Phim thương hiệu, TVC, phim chiến dịch, giới thiệu tổng thể hệ thống, phóng sự chuyên sâu hoặc nhiều bối cảnh (B7-V4-01); Media TCT chủ trì sản xuất.","kich_ban":"Biên tập TCT đúng nhóm viết toàn bộ kịch bản lời/thông điệp; Media TCT đúng nhóm lập phân cảnh, shot-list, kế hoạch ghi hình; Thiết kế cung cấp đồ họa.","dung":"Media TCT chủ trì; cơ sở cấp tư liệu","duyet":"Trưởng phòng hoặc cấp cao hơn theo thẩm quyền","dang":"Kênh số hoặc Truyền thông TCT"}],"luong_ca_benh_tieu_bieu":["Khoa/phòng/bác sĩ/Marketing cơ sở đề xuất hoặc Quản lý thương hiệu đặt yêu cầu","Marketing cơ sở kiểm hồ sơ nguồn và căn cứ đồng ý sử dụng thông tin/hình ảnh","Quản lý thương hiệu TCT điều phối sản phẩm theo nhóm, phân loại V/kênh","Biên tập TCT đúng nhóm viết bài/kịch bản lời ca bệnh","Media TCT viết phân cảnh; Media cơ sở quay/dựng V2/V3 theo mẫu; Media TCT dựng V4/kiểm bản dựng","Bác sĩ xác nhận y khoa; kiểm nội dung/Media/pháp lý độc lập","Quản lý thương hiệu nghiệm thu đầu ra","Trưởng phòng hoặc cấp cao hơn duyệt ca bệnh mới/nhạy cảm; Chuyên viên trưởng chỉ theo ủy quyền thường xuyên phù hợp","Kênh số/Truyền thông TCT công bố; cơ sở chỉ triển khai phiên bản được duyệt đúng quyền","Lưu URL/nhật ký; theo dõi, đối soát, tái duyệt khi thay đổi nội dung"],"phan_bo_tai_media_co_so_17112026":{"trang_thai":"Phương pháp kiểm soát và phân công đã cập nhật; giờ công Media từng cơ sở chưa đo, không xác nhận có giờ dư","nguong_ke_hoach_moi_nguoi_gio_thang":142,"media_tct_n1":{"nguoi":2,"gio_ke_hoach":284,"gio_du_toan":219,"chenh_ly_thuyet":65},"media_tct_n2":{"nguoi":1,"gio_ke_hoach":142,"gio_du_toan":131,"chenh_ly_thuyet":11},"media_tct_tong_chenh_ly_thuyet":76,"media_co_so":{"benh_vien_hien_tai":5,"nguoi":5,"tong_khung_ke_hoach":710,"gio_thuc_do":null,"gio_con_du":null,"ghi_chu":"710 giờ là tổng ngưỡng kế hoạch, không phải giờ dư; phải trừ giờ sản xuất và việc hiện trường thực đo theo từng người"},"danh_muc_do_gio":["Quay/chụp/thu âm hiện trường","Dựng V1","Dựng V2 theo mẫu B-7","Dựng V3 theo kịch bản/mẫu B-7","Chỉnh sửa ảnh","Chuẩn bị, di chuyển, hỗ trợ cùng nhóm","Sửa bản dựng","Lưu nguồn/tư liệu/bàn giao"],"quy_tac_chuyen_tuyen":"Ưu tiên Media cơ sở chủ trì V2 và V3 theo mẫu khi có năng lực và tải; TCT kiểm kỹ thuật, viết lời/phân cảnh theo K1–K6, chủ trì V4 hoặc hậu kỳ chuyên sâu; chuyển tuyến phải có lý do, nhật ký","quy_tac_hach_toan":"Giờ sản xuất của cơ sở chỉ hạch toán tại cơ sở, giờ kiểm/sửa của TCT chỉ tại TCT, không tính trùng và không tính giảm tải TCT hai lần","chu_ky":"Ghi giờ theo từng yêu cầu; đối soát tháng; đánh giá tải theo quý; cập nhật định biên theo ngưỡng của khung","chi_so_theo_doi":["Tỷ lệ V2/V3 dựng hoàn chỉnh tại cơ sở","Giờ sản xuất thực đo của Media cơ sở","Giờ kiểm/điều chỉnh thực đo của Media TCT","Tỷ lệ bản dựng được thông qua lần đầu","Số lượt TCT phải dựng lại","Tỷ lệ đúng hạn theo cơ sở và theo nhóm"]},"ghi_chu_phan_quyen_hai_nhom_ba_to":"2 nhóm thương hiệu là trục chịu trách nhiệm kế hoạch, thương hiệu, nghiệm thu và kết quả; 3 tổ chuyên môn là trục chuyên ngành và điều phối năng lực, không phải nhóm thương hiệu thứ 3. Một đầu việc có 1 người làm chính và 1 đầu mối chịu trách nhiệm; không phát sinh tuyến duyệt mới từ việc kiêm Tổ trưởng. Việc thay đổi sơ đồ/bỏ tổ trưởng phải xử lý thống nhất nhân sự trước khi cập nhật. Cơ cấu giai đoạn đầu gồm 02 Chuyên viên trưởng: CVT1 cho Nội dung – Sáng tạo, CVT2 cho Truyền thông – Thương hiệu và Tăng trưởng số; thông suốt cùng tuyến chuyên môn giữa TCT và cơ sở.","doi_ten_truyen_thong_co_so_17112026":{"ten_moi":"Chuyên viên Marketing cơ sở – truyền thông","ten_cu":"Tên cũ đã thay trên toàn bộ giao diện","pham_vi":"Chỉ đổi tên vị trí tại cơ sở; không đổi các chức danh Truyền thông/Quan hệ công chúng tại Tổng công ty và không tăng định biên","ma_noi_bo":"qhcs giữ nguyên là mã kỹ thuật để bảo toàn liên kết và dữ liệu lịch sử; giao diện chỉ dùng tên mới","co_so_hai_nguoi":"Trưởng nhóm Marketing cơ sở kiêm nhiệm phần việc của vị trí truyền thông cơ sở; không chuyển sang Media","ranh_gioi":"Hoạt động nội bộ ngoài Marketing thuộc Nhân lực, Công đoàn và đơn vị chủ quản; không tạo nhiệm vụ chỉ để lấp giờ"},"chuyen_viec_media_sang_truyen_thong_co_so_17112026":{"vi_tri_nhan":"Chuyên viên Marketing cơ sở – truyền thông; bệnh viện 02 người: Trưởng nhóm kiêm","vi_tri_ngung_chu_tri":"Chuyên viên Marketing cơ sở – media","cong_viec":["Vận hành phát thanh nội viện theo lịch","Kiểm tra và vận hành màn hình nội viện","Kiểm biển bảng/định kỳ, chụp ảnh hiện trạng, số đo","Chụp ảnh nghiệm thu trang trí/biển bảng và ảnh kiểm tuân thủ nhận diện"],"khong_chuyen":"Media cơ sở tiếp tục quay, chụp và dựng V1–V3 theo phạm vi đã thống nhất; không đồng nhất tư liệu sự kiện Marketing với ảnh nghiệp vụ nghiệm thu."},"ma_tran_dong_bo_mtvc_van_hanh_17112026":{"trang_thai":"Đối soát và xử lý các vùng mâu thuẫn V1–V4, xuất bản đa kênh, biển bảng/màn hình/phát thanh; chưa xác nhận hoàn toàn mọi quy trình, văn bản được duyệt trên thực tế","quy_tac":["Biên tập TCT đúng nhóm viết lời mọi V2–V4; Media TCT lập phân cảnh; Media cơ sở quay/dựng V1–V3 theo mẫu khi có giao việc.","V2/V3 là phân cấp sản xuất, rủi ro nội dung xét độc lập: K1–K6/chuyên môn, giá, ưu đãi, người bệnh, giấy đồng ý.","Cơ sở chỉ đăng V1 Facebook bệnh viện theo danh mục và quyền; các kênh còn lại do Kênh số TCT giữ lịch/phát hành; vận hành màn hình và phát thanh là chức năng Truyền thông cơ sở.","Truyền thông cơ sở chủ trì kiểm biển bảng, màn hình, phát thanh; cơ sở 02 người Trưởng nhóm kiêm; Media cơ sở không kiêm nghiệp vụ nghiệm thu.","Quyền kiểm kỹ thuật không đồng nhất quyền kiểm pháp lý, xác nhận y khoa, nghiệm thu đầu ra hoặc phê duyệt phát hành.","B7 có danh mục 12 kiểu V1–V4. Cấm phân loại theo có/không có nội dung y khoa, giá hay chương trình; nội dung phát sinh phải xác nhận nguồn riêng. B7 không thay thẩm quyền duyệt phát hành."],"nguon_doi_chieu":["MTCV 25 vị trí","Mảng việc 5,9,10,12–15","Ma trận TCT–chi nhánh 03–09,24","Quy trình tin-trong-ngay, phat-thanh-man-hinh, bien-bang-hong, lich-dang-thang","Lịch vận hành","Bộ video B-7, tiêu chuẩn QC-4","Ma trận phân cấp duyệt 14.16","B7 12 kiểu video; MTCV Biên tập/Media; QC-4, KPI, quyền kênh và phân cấp duyệt"],"quy_tac_chan":"Một sản phẩm chỉ phát hành khi đủ nguồn, xác nhận chuyên môn nếu có, kiểm độc lập, nghiệm thu và phê duyệt theo thẩm quyền; người sản xuất không tự phê duyệt cuối."},"danh_muc_video_b7_17112026":[{"ma":"V1","ten":"V1 – Tin nhanh","vi_du":"Ghi nhận sự kiện đang diễn ra, đoàn công tác, hình ảnh hoạt động trong ngày, clip thông báo hiện trường không có lời dẫn mới","dau_hieu":"Cảnh quay thực tế, cắt gọn, nhãn thông tin đã xác thực; không lồng khẳng định y khoa, giá, ưu đãi hoặc nội dung người bệnh chưa duyệt","phan_cong":"Media cơ sở quay, cắt; Trưởng nhóm cơ sở chịu trách nhiệm nguồn và quyền đăng danh mục đã ủy quyền","quy_tac_kiem_soat":"Vượt danh mục tin nhanh → chuyển V2/V3 hoặc tuyến duyệt nội dung; không dùng V1 để né duyệt"},{"ma":"V2-01","ten":"V2 – Giới thiệu bác sĩ, nhân sự, khoa/phòng","vi_du":"Video hồ sơ bác sĩ: tên, chức danh, lịch công tác, điểm nổi bật đã xác thực; giới thiệu khu khám, khoa/phòng","dau_hieu":"Các cảnh và thứ tự chuẩn theo mẫu; thông tin chức danh, chuyên môn, lịch làm việc phải có nguồn; không tự nói “giỏi nhất”, “tốt nhất”","phan_cong":"Biên tập TCT viết chữ/lời; Media TCT lập phân cảnh/mẫu; Media cơ sở chủ trì quay/dựng","quy_tac_kiem_soat":"Có khẳng định năng lực/hiệu quả y khoa → chuyên môn xác nhận; kịch bản chân dung có hành trình phỏng vấn riêng → V3"},{"ma":"V2-02","ten":"V2 – Cơ sở vật chất, tiện ích","vi_du":"Clip giới thiệu sảnh, khu chờ, phòng khám, thiết bị, tiện ích, hướng dẫn đường đi","dau_hieu":"Montage nhiều cảnh, tiêu đề/đồ họa đã duyệt; tránh suy diễn công dụng hoặc hiệu quả thiết bị","phan_cong":"Biên tập TCT viết lời/chữ; Media TCT chọn phân cảnh mẫu; Media cơ sở quay/dựng","quy_tac_kiem_soat":"Nêu tính năng chuyên môn kỹ thuật mới, lợi ích điều trị → thẩm định nội dung"},{"ma":"V2-03","ten":"V2 – Hướng dẫn thủ tục, hành trình khách hàng","vi_du":"Hướng dẫn đặt lịch, lấy số, làm hồ sơ, thanh toán, nhận kết quả, sử dụng ứng dụng","dau_hieu":"Theo bước rõ ràng, màn hình/hình ảnh đúng phiên bản, không tự đưa mức phí hoặc cam kết thời gian chưa xác minh","phan_cong":"Đầu mối nghiệp vụ xác nhận thao tác; Biên tập viết lời; Media cơ sở quay/dựng","quy_tac_kiem_soat":"Thay đổi luồng nghiệp vụ phải cập nhật mẫu và xác nhận lại trước phát hành"},{"ma":"V2-04","ten":"V2 – Hoạt động/sự kiện theo mẫu","vi_du":"Tổng hợp khám cộng đồng, tập huấn, sinh hoạt nội bộ, hoạt động thiện nguyện","dau_hieu":"Tường thuật sự kiện theo khuôn mở–thân–kết; không dàn dựng phát ngôn, không suy diễn kết quả chương trình","phan_cong":"Truyền thông cơ sở cấp nguồn sự kiện; Biên tập viết lời; Media cơ sở quay/dựng","quy_tac_kiem_soat":"Nếu xây dựng câu chuyện nhân vật, phỏng vấn nhiều đoạn → V3-A; có thông tin bệnh nhân → kiểm chứng y tế, hình ảnh"},{"ma":"V2-05","ten":"V2 – Thông tin dịch vụ","vi_du":"Giới thiệu quy trình khám gói dịch vụ, phạm vi phục vụ, đối tượng khách hàng được tiếp nhận","dau_hieu":"Thông tin dịch vụ lấy từ bộ nội dung đã được xác nhận; hình ảnh/hậu kỳ theo mẫu","phan_cong":"Biên tập TCT chủ trì nội dung; Media cơ sở quay/dựng; Media TCT kiểm kỹ thuật","quy_tac_kiem_soat":"Phải kiểm nguồn, điều kiện quảng cáo y tế và xác nhận chuyên môn khi có nội dung chuyên môn"},{"ma":"V2-06","ten":"V2 – Giá, chương trình, ưu đãi","vi_du":"Video thông báo bảng giá, chương trình khám, quà tặng, ưu đãi theo kế hoạch đã duyệt","dau_hieu":"Mẫu ngắn có thời hạn, điều kiện, đối tượng áp dụng và thông tin liên hệ rõ ràng","phan_cong":"Biên tập TCT soạn nội dung theo hồ sơ giá/chương trình; Media cơ sở dựng theo mẫu","quy_tac_kiem_soat":"Bắt buộc kiểm quyết định giá/chương trình, thời gian, điều kiện; cấp duyệt theo rủi ro và thẩm quyền; không mặc nhiên được đăng nhanh"},{"ma":"V2-07","ten":"V2 – Kiến thức sức khỏe theo kịch bản chuẩn","vi_du":"Bác sĩ trình bày 3 bước chuẩn bị khám, hướng dẫn chăm sóc sau khám đã được cơ sở chuyên môn xác nhận","dau_hieu":"Một chủ đề, lời ngắn theo kịch bản đã duyệt, cảnh minh họa chuẩn; không cam kết hiệu quả cá nhân","phan_cong":"Biên tập TCT viết lời, bác sĩ xác nhận, Media cơ sở quay/dựng theo mẫu","quy_tac_kiem_soat":"Có giải đáp ca bệnh, lập luận riêng, phỏng vấn nhiều tuyến hoặc phân tích chuyên sâu → V3-B"},{"ma":"V3-A01","ten":"V3-A – Câu chuyện không có nội dung y khoa","vi_du":"Chân dung nhân sự, câu chuyện phục vụ, văn hóa doanh nghiệp, chuyện đối tác, hành trình thiện nguyện","dau_hieu":"Có tuyến chuyện, nhân vật, tình tiết, câu hỏi phỏng vấn, nhiều phân đoạn; không đánh đồng với V2 chỉ vì video ngắn","phan_cong":"Biên tập TCT chủ trì lời/câu hỏi; Media TCT lập phân cảnh; cơ sở quay/dựng nếu thuộc mẫu, TCT hậu kỳ phức tạp","quy_tac_kiem_soat":"Kiểm quyền hình ảnh, nguồn lời nói, cam kết thương hiệu; nếu phát sinh thông tin bệnh nhân/y khoa → V3-B"},{"ma":"V3-B01","ten":"V3-B – Bác sĩ chia sẻ chuyên môn","vi_du":"Phỏng vấn bác sĩ về triệu chứng, phương pháp chẩn đoán, điều trị, phục hồi, phòng bệnh","dau_hieu":"Câu hỏi, luận điểm, tư liệu minh họa có kiểm chứng chuyên môn; không thay thế tư vấn cá nhân","phan_cong":"Biên tập TCT viết câu hỏi/lời; Media TCT phân cảnh; cơ sở ghi hình/dựng trong mẫu; TCT xử lý hậu kỳ chuyên sâu","quy_tac_kiem_soat":"Bác sĩ/đơn vị chuyên môn bắt buộc xác nhận; kiểm pháp lý quảng cáo, không khẳng định quá mức"},{"ma":"V3-B02","ten":"V3-B – Câu chuyện người bệnh/ca bệnh","vi_du":"Hành trình điều trị, trải nghiệm bệnh nhân, nội dung trước–sau hoặc mô tả kết quả điều trị","dau_hieu":"Kịch bản riêng, nhân vật thật, bằng chứng hồ sơ, phạm vi thông tin được phép sử dụng; không mặc nhiên được dùng hình ảnh người bệnh","phan_cong":"Biên tập TCT lập kịch bản; bác sĩ xác nhận; cơ sở phối hợp ghi hình; Media TCT kiểm kỹ thuật/hậu kỳ","quy_tac_kiem_soat":"Có văn bản đồng ý hợp lệ, căn cứ chuyên môn và rà soát pháp lý; không phỏng vấn/đăng khi chưa đủ hồ sơ"},{"ma":"V4-01","ten":"V4 – Chiến dịch, phim thương hiệu, phim giới thiệu hệ thống","vi_du":"TVC thương hiệu, phim ra mắt cơ sở, phóng sự tổng thể, chiến dịch lớn, chuỗi phim nhiều địa điểm","dau_hieu":"Ý tưởng và kịch bản riêng, quy mô nhiều bối cảnh, hậu kỳ hoặc quản lý sản xuất phức tạp","phan_cong":"Media TCT chủ trì toàn bộ sản xuất và điều phối; Media cơ sở hỗ trợ hiện trường, tư liệu","quy_tac_kiem_soat":"Duyệt kịch bản/chi phí/phát hành theo hạng mục và thẩm quyền; không áp mẫu V2 để giao V4 cho cơ sở"}],"nguyen_tac_kich_ban_contact_center_18112026":{"ket_luan":"Contact Center ngoài Marketing, chủ biên kịch bản nghiệp vụ; cơ sở cung cấp và xác nhận đầu vào; Marketing chỉ phối hợp thông điệp.","phan_biet":"Kịch bản tư vấn Contact Center khác kịch bản video, phát thanh, MC và kịch bản truyền thông do Marketing phụ trách.","khong_tang_dinh_bien_marketing":true,"tham_chieu":"Mục 17.4; mảng 17; ma trận TCT–chi nhánh số 21; biểu mẫu M-1"},"phan_dinh_quan_ly_hai_cvt_19112026":{"dinh_bien":{"tct":22,"benh_vien":14,"tong":36,"cvt":2,"to_chuyen_mon":3},"tuyen":{"CVT1":"Tổ Nội dung và Sáng tạo tại Tổng công ty; tuyến biên tập, thiết kế, Media tại các Tổ Marketing bệnh viện","CVT2":"Tổ Truyền thông và Thương hiệu cùng Tổ Tăng trưởng số TCT; tuyến truyền thông, OOH, phát thanh, màn hình, quảng cáo và kênh số tại các Tổ Marketing bệnh viện","co_so":"Tổ trưởng Marketing bệnh viện quản lý trực tiếp, điều phối người; hai Chuyên viên trưởng chỉ phân tuyến chuẩn chuyên môn","duyet":"Kiểm chuyên môn ≠ nghiệm thu mục tiêu ≠ phê duyệt phát hành ≠ phê duyệt ngân sách, chi phí; phân quyền bởi cấp có thẩm quyền","tth_clinic":"Thuộc Nhóm 1 TTH Group / TTH Healthcare / TTH Hospital / TTH Clinic, đầu mối kiêm nhiệm, không thuộc khối thương hiệu độc lập","truong_hop_phat_sinh":"Một mã việc, một đầu mối phối hợp; xung đột ngành dọc chuyển Trưởng phòng"},"trang_thai":"Phương án trình; thẩm quyền có hiệu lực sau quyết định, văn bản phân công tương ứng","lo_trinh":"Mốc tăng định biên tương lai của phương án 34 suất cũ cần tính lại theo tải WISN; không tự cộng thêm 02 người vào mọi mốc"}}</script><script>(function(){
+var root=document.getElementById('ops-root'),src=document.getElementById('csdl');if(!root||!src)return;
+var D=JSON.parse(src.textContent),M={};
+function put(list,kind){list.forEach(function(x){M[x.id]={ten:x.ten,kind:kind,x:x}})}
+put(D.chuc_danh,'cd');put(D.vi_tri,'vt');put(D.vai_tro,'vr');put(D.don_vi,'dv');
+var CODE={};(D.danh_muc_tai_lieu||[]).forEach(function(x){CODE[x.ma]='dm-'+x.ma});(D.quy_tac||[]).forEach(function(x){CODE[x.ma]='qtac-'+x.ma});if(D.ngoai_le_cheo_nhom){D.ngoai_le_cheo_nhom.truong_hop.concat(D.ngoai_le_cheo_nhom.rao_chan).forEach(function(x){CODE[x.ma]='qtac-'+x.ma})}CODE['KPI-QT']='qtac-KPI-QT';
+var TOG={lanhdao:'ld',th:'th',nd:'nd',ts:'ts',coso:'cs'};
+var LOAIG={lanh_dao:'ld',co_so:'bgd',contact_center:'cc',khac:'ngoai',ben_ngoai:'ngoai'};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function tx(s){s=esc(s);
+  s=s.replace(/(mục )(\d+(?:\.\d+)?)(?![\d.]*\d)/g,function(m,a,n){var id='m-'+n.replace('.','-');return document.getElementById(id)?a+'<a class="xref" href="#'+id+'" data-sec="'+id+'">'+n+'</a>':m});
+  s=s.replace(/(^|[^\w\-])((?:BM|SO|HS|DM|DS|QC|M|B|RC|CN)-\d+|R\d\d|KPI-QT)(?![\w\-])/g,function(m0,p,c){return CODE[c]?p+'<a class="xref" href="#'+CODE[c]+'">'+c+'</a>':m0});
+  return s.replace(/Đề xuất – chờ duyệt/g,'<span class="pend">Đề xuất – chờ duyệt</span>')}
+function ref(r){var p=String(r).split('|'),e=M[p[0]];if(!e)return{label:r,g:'ngoai'};
+  var g=e.kind==='dv'?(e.x.loai==='marketing'?(e.x.id==='mkt-coso'?'cs':'mkt'):LOAIG[e.x.loai]):TOG[e.x.to]||'ngoai';
+  return{label:e.ten+(p[1]?' ('+p[1]+')':''),g:g}}
+function chip(r,w){var o=ref(r);return '<span class="ochip g-'+o.g+(w?' with':'')+'">'+esc(o.label)+'</span>'}
+function chips(a,w){return (a||[]).map(function(r){return chip(r,w)}).join('')}
+function ul(a){return '<ul class="ops-ul">'+a.map(function(x){return '<li>'+tx(x)+'</li>'}).join('')+'</ul>'}
+var DX='<span class="pend">Đề xuất – chờ duyệt</span>';
+function qtl(s){return tx(s).replace(/QT\.(\d+)(?![\d.])/g,function(m,n){var q=D.quy_trinh[+n-1];return q?'<a class="qtl" href="#vh-qt-'+q.id+'" data-go="vh-qt-'+q.id+'">QT.'+n+'</a>':m})}
+function sec(id,num,title,body,sub){var h=sub?'h3':'h2';return '<section class="doc-sec ops-sec'+(sub?' sub':'')+'" id="'+id+'" data-title="'+esc(title)+'"><'+h+' class="sec-h"><span class="sec-num">'+num+'</span>'+esc(title)+'</'+h+'>'+body+'</section>'}
+var legend='<div class="ops-legend">'+[['ld','Lãnh đạo phòng, Ban Tổng Giám đốc'],['th','Tổ Truyền thông và Thương hiệu'],['nd','Tổ Nội dung và Sáng tạo'],['ts','Tổ Tăng trưởng số'],['cs','Marketing cơ sở'],['cc','Contact Center'],['bgd','Cơ sở: Ban Giám đốc, khoa phòng, bộ phận'],['ngoai','Đơn vị khác']].map(function(x){return '<span class="ochip g-'+x[0]+'">'+x[1]+'</span>'}).join('')+'</div>';
+var KP={};D.kpi.forEach(function(k){KP[k.id]=k.ten});
+var NH={};D.nhom_hoat_dong.forEach(function(n){NH[n.id]=n.ten});
+var h='';
+
+/* VH.1 Hành trình khách hàng */
+h+=sec('vh-hanh-trinh','VH.1','Hành trình khách hàng: ai phụ trách khâu nào','<p class="lede">Marketing đưa khách đến và giữ quan hệ sau khám; Contact Center tiếp nhận từ xa; cơ sở tiếp đón, khám, giải quyết phản ánh.</p>'+legend+
+ '<ol class="ops-journey">'+D.hanh_trinh_khach_hang.map(function(s,i){var g=s.chiu_trach_nhiem.length?ref(s.chiu_trach_nhiem[0]).g:'ngoai';
+  return '<li class="ops-jn g-b-'+g+'"><div class="ops-jh"><span class="ops-n">'+(i+1)+'</span><b>'+esc(s.ten)+'</b>'+(s.de_xuat?DX:'')+'</div>'+
+  '<dl><dt>Chịu trách nhiệm</dt><dd>'+(s.chiu_trach_nhiem.length?chips(s.chiu_trach_nhiem):'<span class="ochip g-ngoai">'+esc(s.chiu_trach_nhiem_ghi_chu)+'</span>')+'</dd><dt>Marketing làm</dt><dd>'+tx(s.marketing_lam)+'</dd><dt>Đơn vị khác làm</dt><dd>'+tx(s.don_vi_khac_lam)+'</dd><dt>Căn cứ</dt><dd class="ops-mute">'+tx(s.can_cu)+'</dd></dl></li>'}).join('')+'</ol>');
+
+/* VH.2 Phạm vi */
+var own=D.mang_viec.filter(function(m){return m.pham_vi==='marketing'}),part=D.mang_viec.filter(function(m){return m.pham_vi==='mot_phan'});
+function li3(n,a,b){return '<li><span class="ops-mn">'+n+'</span><span>'+tx(a)+'<small>'+tx(b)+'</small></span></li>'}
+h+=sec('vh-pham-vi','VH.2','Phạm vi công việc Marketing','<p class="lede">Đọc từ bảng phân định 04 cột (mục 31) và phân định với đơn vị ngoài (mục 17, mục 18). Số là mảng ở mục 31.</p><div class="ops-scope">'+
+ '<div class="ops-col c-mkt"><h3>Marketing chịu trách nhiệm kết quả <em>'+own.length+' mảng</em></h3><ul class="ops-sl">'+own.map(function(m){return li3(m.so,m.ten,'Chịu trách nhiệm kết quả: '+m.chiu_trach_nhiem)}).join('')+'</ul></div>'+
+ '<div class="ops-col c-cc"><h3>Marketing làm một phần, đơn vị khác chịu kết quả <em>'+(part.length+D.mang_viec_bo_sung.length)+' việc</em></h3><ul class="ops-sl">'+part.map(function(m){return li3(m.so,m.ten,'Marketing: '+m.phan_marketing+'. Chịu kết quả: '+m.chiu_trach_nhiem)}).join('')+D.mang_viec_bo_sung.map(function(m){return li3('–',m.ten,'Marketing: '+m.phan_marketing+'. Chịu kết quả: '+m.chiu_trach_nhiem+' ('+m.can_cu+')')}).join('')+'</ul></div>'+
+ '<div class="ops-col c-ng"><h3>Không thuộc Marketing <em>'+D.ngoai_pham_vi.length+' việc</em></h3><ul class="ops-sl">'+D.ngoai_pham_vi.map(function(n,i){return '<li><span class="ops-mn">'+(i+1)+'</span><span>'+tx(n.viec)+'<small>'+n.don_vi.map(function(r){return esc(ref(r).label)}).join('; ')+' · '+tx(n.ghi_chu)+'</small></span></li>'}).join('')+'</ul></div></div>');
+
+/* VH.3 Contact Center */
+var C=D.contact_center;
+h+=sec('vh-contact-center','VH.3','Contact Center','<p class="lede">'+tx(C.gioi_thieu)+'</p>'+
+ '<div class="ops-ccflow"><div class="ops-cc"><h4>Phòng Marketing giao</h4>'+ul(C.marketing_giao)+'</div><div class="ops-arr" aria-hidden="true">→</div><div class="ops-cc mid"><h4>Contact Center làm</h4>'+ul(C.contact_center_lam)+'</div><div class="ops-arr" aria-hidden="true">→</div><div class="ops-cc"><h4>Chuyển tiếp</h4>'+ul(C.chuyen_tiep)+'</div></div>'+
+ '<div class="ops-g2"><div class="ops-box"><h4>Contact Center không làm</h4>'+ul(C.khong_lam)+'</div>'+
+ '<div class="ops-box"><h4>KPI</h4><div class="tbl"><table class="t"><thead><tr><th>KPI</th><th>Chịu trách nhiệm</th></tr></thead><tbody>'+C.kpi.map(function(k){return '<tr><td>'+esc(k.kpi)+' '+esc((KP[k.kpi]||'').toLowerCase())+'</td><td>'+tx(k.chiu_trach_nhiem)+'</td></tr>'}).join('')+'</tbody></table></div><p class="ops-mute">Căn cứ: '+tx(C.kpi_can_cu)+'</p></div>'+
+ '<div class="ops-box"><h4>Khi chưa có Contact Center '+(C.khi_chua_co_de_xuat?DX:'')+'</h4>'+ul(C.khi_chua_co)+'<p class="ops-mute">Căn cứ: '+tx(C.khi_chua_co_can_cu)+'</p></div>'+
+ '<div class="ops-box"><h4>CRM '+(C.crm_de_xuat?DX:'')+'</h4>'+ul(C.crm)+'<p class="ops-mute">Căn cứ: '+tx(C.crm_can_cu)+'</p></div></div>'+
+ '<div class="ops-box warn"><h4>Còn thiếu để Contact Center vận hành</h4>'+ul(C.con_thieu)+'</div>');
+
+/* VH.4 Mối liên hệ */
+h+=sec('vh-lien-he','VH.4','Mối liên hệ với từng đơn vị','<p class="lede">Mỗi thẻ: Phòng Marketing gửi gì, đơn vị đó phụ trách gì, Phòng Marketing nhận lại gì.</p><div class="ops-units">'+D.lien_he_don_vi.map(function(u){var g=ref(u.don_vi[0]).g;
+ return '<div class="ops-unit g-b-'+g+'"><h4>'+u.don_vi.map(function(r){return esc(ref(r).label)}).join('; ')+'</h4><dl><dt>Marketing gửi</dt><dd>'+tx(u.marketing_gui)+'</dd><dt>Đơn vị phụ trách</dt><dd>'+tx(u.don_vi_phu_trach)+'</dd><dt>Marketing nhận</dt><dd>'+tx(u.marketing_nhan)+'</dd><dt>Căn cứ</dt><dd class="ops-mute">'+tx(u.can_cu)+'</dd></dl></div>'}).join('')+'</div>');
+
+/* VH.5 Quy trình mẫu */
+h+=sec('vh-quy-trinh','VH.5','Quy trình mẫu','<p class="lede">'+D.quy_trinh.length+' tình huống, mỗi bước ghi người thực hiện (nhãn tô nền), người phối hợp (nhãn viền), thời hạn, nơi ghi nhận, căn cứ. Mã nhóm Hoạt động chỉ để tham chiếu.</p>'+legend+
+ (D.tinh_huong_thuong_gap&&D.tinh_huong_thuong_gap.length?'<h3 class="ops-th-h">Tình huống thường gặp → quy trình mẫu ('+D.tinh_huong_thuong_gap.length+' tình huống)</h3><div class="tbl"><table class="t wide ops-th"><thead><tr><th>Tình huống</th><th>Quy trình mẫu</th></tr></thead><tbody>'+D.tinh_huong_thuong_gap.map(function(r){return '<tr><td>'+tx(r.tinh_huong)+'</td><td>'+qtl(r.quy_trinh)+'</td></tr>'}).join('')+'</tbody></table></div><h3 class="ops-th-h">Danh mục quy trình mẫu</h3>':'')+
+ '<ol class="ops-toc">'+D.quy_trinh.map(function(q,i){return '<li><a href="#vh-qt-'+q.id+'" data-go="vh-qt-'+q.id+'">'+esc(q.ten)+'</a></li>'}).join('')+'</ol>');
+D.quy_trinh.forEach(function(q,i){
+ var steps=q.buoc.map(function(b){return '<li class="ops-step"><span class="ops-n">'+b.thu_tu+'</span><div class="ops-sb"><div class="ops-who">'+chips(b.thuc_hien)+chips(b.phoi_hop,1)+(b.de_xuat?DX:'')+'</div><p>'+tx(b.noi_dung)+'</p><div class="ops-meta"><span><b>Thời hạn:</b> '+tx(b.thoi_han)+'</span><span><b>Ghi nhận:</b> '+tx(b.ghi_nhan)+'</span><span><b>Căn cứ:</b> '+tx(b.can_cu)+'</span>'+(b.chua_co_phan_mem?'<span><b>Chưa có phần mềm:</b> '+tx(b.chua_co_phan_mem)+'</span>':'')+'</div></div></li>'}).join('');
+ var body='<div class="ops-case"><b>Ví dụ</b>'+tx(q.vi_du)+'<div class="ops-nh">'+q.nhom_hoat_dong.map(function(n){return '<span>'+n+' '+esc(NH[n]||'')+'</span>'}).join('')+'</div></div>'+
+  '<div class="ops-panel"><ol class="ops-steps">'+steps+'</ol><aside><div class="ops-box"><h4>Điểm kiểm soát</h4>'+ul(q.kiem_soat)+'</div><div class="ops-box"><h4>Khi có vướng mắc</h4>'+q.ngoai_le.map(function(n){return '<div class="ops-br"><b>'+tx(n.tinh_huong)+'</b>'+tx(n.cach_lam)+'</div>'}).join('')+'</div></aside></div>';
+ h+=sec('vh-qt-'+q.id,'QT.'+(i+1),q.ten,body,1);
+});
+
+/* VH.6 Lịch */
+var fr=[];D.lich_van_hanh.forEach(function(l){if(fr.indexOf(l.tan_suat)<0)fr.push(l.tan_suat)});
+h+=sec('vh-lich','VH.6','Lịch vận hành','<p class="lede">Việc định kỳ lấy từ mục 30 (một nguồn); mỗi việc ghi người phụ trách, căn cứ.</p><div class="ops-cal">'+fr.map(function(f){return '<div class="ops-box"><h4>'+esc(f)+'</h4><ul class="ops-ul">'+D.lich_van_hanh.filter(function(l){return l.tan_suat===f}).map(function(l){return '<li>'+tx(l.viec)+'<small>'+tx(l.phu_trach)+(l.can_cu?' · Căn cứ: '+tx(l.can_cu):'')+'</small></li>'}).join('')+'</ul></div>'}).join('')+'</div>');
+
+/* VH.7 Cơ sở dữ liệu */
+var T=[['to','Tổ','Cơ cấu tổ'],['chuc_danh','Chức danh','Mô tả công việc lớp chức danh'],['vi_tri','Vị trí','Danh mục vị trí, người thay, phân quyền'],['vai_tro','Vai trò kiêm nhiệm','Tổ trưởng, người giữ tạm vai trò'],['don_vi','Đơn vị','Đơn vị trong và ngoài Phòng Marketing'],['muc_tieu_chien_luoc','Mục tiêu chiến lược','06 mục tiêu chiến lược'],['kpi','KPI','Thư viện KPI'],['nhom_hoat_dong','Nhóm Hoạt động','11 nhóm Hoạt động'],['mang_viec','Mảng việc','Bảng phân định 04 cột (mục 31)'],['ngoai_pham_vi','Việc không thuộc Marketing','Mục 17, mục 18'],['hanh_trinh_khach_hang','Hành trình khách hàng','Khâu, người chịu trách nhiệm'],['lien_he_don_vi','Mối liên hệ đơn vị','Đầu vào, đầu ra với từng đơn vị'],['quy_trinh','Quy trình mẫu','Bước, người thực hiện, thời hạn, căn cứ'],['lich_van_hanh','Lịch vận hành','Việc định kỳ, người phụ trách'],['kpi_van_hanh','KPI vận hành','Công thức KPI vận hành theo vị trí (mục 12.5)'],['danh_muc_tai_lieu','Danh mục tài liệu','Biểu mẫu, mẫu, bộ, quy chuẩn, danh sách kiểm tra, danh mục, sổ, hồ sơ theo vị trí; trường dữ liệu (mục 9.4)'],['danh_muc_van_ban','Danh mục quy trình, quy định','Mã, chủ trì, trạng thái, điều khoản, hai chế độ (mục 27)'],['quy_tac','Mã quy tắc','Quy tắc, mục gốc, phần mềm (mục 14.15)'],['ngoai_le_cheo_nhom','Ngoại lệ chéo nhóm','04 trường hợp, 08 rào chắn (mục 15.4)'],['lo_trinh_dinh_bien','Lộ trình định biên theo nhóm','Các bước đến 10 bệnh viện (mục 21)'],['thuong_hieu','Thương hiệu','Thương hiệu, nhóm (mục 3)'],['van_hanh_hai_che_do','Vận hành hai chế độ','Có phần mềm – chưa có phần mềm (mục 14.12)'],['kpi_quy_tac_chung','Quy tắc KPI chung','KPI chưa đo được (mục 12.5)'],['kpi_to_truong','KPI vai trò Tổ trưởng','02 chỉ tiêu (mục 12.5)'],['phan_mem_dac_ta','Đặc tả phần mềm','Danh mục, quy tắc chặn, cảnh báo, báo cáo (mục 12.4)']];
+h+=sec('vh-csdl','VH.7','Cơ sở dữ liệu dùng chung','<p class="lede">Phần Luồng vận hành đọc từ cơ sở dữ liệu dùng chung (tệp csdl-marketing-tth-2-nhom.json, cập nhật ngày '+esc(D.ngay_cap_nhat)+'). Vị trí, chức danh, KPI, nhóm Hoạt động, mảng việc trong tệp lấy từ cùng nguồn với phần Mô tả công việc và mục 31. Người thực hiện, người phối hợp ghi bằng mã vị trí, chức danh, vai trò, đơn vị; đổi tên ở một nơi, mọi nơi cập nhật theo. Phần mềm Quản trị Marketing nhập cùng tệp này sau khi khung được duyệt (mục 12.4). '+DX+'</p>'+
+ '<div class="tbl"><table class="t"><thead><tr><th>Bảng</th><th>Nội dung</th><th>Số bản ghi</th><th>Mã bảng</th></tr></thead><tbody>'+T.map(function(t){return '<tr><td>'+t[1]+'</td><td>'+t[2]+'</td><td>'+(function(v){if(!v)return 0;if(Array.isArray(v))return v.length;if(v.buoc)return v.buoc.length;if(v.truong_hop)return v.truong_hop.length+v.rao_chan.length;if(v.chuc_nang)return v.chuc_nang.length;if(v.quy_tac_chan)return v.quy_tac_chan.length+v.canh_bao.length;return 1})(D[t[0]])+'</td><td><code>'+t[0]+'</code></td></tr>'}).join('')+'</tbody></table></div>');
+
+root.innerHTML=h;
+
+/* === Bổ sung 14/11/2026: danh mục, quy tắc, ngoại lệ, lộ trình, hai chế độ, đặc tả phần mềm === */
+function lab(a){if(!Array.isArray(a))return esc(String(a||''));return a.map(function(r){return esc(ref(r).label)}).join('; ')}
+function cdl(a){return (a||[]).map(function(r){return chip(r)}).join('')}
+var PV={chung:'Chung (vị trí trung lập giữ)',theo_nhom:'Theo nhóm (người của nhóm giữ bản của nhóm)',nhom_1:'Nhóm 1',nhom_2:'Nhóm 2'};
+function tbl(head,rows,cls){return '<div class="tbl"><table class="t'+(cls?' '+cls:'')+'"><thead><tr>'+head.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>'}
+var R={};
+R.danh_muc_tai_lieu=function(){var L=D.danh_muc_tai_lieu||[];var by={};L.forEach(function(x){(by[x.loai]=by[x.loai]||[]).push(x)});
+ var h='<p class="lede">'+L.length+' mục. Mỗi mục có đúng 01 người nắm giữ; người duyệt khác người nắm giữ; mục theo nhóm do người của nhóm giữ; mục dùng chung do vị trí trung lập giữ. Mã trường là tên trường của phần mềm và tên cột của bảng tính khi chưa có phần mềm. '+DX+'</p>';
+ Object.keys(by).forEach(function(k){h+='<h3 class="ops-th-h">'+esc(k)+' ('+by[k].length+')</h3>'+tbl(['Mã','Tên, nội dung','Xây dựng','Nắm giữ','Cập nhật, lập','Duyệt','Dùng','Nơi lưu: có phần mềm / chưa có phần mềm','Rà soát','Phạm vi','Căn cứ'],by[k].map(function(x){
+  var f=x.truong&&x.truong.length?'<details><summary>Trường dữ liệu ('+x.truong.length+'; '+(x.truong_nguon?'dự thảo mới':'sơ bộ nguồn')+')</summary><p><b>'+tx(x.tinh_trang_dac_ta)+'</b></p>'+tbl(['Mã trường','Tên','Loại','Bắt buộc','Nguồn','Người nhập','Người xem'],x.truong.map(function(t){return '<tr><td><code>'+esc(t.ma_truong)+'</code></td><td>'+tx(t.ten)+'</td><td>'+tx(t.loai_du_lieu||'Chưa định kiểu')+'</td><td>'+(t.bat_buoc?'Có':'Không')+'</td><td>'+tx(t.nguon)+'</td><td>'+tx(t.nguoi_nhap)+'</td><td>'+tx(t.nguoi_xem)+'</td></tr>'}))+'</details>':'';
+  return '<tr id="dm-'+esc(x.ma)+'"><td><b>'+esc(x.ma)+'</b></td><td><b>'+tx(x.ten)+'</b><br><small>'+tx(x.noi_dung)+'</small>'+f+'</td><td>'+lab(x.xay_dung)+'</td><td>'+esc(ref(x.nam_giu).label)+(x.ban_theo_nhom?'<br><small>Bản của từng nhóm do người của nhóm lập</small>':'')+'</td><td>'+lab(x.cap_nhat)+'</td><td>'+lab(x.duyet)+'</td><td>'+lab(x.dung)+'</td><td>'+tx(x.noi_luu_co_pm)+' / '+tx(x.noi_luu_chua_pm)+'</td><td>'+tx(x.chu_ky_ra_soat)+'</td><td>'+esc(PV[x.pham_vi]||x.pham_vi)+'</td><td>'+qtl(x.can_cu)+(x.so_cu?' <small>(mục 9.4 cũ, số '+x.so_cu+')</small>':'')+'</td></tr>'}),'wide')});
+ return h};
+R.ma_tran_tai_lieu=function(){var L=D.danh_muc_tai_lieu||[];var keys=[];function add(k){if(keys.indexOf(k)<0)keys.push(k)}
+ L.forEach(function(x){(Array.isArray(x.xay_dung)?x.xay_dung:[]).concat([x.nam_giu],Array.isArray(x.cap_nhat)?x.cap_nhat:[],Array.isArray(x.duyet)?x.duyet:[]).forEach(function(k){if(M[k])add(k)})});
+ return '<p class="lede">Ma trận vị trí × tài liệu (xây dựng – nắm giữ – duyệt – dùng), dựng tự động từ danh mục; mã chức danh chung (ví dụ Chuyên viên thiết kế) đọc là người của từng nhóm cho bản của nhóm. '+DX+'</p>'+tbl(['Vị trí, đơn vị','Xây dựng','Nắm giữ','Cập nhật, lập','Duyệt','Dùng'],keys.map(function(k){function f(fn){return L.filter(fn).map(function(x){return '<a class="xref" href="#dm-'+x.ma+'">'+x.ma+'</a>'}).join(', ')}
+  return '<tr><td>'+chip(k)+'</td><td>'+f(function(x){return (x.xay_dung||[]).indexOf(k)>=0})+'</td><td>'+f(function(x){return x.nam_giu===k})+'</td><td>'+f(function(x){return (x.cap_nhat||[]).indexOf(k)>=0})+'</td><td>'+f(function(x){return (x.duyet||[]).indexOf(k)>=0})+'</td><td>'+f(function(x){return (x.dung||[]).indexOf(k)>=0})+'</td></tr>'}),'wide')};
+R.danh_muc_van_ban=function(){var L=D.danh_muc_van_ban||[];var qd=L.filter(function(x){return x.loai!=='Quy trình'}),qt=L.filter(function(x){return x.loai==='Quy trình'});
+ return '<p class="lede">'+qd.length+' quy định, văn bản; '+qt.length+' quy trình mẫu (VH.5). Phòng Quản lý chất lượng cấp mã khi ban hành. '+DX+'</p><h3 class="ops-th-h">Quy định, văn bản</h3>'+tbl(['Mã','Tên','Trạng thái','Chủ trì','Người duyệt','Điều khoản phải có','Căn cứ pháp lý','Văn bản bị thay, sửa','Giai đoạn'],qd.map(function(x){return '<tr><td><b>'+esc(x.ma)+'</b></td><td>'+tx(x.ten)+'</td><td>'+esc(x.trang_thai)+'</td><td>'+esc(ref(x.chu_tri).label)+'</td><td>'+tx(x.nguoi_duyet)+'</td><td>'+ul(x.dieu_khoan||[])+'</td><td>'+tx(x.can_cu_phap_ly)+'</td><td>'+tx(Array.isArray(x.van_ban_lien_quan)?x.van_ban_lien_quan.join('; '):x.van_ban_lien_quan)+'</td><td>'+tx(x.giai_doan)+'</td></tr>'}),'wide')+
+ '<h3 class="ops-th-h">Quy trình</h3>'+tbl(['Mã','Tên','Chủ quy trình','Phạm vi','Văn bản hiện hành liên quan','Hai chế độ','Giai đoạn','Người duyệt'],qt.map(function(x){return '<tr><td>'+qtl(x.ma)+'</td><td>'+tx(x.ten)+'</td><td>'+esc(ref(x.chu_tri).label)+'</td><td>'+esc(x.pham_vi)+'</td><td>'+esc((x.van_ban_lien_quan||[]).join('; ')||'–')+'</td><td>'+esc(x.hai_che_do)+'</td><td>'+tx(x.giai_doan)+'</td><td>'+tx(x.nguoi_duyet)+'</td></tr>'}),'wide')};
+R.quy_tac=function(){return '<p class="lede">Bảng dẫn chiếu: mỗi quy tắc ghi đầy đủ ở mục gốc; quy trình, biểu mẫu, chức năng phần mềm dẫn chiếu mã quy tắc. '+DX+'</p>'+tbl(['Mã','Quy tắc','Nội dung','Mục gốc','Phần mềm','Chưa có phần mềm'],(D.quy_tac||[]).map(function(x){return '<tr id="qtac-'+x.ma+'"><td><b>'+x.ma+'</b></td><td>'+tx(x.ten)+'</td><td>'+tx(x.noi_dung)+'</td><td>'+qtl(x.muc_goc)+'</td><td>'+tx(x.phan_mem)+'</td><td>'+tx(x.chua_co_phan_mem)+'</td></tr>'}),'wide')};
+R.ngoai_le_cheo_nhom=function(){var N=D.ngoai_le_cheo_nhom;if(!N)return '';
+ return '<div class="ops-box"><h4>Nguyên tắc</h4><p>'+tx(N.nguyen_tac)+'</p><h4>Phạm vi ngoại lệ</h4><p>'+tx(N.pham_vi)+'</p></div>'+tbl(['Mã','Trường hợp','Cách làm','Thời hạn'],N.truong_hop.map(function(x){return '<tr id="qtac-'+x.ma+'"><td><b>'+x.ma+'</b></td><td>'+tx(x.ten)+'</td><td>'+tx(x.noi_dung)+'</td><td>'+tx(x.thoi_han)+'</td></tr>'}))+'<p>'+tx(N.chung)+'</p><h3 class="ops-th-h">08 rào chắn</h3>'+tbl(['Mã','Rào chắn','Nội dung','Có phần mềm','Chưa có phần mềm'],N.rao_chan.map(function(x){return '<tr id="qtac-'+x.ma+'"><td><b>'+x.ma+'</b></td><td>'+tx(x.ten)+'</td><td>'+tx(x.noi_dung)+'</td><td>'+tx(x.co_pm)+'</td><td>'+tx(x.chua_pm)+'</td></tr>'}),'wide')+'<p><small>'+tx(N.rui_ro)+'</small></p>'};
+R.lo_trinh_dinh_bien=function(){var L=D.lo_trinh_dinh_bien;if(!L)return '';return '<p class="lede">'+tx(L.can_cu)+' '+DX+'</p>'+tbl(['Bước','Người thêm tại Tổng công ty','Tổng công ty','Marketing cơ sở','Toàn hệ thống'],L.buoc.map(function(x){return '<tr><td>'+tx(x.buoc)+'</td><td>'+tx(x.them)+'</td><td>'+x.tct+'</td><td>'+x.co_so+'</td><td><b>'+x.tong+'</b></td></tr>'}))+ul(L.doc_ket_qua)};
+R.van_hanh_hai_che_do=function(){var V=D.van_hanh_hai_che_do;if(!V)return '';return '<p class="lede">'+tx(V.can_cu)+' '+DX+'</p><div class="ops-box"><h4>Nguyên tắc</h4>'+ul(V.nguyen_tac)+'</div>'+tbl(['#','Chức năng','Có phần mềm','Chưa có phần mềm: cách làm thay, người làm','Giờ thêm/tháng','Rủi ro khi chưa có','Phần'],V.chuc_nang.map(function(x){return '<tr><td>'+x.so+'</td><td>'+tx(x.chuc_nang)+'</td><td>'+tx(x.co_pm)+'</td><td>'+tx(x.chua_pm)+'</td><td>'+tx(x.gio_them)+'</td><td>'+tx(x.rui_ro)+'</td><td>'+x.phan+'</td></tr>'}),'wide')+'<p><b>Cộng:</b> '+tx(V.cong)+'</p><div class="ops-box"><h4>Triển khai theo 04 phần</h4>'+ul(V.phan_trien_khai)+'<h4>Lập luận trình Tổng Giám đốc</h4>'+ul(V.lap_luan)+'</div>'};
+R.phan_mem_dac_ta=function(){var P=D.phan_mem_dac_ta;if(!P)return '';return '<p class="lede">'+tx(P.ghi_chu)+' '+DX+'</p>'+tbl(['Danh mục dùng chung','Bảng trong cơ sở dữ liệu'],P.danh_muc_dung_chung.map(function(x){return '<tr><td>'+tx(x[0])+'</td><td><code>'+esc(x[1])+'</code></td></tr>'}))+'<div class="ops-box"><h4>Quy tắc chặn</h4>'+ul(P.quy_tac_chan)+'<h4>Cảnh báo</h4>'+ul(P.canh_bao)+'<h4>Báo cáo</h4>'+ul(P.bao_cao)+'</div>'};
+R.thuong_hieu=function(){return tbl(['Thương hiệu','Nhóm','Phạm vi'],(D.thuong_hieu||[]).map(function(x){return '<tr><td>'+esc(x.ten)+'</td><td>'+(x.nhom==='nhom_1'?'Nhóm 1':'Nhóm 2')+'</td><td>'+tx(x.ghi_chu)+'</td></tr>'}))};
+var kpiQtRendered=0;R.kpi_quy_tac_chung=function(){var K=D.kpi_quy_tac_chung;if(!K)return '';return '<div class="ops-box"'+(++kpiQtRendered===1?' id="qtac-KPI-QT"':'')+'><h4>'+esc(K.ma)+' – '+tx(K.ten)+'</h4><p>'+tx(K.noi_dung)+'</p><p><small>'+tx(K.ap_dung)+'</small></p><h4>KPI vai trò Tổ trưởng (02 chỉ tiêu, 20% phần cá nhân)</h4>'+tbl(['Chỉ tiêu','Công thức','Tỷ trọng','Kỳ'],(D.kpi_to_truong||[]).map(function(x){return '<tr><td>'+tx(x.ten)+'</td><td>'+tx(x.cong_thuc)+'</td><td>'+esc(x.ty_trong)+'</td><td>'+esc(x.ky_cham)+'</td></tr>'}))+'</div>'};
+
+/* --- mô tả vị trí: dựng từ cơ sở dữ liệu --- */
+function A_(v){return v==null?[]:(Array.isArray(v)?v:[v])}
+function VT(v){return (D.vi_tri||[]).filter(function(x){return x.id===v})[0]}
+function cd(r){return String(r).split('|')[0]}
+function mine(v,r){var x=VT(v);var c=cd(r);return c===v||(x&&c===x.chuc_danh)}
+R.vt_thay_chinh=function(v){var x=VT(v);return x?cdl(A_(x.thay_chinh)):''};
+R.vt_du_phong=function(v){var x=VT(v);return x?cdl(A_(x.du_phong)):''};
+R.vt_la_thay_cua=function(v){return cdl((D.vi_tri||[]).filter(function(y){return A_(y.thay_chinh).some(function(r){return cd(r)===v})}).map(function(y){var n=A_(y.thay_chinh).filter(function(r){return cd(r)===v})[0].split('|')[1];return y.id+(n?'|'+n:'')}))||'–'};
+R.vt_la_du_phong_cua=function(v){return cdl((D.vi_tri||[]).filter(function(y){return A_(y.du_phong).some(function(r){return cd(r)===v})}).map(function(y){return y.id}))||'–'};
+R.vt_to_truong=function(v){var r=(D.vai_tro||[]).filter(function(t){return t.vi_tri===v});var h=r.map(function(t){return '<b>'+esc(t.ten)+'</b> ('+esc(t.gio)+'): '+tx(t.viec)+'. Vắng: '+esc(t.dieu_kien_giu_tam ? ('một '+ref(t.giu_tam).label+' khác người giữ Tổ trưởng') : ref(t.giu_tam).label)+' giữ tạm khi có văn bản chỉ định/ủy quyền, trong phạm vi đã được phép'}).join('<br>');
+ if(v==='cvt')h+=(h?'<br>':'')+'Giữ tạm vai trò Tổ trưởng khi Tổ trưởng vắng; xử lý yêu cầu cần xử lý của Tổ Truyền thông và Thương hiệu (tổ có Tổ trưởng kiêm nhiệm là Quản lý thương hiệu nhóm 2 (chỉ điều phối))';
+ return h||'Không'};
+R.vt_kpi=function(v){var K=(D.kpi_vi_tri||{})[v];if(!K)return '';function rows(a){return a.map(function(x){return '<tr><td>'+tx(x.chi_tieu)+'</td><td>'+tx(x.nguon)+'</td><td>'+(x.ty_trong<10?'0':'')+x.ty_trong+'%</td></tr>'}).join('')}
+ var h=tbl(['Chỉ tiêu cá nhân'+(K.nhan_ca_nhan?' – '+esc(K.nhan_ca_nhan):''),'Nguồn','Tỷ trọng'],[rows(K.ca_nhan)]);
+ if(K.ca_nhan_2)h+=tbl(['Chỉ tiêu cá nhân – '+esc(K.nhan_ca_nhan_2),'Nguồn','Tỷ trọng'],[rows(K.ca_nhan_2)]);
+ return h+tbl(['Chỉ tiêu chung','Nguồn','Tỷ trọng'],[rows(K.chung)])+'<p class="mini">Tổng: phần cá nhân 80%, phần chung 20%. KPI chưa đo được: quy tắc KPI-QT (mục 12.5). Căn cứ: '+tx(K.nguon_quyet_dinh)+'. '+(/duyệt 14\/11\/2026/.test(K.nguon_quyet_dinh||'')?'':DX)+'</p>'};
+R.vt_phoi_hop=function(v){var P={},ord=[];function put(k,f,txt,q){if(!P[k]){P[k]={a:[],b:[],q:[]};ord.push(k)}var o=P[k];if(txt&&o[f].indexOf(txt)<0)o[f].push(txt);if(o.q.indexOf(q)<0)o.q.push(q)}
+ var XV=VT(v),PV2=XV?XV.pham_vi:'',KHAC=PV2==='nhom_1'?'N2':PV2==='nhom_2'?'N1':'';
+ (D.quy_trinh||[]).forEach(function(q,i){var qn='QT.'+(i+1);if(KHAC&&q.nhom_vi_du===KHAC)return;q.buoc.forEach(function(b){var th=b.thuc_hien.some(function(r){return mine(v,r)});
+  if(th)b.phoi_hop.forEach(function(r){if(!mine(v,r))put(cd(r),'a',String(r).split('|')[1]||'phối hợp',qn)});
+  b.phoi_hop.forEach(function(r){if(mine(v,r))b.thuc_hien.forEach(function(t){if(!mine(v,t))put(cd(t),'b',String(r).split('|')[1]||'phối hợp',qn)})})})});
+ if(!ord.length)return '<p class="mini">Không có bước quy trình mẫu ghi vị trí này.</p>';
+ return '<p class="mini">Dựng tự động từ quy trình mẫu (VH.5); mã chức danh chung (ví dụ "Chuyên viên thiết kế") đọc là người của nhóm có việc; quy trình có ví dụ của nhóm kia không đưa vào.</p>'+tbl(['Bên phối hợp','Bên phối hợp làm khi vị trí này thực hiện','Vị trí này làm khi bên phối hợp thực hiện','Quy trình'],ord.map(function(k){var o=P[k];return '<tr><td>'+chip(k)+'</td><td>'+tx(o.a.join('; ')||'–')+'</td><td>'+tx(o.b.join('; ')||'–')+'</td><td>'+qtl(o.q.join(', '))+'</td></tr>'}),'wide')};
+R.vt_tai_lieu=function(v){var x=VT(v);var pv=x?x.pham_vi:'';var L=(D.danh_muc_tai_lieu||[]).filter(function(d){if((d.pham_vi==='nhom_1'&&pv==='nhom_2')||(d.pham_vi==='nhom_2'&&pv==='nhom_1'))return false;return [d.nam_giu].concat(d.xay_dung||[],d.cap_nhat||[],d.duyet||[],d.dung||[]).some(function(r){return mine(v,r)})});
+ if(!L.length)return '<p class="mini">Không có.</p>';
+ function vai(d){var a=[];if((d.xay_dung||[]).some(function(r){return mine(v,r)}))a.push('Xây dựng');if(mine(v,d.nam_giu))a.push('<b>Nắm giữ</b>');if((d.cap_nhat||[]).some(function(r){return mine(v,r)}))a.push('Cập nhật, lập');if((d.duyet||[]).some(function(r){return mine(v,r)}))a.push('Duyệt');if((d.dung||[]).some(function(r){return mine(v,r)}))a.push('Dùng');return a.join(', ')}
+ return '<p class="mini">Dựng tự động từ danh mục tài liệu (mục 9.4). Tài liệu dùng chung của nhóm: bản của nhóm mình.</p>'+tbl(['Mã','Tài liệu','Loại','Vai trò của vị trí','Nơi lưu: có phần mềm / chưa có phần mềm'],L.map(function(d){return '<tr><td><a class="xref" href="#dm-'+d.ma+'">'+d.ma+'</a></td><td>'+tx(d.ten)+'</td><td>'+esc(d.loai)+'</td><td>'+vai(d)+'</td><td>'+tx(d.noi_luu_co_pm)+' / '+tx(d.noi_luu_chua_pm)+'</td></tr>'}),'wide')};
+R.vt_chu_tri=function(v){var L=(D.danh_muc_van_ban||[]).filter(function(d){return mine(v,d.chu_tri)});if(!L.length)return '<p class="mini">Không chủ trì quy trình, quy định nào.</p>';
+ return '<p class="mini">Dựng tự động từ danh mục quy trình, quy định (mục 27).</p>'+tbl(['Mã','Tên','Loại','Trạng thái','Người duyệt'],L.map(function(d){return '<tr><td>'+(d.loai==='Quy trình'?qtl(d.ma):esc(d.ma))+'</td><td>'+tx(d.ten)+'</td><td>'+esc(d.loai)+'</td><td>'+esc(d.trang_thai)+'</td><td>'+tx(d.nguoi_duyet)+'</td></tr>'}))};
+R.kpi_bang=function(){return '<h4 class="ops-th-h">Thư viện KPI</h4>'+tbl(['Mã','KPI','Công thức','Đơn vị','Chiều chấm','Nguồn số liệu','Điều kiện dùng','Quy tắc','Kỳ chấm'],(D.kpi||[]).map(function(k){return '<tr><td><b>'+esc(k.id)+'</b></td><td>'+tx(k.ten)+'</td><td>'+tx(k.cong_thuc)+'</td><td>'+esc(k.don_vi_tinh||'')+'</td><td>'+esc(k.chieu||'')+'</td><td>'+tx(k.nguon_so_lieu||'')+'</td><td>'+tx(k.dieu_kien_dung||'')+'</td><td>'+tx(k.quy_tac||'')+'</td><td>'+esc(k.ky_cham||'')+'</td></tr>'}),'wide')};
+R.bang_thay=function(){return tbl(['Vị trí','Phạm vi','Người thay chính','Dự phòng'],(D.vi_tri||[]).map(function(x){return '<tr><td>'+chip(x.id)+'</td><td>'+({nhom_1:'Nhóm 1',nhom_2:'Nhóm 2',trung_lap:'Trung lập',theo_nhom:'Theo nhóm'}[x.pham_vi]||esc(x.pham_vi||''))+'</td><td>'+cdl(A_(x.thay_chinh))+'</td><td>'+cdl(A_(x.du_phong))+'</td></tr>'}),'wide')};
+R.mang_viec_bang=function(){return tbl(['#','Mảng','Phạm vi','Thực hiện','Đầu vào','Duyệt','Chịu trách nhiệm kết quả'],(D.mang_viec||[]).map(function(m){return '<tr><td>'+m.so+'</td><td><b>'+tx(m.ten)+'</b></td><td><small>'+tx(m.pham_vi||'')+'</small></td><td>'+tx(m.thuc_hien||'')+'</td><td>'+tx(m.dau_vao||'')+'</td><td>'+tx(m.duyet||'')+'</td><td>'+tx(m.chiu_trach_nhiem||'')+'</td></tr>'}),'wide')};
+R.vt_gio=function(v){var x=VT(v);return x&&x.gio_ke_hoach?tx(x.gio_ke_hoach)+' <small>(mục 6, 21)</small>':''};
+R.vt_vang=function(v){var x=VT(v);if(!x)return '';var lt=(D.vi_tri||[]).filter(function(y){return A_(y.thay_chinh).some(function(r){return cd(r)===v})}).map(function(y){var n=A_(y.thay_chinh).filter(function(r){return cd(r)===v})[0].split('|')[1];return esc(ref(y.id).label)+(n?' ('+esc(n)+')':'')});
+ var P1=['bt-ac','tk-a','md-ac','qc-a'],P2=['bt-b','tk-b','md-b','qc-b'],TH=['qlth-a','qlth-bc','cvtt-a','cvtt-bc'],cuoi;
+ if(P1.indexOf(v)>=0)cuoi='Thay cho nhóm 2 chỉ theo ngoại lệ CN-2, CN-3 khi người trung lập cho phép làm thay có ngày hết hạn (RC-1) (mục 15.4).';
+ else if(P2.indexOf(v)>=0)cuoi='Người nhóm 1 chỉ thay theo ngoại lệ CN-2, CN-3 khi người trung lập cho phép làm thay có ngày hết hạn (RC-1) (mục 15.4).';
+ else if(TH.indexOf(v)>=0)cuoi='Không thay chéo nhóm; chéo nhóm chỉ ở lịch trực sự cố tầng 1 chung (CN-4).';
+ else if(x.pham_vi==='nhom_1'||x.pham_vi==='nhom_2')cuoi='Không thay chéo nhóm (mục 15.4).';
+ else if(x.pham_vi==='theo_nhom')cuoi='Mỗi nhóm 01 người khi đạt ngưỡng; không thay chéo nhóm (mục 15.4).';
+ else cuoi='Vị trí trung lập; người thay nhận việc theo mục 15.4.';
+ return 'Khi vắng mặt: người thay chính: '+lab(A_(x.thay_chinh))+'. Dự phòng: '+lab(A_(x.du_phong))+'. Là người thay chính của: '+(lt.join('; ')||'–')+'. '+(['tp','cvt','qlsps'].indexOf(v)>=0?'Thứ tự ủy quyền khi Trưởng phòng vắng: R07. ':'')+cuoi};
+R.vt_viec_chung=function(v){var x=VT(v);return x?tx(x.viec_chung||'Không'):''};
+R.bang_viec_chung=function(){return '<p class="mini">Việc chung toàn hệ thống giao vị trí trung lập hoặc mỗi nhóm làm phần của nhóm mình; làm chéo nhóm chỉ theo 04 ngoại lệ CN-1 đến CN-4 (mục 15.4). Dựng từ cơ sở dữ liệu.</p>'+tbl(['Vị trí','Phạm vi','Việc chung giữ thêm'],(D.vi_tri||[]).filter(function(x){return x.viec_chung&&x.viec_chung!=='Không'}).map(function(x){return '<tr><td>'+chip(x.id)+'</td><td>'+({nhom_1:'Nhóm 1',nhom_2:'Nhóm 2',trung_lap:'Trung lập',theo_nhom:'Theo nhóm'}[x.pham_vi]||'')+'</td><td>'+tx(x.viec_chung)+'</td></tr>'}),'wide')};
+R.vt_muc_dich=function(v){var x=VT(v);return x?tx(x.muc_dich||''):''};
+R.vt_bao_cao=function(v){var x=VT(v);return x?tx(x.bao_cao_cho||''):''};
+R.bang_tong_hop=function(){var NH={nhom_1:'Nhóm 1 – thương hiệu TTH',nhom_2:'Nhóm 2 – thương hiệu riêng',trung_lap:'Toàn hệ thống',theo_nhom:'Theo nhóm (mỗi nhóm 01 người khi đạt ngưỡng)'};return '<p class="mini">Dựng từ cơ sở dữ liệu (vi_tri); người thay chính, cấp trên trực tiếp: mục 15.4, 14.13.</p>'+tbl(['Vị trí','Nhóm thương hiệu','Cấp trên trực tiếp','Người thay chính','Ngạch'],(D.vi_tri||[]).map(function(x){return '<tr><td><a class="jdlink" href="#jd-'+x.id+'" data-jd="'+x.id+'">'+esc(x.ten)+'</a></td><td>'+esc(NH[x.pham_vi]||'')+'</td><td>'+tx(x.bao_cao_cho||'')+'</td><td>'+cdl(A_(x.thay_chinh))+'</td><td>'+tx(x.ngach||'')+'</td></tr>'}),'wide')};
+R.vt_duyet_nghi=function(v){var x=VT(v);if(!x)return '';var t={th:'Trưởng phòng duyệt lịch nghỉ (tổ có Tổ trưởng kiêm nhiệm là Quản lý thương hiệu nhóm 2 (chỉ điều phối))',nd:'Tổ trưởng Tổ Nội dung và Sáng tạo duyệt lịch nghỉ',ts:'Tổ trưởng Tổ Tăng trưởng số duyệt lịch nghỉ',coso:'Trưởng nhóm Marketing cơ sở duyệt lịch nghỉ; chấm công: cơ sở'}[x.to]||'';if(x.to==='nd'&&x.nhom_thuong_hieu!=='N1')t='Chuyên viên trưởng duyệt lịch nghỉ';
+ var o={tp:'Ban Tổng Giám đốc duyệt lịch nghỉ',cvt:'Trưởng phòng duyệt lịch nghỉ','tk-nt':'Chuyên viên trưởng duyệt lịch nghỉ',qlsps:'Trưởng phòng duyệt lịch nghỉ',qlml:'Chuyên viên trưởng duyệt lịch nghỉ','tn-a':'Chuyên viên trưởng duyệt lịch nghỉ; chấm công: cơ sở','tn-b':'Chuyên viên trưởng duyệt lịch nghỉ; chấm công: cơ sở',dmpk:'Phòng khám duyệt lịch nghỉ; báo Chuyên viên trưởng'}[v];
+ return esc(o||t)+'; không duyệt nghỉ trùng của 02 vị trí có chung người thay chính (R12)'};
+Array.prototype.forEach.call(document.querySelectorAll('[data-csdl]'),function(el){var k=el.getAttribute('data-csdl');if(R[k])el.innerHTML=R[k](el.getAttribute('data-vt'))});
+
+})();
+</script><script>(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var views=$$('.view'),tabs=$$('.tab'),subnav=$('#subnav');
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+function show(id,noScroll){
+  views.forEach(function(v){v.classList.toggle('on',v.dataset.view===id)});
+  tabs.forEach(function(t){var on=t.dataset.target===id;t.classList.toggle('on',on);t.setAttribute('aria-current',on?'page':'false')});
+  buildSub(id);
+  var at=tabs.filter(function(t){return t.dataset.target===id})[0];if(at&&window.innerWidth<=900&&at.scrollIntoView)try{at.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
+  if(!noScroll)window.scrollTo(0,0);
+  store('khung-view',id);
+}
+function buildSub(id){
+  var v=$('#v-'+id);if(!v){subnav.innerHTML='';return}
+  var h='';
+  if(id==='jd'){$$('.jd',v).forEach(function(a){h+='<a href="#'+a.id+'" data-go="'+a.id+'">'+$('.jd-name',a).textContent+'</a>'})}
+  else{$$('.doc-sec',v).forEach(function(s){if(!s.id)return;var t=s.getAttribute('data-title');h+='<a href="#'+s.id+'" data-go="'+s.id+'" class="'+(s.classList.contains('sub')?'sub':'')+'">'+t.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</a>'})}
+  subnav.innerHTML=h;
+}
+function goTo(id){
+  var el=document.getElementById(id);if(!el)return;
+  var v=el.closest('.view');if(v&&!v.classList.contains('on'))show(v.dataset.view,true);
+  if(el.classList.contains('jd')){var d=$('details',el);if(d)d.open=true}
+  var p=el.closest('details');if(p)p.open=true;
+  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')},30);
+  if(history.replaceState)history.replaceState(null,'','#'+id);
+}
+tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.target)})});
+document.addEventListener('click',function(e){
+  var a=e.target.closest('[data-go],.xref,.jdlink');
+  if(a){e.preventDefault();var id=a.getAttribute('data-go')||a.getAttribute('data-sec')||('jd-'+a.getAttribute('data-jd'));goTo(id);closeQ();return}
+  var p=e.target.closest('.pos,.pos-lead');if(p&&p.dataset.jd){togglePanel(p);return}
+  var c=e.target.closest('.pp-x,.pp-collapse');if(c){var op=document.querySelector('[aria-expanded="true"]');closePanels();if(op)op.scrollIntoView({behavior:'smooth',block:'center'});return}
+  var jc=e.target.closest('.jd-collapse');if(jc){var art=jc.closest('.jd');var dd=art&&art.querySelector('details');if(dd){dd.open=false;art.scrollIntoView({behavior:'smooth',block:'start'})}return}
+  var b=e.target.closest('[data-act]');if(b)doAct(b.dataset.act);
+});
+function doAct(a){
+  if(a==='print'){window.print()}
+  else if(a==='fs'){toggleFs()}
+  else if(a==='open-all-grp'){$$('.grp').forEach(function(d){if(d.tagName==='DETAILS')d.open=true})}
+  else if(a==='close-all-grp'){$$('.grp').forEach(function(d){if(d.tagName==='DETAILS')d.open=false})}
+  else if(a==='toggle-sub'){var o=$('.org'),b=$('.sub-tg');if(o&&b){var on=!o.classList.contains('show-sub');o.classList.toggle('show-sub',on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'Ẩn kỹ năng, người thay':'Hiện kỹ năng, người thay'}}
+  else if(a==='open-all-jd'){$$('.jd-d').forEach(function(d){if(!d.closest('.jd').hidden)d.open=true})}
+  else if(a==='close-all-jd'){$$('.jd-d').forEach(function(d){d.open=false})}
+}
+/* filters */
+$$('.fbtn').forEach(function(b){b.addEventListener('click',function(){
+  $$('.fbtn').forEach(function(x){x.classList.toggle('on',x===b)});
+  var f=b.dataset.f,L=$('.jd-list'),g=f==='g-N1'?'1':(f==='g-N2'?'2':''),cnt={lead:0,direct:0,shared:0,cross:0},n=0;
+  if(L){L.classList.remove('gf-1','gf-2');if(g)L.classList.add('gf-'+g)}
+  $$('.jd').forEach(function(j){var gp=j.dataset.grp||'',ok,r;
+    if(g){r=j.dataset['j'+g]||'none';ok=r!=='none';j.style.order=({lead:0,direct:1,shared:2,cross:3})[r]||0;if(ok){cnt[r]++;n++}}
+    else{ok=f==='all'||j.dataset.to===f||(f==='sys'&&(gp===''||gp==='1'||gp==='2'));j.style.order=''}
+    j.hidden=!ok});
+  var s=$('.jd-gsum');
+  if(s){if(g){var p2=function(x){return(x<10?'0':'')+x},o=g==='1'?'2':'1';
+    s.innerHTML='<b>Nhóm '+g+': '+p2(n)+' mô tả công việc liên quan</b> – lãnh đạo, quản lý, phê duyệt '+p2(cnt.lead)+'; phụ trách trực tiếp '+p2(cnt.direct)+'; chuyên môn dùng chung '+p2(cnt.shared)+'; người nhóm '+o+' tham gia '+p2(cnt.cross)+'. Vị trí không liên quan đã ẩn. Ban Tổng Giám đốc, Ban Giám đốc cơ sở: bộ lọc ở trang <a href="#gfilter" data-go="gfilter">Bộ máy</a>.';s.hidden=false}
+   else{s.hidden=true;s.innerHTML=''}}
+})});
+/* xem mô tả công việc ngay trong sơ đồ */
+function closePanels(){$$('.pos-panel').forEach(function(x){x.remove()});$$('.pos[aria-expanded="true"],.pos-lead[aria-expanded="true"]').forEach(function(x){x.setAttribute('aria-expanded','false')})}
+function togglePanel(btn){
+  var open=btn.getAttribute('aria-expanded')==='true';closePanels();if(open)return;
+  var card=document.getElementById('jd-'+btn.dataset.jd);if(!card)return;
+  var name=$('.jd-name',card).textContent,pos=btn.dataset.pos||name;
+  var pn=document.createElement('div');pn.className='pos-panel';pn.setAttribute('role','region');pn.setAttribute('aria-label','Mô tả công việc: '+pos);
+  pn.innerHTML='<div class="pp-h"><div><div class="eyebrow">'+(pos!==name?'Vị trí: '+pos.replace(/</g,'&lt;'):'Mô tả công việc')+'</div><b>'+name+'</b><span class="pp-m">'+$('.jd-meta',card).innerHTML+'</span></div><button type="button" class="pp-x" aria-label="Thu gọn" title="Thu gọn">▲ Thu gọn</button></div>'+$('.jd-body',card).outerHTML+'<div class="pp-f"><button type="button" class="btn blue pp-collapse">▲ Thu gọn</button><a href="#jd-'+btn.dataset.jd+'" data-go="jd-'+btn.dataset.jd+'" class="btn">Mở trong phần Mô tả công việc</a></div>';
+  $$('.jd-foot',pn).forEach(function(f){f.remove()});
+  var anchor=btn.closest('.org-cols')||btn.closest('.org-top')||btn.closest('.hosp')||btn;
+  anchor.parentNode.insertBefore(pn,anchor.nextSibling);
+  btn.setAttribute('aria-expanded','true');
+  setTimeout(function(){pn.scrollIntoView({behavior:'smooth',block:'start'})},20);
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePanels();closeQ()}});
+/* lọc nhân sự theo nhóm thương hiệu (trang Bộ máy) */
+(function(){var org=$('.org');if(!org)return;
+  $$('.gbtn').forEach(function(b){b.addEventListener('click',function(){var g=b.dataset.g;
+    $$('.gbtn').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on?'true':'false')});
+    org.classList.remove('gf-1','gf-2');if(g)org.classList.add('gf-'+g);
+    $$('.grel').forEach(function(p){p.hidden=p.dataset.g!==g});
+    var lg=$('.gleg');if(lg)lg.hidden=!g;
+    if(g)$$('.org details.grp').forEach(function(d){d.open=true});
+    closePanels();
+  })});
+  $$('.grel-it').forEach(function(it){it.addEventListener('click',function(){var btn=$('.org [data-jd="'+it.dataset.jd+'"]');if(!btn)return;var d=btn.closest('details');if(d&&!d.open)d.open=true;togglePanel(btn)})});
+})();
+/* relations */
+var svg=$('.rel-svg');
+function hl(n){if(!svg)return;svg.classList.toggle('focus',!!n);$$('.edge,.badge',svg).forEach(function(x){x.classList.remove('hl')});$$('.rel-row').forEach(function(r){r.classList.toggle('on',r.dataset.e===n)});
+  if(n){var e=$('#e'+n,svg);if(e)e.classList.add('hl');var g=$('.badge[data-e="'+n+'"]',svg);if(g)g.classList.add('hl')}}
+var pinned=null;
+$$('.rel-row').forEach(function(r){r.addEventListener('mouseenter',function(){hl(r.dataset.e)});r.addEventListener('mouseleave',function(){hl(pinned)});r.addEventListener('click',function(){pinned=pinned===r.dataset.e?null:r.dataset.e;hl(pinned)})});
+$$('.badge').forEach(function(g){g.style.cursor='pointer';g.addEventListener('click',function(){pinned=pinned===g.dataset.e?null:g.dataset.e;hl(pinned)})});
+/* search */
+var vname={};tabs.forEach(function(t){vname[t.dataset.target]=$('.tab-label',t).textContent});
+var FC={};
+function fc(c){var r=FC[c];if(r!==undefined)return r;var l=c.toLowerCase();if(l.length!==1)l=c;var f=l;try{f=l.normalize('NFD').replace(/[̀-ͯ]/g,'')}catch(e){}if(f.length!==1)f=l;if(f==='đ')f='d';FC[c]=f;return f}
+function fold(s){var o='';for(var i=0;i<s.length;i++)o+=fc(s.charAt(i));return o}
+function lowr(s){var o='';for(var i=0;i<s.length;i++){var c=s.charAt(i),l=c.toLowerCase();o+=l.length===1?l:c}return o}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function rxe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+var ALIAS={tct:'tong cong ty',mkt:'marketing',cc:'contact center',btgd:'ban tong giam doc',bgd:'ban giam doc',tp:'truong phong',cvt:'chuyen vien truong',qlth:'quan ly thuong hieu',cvtt:'chuyen vien truyen thong',bt:'bien tap',tk:'thiet ke',md:'media',qc:'quang cao va kenh so',dl:'du lieu va do luong',qlsps:'quan ly san pham so',sps:'san pham so',qlml:'quan ly mang luoi',qhcc:'truyen thong co so',nt:'ngoai tuyen',yhct:'y hoc co truyen',pk:'phong kham',bv:'benh vien',bvdk:'benh vien da khoa',hcqt:'hanh chinh quan tri',ctxh:'cong tac xa hoi',qlcl:'quan ly chat luong',ns:'nhan su',jd:'mo ta cong viec',mtcv:'mo ta cong viec',kh:'khach hang',hm:'hang muc',oa:'trang zalo chinh thuc',ttts:'to truong to tang truong so',ttnd:'to truong to noi dung',ttth:'to truong to thuong hieu',cntt:'cong nghe',pcn:'phong cong nghe'};
+var SEL='h2,h3,h4,p,li,tr,dd,summary,.pos,.pos-lead,.rel-row,.ph,.stat,.note,.lede,figcaption,pre,.jd-purpose';
+var WRAP='tr,li,dd,summary,p,h2,h3,h4,.pos,.pos-lead,.rel-row,.ph,.stat,.note,.lede,figcaption,pre,.jd-purpose';
+var idx=null,groupsAll=[],groups=[],vf='all',shown=30,act=-1,lastTerms=[],marked=[];
+function txt(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),o=[],n;while((n=w.nextNode()))o.push(n.nodeValue);return o.join(' ').replace(/\s+/g,' ').replace(/ ([,.;:)\]%])/g,'$1').replace(/([(\[]) /g,'$1').trim()}
+function secTitle(sec){var t=sec.getAttribute('data-title')||'';var sn=$('.sec-num',sec);if(sn){var n=sn.textContent.trim();if(n&&t.indexOf(n)!==0)t=n+'. '+t}return t}
+var LH={};
+function add(el,kind,n,v,ord){
+  var jd=el.closest('.jd'),sec=jd?null:el.closest('.doc-sec');
+  var lh=LH[v]||{i:0,t:''};
+  var key=jd?jd.id:(sec&&sec.id?sec.id:'v-'+v+'-'+lh.i);
+  var t=jd?$('.jd-name',jd).textContent+' – mô tả công việc':(sec?secTitle(sec):(lh.t?vname[v]+' · '+lh.t:vname[v]||''));
+  idx.push({el:el,k:kind,n:n,f:fold(n),l:lowr(n),v:v,key:key,t:t,home:jd||sec||el.closest('.view'),o:ord});
+}
+function build(){
+  idx=[];var ord=0;
+  views.forEach(function(view){
+    var v=view.dataset.view;
+    $$('.doc-sec',view).forEach(function(s){if(s.id)add(s,'t',secTitle(s),v,ord++)});
+    if(v==='jd')$$('.jd',view).forEach(function(j){var mt=$('.jd-meta',j);add(j,'t',txt($('.jd-name',j))+(mt?' · '+txt(mt):''),v,ord++)});
+    $$(SEL,view).forEach(function(el){
+      if(el.closest('.pos-panel,svg'))return;if(el.tagName==='SUMMARY'&&el.closest('.jd'))return;
+      if(el.tagName==='TR'&&el.closest('thead'))return;
+      var par=el.parentElement;if(par&&par.closest(WRAP))return;
+      var n=txt(el);if(n.length<2)return;
+      if(el.tagName==='DD'){var dt=el.previousElementSibling;if(dt&&dt.tagName==='DT')n=txt(dt)+': '+n}
+      var k=/^(H2|H3|H4|SUMMARY)$/.test(el.tagName)?'h':'b';
+      if(/^(H2|H3)$/.test(el.tagName)&&!el.closest('.doc-sec,.jd')){var c=LH[v]||{i:0};LH[v]={i:c.i+1,t:n}}
+      add(el,k,n,v,ord++);
+    });
+  });
+}
+var LB='(?:^|[^\\p{L}\\p{N}])',RB='(?![\\p{L}\\p{N}])';
+function terms(ql,lvl){
+  var toks=ql.split(/\s+/).filter(Boolean),out=[];
+  toks.forEach(function(tk){
+    var last=out[out.length-1],fk=fold(tk);
+    if(last&&(fk.length===1||/^(ac|bc)$/.test(fk))){last.l+=' '+tk;last.f+=' '+fk;if(last.ex)last.ex+=' '+fk;return}
+    var t={l:tk,f:fk,ex:ALIAS[fk]||'',alts:[]};
+    var m=/^([a-z]+)(\d+)$/.exec(fk);if(m){t.alts=[m[1]+'-'+m[2],m[1]+'.'+m[2],m[1]+' '+m[2]];if(!t.ex&&ALIAS[m[1]])t.ex=ALIAS[m[1]]+' '+m[2];if(m[1]==='kpi'&&m[2].length===1)t.alts.push('kpi-0'+m[2])}
+    var k=/^kpi-(\d)$/.exec(fk);if(k)t.alts.push('kpi-0'+k[1]);
+    out.push(t);
+  });
+  out=out.filter(function(t){return t.f.length>1||/\d/.test(t.f)});
+  out.forEach(function(t,i){
+    t.m=(lvl===0&&t.l!==t.f)?'l':'f';
+    var w=lvl>=2?'s':(i===out.length-1)?'p':'w';
+    function wrap(x){x=rxe(x);return w==='s'?'('+x+')':w==='p'?LB+'('+x+')':LB+'('+x+')'+RB}
+    var parts=[wrap(t.m==='l'?t.l:t.f)];
+    if(t.m==='f'){if(t.ex)parts.push(wrap(t.ex));t.alts.forEach(function(x){parts.push(wrap(x))})}
+    t.src=parts.join('|');t.re=new RegExp(t.src,'u');
+  });
+  return out;
+}
+function ranges(e,ts){
+  var r=[];ts.forEach(function(t){var s=t.m==='l'?e.l:e.f,g=new RegExp(t.src,'gu'),m,guard=0;while((m=g.exec(s))&&guard++<300){for(var i=1;i<m.length;i++)if(m[i]!==undefined){var a=m.index+m[0].indexOf(m[i]);r.push([a,a+m[i].length]);break}if(m[0].length===0)g.lastIndex++}});
+  r.sort(function(a,b){return a[0]-b[0]});var o=[];r.forEach(function(x){var p=o[o.length-1];if(p&&x[0]<=p[1])p[1]=Math.max(p[1],x[1]);else o.push(x.slice())});return o;
+}
+function snip(e,ts){
+  var rg=ranges(e,ts),n=e.n,L=n.length,st=0,en=Math.min(L,190);
+  if(rg.length){st=Math.max(0,rg[0][0]-60);en=Math.min(L,st+190);if(st>0){var sp=n.indexOf(' ',st);if(sp>0&&sp<rg[0][0])st=sp+1}}
+  var h='',p=st;rg.forEach(function(x){if(x[1]<=st||x[0]>=en)return;var a=Math.max(x[0],st),b=Math.min(x[1],en);h+=esc(n.slice(p,a))+'<mark>'+esc(n.slice(a,b))+'</mark>';p=b});
+  h+=esc(n.slice(p,en));return (st>0?'…':'')+h+(en<L?'…':'');
+}
+function special(qf){
+  var m,el=null,lab='';
+  if((m=/^(?:muc|m)\s*\.?\s*(\d+(?:\.\d+)*)$/.exec(qf)))el=document.getElementById('m-'+m[1].replace(/\./g,'-'));
+  else if((m=/^phan\s*([ivx]+)(?:\.(\d+))?$/.exec(qf)))el=document.getElementById('m-'+m[1].toUpperCase()+(m[2]?'-'+m[2]:''));
+  else if((m=/^(qt|vh)\s*\.?\s*(\d+)$/.exec(qf))){var want=m[1].toUpperCase()+'.'+m[2];$$('.ops-sec').forEach(function(s){var sn=$('.sec-num',s);if(!el&&sn&&sn.textContent.trim()===want)el=s})}
+  else if((m=/^mang\s*(\d+)$/.exec(qf))){var sec=document.getElementById('m-31');if(sec)$$('tbody tr',sec).forEach(function(tr){var c=tr.cells[0];if(!el&&c&&c.textContent.trim()===m[1])el=tr});lab='Mảng '+m[1]+' (mục 31): '}
+  if(!el)return null;
+  var s=el.classList.contains('doc-sec')?el:el.closest('.doc-sec');
+  return {el:el,t:lab+(s?secTitle(s):''),v:el.closest('.view').dataset.view,home:s};
+}
+var q=$('#q'),qr=$('#qres'),tmr=null,spec=null;
+q.setAttribute('role','combobox');q.setAttribute('aria-expanded','false');q.setAttribute('aria-controls','qres');q.setAttribute('autocomplete','off');
+function place(){
+  if(window.innerWidth<=900){var b=q.getBoundingClientRect();qr.style.top=Math.round(b.bottom+6)+'px';qr.style.maxHeight=Math.max(200,window.innerHeight-b.bottom-14)+'px'}
+  else{qr.style.top='';qr.style.maxHeight=''}
+}
+function closeQ(){qr.classList.remove('on');q.setAttribute('aria-expanded','false');act=-1}
+function match(ts,qf,ql,dia){
+  var G={},list=[];
+  idx.forEach(function(e){
+    for(var i=0;i<ts.length;i++)if(!ts[i].re.test(ts[i].m==='l'?e.l:e.f))return;
+    var s=e.k==='t'?60:e.k==='h'?25:0;
+    if(e.f.indexOf(qf)>=0)s+=20;
+    if(dia&&e.l.indexOf(ql)>=0)s+=15;
+    var p=(ts[0].m==='l'?e.l:e.f).search(ts[0].re);if(p>=0&&p<40)s+=4;
+    s-=Math.min(6,e.n.length/400);
+    var g=G[e.key];if(!g){g=G[e.key]={key:e.key,t:e.t,v:e.v,home:e.home,hits:[],best:-1e9,o:e.o};list.push(g)}
+    g.hits.push({e:e,s:s});if(s>g.best)g.best=s;
+  });
+  list.forEach(function(g){g.hits.sort(function(a,b){return b.s-a.s||a.e.o-b.e.o});g.score=g.best+Math.min(g.hits.length,10)*.5});
+  list.sort(function(a,b){return b.score-a.score||a.o-b.o});
+  return list;
+}
+var approx=false;
+function run(){
+  var raw=q.value.trim();if(raw.length<2){closeQ();return}
+  if(!idx)build();
+  var ql=lowr(raw).replace(/\s+/g,' '),qf=fold(ql),dia=ql!==qf;
+  spec=special(qf);
+  var ts=[],list=[],l0=dia?0:1,lvl=l0;
+  for(;lvl<=2;lvl++){ts=terms(ql,lvl);if(!ts.length)break;list=match(ts,qf,ql,dia);if(list.length)break}
+  lastTerms=ts;approx=list.length>0&&lvl>l0;
+  if(!ts.length&&!spec){qr.innerHTML='<div class="none">Nhập ít nhất 02 ký tự có nghĩa</div>';open();return}
+  groupsAll=list;vf='all';shown=30;render();open();
+}
+function open(){place();qr.classList.add('on');q.setAttribute('aria-expanded','true')}
+function render(){
+  var gs=vf==='all'?groupsAll:groupsAll.filter(function(g){return g.v===vf});groups=gs;
+  var tot=0;groupsAll.forEach(function(g){tot+=g.hits.length});
+  var cnt={};groupsAll.forEach(function(g){cnt[g.v]=(cnt[g.v]||0)+g.hits.length});
+  var h='<div class="qh" aria-live="polite"><span><b>'+tot+'</b> kết quả trong <b>'+groupsAll.length+'</b> mục'+(approx?' · <i>kết quả gần đúng</i>':'')+'</span><span class="qk">↑ ↓ chọn · Enter mở · Esc đóng</span>';
+  if(groupsAll.length){h+='<div class="qchips"><button type="button" class="qchip'+(vf==='all'?' on':'')+'" data-vf="all">Tất cả '+tot+'</button>';
+    tabs.forEach(function(t){var v=t.dataset.target;if(cnt[v])h+='<button type="button" class="qchip'+(vf===v?' on':'')+'" data-vf="'+v+'">'+esc($('.tab-num',t)?$('.tab-num',t).textContent+' ':'')+esc(vname[v])+' '+cnt[v]+'</button>'});h+='</div>'}
+  h+='</div>';
+  if(spec)h+='<button type="button" class="qgo qi" data-sp="1"><span class="qg-v">Đi tới</span><span class="qg-t">'+esc(spec.t)+'</span></button>';
+  if(!gs.length&&!spec)h+='<div class="none">Không tìm thấy. Thử từ khác, bỏ dấu hoặc dùng chữ viết tắt (TCT, QC, TK, CC, QLTH).</div>';
+  gs.slice(0,shown).forEach(function(g,gi){
+    h+='<div class="qg"><button type="button" class="qg-h qi" data-gh="'+gi+'"><span class="qg-t">'+esc(g.t)+'</span><span class="qg-v">'+esc(vname[g.v]||'')+'</span></button>';
+    var hs=[];g.hits.forEach(function(x,hi){if(x.e.k!=='t')hs.push([x,hi])});var lim=g.open?hs.length:3;
+    hs.slice(0,lim).forEach(function(p){h+='<button type="button" class="qhit qi" data-g="'+gi+'" data-h="'+p[1]+'">'+snip(p[0].e,lastTerms)+'</button>'});
+    if(hs.length>lim)h+='<button type="button" class="qmore" data-more="'+gi+'">+ '+(hs.length-lim)+' kết quả khác trong mục này</button>';
+    h+='</div>';
+  });
+  if(gs.length>shown)h+='<button type="button" class="qmore qall" data-moreg="1">Hiện thêm '+Math.min(30,gs.length-shown)+' / '+(gs.length-shown)+' mục</button>';
+  qr.innerHTML=h;act=-1;
+}
+function unmark(){marked.forEach(function(m){var p=m.parentNode;if(!p)return;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize()});marked=[]}
+function markIn(el,ts){
+  if(!ts.length)return;
+  var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),nodes=[],n;
+  while((n=w.nextNode()))if(n.nodeValue.trim()&&!(n.parentNode.closest&&n.parentNode.closest('svg,mark')))nodes.push(n);
+  nodes.forEach(function(t){
+    var rg=ranges({l:lowr(t.nodeValue),f:fold(t.nodeValue)},ts);if(!rg.length)return;
+    var s=t.nodeValue,fr=document.createDocumentFragment(),p=0;
+    rg.forEach(function(x){if(x[0]>p)fr.appendChild(document.createTextNode(s.slice(p,x[0])));var mk=document.createElement('mark');mk.className='qhl';mk.textContent=s.slice(x[0],x[1]);fr.appendChild(mk);marked.push(mk);p=x[1]});
+    if(p<s.length)fr.appendChild(document.createTextNode(s.slice(p)));
+    t.parentNode.replaceChild(fr,t);
+  });
+}
+function reveal(el){
+  if(el.closest('.jd[hidden]')){var all=$('.fbtn[data-f="all"]');if(all)all.click()}
+  var v=el.closest('.view');if(v&&!v.classList.contains('on'))show(v.dataset.view,true);
+  for(var p=el;p&&p!==document.body;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
+}
+function flashGo(el,home){
+  setTimeout(function(){
+    try{el.scrollIntoView({behavior:'smooth',block:el.classList.contains('doc-sec')||el.classList.contains('jd')?'start':'center'})}catch(e){el.scrollIntoView()}
+    el.classList.remove('qflash');void el.offsetWidth;el.classList.add('qflash');
+  },40);
+  var id=home&&home.id;if(id&&history.replaceState)history.replaceState(null,'','#'+id);
+}
+function goHit(g,x){
+  unmark();var el=x.e.el;reveal(el);
+  g.hits.slice(0,60).forEach(function(y){if(y.e.k!=='t')markIn(y.e.el,lastTerms)});
+  closeQ();flashGo(el,g.home);
+}
+function goGroup(g){
+  unmark();var el=g.home||g.hits[0].e.el;reveal(el);
+  g.hits.slice(0,60).forEach(function(y){if(y.e.k!=='t')markIn(y.e.el,lastTerms)});
+  closeQ();flashGo(el,g.home);
+}
+function goSpec(){if(!spec)return;unmark();reveal(spec.el);closeQ();flashGo(spec.el,spec.home)}
+qr.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;e.preventDefault();e.stopPropagation();
+  if(b.dataset.vf){vf=b.dataset.vf;shown=30;render();return}
+  if(b.dataset.more!==undefined){groups[+b.dataset.more].open=true;render();return}
+  if(b.dataset.moreg){shown+=30;render();return}
+  if(b.dataset.sp){goSpec();return}
+  if(b.dataset.gh!==undefined){goGroup(groups[+b.dataset.gh]);return}
+  if(b.dataset.g!==undefined){var g=groups[+b.dataset.g];goHit(g,g.hits[+b.dataset.h]);return}
+});
+function items(){return $$('.qi',qr)}
+function setAct(i){var it=items();if(!it.length)return;act=(i+it.length)%it.length;it.forEach(function(x,k){x.classList.toggle('act',k===act);x.setAttribute('aria-selected',k===act?'true':'false')});try{it[act].scrollIntoView({block:'nearest'})}catch(e){}}
+q.addEventListener('input',function(){clearTimeout(tmr);tmr=setTimeout(run,110)});
+q.addEventListener('focus',function(){if(q.value.trim().length>=2){if(qr.innerHTML)open();else run()}});
+q.addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'){e.preventDefault();if(!qr.classList.contains('on'))run();setAct(act+1)}
+  else if(e.key==='ArrowUp'){e.preventDefault();setAct(act-1)}
+  else if(e.key==='Enter'){e.preventDefault();clearTimeout(tmr);if(!qr.classList.contains('on')||!qr.innerHTML)run();var it=items();if(act>=0&&it[act])it[act].click();else if(it[0])it[0].click()}
+  else if(e.key==='Escape'){closeQ();q.blur()}
+});
+document.addEventListener('keydown',function(e){
+  var tg=e.target,typing=tg&&(tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'||tg.isContentEditable);
+  if(((e.key==='/'&&!typing)||((e.ctrlKey||e.metaKey)&&(e.key==='k'||e.key==='K')))){e.preventDefault();if(document.body.classList.contains('side-min')){document.body.classList.remove('side-min');store('khung-side','')}q.focus();q.select()}
+});
+window.addEventListener('resize',function(){if(qr.classList.contains('on'))place()});
+document.addEventListener('click',function(e){var t=e.target;if(t&&t.isConnected!==false&&t.closest&&!t.closest('.search'))closeQ()});
+/* sidebar */
+$('#sideToggle').addEventListener('click',function(){document.body.classList.toggle('side-min');store('khung-side',document.body.classList.contains('side-min')?'min':'')});
+if(store('khung-side')==='min')document.body.classList.add('side-min');
+/* print */
+var opened=[];
+window.addEventListener('beforeprint',function(){opened=$$('details').filter(function(d){return !d.open});opened.forEach(function(d){d.open=true})});
+window.addEventListener('afterprint',function(){opened.forEach(function(d){d.open=false});opened=[]});
+/* init */
+var h=location.hash.slice(1);
+if(h&&document.getElementById(h)){show(document.getElementById(h).closest('.view').dataset.view,true);setTimeout(function(){goTo(h)},60)}
+else{var sv=store('khung-view');show(sv&&$('#v-'+sv)?sv:'overview',true)}
+})();
+
+/* toàn màn hình: dùng Fullscreen API khi trình duyệt cho phép; trong khung nhúng không cho phép thì dùng chế độ đọc rộng */
+var fsPrevMin=false;
+function fsLabel(){var on=document.body.classList.contains('fs-on')||!!document.fullscreenElement;Array.prototype.forEach.call(document.querySelectorAll('[data-act="fs"]'),function(b){b.textContent=on?'⛶ Thoát toàn màn hình':'⛶ Toàn màn hình';b.setAttribute('aria-pressed',on?'true':'false')})}
+function fsOn(){fsPrevMin=document.body.classList.contains('side-min');document.body.classList.add('fs-on','side-min');fsLabel()}
+function fsOff(){document.body.classList.remove('fs-on');if(!fsPrevMin)document.body.classList.remove('side-min');fsLabel()}
+function toggleFs(){
+  if(document.body.classList.contains('fs-on')){try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}fsOff();return}
+  fsOn();
+  var d=document.documentElement;
+  try{if(document.fullscreenEnabled&&d.requestFullscreen){var pr=d.requestFullscreen();if(pr&&pr.catch)pr.catch(function(){})}}catch(e){}
+}
+document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&document.body.classList.contains('fs-on')&&document.fullscreenEnabled){fsOff()}fsLabel()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('fs-on')&&!document.fullscreenElement){fsOff()}});
+
+/* Tiêu đề bảng luôn hiện khi cuộn trong bảng dài (giữ đến hết bảng) */
+(function(){
+  var MINROWS=8, FH=document.createElement('div');
+  FH.className='fhead'; FH.setAttribute('aria-hidden','true');
+  FH.innerHTML='<table><thead></thead></table>';
+  document.body.appendChild(FH);
+  var FT=FH.firstChild, cur=null, raf=0;
+  function topOff(tb){
+    var o=0, side=document.querySelector('.side');
+    if(side&&getComputedStyle(side).position==='sticky'){o=Math.max(o,side.getBoundingClientRect().bottom)}
+    var jd=tb.closest('.jd-d[open]');
+    if(jd){var h=jd.querySelector('.jd-head');if(h){var r=h.getBoundingClientRect();if(r.top<=o+2){o=Math.max(o,r.bottom)}}}
+    return o;
+  }
+  function list(){
+    var a=document.querySelectorAll('table'), out=[];
+    for(var i=0;i<a.length;i++){var t=a[i];
+      if(t.closest('.fhead')||!t.tHead||!t.tBodies.length||t.closest('details:not([open])'))continue;
+      if(t.tBodies[0].rows.length<MINROWS||t.offsetParent===null)continue;
+      out.push(t)}
+    return out;
+  }
+  function sync(tb){
+    var src=tb.tHead.rows[0].cells, dst=FT.tHead.rows[0]?FT.tHead.rows[0].cells:[];
+    for(var i=0;i<src.length&&i<dst.length;i++){var w=src[i].getBoundingClientRect().width+'px';dst[i].style.width=w;dst[i].style.minWidth=w;dst[i].style.maxWidth=w}
+    FT.style.width=tb.getBoundingClientRect().width+'px';
+  }
+  function update(){
+    raf=0;
+    if(document.body.classList.contains('printing')){FH.style.display='none';return}
+    var ts=list(), hit=null, off=0;
+    for(var i=0;i<ts.length;i++){
+      var t=ts[i], o=topOff(t), r=t.getBoundingClientRect(), hh=t.tHead.getBoundingClientRect().height;
+      if(r.top<o&&r.bottom>o+hh+24){hit=t;off=o;break}
+    }
+    if(!hit){FH.style.display='none';cur=null;return}
+    if(cur!==hit){FT.className=hit.className;FT.tHead.innerHTML=hit.tHead.innerHTML;cur=hit}
+    var wrap=hit.closest('.tbl')||hit.parentElement, wr=wrap.getBoundingClientRect();
+    FH.style.display='block';FH.style.top=off+'px';FH.style.left=wr.left+'px';FH.style.width=wr.width+'px';
+    sync(hit);
+    FH.scrollLeft=wrap.scrollLeft||0;
+  }
+  function req(){if(!raf){raf=requestAnimationFrame(update)}}
+  window.addEventListener('scroll',req,{passive:true});
+  document.addEventListener('scroll',req,{passive:true,capture:true});
+  window.addEventListener('resize',function(){cur=null;req()});
+  document.addEventListener('click',function(){setTimeout(function(){cur=null;req()},60)});
+  window.addEventListener('beforeprint',function(){FH.style.display='none'});
+})();
+</script><script id="tth-khung-hotfix-17112026">
+/* KHUNG MARKETING 17/11/2026 – Sửa lỗi đọc/tải biểu mẫu, trách nhiệm quy trình và giải thích thuật ngữ.
+   Không thay đổi danh mục văn bản gốc hoặc thẩm quyền phê duyệt. */
+(function(){
+'use strict';
+if(window.__TTH_KHUNG_HOTFIX_1711__)return;
+window.__TTH_KHUNG_HOTFIX_1711__=true;
+var src=document.getElementById('csdl');if(!src)return;
+var D;try{D=JSON.parse(src.textContent)}catch(e){return}
+var forms=D.danh_muc_tai_lieu||[],docs=D.danh_muc_van_ban||[],positions=D.vi_tri||[];
+var byForm={},byDoc={},byPos={},drafts={};
+forms.forEach(function(x){byForm[x.ma]=x});docs.forEach(function(x){byDoc[x.ma]=x});positions.forEach(function(x){byPos[x.id]=x});
+var manual={
+'TCT':'Tổng công ty: tuyến điều phối, quản trị chuyên môn theo phân cấp; không đồng nghĩa mọi sản phẩm đều do TCT trực tiếp sản xuất.',
+'Chi nhánh':'Đơn vị cơ sở triển khai hoạt động hiện trường, cung cấp thông tin và bằng chứng; thẩm quyền duyệt phụ thuộc loại sản phẩm và phân cấp.',
+'Nhóm 1':'Phạm vi thương hiệu TTH Group, TTH Healthcare, TTH Hospital và TTH Clinic; đây là phạm vi phục vụ, không phải tổ chuyên môn.',
+'Nhóm 2':'Toàn bộ thương hiệu còn lại ngoài Nhóm 1 (bao gồm các thương hiệu độc lập và đơn vị được phân vào nhóm theo kiến trúc thương hiệu).',
+'Chuyên viên trưởng':'Chức danh kiểm soát chuyên môn, phối hợp liên tổ và quản lý văn bản theo phân công; không mặc định thực hiện thay tất cả chuyên viên.',
+'Tổ trưởng':'Vai trò điều phối kiêm nhiệm: phân việc, cân tải, kiểm chất lượng và hỗ trợ nhân sự; không tự phát sinh thẩm quyền phê duyệt.',
+'Biên tập':'Đầu mối chuyên môn về nội dung, kịch bản, xác minh nguồn, rà soát thông tin y tế và bản nội dung trước phát hành; không thay Media kiểm kỹ thuật hình ảnh, âm thanh.',
+'Media':'Đầu mối chuyên môn về quay, chụp, dựng, kỹ thuật hình ảnh, âm thanh và kiểm bản dựng; không tự chịu trách nhiệm xác nhận tính đúng đắn của nội dung y khoa.',
+'Thiết kế':'Đầu mối chuyên môn về bố cục, nhận diện, quy cách file và kiểm chất lượng đồ họa; không mặc định được phép phát hành.',
+'Quảng cáo và kênh số':'Đầu mối thực thi quảng cáo, lịch đăng, hiệu suất kênh, đối chiếu dữ liệu chiến dịch; không tự phê duyệt nội dung hoặc chi phí vượt phân cấp.',
+'Quản lý thương hiệu':'Chủ trì mục tiêu, thông điệp, yêu cầu, nghiệm thu kết quả trong phạm vi thương hiệu được giao; quyền phê duyệt theo phân cấp riêng.',
+'Chủ trì xây dựng, quản lý văn bản':'Người chịu trách nhiệm tổ chức soạn thảo, cập nhật, kiểm soát phiên bản và trình ban hành; không mặc định là người trực tiếp thực hiện mọi bước chuyên môn.',
+'Chịu trách nhiệm chuyên môn quy trình':'Đầu mối thiết lập cách làm, tiêu chuẩn đầu ra, điểm kiểm soát chuyên môn, đề xuất sửa quy trình theo từng nghiệp vụ.',
+'Thực hiện quy trình':'Cá nhân/bộ phận làm các bước được phân công và lưu bằng chứng, dù không phải người chủ trì quản lý văn bản.',
+'Phê duyệt':'Quyết định thông qua theo đúng phạm vi thẩm quyền; kiểm bản hoặc điều phối không đương nhiên là phê duyệt.',
+'Quy trình':'Văn bản mô tả các bước, trách nhiệm, đầu vào, đầu ra, điểm chặn và ngoại lệ để thực hiện công việc.',
+'Quy định':'Văn bản xác định nguyên tắc, giới hạn, trách nhiệm và thẩm quyền phải tuân thủ.',
+'Biểu mẫu':'Tệp có trường thông tin để nhập, đọc, lưu và xuất; bản mẫu vận hành không thay cho quyết định ban hành.',
+'Báo cáo tháng':'Báo cáo có đủ hoạt động thường xuyên, Hạng mục trọng điểm và kết quả tổng hợp, dùng mã việc/mã Hạng mục để tránh cộng trùng.',
+'KPI':'Chỉ số đo lường hiệu quả; chỉ có hiệu lực chính thức khi chỉ tiêu, nguồn dữ liệu và thẩm quyền được phê duyệt.',
+'Lead':'Thông tin đầu mối khách hàng tiềm năng, phải có tiêu chí xác định hợp lệ, nguồn và bằng chứng.',
+'Quy tắc chặn':'Điều kiện ngăn thao tác chuyển bước khi chưa đủ thông tin, quyền, bằng chứng hoặc cấp duyệt.',
+'Vòng chỉnh sửa':'Chu kỳ kiểm – phản hồi – chỉnh sửa – kiểm lại một sản phẩm; áp dụng theo loại nghiệp vụ và mức thay đổi, không chỉ riêng Thiết kế.',
+'B-7':'Mẫu video được viện dẫn để phân biệt V2/V3. Chưa kiểm chứng bản mẫu gốc nên không tự chốt thông số hoặc suy diễn tiêu chí.',
+'V2/V3':'Nhóm video đang cần đối chiếu bản mẫu B-7 và quy tắc kiểm/duyệt trước phát hành; chưa xác minh đầy đủ tiêu chí gốc.',
+'V4':'Nhóm video chiến dịch/phim thương hiệu theo ma trận phân cấp; yêu cầu kiểm soát nội dung và kỹ thuật riêng.',
+'A/B/C':'Trục phân loại mức độ sản phẩm/nhóm công việc trong khung; phải đọc kèm tiêu chí cụ thể, không suy ra quyền duyệt chỉ từ ký hiệu.',
+'Ngoại lệ':'Trường hợp khác luồng chuẩn; chỉ thực hiện khi có người cho phép, phạm vi, thời hạn và bằng chứng.',
+'Trách nhiệm quản lý quy trình':'Cần tách người quản lý văn bản, đầu mối chuyên môn, người thực hiện và cấp phê duyệt; một chức danh không mặc định giữ cả bốn.',
+'Contact Center':'Đầu mối tiếp nhận yêu cầu từ xa tập trung của toàn hệ thống; không thuộc Phòng Marketing.',
+'Mẫu khóa':'Mẫu đã được xác nhận làm chuẩn đối chiếu; chỉ có hiệu lực khi biết rõ phiên bản và cấp duyệt.',
+'Quy chuẩn':'Yêu cầu về thông số, cách thực hiện và chất lượng cần đối chiếu khi nghiệm thu.'
+};
+var roleNames={
+'bt':['Biên tập nhóm 1','Biên tập nhóm 2'],
+'md':['Media nhóm 1','Media nhóm 2'],
+'tk':['Thiết kế nhóm 1','Thiết kế nhóm 2','Thiết kế ngoại tuyến'],
+'qc':['Quảng cáo và kênh số nhóm 1','Quảng cáo và kênh số nhóm 2'],
+'th':['Quản lý thương hiệu và Truyền thông của nhóm liên quan'],
+'cs':['Marketing cơ sở tại đơn vị phát sinh'],
+'dl':['Đo lường, đối soát và dữ liệu theo nội dung công việc'],
+'so':['Quản lý sản phẩm số và Phòng Số hóa theo phân quyền'],
+'ql':['Trưởng phòng, Chuyên viên trưởng và Tổ trưởng có liên quan'],
+'nl':['Phòng Nhân lực phối hợp các vị trí liên quan']
+};
+function classifyDoc(x){
+ var t=((x.ten||'')+' '+(x.dieu_khoan||[]).join(' ')).toLowerCase();
+ var out=[];function add(k){if(out.indexOf(k)<0)out.push(k)}
+ if(/nội dung|biên tập|kịch bản|y khoa|tin trong ngày|bác sĩ|người bệnh|phát thanh|đính chính|gửi tin|đăng tháng|truyền thông tuyển dụng|livestream|phát trực tiếp|phỏng vấn/.test(t))add('bt');
+ if(/media|video|quay|dựng|chụp|trực tiếp|kho tư liệu|phim|màn hình/.test(t))add('md');
+ if(/thiết kế|biển bảng|nhận diện|trang trí|poster|ấn phẩm|vật phẩm|logo/.test(t))add('tk');
+ if(/quảng cáo|kênh|trang đích|chiến dịch|facebook|google|tài khoản|lịch đăng/.test(t))add('qc');
+ if(/thương hiệu|quan hệ công chúng|khủng hoảng|báo chí|kol|koc|đồng thương hiệu|sự kiện|hội nghị|đối tác/.test(t))add('th');
+ if(/cơ sở|bệnh viện|phòng khám|địa phương|nội viện|tuyến dưới/.test(t))add('cs');
+ if(/lead|crm|dữ liệu|kpi|chỉ số|khảo sát|báo cáo|ngân sách|đối soát|nghiên cứu/.test(t))add('dl');
+ if(/website|app|phần mềm|số hóa|lỗi hệ thống/.test(t))add('so');
+ if(/nhân sự|nghỉ việc|nhận việc|điều chuyển|định biên/.test(t))add('nl');
+ if(out.length===0)add('ql');
+ return out;
+}
+var responsibilities={};docs.forEach(function(d){responsibilities[d.ma]=classifyDoc(d)});
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function txt(s){return String(s==null?'':s)}
+function findFormCode(id){return String(id||'').replace(/^dm-/,'')}
+function modalSetup(){
+ if(document.getElementById('tth-hotfix-modal'))return;
+ var st=document.createElement('style');st.id='tth-hotfix-style';st.textContent=`
+ #tth-hotfix-modal[hidden],#tth-hotfix-tip[hidden]{display:none!important}
+ #tth-hotfix-modal{position:fixed;inset:0;background:rgba(8,27,61,.58);z-index:20020;display:flex;align-items:center;justify-content:center;padding:14px}
+ #tth-hotfix-modal .hf-dialog{background:#fff;border-radius:16px;max-width:980px;width:100%;max-height:94vh;display:flex;flex-direction:column;box-shadow:0 20px 70px #082F5659;color:#172B4D}
+ #tth-hotfix-modal .hf-head{padding:15px 20px;background:#0837A1;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:16px 16px 0 0}
+ #tth-hotfix-modal .hf-head h2{font-size:20px;margin:0;color:#fff}
+ #tth-hotfix-modal .hf-main{overflow:auto;padding:16px 20px 8px}
+ #tth-hotfix-modal .hf-actions{padding:14px 20px;border-top:1px solid #d6e1f1;display:flex;gap:8px;flex-wrap:wrap;background:#fbfdff;border-radius:0 0 16px 16px}
+ #tth-hotfix-modal .hf-btn,.hf-access{background:#fff;border:1px solid #8ab1d6;border-radius:8px;padding:7px 10px;color:#0837A1;cursor:pointer;font:700 13px Arial}
+ #tth-hotfix-modal .hf-btn.primary,.hf-access.primary{background:#0837A1;color:#fff}
+ #tth-hotfix-modal .hf-btn:hover,.hf-access:hover{background:#eaf3ff;color:#0837A1}
+ #tth-hotfix-modal .hf-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ #tth-hotfix-modal .hf-field{border:1px solid #d5e2f1;border-radius:10px;padding:10px;background:#fbfdff}
+ #tth-hotfix-modal .hf-field.wide{grid-column:1/-1}
+ #tth-hotfix-modal .hf-field label{display:block;font-weight:700;color:#0837A1;font-size:13.5px;margin-bottom:6px}
+ #tth-hotfix-modal .hf-field input,#tth-hotfix-modal .hf-field select,#tth-hotfix-modal .hf-field textarea{width:100%;border:1px solid #a7bfd9;background:#fff;border-radius:7px;padding:9px;font:14px Arial;color:#172B4D;box-sizing:border-box}
+ #tth-hotfix-modal .hf-field small{display:block;color:#64748b;margin-top:6px;font-size:12px}
+ #tth-hotfix-modal .hf-note{border-left:3px solid #ED3237;padding:9px 12px;background:#fff6f6;font-size:13.5px;line-height:1.5;margin:12px 0}
+ #tth-hotfix-modal .hf-rep{background:#f3f7fc;border:1px solid #c6d6e8;padding:12px;margin:10px 0;border-radius:10px}
+ #tth-hotfix-modal .hf-rep h3{font-size:16px;margin:3px 0 7px;color:#0837A1}
+ .hf-access{font-size:12px;margin:3px 4px 3px 0;white-space:nowrap}
+ .hf-rolebox{margin:12px 0;padding:12px 14px;background:#f8fbff;border:1px solid #c5d7ee;border-radius:10px}
+ .hf-rolebox table{width:100%;border-collapse:collapse;font-size:13.5px}
+ .hf-rolebox th,.hf-rolebox td{padding:7px 9px;border:1px solid #d0dfef;vertical-align:top;text-align:left}
+ .hf-rolebox th{background:#e9f2ff;color:#0837A1}
+ .hf-rolebox caption{text-align:left;font-weight:800;color:#0837A1;padding:6px 0}
+ #tth-hotfix-tip{position:fixed;z-index:20015;pointer-events:none;max-width:min(390px,89vw);padding:11px 14px;background:#102c56;color:#fff;border-radius:9px;box-shadow:0 10px 32px #0004;font:13px/1.5 Arial}
+ #tth-hotfix-tip b{display:block;color:#fff;margin-bottom:4px;font-size:13.5px}
+ .hf-gloss{border-bottom:1px dotted #0837A1;cursor:help}
+ .hf-hub{margin:14px 0;border:1px solid #bdcee3;background:#fff;border-radius:14px;padding:16px}
+ .hf-hub h3{color:#0837A1;margin:0 0 7px}
+ .hf-hub input{padding:8px 10px;width:min(400px,100%);border:1px solid #a7bfd9;border-radius:8px}
+ .hf-hub .hf-list{max-height:320px;overflow:auto;margin-top:10px}
+ .hf-hub .hf-item{border-top:1px solid #e2eaf5;padding:8px 0;display:flex;justify-content:space-between;gap:15px;align-items:center}
+ @media(max-width:700px){#tth-hotfix-modal .hf-fields{grid-template-columns:1fr}#tth-hotfix-modal .hf-field.wide{grid-column:1}#tth-hotfix-modal .hf-head h2{font-size:16px}#tth-hotfix-modal .hf-main{padding:12px}}
+ @media print{#tth-hotfix-modal,#tth-hotfix-tip,.hf-hub,.hf-access{display:none!important}}
+ `;document.head.appendChild(st);
+ var overlay=document.createElement('div');overlay.id='tth-hotfix-modal';overlay.hidden=true;overlay.innerHTML='<div class="hf-dialog" role="dialog" aria-modal="true" aria-labelledby="hf-title"><header class="hf-head"><h2 id="hf-title">Biểu mẫu</h2><button class="hf-btn" type="button" data-hf="close" aria-label="Đóng">Đóng ×</button></header><div class="hf-main" id="hf-main"></div><footer class="hf-actions"><button class="hf-btn" type="button" data-hf="save">Lưu nội dung đang nhập</button><button class="hf-btn" type="button" data-hf="blank">Xóa nội dung nhập</button><button class="hf-btn primary" type="button" data-hf="word">Tải Word (.docx)</button><button class="hf-btn primary" type="button" data-hf="excel">Tải Excel (.xlsx)</button></footer></div>';document.body.appendChild(overlay);
+ var tip=document.createElement('div');tip.id='tth-hotfix-tip';tip.hidden=true;document.body.appendChild(tip);
+}
+var curForm=null;
+function fieldDef(f){var t=(f.loai_du_lieu||'text').toLowerCase(),id='hf_'+f.ma_truong,val=drafts[curForm.ma]&&drafts[curForm.ma][f.ma_truong]||'';
+ var long=/rows|object|json|textlong|list|array/.test(t)||/kết quả|nội dung|dữ liệu|lịch|ghi chú/i.test(f.ten||'');
+ var input;
+ if(t==='month'){input='<input type="month" id="'+esc(id)+'" data-f="'+esc(f.ma_truong)+'" value="'+esc(val)+'">'}
+ else if(t==='date'){input='<input type="date" id="'+esc(id)+'" data-f="'+esc(f.ma_truong)+'" value="'+esc(val)+'">'}
+ else if(t==='money'||t==='number'||t==='integer'){input='<input type="number" step="any" id="'+esc(id)+'" data-f="'+esc(f.ma_truong)+'" value="'+esc(val)+'">'}
+ else if(t==='enum'&&/nhóm thương hiệu|nhóm báo cáo/i.test(f.ten)){input='<select data-f="'+esc(f.ma_truong)+'" id="'+esc(id)+'"><option value="">— Chọn nhóm —</option><option value="Nhóm 1"'+(val==='Nhóm 1'?' selected':'')+'>Nhóm 1 (TTH)</option><option value="Nhóm 2"'+(val==='Nhóm 2'?' selected':'')+'>Nhóm 2 (các thương hiệu còn lại)</option><option value="Toàn hệ thống"'+(val==='Toàn hệ thống'?' selected':'')+'>Toàn hệ thống</option></select>'}
+ else if(long){input='<textarea id="'+esc(id)+'" data-f="'+esc(f.ma_truong)+'" rows="3" placeholder="Nhập nội dung; với bảng nhiều dòng, nhập mỗi dòng một mục...">'+esc(val)+'</textarea>'}
+ else input='<input type="text" id="'+esc(id)+'" data-f="'+esc(f.ma_truong)+'" value="'+esc(val)+'">';
+ return '<div class="hf-field'+(long?' wide':'')+'"><label for="'+esc(id)+'">'+esc(f.ten||f.ma_truong)+(f.bat_buoc?' <span style="color:#ED3237">*</span>':'')+'</label>'+input+'<small>Trường: '+esc(f.ma_truong)+' · Nguồn: '+esc(f.nguon||'Chờ xác nhận nguồn')+' · Nhập: '+esc(f.nguoi_nhap||'Theo phân quyền')+'</small></div>'}
+function safeName(s){return String(s||'mau').replace(/[^a-z0-9À-ỹ._-]+/ig,'-').slice(0,70)}
+function reportBlocks(){return '<div class="hf-rep"><h3>Cấu trúc bắt buộc của báo cáo tháng</h3><p><b>A. Hoạt động thường xuyên:</b> đầu việc định kỳ theo mã việc, kế hoạch tháng, kết quả và bằng chứng.</p><p><b>B. Hạng mục trọng điểm:</b> báo cáo theo mã Hạng mục, tiến độ, ngân sách, đầu ra và người chủ trì.</p><p><b>C. Tổng hợp kết quả:</b> so sánh kế hoạch – thực hiện, theo đơn vị/nhóm thương hiệu, đối soát chỉ tiêu đã chốt.</p><p><b>Chống cộng trùng:</b> một đầu ra gắn một mã nguồn; nếu hoạt động thường xuyên thuộc một Hạng mục thì chỉ cộng một lần vào tổng hợp, phần còn lại hiển thị tham chiếu.</p></div>'}
+function b7Help(){return '<div class="hf-rep"><h3>Danh mục dạng video áp dụng B7</h3><p><b>V2 (theo mẫu dựng):</b> 01 giới thiệu bác sĩ/khoa phòng; 02 cơ sở vật chất; 03 hướng dẫn thủ tục; 04 sự kiện; 05 dịch vụ; 06 giá/ưu đãi; 07 kiến thức sức khỏe theo lời đã xác nhận.</p><p><b>V3-A:</b> chân dung nhân sự, văn hóa, đối tác, cộng đồng có kịch bản/phỏng vấn nhưng không khẳng định y khoa. <b>V3-B:</b> bác sĩ giải thích chuyên môn, câu chuyện người bệnh/ca bệnh; cần xác nhận chuyên môn và quyền hình ảnh. <b>V4:</b> phim thương hiệu, phim chiến dịch/phóng sự chuyên sâu.</p><p><b>Nguyên tắc:</b> Biên tập viết lời; Media TCT làm phân cảnh/mẫu; Media cơ sở quay/dựng V2, V3 trong mẫu; TCT làm V3 phức tạp/V4 và kiểm kỹ thuật; người được ủy quyền mới duyệt phát hành. Đọc bảng B7 chi tiết tại mục 15.3.</p></div>'} 
+function openForm(code){curForm=byForm[code];if(!curForm)return;curForm=Object.assign({},curForm);curForm.isFallback=!(curForm.truong&&curForm.truong.length);if(curForm.isFallback){curForm.truong=[
+ {ma_truong:'tinh_trang_ban_goc',ten:'Tình trạng bản gốc và vị trí lưu trữ',loai_du_lieu:'text',bat_buoc:true,nguon:'Người nắm giữ tài liệu xác nhận',nguoi_nhap:'Người nắm giữ / người được giao'},
+ {ma_truong:'phien_ban_hieu_luc',ten:'Phiên bản, ngày hiệu lực (nếu có)',loai_du_lieu:'text',bat_buoc:false,nguon:'Tài liệu gốc',nguoi_nhap:'Người nắm giữ'},
+ {ma_truong:'nguon_can_cu',ten:'Nguồn và căn cứ đối chiếu',loai_du_lieu:'text',bat_buoc:true,nguon:'Hồ sơ gốc',nguoi_nhap:'Người nắm giữ'},
+ {ma_truong:'dau_moi_chuyen_mon',ten:'Đầu mối chuyên môn xác nhận',loai_du_lieu:'text',bat_buoc:true,nguon:'Phân công được duyệt',nguoi_nhap:'Người quản lý'},
+ {ma_truong:'hang_muc_con_thieu',ten:'Nội dung cần bổ sung trước khi ban hành',loai_du_lieu:'rows',bat_buoc:true,nguon:'Kết quả rà soát',nguoi_nhap:'Người xây dựng'},
+ {ma_truong:'tinh_trang_phe_duyet',ten:'Người duyệt và trạng thái phê duyệt',loai_du_lieu:'text',bat_buoc:true,nguon:'Luồng phê duyệt',nguoi_nhap:'Người quản lý'}
+ ]}modalSetup();var modal=document.getElementById('tth-hotfix-modal');document.getElementById('hf-title').textContent=curForm.ma+' — '+curForm.ten;
+ var fs=(curForm.truong||[]).map(fieldDef).join('');var main=document.getElementById('hf-main');
+ var fallbackNote=curForm.isFallback?'<div class="hf-note"><b>CHƯA CÓ MẪU GỐC.</b> Tài liệu này mới có tên/mô tả trong danh mục, chưa có bộ trường nội dung đủ để tái tạo mẫu. Phần nhập bên dưới là <b>phiếu theo dõi/xác nhận tài liệu</b>, KHÔNG PHẢI bản gốc hoặc mẫu chuyên môn. Riêng B-7 và các bộ nhận diện/quy chuẩn, bắt buộc đối chiếu nguồn trước khi chốt.</div>':'';
+ main.innerHTML='<p><b>Loại:</b> '+esc(curForm.loai)+' · <b>Phạm vi:</b> '+esc(curForm.pham_vi||'Chung')+'</p><p>'+esc(curForm.noi_dung||'')+'</p><div class="hf-note"><b>Bản biểu mẫu làm việc theo dữ liệu khung, chưa thay thế bản được cấp có thẩm quyền ban hành.</b> Các trường có ghi “chờ xác nhận” chỉ có giá trị dự thảo. Số liệu và thẩm quyền không được tự suy diễn.</div>'+fallbackNote+(curForm.ma==='BM-1'?reportBlocks():'')+(curForm.ma==='B-7'?b7Help():'')+'<div class="hf-fields">'+fs+'</div>';
+ modal.querySelector('[data-hf="word"]').textContent=curForm.isFallback?'Tải phiếu theo dõi Word (.docx)':'Tải mẫu Word (.docx)';
+ modal.querySelector('[data-hf="excel"]').textContent=curForm.isFallback?'Tải phiếu theo dõi Excel (.xlsx)':'Tải mẫu Excel (.xlsx)';
+ modal.hidden=false;document.body.style.overflow='hidden';modal.querySelector('[data-hf="close"]').focus();}
+function closeForm(){document.getElementById('tth-hotfix-modal').hidden=true;document.body.style.overflow='';curForm=null}
+function values(){var o={};document.querySelectorAll('#hf-main [data-f]').forEach(function(el){o[el.getAttribute('data-f')]=el.value||''});return o}
+function save(){if(curForm){drafts[curForm.ma]=values();return true}return false}
+function xml(s){return esc(s).replace(/\r/g,'').replace(/\n/g,'&#10;')}
+function docxBuild(f,v){var rows=(f.truong||[]).map(function(a){return '<w:tr><w:tc><w:p>'+run(a.ten,true)+'</w:p></w:tc><w:tc><w:p>'+run(v[a.ma_truong]||' ',false)+'</w:p></w:tc></w:tr>'}).join('');
+ function run(t,b){return '<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="Times New Roman"/><w:sz w:val="28"/>'+(b?'<w:b/>':'')+'</w:rPr><w:t xml:space="preserve">'+xml(t)+'</w:t></w:r>'}
+ function para(t,b){return '<w:p>'+run(t,b)+'</w:p>'}
+ var more=f.ma==='BM-1'?para('PHẦN A. HOẠT ĐỘNG THƯỜNG XUYÊN',true)+para('Ghi kết quả theo mã việc, đối chiếu với kế hoạch tháng và bằng chứng.',false)+para('PHẦN B. HẠNG MỤC TRỌNG ĐIỂM',true)+para('Ghi kết quả theo mã Hạng mục và nguồn dữ liệu.',false)+para('PHẦN C. TỔNG HỢP KẾT QUẢ',true)+para('Chỉ cộng một lần mỗi đầu ra theo mã nguồn. Nội dung giao thoa được trình bày dưới dạng tham chiếu.',false):'';
+ var body=para(f.isFallback?'TTH GROUP – PHIẾU THEO DÕI TÀI LIỆU (CHƯA CÓ MẪU GỐC)':'TTH GROUP – MẪU LÀM VIỆC (CHỜ PHÊ DUYỆT)',true)+para(f.ma+' – '+f.ten,true)+para('Dữ liệu xuất từ Khung Marketing; không tự động tạo hiệu lực pháp lý.',false)+more+'<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:tblBorders><w:top w:val="single"/><w:left w:val="single"/><w:bottom w:val="single"/><w:right w:val="single"/><w:insideH w:val="single"/><w:insideV w:val="single"/></w:tblBorders></w:tblPr>'+rows+'</w:tbl>';
+ return '<'+'?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr></w:body></w:document>'}
+function excelBuild(f,v){var arr=[[f.isFallback?'TTH GROUP – PHIẾU THEO DÕI TÀI LIỆU (CHƯA CÓ MẪU GỐC)':'TTH GROUP – MẪU LÀM VIỆC (CHỜ PHÊ DUYỆT)',''],[f.ma+' – '+f.ten,''],['Trường dữ liệu','Nội dung nhập']];(f.truong||[]).forEach(function(a){arr.push([a.ten,v[a.ma_truong]||''])});if(f.ma==='BM-1')arr.push(['Chống tính trùng','Mỗi đầu ra ghi nhận một lần theo mã việc/mã Hạng mục; các nhánh khác chỉ tham chiếu.']);
+ var rr=arr.map(function(a,i){return '<row r="'+(i+1)+'">'+a.map(function(t,j){return '<c r="'+(j?'B':'A')+(i+1)+'" s="'+(i<3?'1':'0')+'" t="inlineStr"><is><t xml:space="preserve">'+xml(t)+'</t></is></c>'}).join('')+'</row>'}).join('');
+ return '<'+'?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:B'+arr.length+'"/><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="18"/><cols><col min="1" max="1" width="44" customWidth="1"/><col min="2" max="2" width="80" customWidth="1"/></cols><sheetData>'+rr+'</sheetData></worksheet>'}
+var crcTable=null;function makeCrc(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);t.push(c>>>0)}return t}
+function crc32(b){if(!crcTable)crcTable=makeCrc();var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=crcTable[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function u16(view,p,v){view.setUint16(p,v,true)}function u32(view,p,v){view.setUint32(p,v>>>0,true)}
+function zip(entries){var enc=new TextEncoder(),parts=[],cent=[],off=0;
+ function putHead(name,bytes){var nb=enc.encode(name),crc=crc32(bytes),local=new Uint8Array(30+nb.length),lv=new DataView(local.buffer);u32(lv,0,0x04034b50);u16(lv,4,20);u16(lv,6,0x0800);u16(lv,8,0);u32(lv,14,crc);u32(lv,18,bytes.length);u32(lv,22,bytes.length);u16(lv,26,nb.length);local.set(nb,30);parts.push(local,bytes);var cd=new Uint8Array(46+nb.length),dv=new DataView(cd.buffer);u32(dv,0,0x02014b50);u16(dv,4,20);u16(dv,6,20);u16(dv,8,0x0800);u16(dv,10,0);u32(dv,16,crc);u32(dv,20,bytes.length);u32(dv,24,bytes.length);u16(dv,28,nb.length);u32(dv,42,off);cd.set(nb,46);cent.push(cd);off+=local.length+bytes.length}
+ Object.keys(entries).forEach(function(n){putHead(n,enc.encode(entries[n]))});var cs=cent.reduce(function(n,a){return n+a.length},0),end=new Uint8Array(22),ev=new DataView(end.buffer);u32(ev,0,0x06054b50);u16(ev,8,cent.length);u16(ev,10,cent.length);u32(ev,12,cs);u32(ev,16,off);return new Blob(parts.concat(cent,[end]),{type:'application/zip'})}
+function packageOffice(f,v,type){var ctype='<?xml version="1.0" encoding="UTF-8"?>',o={};
+ if(type==='word'){
+ o['[Content_Types].xml']=ctype+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+ o['_rels/.rels']=ctype+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+ o['word/document.xml']=docxBuild(f,v)
+ }else{
+ o['[Content_Types].xml']=ctype+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>';
+ o['_rels/.rels']=ctype+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+ o['xl/workbook.xml']=ctype+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Mau '+xml(f.ma)+'" sheetId="1" r:id="rId1"/></sheets></workbook>';
+ o['xl/_rels/workbook.xml.rels']=ctype+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+ o['xl/styles.xml']=ctype+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="12"/><name val="Times New Roman"/></font><font><b/><sz val="12"/><name val="Times New Roman"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0"/></cellXfs></styleSheet>';
+ o['xl/worksheets/sheet1.xml']=excelBuild(f,v);
+ }
+ return zip(o)
+}
+function triggerDownload(blob,name){var a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},3000)}
+function exportForm(type){if(!curForm)return;save();var blob=packageOffice(curForm,drafts[curForm.ma],type);triggerDownload(blob,safeName((curForm.isFallback?'PHIEU-THEO-DOI-':'')+curForm.ma+'_'+curForm.ten)+(type==='word'?'.docx':'.xlsx'))}
+function roleDesc(id){var labels={'bt':['bt-ac','bt-b'],'md':['md-ac','md-b','mdcs-a','mdcs-b'],'tk':['tk-a','tk-b','tk-nt'],'qc':['qc-a','qc-b'],'th':['qlth-a','qlth-bc','cvtt-a','cvtt-bc'],'cs':['tn-a','tn-b','qhcs','mdcs-a','mdcs-b','dmpk','qlml'],'dl':['dl-1','dl-2'],'so':['qlsps'],'ql':['tp','cvt'],'nl':['nhan-luc']};var a=[];
+ Object.keys(labels).forEach(function(k){if(labels[k].indexOf(id)>=0)a.push(k)});return a}
+function roleTableFor(id){var keys=roleDesc(id);if(!keys.length)return '';
+ var ds=docs.filter(function(d){return responsibilities[d.ma].some(function(k){return keys.indexOf(k)>=0})});if(!ds.length)return '';
+ var rows=ds.map(function(d){var same=responsibilities[d.ma].filter(function(k){return keys.indexOf(k)>=0});return '<tr><td>'+esc(d.ma)+'</td><td>'+esc(d.ten)+'</td><td>'+esc(same.map(function(k){return roleNames[k].join('; ')}).join(' / '))+'</td><td>'+esc(d.chu_tri==='cvt'?'Chuyên viên trưởng':((byPos[d.chu_tri]||{}).ten||d.chu_tri))+'</td><td>'+esc(d.nguoi_duyet||'Theo phân cấp')+'</td></tr>'}).join('');
+ return '<div class="hf-rolebox" data-hf-role="'+esc(id)+'"><b>Phụ lục 8 – Trách nhiệm chuyên môn và thực hiện (PHƯƠNG ÁN PHÂN CÔNG, CHƯA PHÊ DUYỆT)</b><p>“Chủ trì quản lý văn bản” trong dữ liệu gốc là người điều phối xây dựng/cập nhật văn bản. Danh sách dưới đây bổ sung <b>đầu mối chịu trách nhiệm chuyên môn</b> theo nhóm nghiệp vụ; người thực hiện cụ thể phải được xác định trong từng bước quy trình. Không tự động sửa người phê duyệt.</p><div class="tbl"><table class="t wide"><thead><tr><th>Mã</th><th>Quy trình/quy định có liên quan</th><th>Chuyên môn tham gia theo chức năng</th><th>Chủ trì văn bản ghi hiện tại</th><th>Người duyệt ghi hiện tại</th></tr></thead><tbody>'+rows+'</tbody></table></div><p><small>Các nhóm chuyên môn gợi ý theo tên và phạm vi văn bản. Cần đối chiếu từng bước và phê duyệt trước khi ban hành; không dùng bảng này để phân quyền phần mềm.</small></p></div>'}
+function doEnhance(){
+ // Bổ sung truy cập biểu mẫu ngay trong danh mục đã dựng động.
+ document.querySelectorAll('tr[id^="dm-"]').forEach(function(tr){if(tr.dataset.hfReady)return;var f=byForm[findFormCode(tr.id)];if(!f)return;tr.dataset.hfReady='1';var td=tr.querySelector('td:nth-child(2)')||tr.querySelector('td');if(!td)return;
+ var b=document.createElement('button');b.className='hf-access primary';b.type='button';b.textContent=(f.truong&&f.truong.length)?'Xem / điền / tải mẫu':'Xem trạng thái / phiếu theo dõi';b.dataset.hfOpen=f.ma;td.appendChild(document.createElement('br'));td.appendChild(b)});
+ // Phụ lục 8: phân biệt rõ chủ trì quản lý văn bản và chịu trách nhiệm chuyên môn.
+ document.querySelectorAll('h4').forEach(function(h){if(!/^Phụ lục 8\./.test(h.textContent.trim()))return;var parent=h.parentElement;if(!parent||parent.querySelector('.hf-rolebox'))return;var wrap=h.closest('[data-v]')||h.closest('[data-position]')||h.parentElement;var v=(wrap&&((wrap.getAttribute('data-v')||wrap.getAttribute('data-position'))))||'';
+ if(!v){var outer=h.closest('[id]');if(outer)v=outer.id.replace(/^ops-vt-/,'')}
+ if(!byPos[v]){var found=h.closest('article,[data-id],section');if(found){var s=found.textContent.slice(0,250);var pos=positions.find(function(p){return s.indexOf(p.ten)>=0});if(pos)v=pos.id}}
+ if(byPos[v]){h.insertAdjacentHTML('afterend',roleTableFor(v));var p=h.parentElement.querySelector('p.mini');if(p&&p.textContent.indexOf('Không chủ trì quy trình')>=0)p.textContent='Không chủ trì quản lý văn bản theo dữ liệu đang nhập; trách nhiệm chuyên môn xem bảng bổ sung.'}
+ });
+ document.querySelectorAll('p.mini').forEach(function(p){if(p.textContent.trim()==='Không chủ trì quy trình, quy định nào.')p.textContent='Chưa được ghi là người chủ trì quản lý văn bản. Vẫn phải chịu trách nhiệm chuyên môn và thực hiện các bước thuộc vị trí của mình.'});
+}
+function createHub(){var root=document.getElementById('ops-root')||document.getElementById('v-ops');if(!root||document.getElementById('hf-hub'))return;var box=document.createElement('div');box.className='hf-hub';box.id='hf-hub';box.innerHTML='<h3>74 tài liệu · 32 biểu mẫu/sổ đã có trường · 42 mục chờ mẫu gốc</h3><p>32 mẫu có thể mở, điền và xuất Word/Excel. Với 42 mục chưa có cấu trúc nguồn, chức năng chỉ tạo <b>phiếu theo dõi tài liệu</b>, không tự chế bản mẫu chuyên môn. Mọi tệp đều ghi rõ trạng thái.</p><input type="search" id="hf-search" placeholder="Tìm mã hoặc tên biểu mẫu..." aria-label="Tìm biểu mẫu"><div class="hf-list" id="hf-list"></div>';
+ root.insertBefore(box,root.firstChild);function list(q){var el=document.getElementById('hf-list');el.innerHTML=forms.filter(function(f){return (f.ma+' '+f.ten).toLocaleLowerCase('vi').includes((q||'').toLocaleLowerCase('vi'))}).map(function(f){return '<div class="hf-item"><span><b>'+esc(f.ma)+'</b> — '+esc(f.ten)+'<br><small>'+esc(f.loai)+(f.truong&&f.truong.length?' · Có trường dữ liệu':' · Chờ bản gốc')+'</small></span><button type="button" class="hf-access primary" data-hf-open="'+esc(f.ma)+'">'+(f.truong&&f.truong.length?'Mở mẫu':'Phiếu theo dõi')+'</button></div>'}).join('')||'<p>Không có biểu mẫu phù hợp.</p>'};list('');document.getElementById('hf-search').addEventListener('input',function(){list(this.value)})}
+function helpFromAnchor(a){var href=a.getAttribute('href')||'';if(href.charAt(0)!=='#')return null;var id=decodeURIComponent(href.slice(1)),v='';
+ if(id.indexOf('dm-')===0){var f=byForm[id.slice(3)];if(f)return [f.ma+' — '+f.ten,(f.noi_dung||'')+' · '+(f.truong||[]).length+' trường dữ liệu. Bấm để xem hoặc xuất mẫu. Bản đang chờ cấp có thẩm quyền xác nhận.']}
+ if(id.indexOf('qtac-')===0){var q=(D.quy_tac||[]).find(function(q){return 'qtac-'+q.ma===id});if(q)return [q.ma+' — '+q.ten,q.noi_dung||'']}
+ var el=document.getElementById(id);if(el){var head=el.querySelector('h2,h3,h4')||el;var title=(head.textContent||'').trim().slice(0,110);var p=el.querySelector('p,li,td');return [title,(p?p.textContent.trim().slice(0,190):'Bấm để đến mục nguồn.')+' Các quyền, tiêu chí chỉ áp dụng theo phiên bản được phê duyệt.']}
+ return null}
+function knownTerm(target){var a=target.closest('a[href^="#"]');if(a){var h=helpFromAnchor(a);if(h)return h}
+ var docRow=target.closest('tr[id^="dm-"]');if(docRow){var f=byForm[findFormCode(docRow.id)];if(f)return[f.ma+' — '+f.ten,(f.noi_dung||'')+' '+(f.truong&&f.truong.length?'Có '+f.truong.length+' trường dữ liệu để lập mẫu.':'Chưa có mẫu gốc, chỉ cho phép phiếu theo dõi.')]}var a=target.closest('[data-hf-term]');if(a&&manual[a.dataset.hfTerm])return [a.dataset.hfTerm,manual[a.dataset.hfTerm]];
+ var pos=target.closest('.pos,.jd-head');if(pos){var t=pos.textContent.trim().slice(0,140);return [t,'Mô tả công việc, quyền và trách nhiệm theo vị trí trong khung. Chọn vị trí để đọc chi tiết.']}
+ return null}
+var hoverAt=null;function hover(e){var target=e.target;if(!(target instanceof Element))return;var hit=knownTerm(target);var tip=document.getElementById('tth-hotfix-tip');if(!tip)return;if(!hit){tip.hidden=true;hoverAt=null;return}if(hoverAt===target&&!tip.hidden)return;hoverAt=target;tip.innerHTML='<b>'+esc(hit[0])+'</b>'+esc(hit[1]);tip.hidden=false;var x=Math.min(window.innerWidth-tip.offsetWidth-12,e.clientX+18),y=e.clientY+14;if(y+tip.offsetHeight>window.innerHeight-8)y=e.clientY-tip.offsetHeight-12;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
+function markTerms(){var scopes=Array.from(document.querySelectorAll('.view'));var terms=['Vòng chỉnh sửa','Chủ trì xây dựng, quản lý văn bản','Chịu trách nhiệm chuyên môn quy trình','Trách nhiệm quản lý quy trình','Mẫu khóa','Quy tắc chặn','Contact Center','V2/V3','B-7','Quy trình','Quy định','Chủ trì văn bản','KPI','Biểu mẫu'];var rx=new RegExp('('+terms.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}).join('|')+')','gi');var marked=0;
+ scopes.forEach(function(root){var sectionCount=0;if(!root)return;var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];while(tw.nextNode()&&nodes.length<5000){var n=tw.currentNode,p=n.parentElement;if(!p||p.closest('script,style,a,abbr,button,input,textarea,.hf-hub,.hf-rolebox'))continue;if(!rx.test(n.nodeValue)){rx.lastIndex=0;continue}rx.lastIndex=0;nodes.push(n)}nodes.forEach(function(n){if(sectionCount>=230)return;var text=n.nodeValue,frag=document.createDocumentFragment(),start=0;rx.lastIndex=0;var m;while((m=rx.exec(text))&&sectionCount<230){if(m.index>start)frag.appendChild(document.createTextNode(text.slice(start,m.index)));var s=document.createElement('abbr');s.className='hf-gloss';s.dataset.hfTerm=terms.find(function(k){return k.toLowerCase()===m[0].toLowerCase()})||m[0];s.textContent=m[0];s.setAttribute('tabindex','0');frag.appendChild(s);marked++;sectionCount++;start=rx.lastIndex}if(start<text.length)frag.appendChild(document.createTextNode(text.slice(start)));if(n.parentNode)n.parentNode.replaceChild(frag,n)})})}
+function init(){modalSetup();createHub();doEnhance();markTerms();
+ var observer=new MutationObserver(function(m){var changed=m.some(function(x){return x.addedNodes&&Array.from(x.addedNodes).some(function(n){return n.nodeType===1&&!(n.matches&&n.matches('.hf-rolebox,.hf-hub,.hf-access,#tth-hotfix-modal,#tth-hotfix-tip'))})});if(changed)requestAnimationFrame(doEnhance)});
+ var root=document.getElementById('ops-root');if(root)observer.observe(root,{childList:true,subtree:true});
+ document.addEventListener('click',function(e){var target=e.target;if(!(target instanceof Element))return;var b=target.closest('[data-hf-open]');if(b){e.preventDefault();openForm(b.dataset.hfOpen);return}var c=target.closest('[data-hf]');if(!c)return;switch(c.dataset.hf){case 'close':closeForm();break;case 'save':save();c.textContent='Đã lưu trong phiên xem';break;case 'blank':if(curForm){drafts[curForm.ma]={};openForm(curForm.ma)}break;case 'word':exportForm('word');break;case 'excel':exportForm('excel');break}});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.getElementById('tth-hotfix-modal');if(m&&!m.hidden)closeForm();var tip=document.getElementById('tth-hotfix-tip');if(tip)tip.hidden=true}});
+ document.getElementById('tth-hotfix-modal').addEventListener('click',function(e){if(e.target===this)closeForm()});
+ document.addEventListener('mousemove',hover,{passive:true});document.addEventListener('focusin',function(e){if(e.target.matches('.hf-gloss')){var x=e.target.getBoundingClientRect();hover({target:e.target,clientX:x.left,clientY:x.bottom})}});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+</script>
+<script id="no-overflow-layout-script">
+(function(){
+if(window.__tthNoHorizontalOverflow)return;window.__tthNoHorizontalOverflow=true;
+function prepare(t){
+ var h=t.tHead&&t.tHead.rows[0]?Array.from(t.tHead.rows[0].cells).map(c=>(c.innerText||c.textContent||'').replace(/\s+/g,' ').trim()):[];
+ var n=h.length||Math.max(0,...Array.from(t.rows).slice(0,6).map(r=>r.cells.length));
+ Array.from(t.tBodies).forEach(b=>Array.from(b.rows).forEach(r=>{let index=0;Array.from(r.cells).forEach(c=>{if(!c.dataset.tthTitle)c.dataset.tthTitle=h[index]||(index===0?'Mục':'Thông tin '+(index+1));index+=Math.max(1,c.colSpan||1)})}));
+ return n;
+}
+function fix(){
+ var w=innerWidth;
+ Array.from(document.querySelectorAll('#main table')).forEach(t=>{
+  var n=prepare(t),p=t.closest('.tbl,.table-wrap,.approval-matrix,.rg-wrap');
+  var wide=!!p&&p.clientWidth>5&&(t.getBoundingClientRect().width>p.getBoundingClientRect().width+2 || t.scrollWidth>p.clientWidth+6);
+  var nested=!!(t.closest('td,th')||t.querySelector('table'));
+  var card=nested||(w<=760&&n>=3)||(w<=1200&&n>=5)||n>=6||wide;
+  if(card){t.classList.add('tth-card');for(const k of ['width','max-width'])t.style.setProperty(k,'100%','important');t.style.setProperty('min-width','0px','important');t.style.setProperty('table-layout','auto','important');}
+  else{t.classList.remove('tth-card');for(const k of ['width','max-width'])t.style.setProperty(k,'100%','important');t.style.setProperty('min-width','0px','important');t.style.setProperty('table-layout','fixed','important');}
+ });
+}
+var scheduled=false;function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;fix()})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
+addEventListener('resize',schedule);
+document.addEventListener('click',e=>{if(e.target.closest('.tab,summary,details,button,[data-target]')){schedule();setTimeout(schedule,200);setTimeout(schedule,600)}},true);
+document.addEventListener('toggle',schedule,true);
+var root=document.getElementById('main');if(root)new MutationObserver(ms=>{if(ms.some(m=>m.addedNodes.length))schedule()}).observe(root,{childList:true,subtree:true});
+})();
+</script><script id="offline-smart-columns-js">
+
+(function(){
+ if(window.__TTH_OFFLINE_SMART_COLUMNS__)return;window.__TTH_OFFLINE_SMART_COLUMNS__=true;
+ const fixed = new WeakSet(), moved = new WeakSet();
+ let scheduled=false;
+ function normal(s){return (s||'').replace(/\s+/g,' ').trim()}
+ function hasNested(t){return !!t.closest('td,th')}
+ function rehome(){
+  const main=document.getElementById('main');if(!main)return;
+  // Không để bảng thông số nằm trong một ô 160 px: đưa toàn bộ bảng chi tiết về cuối cùng tiểu mục.
+  for(const d of Array.from(main.querySelectorAll('td details'))){
+   if(moved.has(d)||!d.querySelector('table'))continue;
+   const td=d.closest('td');const sec=d.closest('.doc-sec');if(!sec||!td)continue;
+   let host=Array.from(sec.children).find(el=>el.classList?.contains('offline-full-form-details'));
+   if(!host){host=document.createElement('div');host.className='offline-full-form-details';sec.appendChild(host)}
+   const original=normal(d.querySelector('summary')?.textContent)||'Trường dữ liệu';
+   const row=td.closest('tr'),first=normal(row?.cells?.[0]?.textContent).slice(0,74);
+   const title=(first?first+' — ':'')+original;
+   const id='offline-detail-'+(host.children.length+1)+'-'+Array.from(document.querySelectorAll('.offline-full-form-details>details')).length;
+   d.id=id;const summary=d.querySelector('summary');if(summary)summary.textContent=title;
+   const a=document.createElement('a');a.href='#'+id;a.className='offline-full-form-link';a.textContent='Xem đầy đủ trường dữ liệu';
+   a.addEventListener('click',function(evt){evt.preventDefault();d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})});
+   td.insertBefore(a,d);host.appendChild(d);moved.add(d);
+  }
+ }
+ function shortIndex(label){return /^(#|stt|số thứ tự|thứ tự|tt|mã|id)$/i.test(normal(label))}
+ function columnWeights(table){
+  const head=Array.from(table.tHead?.rows?.[0]?.cells||[]), n=head.length;
+  if(n<2||n>5||hasNested(table)||table.classList.contains('tth-card'))return null;
+  if(table.classList.contains('pending-decisions-table'))return null;
+  const rows=Array.from(table.tBodies?.[0]?.rows||[]).slice(0,22);
+  if(!rows.length||rows.some(r=>r.cells.length!==n)||head.some(h=>h.colSpan>1))return null;
+  const labels=head.map(c=>normal(c.innerText||c.textContent));
+  const avg=Array(n).fill(0), sampled=Array(n).fill(0);
+  for(const row of rows){Array.from(row.cells).forEach((c,i)=>{
+    const clone=c.cloneNode(true);clone.querySelectorAll('table,details,script,style').forEach(el=>el.remove());
+    const text=normal(clone.textContent);
+    avg[i]+=Math.min(text.length,1500);sampled[i]++;
+  })}
+  const scores=avg.map((x,i)=>{
+    const amount=x/Math.max(1,sampled[i]);
+    const headAllowance=Math.min(labels[i].length,28)*.55;
+    return Math.pow(9+headAllowance+Math.min(amount,450),.68)*(shortIndex(labels[i])?.48:1);
+  });
+  const min=scores.map((x,i)=>shortIndex(labels[i])?5.5:(n===2?16:(n===3?12:10)));
+  const max=scores.map((x,i)=>shortIndex(labels[i])?11:(n===2?84:(n===3?70:58)));
+  const widths=Array(n).fill(0);let active=scores.map((_,i)=>i),rest=100;
+  // Ràng buộc cả min và max để một cột không chiếm hết hàng.
+  for(let iteration=0;iteration<n+5;iteration++){
+   const total=active.reduce((a,i)=>a+scores[i],0)||1;let changes=false;
+   for(const i of [...active]){const v=rest*scores[i]/total;if(v<min[i]||v>max[i]){const fixedValue=Math.max(min[i],Math.min(max[i],v));widths[i]=fixedValue;rest-=fixedValue;active=active.filter(j=>j!==i);changes=true}}
+   if(!changes)break;
+  }
+  const total=active.reduce((a,i)=>a+scores[i],0)||1;
+  for(const i of active)widths[i]=rest*scores[i]/total;
+  const correction=100-widths.reduce((a,b)=>a+b,0);widths[widths.length-1]+=correction;
+  return widths.map(w=>Math.round(w*10)/10)
+ }
+ function smart(){
+  const main=document.getElementById('main');if(!main)return;
+  for(const table of main.querySelectorAll('table:not(.tth-card)')){
+   if(fixed.has(table))continue;
+   const weights=columnWeights(table);if(!weights)continue;
+   const colgroup=table.querySelector(':scope > colgroup')||document.createElement('colgroup');
+   if(!colgroup.parentElement)table.insertBefore(colgroup,table.firstChild);
+   colgroup.replaceChildren(...weights.map(w=>{const col=document.createElement('col');col.style.setProperty('width',w+'%','important');return col}));
+   table.classList.add('offline-smart-columns');fixed.add(table);
+  }
+ }
+ function repair(){
+  const main=document.getElementById('main');if(!main)return;
+  for(const v of Array.from(document.querySelectorAll('.view')))if(!main.contains(v))main.appendChild(v);
+  rehome();smart();
+ }
+ function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;repair()})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+ window.addEventListener('resize',schedule);
+ document.addEventListener('click',e=>{if(e.target.closest('.tab,summary,details,button,[data-target]')){schedule();setTimeout(schedule,100)}},true);
+ document.addEventListener('toggle',schedule,true);
+})();
+</script>
+<script id="tth-full-depth-no-overflow-script">
+(function(){
+if(window.__TTH_OFFLINE_FULL_12_AUDIT_FIX__)return;window.__TTH_OFFLINE_FULL_12_AUDIT_FIX__=true;
+let scheduled=false;
+function label(c){return (c?.textContent||'').replace(/\s+/g,' ').trim()}
+function rebalanceTwoColumns(t){
+ if(t.classList.contains('tth-card')||t.classList.contains('pending-decisions-table'))return;
+ const th=Array.from(t.tHead?.rows?.[0]?.cells||[]);if(th.length!==2)return;
+ if(t.closest('td,th'))return;
+ const rows=Array.from(t.tBodies?.[0]?.rows||[]).slice(0,25);if(!rows.length)return;
+ let left=0,right=0,maxR=0;for(const row of rows){if(row.cells.length!==2)return;let a=label(row.cells[0]).length,b=label(row.cells[1]).length;left+=Math.min(a,380);right+=Math.min(b,550);maxR=Math.max(maxR,b)}
+ let p=left+right?left/(left+right):0.34;
+ p=Math.max(0.26,Math.min(0.48,p));
+ const h0=label(th[0]).toLowerCase(),h1=label(th[1]).toLowerCase();
+ if(/^(stt|tt|mã|thứ tự|#|số thứ tự)$/.test(h0))p=.10;
+ else if(/quy trình|mẫu|nội dung|diễn giải|cách thực hiện|thực hiện/.test(h1))p=Math.min(p,.34);
+ else if(maxR>170)p=Math.min(p,.38);
+ const colgroup=t.querySelector(':scope > colgroup')||document.createElement('colgroup');if(!colgroup.parentElement)t.insertBefore(colgroup,t.firstChild);
+ colgroup.replaceChildren(...[p,1-p].map(x=>{const c=document.createElement('col');c.style.setProperty('width',(x*100).toFixed(1)+'%','important');return c}));
+ t.dataset.twoColBalanced='1';
+}
+function fix(){
+ const main=document.getElementById('main');if(!main)return;
+ // Sửa hẳn 5 mục sai cha: mọi mục phải nằm trong main, không đặt ngoài cạnh sidebar.
+ for(const v of document.querySelectorAll('.view'))if(!main.contains(v))main.appendChild(v);
+ for(const t of main.querySelectorAll('table')){
+  if(t.getBoundingClientRect().width<=0)continue;
+  const th=Array.from(t.tHead?.rows?.[0]?.cells||[]),n=th.length;
+  if(t.classList.contains('tth-card')){if(t.dataset.twoColBalanced)delete t.dataset.twoColBalanced;continue}
+  const rowTexts=Array.from(t.tBodies?.[0]?.rows||[]).slice(0,35);
+  const longText=rowTexts.some(r=>Array.from(r.cells).some(c=>label(c).length>175));
+  const tooNarrow=t.scrollWidth>t.clientWidth+3;
+  const nested=!!t.closest('td,th');
+  const twoNarrowMobile=window.innerWidth<=760&&n===2&&(longText||tooNarrow);
+  if((twoNarrowMobile||tooNarrow)&&n>=2&&!nested){t.classList.add('tth-card');
+     if(!t.dataset.tthTitled){for(const r of Array.from(t.tBodies||[]).flatMap(x=>Array.from(x.rows))){Array.from(r.cells).forEach((c,i)=>{if(!c.dataset.tthTitle)c.dataset.tthTitle=label(th[i])||('Thông tin '+(i+1))})}t.dataset.tthTitled='1'}
+  }
+  else if(n===2&&t.dataset.twoColBalanced!=='1')rebalanceTwoColumns(t);
+ }
+}
+function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;fix()})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+window.addEventListener('resize',()=>{for(const t of document.querySelectorAll('#main table'))delete t.dataset.twoColBalanced;schedule()});
+document.addEventListener('click',()=>{schedule();setTimeout(schedule,100)},true);
+document.addEventListener('toggle',()=>{schedule();setTimeout(schedule,100)},true);
+})();
+</script></body></html>
