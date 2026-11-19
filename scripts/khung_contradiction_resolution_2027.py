@@ -321,7 +321,7 @@ s=s.replace('<div class="stat"><b>56</b><span>khi đủ 10 bệnh viện, 02 ph�
 s=s.replace('<section class="doc-sec" data-title="21. Quy tắc định biên, ngưỡng và lộ trình bổ sung" id="m-21">',
  '<section class="doc-sec" data-title="21. Quy tắc định biên, ngưỡng và lộ trình bổ sung" id="m-21"><p style="padding:12px;border-left:4px solid #ED3237;background:#FFF9F9"><b>Lưu ý đối soát:</b> Các mốc 34 → 56 trong mục này thuộc phương án cũ; khi đổi sang 02 Chuyên viên trưởng và định biên hiện tại 36 suất, chưa thể coi các con số tiếp theo là lộ trình được chốt. Phải tính lại giờ thực đo theo từng chức danh/cơ sở và trình phê duyệt.</p>')
 # KPI extra data must remain read-only proposal, not a salary policy.
-m2=re.search(r'(<script id="csdl" type="application/json">)([\\s\\S]*?)(</script>)',s)
+m2=re.search(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)',s)
 if not m2: raise ValueError("JSON script marker removed during view repair")
 s=s[:m2.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("</script>","<\\/script>")+s[m2.end(2):]
 check=json.loads(re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>',s).group(1))
