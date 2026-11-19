@@ -265,7 +265,7 @@ script=(
 'var el=document.getElementById(id);if(!el)return;'
 'var v=el.closest(".view");'
 'if(v&&!v.classList.contains("on")){'
-'var tab=document.querySelector(".tab[data-target=\""+v.dataset.view+"\"]");'
+'var tab=Array.prototype.find.call(document.querySelectorAll(".tab"),function(t){return t.dataset.target===v.dataset.view});'
 'if(tab)tab.click();'
 '}'
 'if(v&&v.classList.contains("on")){setTimeout(function(){'
