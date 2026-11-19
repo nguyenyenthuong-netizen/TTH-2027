@@ -523,6 +523,59 @@ s=s.replace("</head>",hero_css+"</head>",1)
 assert 'tth-crm-hero-one-line-1911' in s and hero_src not in s
 print("PASS CRM opening: single-line headline, no red pseudo-dot over functional label")
 
+
+# Readable typography and deliberate TTH palette: avoid tiny gray-on-blue
+# text; allow cards to grow instead of locking their heights.
+readable_css=r"""<style id="tth-crm-typography-accessible-2111">
+:root{--tth-legible-blue:#0837A1;--tth-legible-ink:#173967;--tth-legible-muted:#395575}
+.layout>aside #sideNav .navbtn,
+.layout>aside #sideNav .navbtn .navtxt{font-size:15px!important;line-height:1.45!important}
+.layout>aside #sideNav .navbtn .navnum{font-size:14px!important;line-height:1.45!important}
+.layout>aside #sideNav .navbtn.active,
+.layout>aside #sideNav .navbtn[aria-current="page"],
+.layout>aside #sideNav .navbtn.on{
+ background:#0837A1!important;color:#fff!important;border-left-color:#ED3237!important
+}
+.layout>aside #sideNav .navbtn.active *,
+.layout>aside #sideNav .navbtn[aria-current="page"] *,
+.layout>aside #sideNav .navbtn.on *{color:#fff!important}
+.layout>aside #sideNav .navbtn:not(.active):not(.on):not([aria-current="page"]){color:#163C72!important}
+.layout>aside .navtitle{font-size:13px!important;color:#304F7B!important;line-height:1.45!important}
+.layout>aside .asideFoot>strong{font-size:16px!important;line-height:1.4!important}
+.layout>aside .asideFoot>p{font-size:15px!important;line-height:1.6!important}
+#s1 .hero-visual .hv-top>span{font-size:14px!important;line-height:1.42!important;color:#C02337!important}
+#s1 .hero-visual .hv-top{min-height:36px!important}
+#s1 .hero-visual .hv-top>span:last-child{max-width:100%!important}
+#s1 .hero-visual .hv-body small,
+#s1 .hero-visual .hv-body .muted,
+#s1 .hero-visual .hv-body p{font-size:14px!important;line-height:1.48!important;color:#385475!important}
+#s1 .hero-visual .hv-body b,
+#s1 .hero-visual .hv-body strong{color:#08377B!important}
+#s3 .crm-node-copy small,
+#s3 .crm-route,
+#s3 .crm-overview-top,
+#s3 .flowFooter,#s3 .flowFootNote{font-size:15px!important;line-height:1.48!important}
+#s3 .crm-node-copy strong{font-size:17px!important;line-height:1.42!important}
+#s3 .stepnum{font-size:14px!important}
+#s3 .flowbtn{font-size:15px!important;line-height:1.4!important}
+#s3 .crm-flow-node,#s3 .crm-phase-body{height:auto!important;min-height:0!important;max-height:none!important}
+#s3 .crm-compact-grid{align-items:stretch!important}
+#s3 .crm-phase-head{font-size:16px!important;line-height:1.42!important}
+#s3 button.crm-flow-node{min-height:100px!important;max-height:none!important;overflow:visible!important}
+#s3 button.crm-flow-node .crm-node-copy{min-height:0!important;max-height:none!important}
+#s3 .crm-phase-body{overflow:visible!important}
+#s3 .slideHeader p{font-size:16px!important;line-height:1.5!important}
+@media(max-width:900px){
+ .layout>aside #sideNav .navbtn,
+ .layout>aside #sideNav .navbtn .navtxt{font-size:14px!important;line-height:1.38!important}
+ #s3 .crm-node-copy small,#s3 .crm-route{font-size:14px!important}
+ #s3 .crm-phase-head{font-size:15px!important}
+}
+</style>"""
+s=s.replace("</head>",readable_css+"</head>",1)
+assert s.count("tth-crm-typography-accessible-2111")==1
+print("PASS CRM typography: accessible nav contrast, metadata >=14px, natural workflow card heights")
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
