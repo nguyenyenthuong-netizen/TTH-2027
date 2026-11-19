@@ -54,22 +54,30 @@ assert s.count(marker)==1
 assert 'id="tth-cvt-worked-examples-2027"' not in s
 idx=s.index(marker)
 at=s.index("</h3>",idx)+5
-th=["Mã và tình huống","Chủ việc / đầu ra","Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở","Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số","Kiểm tra và nghiệm thu","Quyền phê duyệt cuối","Hạch toán tải"]
-body=['<div id="tth-cvt-worked-examples-2027" style="max-width:100%;box-sizing:border-box;margin:16px 0 22px">']
-body.append('<h4 style="margin:10px 0;color:#0837A1">14 ví dụ phân vai hai Chuyên viên trưởng trong luồng vận hành</h4>')
-body.append('<p><strong>Cách đọc:</strong> Một mã việc – một chủ trì thực tế – một tuyến quản lý – một người có quyền duyệt theo phân cấp – một lần ghi tải. Chuyên viên trưởng quản trị chuẩn, nguồn lực và ngoại lệ; không tự động viết bài, dựng video, đăng kênh, duyệt y khoa, phát hành hoặc duyệt chi phí. Đây là ví dụ để triển khai/đối soát, không thay văn bản phân công và ủy quyền.</p>')
-body.append('<div style="max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #d6e0ef;border-radius:8px"><table class="t" style="min-width:1180px;width:100%;border-collapse:collapse"><thead><tr>')
-body.extend('<th>'+escape(h)+'</th>' for h in th)
-body.append('</tr></thead><tbody>')
-for x in cases:
- code,qid,name,owner,n,t,chk,approve,hours=x
- body.append('<tr><td><a href="#vh-qt-'+escape(qid)+'" style="color:#0837A1;text-decoration:underline;font-weight:700">'+escape(code)+'</a><div>'+escape(name)+'</div></td>')
- body.extend('<td>'+escape(z)+'</td>' for z in [owner,n,t,chk,approve,hours])
- body.append('</tr>')
-body.append('</tbody></table></div><p style="font-size:.95em">Các liên kết ở cột đầu mở quy trình liên quan. Khi áp dụng thực tế, gắn mã nhân sự, chứng từ kiểm, quyết định phân cấp và giờ thực đo cho từng đầu ra; thiếu một trong các điều kiện bắt buộc thì chặn bàn giao hoặc phát hành.</p></div>')
+labels=[
+("chu_viec","Chủ việc và đầu ra"),
+("cvt_noi_dung",N),
+("cvt_truyen_thong",T),
+("kiem_tra","Kiểm tra chuyên môn và bàn giao"),
+("phe_duyet","Phê duyệt có hiệu lực"),
+("hach_toan","Hạch toán giờ và KPI")
+]
+style='<style id="tth-cvt-examples-style-2027">#tth-cvt-worked-examples-2027{max-width:100%;min-width:0;overflow-wrap:anywhere}#tth-cvt-worked-examples-2027 .cvt-case{border:1px solid #d7e2f0;border-radius:8px;background:#fff;margin:10px 0;max-width:100%;box-sizing:border-box}#tth-cvt-worked-examples-2027 .cvt-case>summary{cursor:pointer;padding:12px 14px;color:#0837A1;font-weight:700;line-height:1.5}#tth-cvt-worked-examples-2027 .cvt-case-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 12px 12px}#tth-cvt-worked-examples-2027 .cvt-case-cell{min-width:0;border:1px solid #e4eaf3;border-radius:6px;padding:10px;overflow-wrap:anywhere}#tth-cvt-worked-examples-2027 .cvt-case-cell strong{display:block;color:#0837A1;font-size:.94em;margin-bottom:4px}@media(max-width:760px){#tth-cvt-worked-examples-2027 .cvt-case-grid{grid-template-columns:minmax(0,1fr)}#tth-cvt-worked-examples-2027 .cvt-case>summary{padding:12px}}</style>'
+body=[style,'<div id="tth-cvt-worked-examples-2027" style="max-width:100%;min-width:0;box-sizing:border-box;margin:16px 0 22px">']
+body.append('<h4 style="margin:10px 0;color:#0837A1">14 tình huống đối chiếu hai tuyến quản lý chuyên môn</h4>')
+body.append('<p><strong>Nguyên tắc:</strong> một mã việc, một người chủ trì thực tế, một tuyến quản lý, một người quyết định cuối theo từng loại phê duyệt, một lần ghi giờ. '+escape(N)+' và '+escape(T)+' quản trị đúng phạm vi; không tự mặc định quyền viết bài, dựng video, phát hành, duyệt y khoa hoặc chi phí. Đây là mô phỏng để đối chiếu, không thay quyết định giao quyền.</p>')
+for x in D["vi_du_van_hanh_hai_chuyen_vien_truong_2027"]:
+ code=x["ma"];qid=x["ma_quy_trinh"]
+ body.append('<details class="cvt-case"'+(' open' if code=="VD01" else '')+'><summary>'+escape(code+' – '+x["tinh_huong"])+'</summary><div class="cvt-case-grid">')
+ for key,label in labels:
+  body.append('<div class="cvt-case-cell"><strong>'+escape(label)+'</strong><div>'+escape(x[key])+'</div></div>')
+ body.append('</div><p style="padding:0 12px 12px;margin:0"><a href="#vh-qt-'+escape(qid)+'" style="color:#0837A1;text-decoration:underline">Xem quy trình liên quan</a></p></details>')
+body.append('<p>Để đưa vào vận hành, từng mã việc còn phải gắn nhân sự, phân công, chứng từ, quyền có hiệu lực và giờ thực đo. Thiếu điều kiện bắt buộc thì khóa bàn giao hoặc phát hành.</p></div>')
 s=s[:at]+''.join(body)+s[at:]
 assert s.count('id="tth-cvt-worked-examples-2027"')==1
-assert len(re.findall(r'<tr><td><a href="#vh-qt-',s))==14
-assert "id=\"vh-qt-" in s or 'vh-qt-' in s
+assert s.count('class="cvt-case"')==14
+assert s.count('class="cvt-case-cell"')==14*6
+assert s.count('Xem quy trình liên quan')==14
+assert '<table class="t" style="min-width:1180px' not in s
 p.write_text(s,"utf-8")
-print("PASS: 14 worked cases, 14 process links, explicit 2 CVTs, checks and workload accounting")
+print("PASS: 14 responsive examples, 14 links, explicit 2 CVTs, approvals and workload accounting")
