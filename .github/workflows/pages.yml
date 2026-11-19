@@ -113,6 +113,24 @@ jobs:
         run: python3 scripts/site_consistency_audit.py _site
       - name: Sua noi dung slide bi cat va kiem tra cau truc website app
         run: python3 scripts/slide_web_app_fix_2027.py _site
+      - name: Khac phuc slide 8 bi cat noi dung phan quyen hai Chuyen vien truong
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('_site/trinh-chieu-marketing/index.html')
+          s=p.read_text('utf-8')
+          before='.slide[data-index="7"] .content:has(.tth-chief-strip){display:flex!important;flex-direction:column!important;gap:12px!important;overflow:hidden!important}'
+          after='.slide[data-index="7"] .content:has(.tth-chief-strip){display:flex!important;flex-direction:column!important;gap:12px!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important}'
+          if s.count(before)!=1:
+              raise SystemExit('FAIL: khong tim thay duy nhat quy tac cat noi dung slide 8')
+          s=s.replace(before,after,1)
+          assert s.count('<section class="slide')==27
+          assert s.count(after)==1
+          assert 'tth-chief-strip' in s
+          p.write_text(s,'utf-8')
+          print('PASS: slide 8 co the cuon khi noi dung dai; 27 slide giu nguyen')
+          PY
       - name: Khoa dinh bien chuan 36 suat - 22 TCT va 14 co so
         run: python3 scripts/khung_dinh_bien_36_lock_2027.py _site
       - name: Khoa quyen hai Chuyen vien truong va chong luong quy trinh
