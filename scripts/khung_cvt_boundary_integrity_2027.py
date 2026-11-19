@@ -178,6 +178,19 @@ elif mode=="post":
                     "Chuyên viên trưởng",ND+" và "+TT
                 )
     put_data(d)
+    # CNNV đã dựng thêm bảng HTML tĩnh từ dữ liệu trước chuẩn hóa.
+    # Đồng bộ đúng các đoạn HTML mới với CSDL, không sửa JS hoặc ID.
+    src=src.replace(
+        "không duyệt mặc nhiên bởi Chuyên viên trưởng",
+        "không mặc nhiên giao quyền phê duyệt cho "+ND+" hoặc "+TT
+    )
+    pat=re.compile(
+        r'(<div class="cnnv-vt" id="cnnv-vt-bt-ac"[\\s\\S]*?</div>)',
+        re.I
+    )
+    src=pat.sub(lambda m: re.sub(
+        r'Chuyên viên trưởng(?!\\s+(?:Nội dung|Truyền thông))',
+        ND,m.group(0),flags=re.I),src)
     d=get_data()
     v=check_shape(d)
     assert BAD not in src
@@ -204,7 +217,7 @@ elif mode=="post":
     assert "màn hình" in v["qhcs"]["muc_dich"] and "phát thanh" in v["qhcs"]["muc_dich"]
     static=re.sub(r'<(?:script|style)\b[^>]*>[\s\S]*?</(?:script|style)>',' ',src,flags=re.I)
     static=re.sub(r'<[^>]+>',' ',static)
-    assert not bad.search(static),"HTML tĩnh còn CVT chung"
+    assert not bad.search(static),"HTML tĩnh còn CVT chung: "+repr([static[max(0,m.start()-55):m.end()+75] for m in list(bad.finditer(static))[:6]])
     assert not re.search(r'\bCVT\s*[12]\b|Chuyên viên trưởng\s+(?:[12]|thứ nhất|thứ hai)\b',
                          static,re.I),"Còn chức danh đánh số"
     print("PASS CVT POSTBUILD: 26 chức danh, 60 quy trình, 407 bước, 83 văn bản; "
