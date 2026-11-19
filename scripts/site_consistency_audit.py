@@ -25,4 +25,14 @@ for name,src in pages.items():
    print("AUDIT-CRM-CONTROL",term, "pos",a,repr(src[max(0,a-420):a+360]) if a>=0 else "")
   print("AUDIT-CRM-FIX-INJECTED", "tth-crm-sidebar-cleanup-1911" in src)
 print("AUDIT-CRITICAL-SLIDES",pages["trinh-chieu-marketing"].count('<section class="slide'))
+# Inspect the catalog index (not the standalone interfaces) before inserting a brand architecture tree.
+home=(root/"index.html").read_text("utf-8")
+clean=re.sub(r'(?i)(src|href)=["\\\']data:[^"\\\']+["\\\']',r'\\1="[embedded asset]"',home)
+print("CATALOG-LENGTH",len(home))
+print("CATALOG-BEGIN",clean[:5500].replace("\\n"," "))
+for term in ("TTH Group","TTH Healthcare","Kiến trúc thương hiệu","khung-marketing","crm-da-kenh","healthcare-website"):
+    p=clean.lower().find(term.lower())
+    print("CATALOG-MATCH",term,p,clean[max(0,p-260):p+500].replace("\\n"," ") if p>=0 else "")
+print("CATALOG-BODY-END",clean[-2500:].replace("\\n"," "))
+
 print("AUDIT-DONE")
