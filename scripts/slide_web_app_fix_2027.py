@@ -157,7 +157,7 @@ for shell, tag, event in (
     missing={}
     for page_name,page_html in original.items():
         for ref in re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)["\']',page_html,flags=re.I):
-            key=ref.split(/[?#]/)[0].split('/')[-1]
+            key=re.split(r'[?#]',ref,1)[0].split('/')[-1]
             if key.lower().endswith(".html"):
                 nrefs+=1
                 if key not in original:missing[key]=missing.get(key,0)+1
