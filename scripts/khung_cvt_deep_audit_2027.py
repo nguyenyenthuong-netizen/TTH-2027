@@ -168,9 +168,9 @@ for b in onboarding["buoc"]:
             "ghi_chu":"Đơn vị được tuyển thuộc tuyến quản lý nào thì người quản lý tuyến đó chủ trì; quyền cấp phát phần mềm theo ma trận hiện hành. Trưởng phòng xử lý liên tuyến."
         }
         b["noi_dung"]=b.get("noi_dung","") + (
-            " [ĐỐI CHIẾU TUYẾN 19/11: nhân sự Tổ Nội dung và Sáng tạo/Marketing cơ sở: "+
+            " Nhân sự Tổ Nội dung và Sáng tạo/Marketing cơ sở thuộc tuyến quản lý của "+
             first+"; nhân sự Tổ Truyền thông và Thương hiệu/Tổ Tăng trưởng số: "+
-            second+"; không mặc nhiên cấp quyền duyệt sản phẩm hay chi phí.]"
+            second+"; quyền duyệt sản phẩm và chi phí thực hiện theo ma trận thẩm quyền có hiệu lực."
         )
         if not any(str(x).split("|")[0]=="cvt-2" for x in b.setdefault("phoi_hop",[])):
             b["phoi_hop"].append("cvt-2|chỉ phần nhân sự thuộc hai tổ trực tiếp phụ trách")
@@ -218,7 +218,7 @@ summary_html+='<h3 style="color:#0837A1;margin:0 0 8px">Đối chiếu trách nh
 summary_html+='<p>Phạm vi quản lý, kiểm chuẩn chuyên môn, trách nhiệm xây dựng văn bản và quyền phê duyệt là bốn loại trách nhiệm khác nhau. Các quy trình, tỷ trọng KPI chưa phê duyệt không được coi là quy định đã ban hành.</p>'
 summary_html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px">'
 for id,scope in [
-    ("cvt","Quản lý trực tiếp Trưởng nhóm Marketing bệnh viện cả hai nhóm; quản lý Tổ Nội dung và Sáng tạo; điều phối tải, sản lượng, đầu ra và đánh giá theo tuyến."),
+    ("cvt","Quản lý trực tiếp Trưởng nhóm Marketing cơ sở thuộc cả hai nhóm; quản lý Tổ Nội dung và Sáng tạo; điều phối tải, sản lượng, đầu ra và đánh giá theo tuyến."),
     ("cvt-2","Quản lý Tổ Truyền thông và Thương hiệu, Tổ Tăng trưởng số; kiểm chuẩn truyền thông/OOH/phát thanh/màn hình/quảng cáo/kênh số ở cả hai nhóm, không quản lý trực tiếp Trưởng nhóm cơ sở.")
 ]:
     k=d["kpi_vi_tri"][id]
