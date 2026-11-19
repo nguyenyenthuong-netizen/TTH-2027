@@ -27,20 +27,20 @@ body.ux-crm-min #ux-search-launch{display:none!important}
 """,
 "healthcare-app":"""
 html,body{margin:0!important;min-height:100dvh!important}
-#screen{display:block!important;width:100%!important;height:calc(100dvh - 52px)!important;margin-top:52px!important;box-sizing:border-box!important}
-.toptools{position:fixed!important;top:0!important;bottom:auto!important;right:0!important;left:0!important;z-index:800!important;min-height:52px!important;box-sizing:border-box!important;display:flex!important;flex-wrap:nowrap!important;gap:8px!important;align-items:center!important;justify-content:flex-end!important;background:#f5f9ff!important;border-bottom:1px solid #d5e3f5!important;padding:5px 12px!important;box-shadow:none!important;opacity:1!important}
+#screen{display:block!important;width:100%!important;height:calc(100dvh - var(--tth-toolbar-height, 52px))!important;margin-top:var(--tth-toolbar-height, 52px)!important;box-sizing:border-box!important}
+.toptools{position:fixed!important;top:0!important;bottom:auto!important;right:0!important;left:0!important;z-index:800!important;min-height:52px!important;box-sizing:border-box!important;display:flex!important;flex-wrap:wrap!important;gap:8px!important;align-items:center!important;justify-content:flex-end!important;background:#f5f9ff!important;border-bottom:1px solid #d5e3f5!important;padding:5px 12px!important;box-shadow:none!important;opacity:1!important}
 .toptools button{min-height:39px!important;border-radius:9px!important;font-size:13px!important;padding:7px 12px!important}
-#drawer{position:fixed!important;top:56px!important;bottom:auto!important;right:10px!important;left:auto!important;max-height:calc(100dvh - 64px)!important;z-index:850!important}
+#drawer{position:fixed!important;top:calc(var(--tth-toolbar-height, 52px) + 4px)!important;bottom:auto!important;right:10px!important;left:auto!important;max-height:calc(100dvh - var(--tth-toolbar-height, 52px) - 12px)!important;z-index:850!important}
 #status{display:none!important}
-@media(max-width:480px){.toptools{justify-content:space-between!important}.toptools button{flex:1!important;font-size:12.5px!important}#screen{height:calc(100dvh - 52px)!important}}
+@media(max-width:480px){.toptools{justify-content:space-between!important}.toptools button{flex:1!important;font-size:12.5px!important}#screen{height:calc(100dvh - var(--tth-toolbar-height, 52px))!important}}
 """,
 "healthcare-website":"""
 html,body{margin:0!important;min-height:100dvh!important}
-#frame{display:block!important;width:100%!important;height:calc(100dvh - 52px)!important;margin-top:52px!important;box-sizing:border-box!important}
+#frame{display:block!important;width:100%!important;height:calc(100dvh - var(--tth-toolbar-height, 52px))!important;margin-top:var(--tth-toolbar-height, 52px)!important;box-sizing:border-box!important}
 #tools{position:fixed!important;top:0!important;bottom:auto!important;left:0!important;right:0!important;z-index:800!important;min-height:52px!important;box-sizing:border-box!important;display:flex!important;justify-content:flex-end!important;align-items:center!important;gap:8px!important;background:#f5f9ff!important;border-bottom:1px solid #d5e3f5!important;padding:5px 12px!important;box-shadow:none!important}
 #tools button{min-height:39px!important;border-radius:9px!important;font-size:13px!important;padding:7px 12px!important;box-shadow:none!important}
-#catalog{position:fixed!important;top:56px!important;bottom:auto!important;right:10px!important;left:auto!important;max-height:calc(100dvh - 64px)!important;z-index:850!important}
-@media(max-width:480px){#tools{justify-content:space-between!important}#tools button{flex:1!important;font-size:12.5px!important}#frame{height:calc(100dvh - 52px)!important}}
+#catalog{position:fixed!important;top:calc(var(--tth-toolbar-height, 52px) + 4px)!important;bottom:auto!important;right:10px!important;left:auto!important;max-height:calc(100dvh - var(--tth-toolbar-height, 52px) - 12px)!important;z-index:850!important}
+@media(max-width:480px){#tools{justify-content:space-between!important}#tools button{flex:1!important;font-size:12.5px!important}#frame{height:calc(100dvh - var(--tth-toolbar-height, 52px))!important}}
 """
 }
 for folder,css in styles.items():
@@ -58,6 +58,25 @@ for folder,css in styles.items():
    text,count=re.subn(pattern,'',text,count=1,flags=re.I|re.S)
    if count!=1: raise RuntimeError(folder+": redundant search "+tag+" not found")
  text=text.replace("</head>",'<style id="tth-layout-repair-1811">'+base+css+"</style></head>",1)
+ if folder in ("healthcare-app","healthcare-website"):
+  # Keep the iframe beneath the actual toolbar even when controls wrap at narrower widths.
+  toolbar_id = "tools" if folder=="healthcare-website" else "toptools"
+  marker = "tth-measured-toolbar-height-1911"
+  js = """<script id="tth-measured-toolbar-height-1911">(function(){
+    "use strict";
+    var bar=document.getElementById("__BAR__");
+    if(!bar)return;
+    var root=document.documentElement;
+    function sync(){
+      var h=Math.max(52,Math.ceil(bar.getBoundingClientRect().height));
+      root.style.setProperty("--tth-toolbar-height",h+"px");
+    }
+    if(window.ResizeObserver) new ResizeObserver(sync).observe(bar);
+    window.addEventListener("resize",sync,{passive:true});
+    if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",sync);
+    sync();
+  })();</script>""".replace("__BAR__",toolbar_id)
+  text=text.replace("</body>",js+"</body>",1)
  if folder=="crm-da-kenh":
   js="""<script id='tth-crm-search-inline'>(function(){const b=document.getElementById('ux-search-launch');const s=document.querySelector('.layout aside');if(b&&s){s.insertBefore(b,s.querySelector('.identity'));}})();</script>"""
   text=text.replace("</body>",js+"</body>",1)
