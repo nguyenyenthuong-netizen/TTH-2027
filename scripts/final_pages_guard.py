@@ -8,16 +8,21 @@ import sys
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("_site")
 targets = {
     "khung-marketing": """
-/* 2027 two-branch organization tree: one Chief plus their team(s) per column.
-   Hospital Marketing is outside the two-column tree in a full-width band. */
-#v-org .org-cols{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto!important;grid-auto-flow:row!important;align-items:start!important;gap:16px!important}
-#v-org .org-cols>.org-left,#v-org .org-cols>.org-right{display:flex!important;flex-direction:column!important;gap:12px!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:auto!important}
-#v-org .org-right-teams{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+/* Three production teams occupy the full width under the two chief roles.
+   Left chief: Content/Creative + direct management of local Marketing.
+   Right chief: Communications/Brand and Digital Growth (HQ); local support is functional only.
+   Do not force right-hand teams into one narrow column while the left side grows vertically. */
+#v-org .org-cols{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:auto!important;grid-auto-flow:row!important;align-items:start!important;gap:16px!important}
+#v-org .org-cols>.org-left,#v-org .org-cols>.org-right{display:flex!important;flex-direction:column!important;gap:12px!important;grid-row:auto!important;min-width:0!important;width:auto!important}
+#v-org .org-cols>.org-left{grid-column:1 / span 1!important}
+#v-org .org-cols>.org-right{grid-column:2 / span 2!important}
+#v-org .org-right-teams{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:start!important;gap:12px!important}
 #v-org .org-cols .col,#v-org .org-cols .mkt-org-cvt-2{min-width:0!important;width:100%!important;grid-column:auto!important;grid-row:auto!important;align-self:start!important}
 #v-org .org-cols .col-h{display:block!important;box-sizing:border-box!important;height:auto!important;min-height:0!important;white-space:normal!important;overflow-wrap:break-word!important;padding:14px 16px!important}
 #v-org .mkt-org-local-row{width:100%!important;min-width:0!important;clear:both}
 #v-org .mkt-org-local-row .hosp-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))!important}
-@media(max-width:1100px){#v-org .org-cols{grid-template-columns:minmax(0,1fr)!important}}
+@media(max-width:1100px){#v-org .org-cols{grid-template-columns:repeat(2,minmax(0,1fr))!important}#v-org .org-cols>.org-left{grid-column:1!important}#v-org .org-cols>.org-right{grid-column:2!important}#v-org .org-right-teams{grid-template-columns:minmax(0,1fr)!important}}
+@media(max-width:700px){#v-org .org-cols{grid-template-columns:minmax(0,1fr)!important}#v-org .org-cols>.org-left,#v-org .org-cols>.org-right{grid-column:1!important}#v-org .org-right-teams{grid-template-columns:minmax(0,1fr)!important}}
 #v-org .col-b,#v-org .grp,#v-org .hosp,#v-org .pos{min-width:0!important}
 #v-org .pos-n{overflow-wrap:break-word!important;word-break:normal!important}
 /* Balanced data table columns: long descriptions receive real room.
