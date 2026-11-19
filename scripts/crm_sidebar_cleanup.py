@@ -32,7 +32,7 @@ css=r"""
 #tth-crm-sidebar-actions button:focus-visible{outline:2px solid #ED3237;outline-offset:2px}
 #tth-crm-retired-topbar{display:none!important;height:0!important;min-height:0!important;
   max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
-#tth-crm-retired-open-menu{display:none!important}
+#tth-crm-retired-open-menu,#ux-sidebar-toggle{display:none!important}
 </style>
 """
 js=r"""
@@ -43,7 +43,18 @@ js=r"""
  function find(label){
    return controls().find(function(b){return norm(b.textContent||b.getAttribute('aria-label'))===label;});
  }
+ function removeMenu(){
+   var old=document.getElementById('ux-sidebar-toggle');
+   if(old)old.remove();
+   controls().forEach(function(b){
+     if(/(?:^|\\s)mo danh muc(?:\\s|$)/.test(norm(b.textContent||''))
+        && b.closest('aside')) b.remove();
+   });
+   document.body.classList.remove('ux-crm-min');
+   try{localStorage.removeItem('tth-ux-crm-compact')}catch(e){}
+ }
  function initialize(){
+   removeMenu();
    var side=document.querySelector('.layout aside')||document.querySelector('#sidebar')||
      document.querySelector('aside.sidebar')||document.querySelector('aside');
    if(!side){console.warn('[CRM] Sidebar not found; toolbar kept to preserve navigation');return;}
@@ -87,6 +98,8 @@ js=r"""
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize);
  else initialize();
  window.addEventListener('load',initialize,{once:true});
+ window.addEventListener('pageshow',removeMenu);
+ document.addEventListener('visibilitychange',function(){if(!document.hidden)removeMenu()});
  setTimeout(initialize,500);
 })();
 </script>
