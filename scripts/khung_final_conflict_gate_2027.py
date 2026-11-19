@@ -26,6 +26,7 @@ assert TT=="Chuyên viên trưởng Truyền thông – Thương hiệu và Tăn
 def key(s):return str(s).split("|",1)[0]
 all_outputs={}
 num_generic_steps=0
+num_collab_codes_merged=0
 num_same_role_steps=0
 num_multi_steps=0
 total_report=0
@@ -35,6 +36,21 @@ role_group=0
 possible_same_codes=[]
 for q in Q:
  for step_no,b in enumerate(q["buoc"],1):
+  # Hai bản ghi cùng mã chức danh trong phần phối hợp không phải hai người.
+  # Gộp mô tả bổ sung, giữ nguyên các vai trò khác và không tạo quyền mới.
+  unique={}
+  order=[]
+  for item in b.get("phoi_hop",[]):
+   role_part=key(item)
+   detail=str(item).split("|",1)[1].strip() if "|" in str(item) else ""
+   if role_part not in unique:
+    unique[role_part]=[detail] if detail else []
+    order.append(role_part)
+   else:
+    num_collab_codes_merged+=1
+    if detail and detail not in unique[role_part]:unique[role_part].append(detail)
+  b["phoi_hop"]=[name+("|"+"; ".join(unique[name]) if unique[name] else "") for name in order]
+  assert len({key(x) for x in b["phoi_hop"]})==len(b["phoi_hop"])
   actors=b["thuc_hien"]
   out=b["doi_soat_tung_dau_ra_2027"]
   assert len(out)==len(actors)>0,(q["id"],step_no)
@@ -48,6 +64,18 @@ for q in Q:
    b["xac_minh_kiem_doc_lap_2027"]="BẮT BUỘC hai mã cá nhân khác nhau, không chỉ hai vai trò trên sơ đồ; người kiểm không được tự duyệt."
    assert b.get("chan_trung_nguoi_2027") is True
    possible_same_codes.append(q["id"]+"-"+str(step_no))
+  if q["id"]=="nhan-viec-moi" and step_no in (2,3,4,5,6):
+   # Mã CVT Nội dung trong SOP mẫu không được là chủ trì mặc định
+   # khi nhận nhân sự thuộc Tổ Truyền thông/Thương hiệu hoặc Tăng trưởng số.
+   b["chu_tri_thuc_te_theo_tuyen_cvt_2027"]={
+    "nhan_su_noi_dung_sang_tao_hoac_marketing_co_so":"cvt",
+    "nhan_su_truyen_thong_thuong_hieu_hoac_tang_truong_so":"cvt-2",
+    "dieu_kien":"Chọn một mã vị trí, nhóm, tổ, cá nhân và văn bản phân công trước khi giao; không có hai người quản lý trực tiếp."}
+   b["phan_cong_thuc_thi_2027"]=(
+    "CHỌN MỘT TUYẾN theo người nhận việc: "+ND+" phụ trách nhân sự Nội dung – Sáng tạo/Marketing cơ sở chưa bàn giao; "
+    +TT+" phụ trách nhân sự Tổ Truyền thông và Thương hiệu/Tổ Tăng trưởng số. "
+    "Trưởng phòng chịu việc vượt tuyến; đơn vị cấp quyền thực hiện theo ma trận có hiệu lực. "
+    "Mã CVT Nội dung trong SOP mẫu KHÔNG phải chủ trì mặc định cho hai tổ còn lại.")
   if code=="mkt-tct":
    b["phan_cong_thuc_thi_2027"]=(
     "CHẶN GIAO VIỆC CHUNG: 'Marketing Tổng công ty' không phải cá nhân hay một chức danh. "
@@ -69,6 +97,17 @@ for q in Q:
    oid=z["ma_dau_ra"]
    assert oid not in all_outputs
    flags=[]
+   if q["id"]=="nhan-viec-moi" and step_no in (2,3,4,5,6) and role=="cvt":
+    z["chu_tri_01"]=(
+     "CHỜ CHỌN MỘT TUYẾN: "+ND+" nếu nhân sự thuộc Nội dung – Sáng tạo/Marketing cơ sở chưa bàn giao; "
+     +TT+" nếu nhân sự thuộc Tổ Truyền thông và Thương hiệu/Tổ Tăng trưởng số. "
+     "Không mặc định người ở tuyến Nội dung chịu trách nhiệm cho hai tổ còn lại.")
+    z["ma_chu_tri_theo_nhom"]={
+     "tuyen_noi_dung_va_marketing_co_so":"cvt",
+     "tuyen_truyen_thong_thuong_hieu_va_tang_truong_so":"cvt-2",
+     "dieu_kien":"Chọn duy nhất theo mã người và quyết định điều chuyển/tiếp nhận"}
+    z["tuyen_quan_ly_01"]="Trưởng phòng Marketing → đúng một Chuyên viên trưởng theo tuyến của vị trí được tiếp nhận"
+    flags.append("CHẶN: chưa chọn mã nhân sự và tuyến quản lý đúng chức danh trong bước nhận việc")
    if role=="mkt-tct":
     mkt_tct+=1
     z["chu_tri_01"]=(
@@ -129,7 +168,9 @@ D["kiem_toan_chong_cheo_chot_2027"]={
   "buoc_co_nhieu_nguoi_thuc_hien":num_multi_steps,
   "dau_ra_mkt_tct_chua_phan_giai":mkt_tct,
   "dau_ra_to_truong_noi_dung_can_phan_cong":tt_nd,
-  "dau_ra_theo_nhom_can_chon_nhan_su":role_group},
+  "dau_ra_theo_nhom_can_chon_nhan_su":role_group,
+  "ma_phoi_hop_trung_da_gop":num_collab_codes_merged,
+  "buoc_nhan_viec_phai_chon_tuyen":5},
  "ket_luan":"Đã chuẩn hóa điều kiện phân vai và chặn chồng chéo ở cấp đề án; chưa có mã nhân sự, văn bản ủy quyền và số giờ thực đo nên chưa nghiệm thu vận hành.",
  "khong_duoc_suy_ra":"95, 14 và 121 là trường hợp cần kiểm soát, không phải số lỗi thực tế đã xác minh.",
  "noi_dung":"Trưởng phòng không mặc định chủ trì sản phẩm tập thể TCT; CVT không làm Tổ trưởng thường trực; CVT Truyền thông/Số không giao việc trực tiếp tới cơ sở.",
