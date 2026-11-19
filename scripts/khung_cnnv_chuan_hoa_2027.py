@@ -57,6 +57,88 @@ c2["phan_dinh_kiem_duyet"]=(
  "và yêu cầu khắc phục điểm không phù hợp. Không tự phát sinh quyền ký ban hành quy chuẩn, "
  "phát ngôn, phê duyệt nội dung y khoa, phát hành, ngân sách, nhân sự hay cấp quyền quản trị cao nhất."
 )
+# Bổ sung trách nhiệm chủ động nâng hiệu suất, không chỉ giám sát và xử lý lỗi.
+c2["muc_dich"] += (
+ " Đồng thời chịu trách nhiệm thiết kế và dẫn dắt cơ chế nâng hiệu suất, giảm lãng phí "
+ "thời gian, hạn chế tái làm và cải tiến quy trình phối hợp giữa hai tổ theo dữ liệu; "
+ "không lấy số lượng báo cáo hoặc số lần kiểm tra làm thước đo hiệu quả cải tiến."
+)
+c2["viec_chung"] += (
+ " Định kỳ phân tích dữ liệu mã việc, thời gian xử lý chủ động/chờ duyệt, tỷ lệ đúng hạn, "
+ "tỷ lệ sửa lại, chất lượng bàn giao và năng lực tải của từng tổ; truy nguyên điểm nghẽn, "
+ "xác định nguyên nhân và chủ trì phương án cải tiến liên tổ theo một người phụ trách, "
+ "mốc kiểm chứng, thời hạn và chỉ số trước–sau. Thử nghiệm thay đổi trong phạm vi quyền "
+ "đã giao; sửa hoặc ban hành quy trình chính thức phải trình đúng cấp có thẩm quyền. "
+ "Không duyệt lặp từng sản phẩm và không nhận việc phân lịch hàng ngày của hai Tổ trưởng."
+)
+c2["phan_dinh_chu_tri_dau_ra"] += (
+ " Ngoài ra chủ trì bảng điều hành hiệu suất và tải của hai tổ (số liệu đối soát theo nguồn), "
+ "danh mục điểm nghẽn kèm nguyên nhân gốc, phương án cải tiến đã phân công và biên bản "
+ "đánh giá trước–sau; hồ sơ phiên bản quy trình và bằng chứng hướng dẫn triển khai. "
+ "Đánh giá kết quả cải tiến theo thời gian xử lý, chất lượng, tuân thủ và hiệu suất nguồn lực; "
+ "không quy thành số sản phẩm của Chuyên viên trưởng."
+)
+c2["phan_dinh_ban_giao_dau_vao"] += (
+ " Hai Tổ trưởng cung cấp dữ liệu mã việc và nhật ký tải đã phân loại giờ, lịch, vòng sửa, "
+ "sự cố và chất lượng nghiệm thu; Chuyên viên Đo lường và đối soát xác nhận số liệu nguồn "
+ "độc lập. Sau khi phân tích, giao Tổ trưởng đúng tổ triển khai hành động cải tiến, "
+ "theo dõi kết quả và nhận báo cáo đối chiếu; việc ảnh hưởng tải sản xuất/cơ sở chuyển "
+ "qua đúng tuyến "+N+"."
+)
+c2["phan_dinh_kiem_duyet"] += (
+ " Được yêu cầu dữ liệu, báo cáo nguyên nhân, khắc phục sai lệch theo chuẩn đang có hiệu lực, "
+ "và đề xuất thử nghiệm cải tiến trong phạm vi được giao. Không tự thay đổi quy chế, "
+ "cơ cấu nhân sự, phê duyệt chỉ tiêu, ngân sách hoặc quyền phát hành."
+)
+c2["toi_uu_hieu_suat"] = (
+ "Trách nhiệm quản trị: xác lập đường cơ sở theo từng loại công việc, xác định năng lực xử lý "
+ "và giới hạn tải; phát hiện thời gian chờ, bàn giao vòng vo, sửa đi sửa lại, lỗi tuân thủ "
+ "và phối hợp trễ; lựa chọn ưu tiên cải tiến theo ảnh hưởng tới chất lượng, tốc độ và nguồn lực. "
+ "Mỗi cải tiến phải có mã, một chủ trì, dữ liệu trước–sau, tiêu chí nghiệm thu và quyết định "
+ "chuẩn hóa hoặc hoàn nguyên."
+)
+c2["chu_trinh_cai_tien"] = (
+ "1. Tổ trưởng ghi nhận mã việc, thời gian thực làm/chờ, số vòng chỉnh sửa và chứng từ; "
+ "2. Chuyên viên trưởng phân tích nguyên nhân xuyên hai tổ, lập danh sách ưu tiên; "
+ "3. Xác định một người chủ trì hành động và xin phê duyệt khi sửa quy trình/hạn mức; "
+ "4. Tổ trưởng thực hiện thử nghiệm và theo dõi không làm gián đoạn phê duyệt bắt buộc; "
+ "5. Đo lường đối soát kết quả, Chuyên viên trưởng kết luận giữ/sửa/hoàn nguyên; "
+ "6. Trình cấp có quyền ban hành phiên bản chuẩn, hướng dẫn và kiểm tra lỗi tái diễn."
+)
+c2["ranh_gioi_kpi"] = (
+ "Tổ trưởng chịu giao việc, tiến độ và chất lượng tác nghiệp trong tổ; chuyên viên chịu sản phẩm "
+ "và vận hành kênh; Quản lý thương hiệu chịu mục tiêu/hạng mục; Chuyên viên Đo lường và đối soát "
+ "chịu nguồn số liệu độc lập. Vị trí này chịu trách nhiệm cải thiện cơ chế liên tổ và kết quả "
+ "kiểm chứng, không cộng sản lượng/giờ của cấp dưới, không tự phê duyệt nội dung hay chi phí."
+)
+D["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]={
+ "chuc_danh":T,
+ "muc_dich":"Tối ưu hiệu suất và tính thông suốt của Tổ Truyền thông và Thương hiệu và Tổ Tăng trưởng số",
+ "pham_vi":[
+  {"to":"Tổ Truyền thông và Thương hiệu",
+   "chi_so":[
+    "Tỷ lệ bàn giao đúng hạn = đầu ra đúng hạn / đầu ra đến hạn có chứng từ",
+    "Tỷ lệ nghiệm thu vòng đầu = đầu ra đạt ngay lần kiểm đầu / đầu ra đã kiểm",
+    "Thời gian xử lý trung vị theo loại việc; tách giờ thực làm và chờ xác nhận",
+    "Tỷ lệ lỗi nhận diện/PR/OOH/phát thanh/màn hình tái diễn = lỗi tái diễn / tổng lỗi ghi nhận"
+   ],
+   "dau_ra_cai_tien":"Bản đồ điểm nghẽn yêu cầu–kiểm–duyệt–triển khai; giải pháp giảm vòng sửa, giảm chờ và tăng tuân thủ",
+   "chu_nguon_so_lieu":"Tổ trưởng ghi nhận; người kiểm và nhật ký hiện trường xác thực, Đo lường đối soát khi có dữ liệu hệ thống"},
+  {"to":"Tổ Tăng trưởng số",
+   "chi_so":[
+    "Tỷ lệ thiết lập chiến dịch/trang đích đúng lịch = số nhiệm vụ đúng hạn / tổng nhiệm vụ đến hạn",
+    "Tỷ lệ sai cấu hình/phân quyền/nguồn đo = nhiệm vụ phát sinh lỗi / nhiệm vụ đã nghiệm thu",
+    "Thời gian từ nhận đủ đầu vào đến kích hoạt hợp lệ, tách thời gian chờ phê duyệt",
+    "Tỷ lệ hoàn tất hành động tối ưu được đo trước–sau và xác minh bởi dữ liệu độc lập"
+   ],
+   "dau_ra_cai_tien":"Chuẩn hóa checklist trước phát hành, điểm bàn giao CRM/kênh/trang đích, giảm lỗi thiết lập và thời gian xử lý",
+   "chu_nguon_so_lieu":"Tổ trưởng, chuyên viên kênh số và hồ sơ nền tảng; Đo lường đối soát số liệu nguồn"}
+ ],
+ "ky_kiem_soat":"Theo dõi theo mã việc; rà soát điểm nghẽn thường xuyên và đánh giá kết quả cải tiến theo kỳ quản trị được phê duyệt",
+ "quy_trinh":"Ghi nhận dữ liệu → phân tích điểm nghẽn → giao một chủ trì cải tiến → thử nghiệm có kiểm soát → đối soát trước–sau → chuẩn hóa phiên bản hoặc hoàn nguyên",
+ "dieu_kien":"Mục tiêu/ngưỡng KPI cần chốt sau khi có đường cơ sở thực đo, phân loại độ phức tạp và quyết định có hiệu lực; không tự áp chỉ tiêu hoặc lấy dữ liệu quảng cáo chưa đối soát",
+ "hieu_luc":"Nội dung thiết kế CNNV trong đề án, không tự thay quyết định phân quyền hoặc văn bản nhân sự"
+}
 c1=V["cvt"]
 c1["phan_dinh_chu_tri_dau_ra"]=(
  "Quản trị năng lực và chất lượng khối Nội dung – Sáng tạo; trực tiếp quản lý dọc các Trưởng nhóm "
@@ -113,6 +195,9 @@ for v in D["vi_tri"]:
       "quyen_han_va_kiem_soat":v.get("phan_dinh_kiem_duyet",""),
       "quan_he_bao_cao":v.get("bao_cao_cho",""),
       "tai_cong_viec":v.get("gio_ke_hoach",""),
+      "toi_uu_hieu_suat":v.get("toi_uu_hieu_suat",""),
+      "chu_trinh_cai_tien":v.get("chu_trinh_cai_tien",""),
+      "ranh_gioi_kpi":v.get("ranh_gioi_kpi",""),
       "nguon":"Mô tả vị trí trong Khung cơ cấu Marketing 2027; phê duyệt chính thức theo QyĐ.02.MKT/Phòng Nhân lực",
       "trang_thai":"Nội dung chuẩn hóa trong đề án; không thay văn bản nhân sự/phân quyền đang có hiệu lực"
     }
@@ -198,6 +283,10 @@ for role in key_roles:
       '<p><b>Đầu ra chịu trách nhiệm:</b> '+escape(x["phan_dinh_chu_tri_dau_ra"])+'</p>'
       '<p><b>Bàn giao và phối hợp:</b> '+escape(x["phan_dinh_ban_giao_dau_vao"])+'</p>'
       '<p><b>Thẩm quyền:</b> '+escape(x["phan_dinh_kiem_duyet"])+'</p>'
+      +('<p><b>Tối ưu hiệu suất hai tổ:</b> '+escape(x["toi_uu_hieu_suat"])+'</p>'
+      '<p><b>Chu trình cải tiến và trách nhiệm:</b> '+escape(x["chu_trinh_cai_tien"])+'</p>'
+      '<p><b>Ranh giới trách nhiệm và KPI:</b> '+escape(x["ranh_gioi_kpi"])+'</p>'
+      if role=="cvt-2" else '')
       '<small>Đối chiếu với CNNV phòng tại mục 4.1. Chưa thay văn bản MTCV do Phòng Nhân lực ban hành.</small>'
       '</div>'
     )
@@ -245,5 +334,10 @@ assert all("cnnv_2027" in x for x in check["vi_tri"])
 assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
 assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
+assert "giảm lãng phí" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
+assert "đánh giá trước–sau" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["phan_dinh_chu_tri_dau_ra"]
+assert len(check["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]["pham_vi"])==2
+assert all(len(z["chi_so"])==4 for z in check["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]["pham_vi"])
+
 p.write_text(s,"utf-8")
 print("PASS CNNV 2027: 26 MTCV, 5 vị trí trọng tâm, 7 mảng chuẩn, 6 điểm luồng, 60 quy trình/407 bước, 83 văn bản")
