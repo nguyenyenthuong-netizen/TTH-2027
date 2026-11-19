@@ -181,6 +181,10 @@ elif mode=="post":
     # CNNV đã dựng thêm bảng HTML tĩnh từ dữ liệu trước chuẩn hóa.
     # Đồng bộ đúng các đoạn HTML mới với CSDL, không sửa JS hoặc ID.
     src=src.replace(
+        "không tự coi Chuyên viên trưởng là Tổ trưởng thường trực",
+        "không tự coi "+ND+" là Tổ trưởng thường trực"
+    )
+    src=src.replace(
         "không duyệt mặc nhiên bởi Chuyên viên trưởng",
         "không mặc nhiên giao quyền phê duyệt cho "+ND+" hoặc "+TT
     )
