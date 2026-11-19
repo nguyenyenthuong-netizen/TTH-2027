@@ -9,6 +9,7 @@ on:
       - 'scripts/layout_fix.py'
       - 'scripts/remove_extra_navigation.py'
       - 'scripts/final_pages_guard.py'
+      - 'scripts/khung_text_zoom.py'
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/site_consistency_audit.py'
       - 'scripts/inspect_problem_ui.py'
@@ -92,6 +93,8 @@ jobs:
           PY
       - name: Kiem tra va bao ve hien thi ban ghi de cuoi cung
         run: python3 scripts/final_pages_guard.py _site
+      - name: Bo nut tang giam co chu va chong cat bang cua khung
+        run: python3 scripts/khung_text_zoom.py _site
       - name: CRM chuyen nut ve sidebar, bo thanh ngang phu
         run: python3 scripts/crm_sidebar_cleanup.py _site
       - name: Ra soat thong nhat khung slide CRM va hien thi
