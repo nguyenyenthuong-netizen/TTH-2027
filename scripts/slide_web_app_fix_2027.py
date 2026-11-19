@@ -919,3 +919,210 @@ print("PASS TTH WEBSITE FIXED COLLAPSIBLE CTA",
       "pages",cta_count,"links-per-page",4,
       "center-right",True,"persistent-state",True,
       "mobile-default-collapsed",True)
+
+
+# TTH_WEBSITE_GLOBAL_DISPLAY_AUDIT_20261119
+# Global mobile overflow regression identified on public pages by Chromium
+# testing at 390px: the search widget's inline/no-shrink styling forces its
+# right edge beyond the viewport (at least 18px). Also stabilize the browser
+# host's QA tools and CTA preferences across sandboxed iframe navigation.
+web_path=root/"healthcare-website"/"index.html"
+web_code=web_path.read_text("utf-8")
+m=re.search(r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',
+            web_code,flags=re.I|re.S)
+if not m:raise AssertionError("Missing website pagesData for global display QA")
+page_catalog=json.loads(m.group(2))
+global_css=r"""<style id="tth-website-display-qa-1911">
+/* Avoid global horizontal clipping: keep all navigation controls within the viewport. */
+html,body{max-width:100%!important;overflow-x:clip!important}
+#app{max-width:100%!important;min-width:0!important}
+#app header.gh{max-width:100vw!important;box-sizing:border-box!important}
+#app header.gh .gsrch{min-width:0!important}
+#app header.gh .gsrch a.q{min-width:0!important}
+#app header.gh nav.mnav{min-width:0!important}
+#app .tth-offline-menu-mobile>button{display:none!important}
+/* Protect meaning, contrast and native text flow without applying tiny text. */
+#app main p,#app main li{word-break:normal!important;overflow-wrap:break-word!important}
+#app main .muted,#app main .meta,#app main .subtle{
+ color:#405777!important
+}
+#app a:focus-visible,#app button:focus-visible,#app input:focus-visible,
+#app select:focus-visible{outline:3px solid #ED3237!important;outline-offset:2px!important}
+@media(max-width:740px){
+ #app header.gh>div:first-child{
+  display:flex!important;align-items:center!important;
+  flex-wrap:nowrap!important;justify-content:space-between!important;
+  width:100%!important;min-width:0!important;max-width:100vw!important;
+  padding:6px 10px!important;gap:7px!important;box-sizing:border-box!important
+ }
+ #app header.gh>div:first-child>a[href="Main.html"]{
+  display:flex!important;flex:0 0 92px!important;
+  width:92px!important;min-width:92px!important;max-width:92px!important
+ }
+ #app header.gh>div:first-child>a[href="Main.html"] img{
+  width:92px!important;max-width:92px!important;height:47px!important;
+  object-fit:contain!important;object-position:center left!important
+ }
+ #app header.gh nav.mnav{display:none!important}
+ #app header.gh>div:first-child>div:last-child{
+  display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  gap:8px!important;margin-left:auto!important;flex:1 1 auto!important;min-width:0!important;
+  max-width:calc(100vw - 119px)!important;box-sizing:border-box!important
+ }
+ #app header.gh .gsrch{
+  display:flex!important;flex:0 0 44px!important;
+  width:44px!important;min-width:44px!important;max-width:44px!important;
+  max-height:44px!important;padding:0!important;margin:0!important;
+  box-sizing:border-box!important;overflow:hidden!important
+ }
+ #app header.gh .gsrch .q{
+  display:flex!important;flex:0 0 44px!important;width:44px!important;
+  min-width:44px!important;max-width:44px!important;height:44px!important;
+  min-height:44px!important;max-height:44px!important;
+  padding:0!important;margin:0!important;justify-content:center!important;
+  align-items:center!important;box-sizing:border-box!important;border-radius:12px!important
+ }
+ #app header.gh .gsrch .q .t{display:none!important}
+ /* The same AI assistant is still accessible through the persistent CTA. */
+ #app header.gh .gsrch .askai{display:none!important}
+ #app header.gh a.btn.hideM{display:none!important}
+ #app header.gh .burger{
+  display:flex!important;flex:0 0 44px!important;width:44px!important;
+  min-width:44px!important;max-width:44px!important;height:44px!important;
+  min-height:44px!important;max-height:44px!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important
+ }
+ #app .tth-offline-menu-mobile nav{
+  max-width:calc(100vw - 24px)!important;
+  max-height:calc(100dvh - 150px)!important;overflow-y:auto!important
+ }
+}
+@media(max-width:355px){
+ #app header.gh>div:first-child>a[href="Main.html"]{flex-basis:80px!important;width:80px!important;min-width:80px!important;max-width:80px!important}
+ #app header.gh>div:first-child>a[href="Main.html"] img{width:80px!important;max-width:80px!important}
+}
+</style>"""
+global_js=r"""<script id="tth-website-display-qa-1911-js">
+(function(){
+ "use strict";
+ // The srcdoc iframe is sandboxed and does not have access to localStorage.
+ // A small message bridge to the parent shell keeps CTA state across pages.
+ var allowed="TTH_WEBSITE_CTA_";
+ function apply(on){
+  var fab=document.querySelector(".fab.tth-cta-fixed");
+  if(!fab)return;
+  fab.dataset.collapsed=on?"true":"false";
+  var b=fab.querySelector(".tth-cta-toggle");
+  if(b){
+   var icon=b.querySelector("svg path");
+   if(icon)icon.setAttribute("d",on?"M14 5l-7 7 7 7":"M10 5l7 7-7 7");
+   b.setAttribute("aria-expanded",String(!on));
+   b.setAttribute("aria-label",on?"Mở cụm hỗ trợ liên hệ":"Thu gọn cụm hỗ trợ liên hệ");
+   b.title=on?"Mở cụm hỗ trợ":"Thu gọn cụm hỗ trợ";
+  }
+ }
+ window.addEventListener("message",function(e){
+  if(e.source!==window.parent||!e.data||e.data.type!==allowed+"STATE")return;
+  apply(!!e.data.collapsed);
+ });
+ function start(){
+  var fab=document.querySelector(".fab.tth-cta-fixed");
+  if(!fab)return;
+  var btn=fab.querySelector(".tth-cta-toggle");
+  if(btn){
+   btn.addEventListener("click",function(){
+    setTimeout(function(){
+     window.parent.postMessage({type:allowed+"STORE",collapsed:fab.dataset.collapsed==="true"},"*");
+    },0);
+   });
+  }
+  window.parent.postMessage({type:allowed+"GET"},"*");
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
+ else start();
+})();
+</script>"""
+admin_css=r"""<style id="tth-website-admin-wide-table-1911">
+html,body{max-width:100%!important;overflow-x:clip!important}
+.tth-horizontal-table{display:block!important;width:100%!important;max-width:100%!important;
+ min-width:0!important;overflow-x:auto!important;overflow-y:visible!important;scrollbar-width:thin!important;
+ overscroll-behavior-x:contain!important}
+.tth-horizontal-table table{max-width:none!important}
+</style>"""
+admin_js=r"""<script id="tth-website-admin-wide-table-1911-js">
+(function(){
+ function wrap(){
+  document.querySelectorAll("table").forEach(function(table){
+   if(table.closest(".tth-horizontal-table"))return;
+   if(table.getBoundingClientRect().width<=document.documentElement.clientWidth-24)return;
+   var box=document.createElement("div");box.className="tth-horizontal-table";
+   box.setAttribute("role","region");box.setAttribute("aria-label","Bảng dữ liệu có thể cuộn ngang");
+   box.setAttribute("tabindex","0");
+   table.parentElement.insertBefore(box,table);box.appendChild(table);
+  });
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wrap,{once:true});
+ else wrap();
+ window.addEventListener("resize",wrap);
+})();
+</script>"""
+public_count=0;admin_count=0
+for name,doc in page_catalog.items():
+ if "tth-website-display-qa-1911" in doc:raise AssertionError("Display guard applied twice")
+ if "</head>" not in doc or "</body>" not in doc:
+  raise AssertionError("Page malformed before display guard: "+name)
+ if 'class="gh"' in doc and 'id="app"' in doc:
+  doc=doc.replace("</head>",global_css+"</head>",1).replace("</body>",global_js+"</body>",1)
+  public_count+=1
+ else:
+  doc=doc.replace("</head>",admin_css+"</head>",1).replace("</body>",admin_js+"</body>",1)
+  admin_count+=1
+ page_catalog[name]=doc
+if public_count<100 or public_count+admin_count!=125:
+ raise AssertionError("Unexpected global website page split "+str((public_count,admin_count)))
+packed=(json.dumps(page_catalog,ensure_ascii=False,separators=(",",":"))
+        .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
+web_code=web_code[:m.start(2)]+packed+web_code[m.end(2):]
+shell_css=r"""<style id="tth-website-shell-display-cleanup-1911">
+/* Prototype navigation is not part of the product UI. Preserve it only for
+   the deliberate QA mode ?demo=1. */
+html:not(.tth-demo-controls) body #tools,
+html:not(.tth-demo-controls) body #catalog{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html:not(.tth-demo-controls) body #frame{height:100dvh!important;min-height:100dvh!important;margin:0!important}
+</style>"""
+shell_js=r"""<script id="tth-website-cta-state-bridge-1911">
+(function(){
+ "use strict";
+ var frame=document.getElementById("frame");
+ if(!frame)return;
+ var key="tth-healthcare-cta-collapsed-1911", fallback=null;
+ var prefix="TTH_WEBSITE_CTA_";
+ function get(){
+  var stored=fallback;
+  try{var x=localStorage.getItem(key);if(x!==null)stored=x==="1"}catch(e){}
+  return stored===null?(window.matchMedia&&window.matchMedia("(max-width:640px)").matches):stored;
+ }
+ function set(on){
+  fallback=!!on;
+  try{localStorage.setItem(key,on?"1":"0")}catch(e){}
+ }
+ window.addEventListener("message",function(e){
+  if(e.source!==frame.contentWindow||!e.data)return;
+  if(e.data.type===prefix+"GET"){
+   frame.contentWindow.postMessage({type:prefix+"STATE",collapsed:get()},"*");
+  }else if(e.data.type===prefix+"STORE"){
+   set(!!e.data.collapsed);
+  }
+ });
+})();
+</script>"""
+if "tth-website-shell-display-cleanup-1911" in web_code:
+ raise AssertionError("Duplicate outer shell repair")
+web_code=web_code.replace("</head>",shell_css+"</head>",1).replace("</body>",shell_js+"</body>",1)
+web_path.write_text(web_code,"utf-8")
+assert 'tth-website-shell-display-cleanup-1911' in web_code
+assert 'tth-website-display-qa-1911' in web_code
+print("WEBSITE-GLOBAL-DISPLAY-PASS",
+      "public-pages",public_count,"admin-pages",admin_count,
+      "header-mobile",True,"CTA-state-parent-bridge",True,
+      "prototype-tools-hidden",True,"admin-table-scroll",True)
