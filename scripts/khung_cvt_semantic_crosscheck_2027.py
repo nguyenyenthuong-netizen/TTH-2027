@@ -38,9 +38,15 @@ for qid,i,b in all_steps:
   cvt_step.append({"quy_trinh":qid,"buoc":i,"chu_tri":owner,"cvt_lien_quan":sorted(present)})
  if present=={"cvt","cvt-2"}:
   stats["buoc_co_ca_hai_cvt"]+=1
-  suspicious_both.append({"quy_trinh":qid,"buoc":i,"chu_tri":owner})
+  suspicious_both.append({"quy_trinh":qid,"buoc":i,"chu_tri":owner,
+    "mo_ta":str(b.get("noi_dung",""))[:330],
+    "thuc_hien":actors,"phoi_hop":assistants})
  if owner in ("cvt","cvt-2"):
   stats["buoc_chu_tri_"+owner]+=1
+ if qid=="chuyen-quyen" and i in (1,7):
+  if not (owner=="cvt-2" and actors==["cvt-2"] and "cvt" in assistants):
+   errors.append({"ma":"CHUYEN_QUYEN_LECH_CVT","quy_trinh":qid,"buoc":i,
+                  "chu_tri":owner,"thuc_hien":actors,"phoi_hop":assistants})
  if owner=="cvt-2":
   lead_cvt2.append({"quy_trinh":qid,"buoc":i,"thuc_hien":actors,
     "phoi_hop":assistants,"noi_dung":str(b.get("noi_dung",""))[:320],
