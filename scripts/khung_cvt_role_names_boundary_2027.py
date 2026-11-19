@@ -26,6 +26,8 @@ assert len(R)==26 and len(D["quy_trinh"])==60 and len(D["danh_muc_van_ban"])==83
 def fix_label(s):
     if not isinstance(s,str):return s
     replaces=[
+      (r'\bCVT\s*1\s*/\s*2\b', 'hai chức danh Chuyên viên trưởng'),
+      (r'\bChuyên viên trưởng\s*(?:1|2)\s*/\s*(?:1|2)\b', 'hai chức danh Chuyên viên trưởng'),
       (r'\bChuyên viên trưởng\s+thứ\s+hai\b', TRUYEN_THONG),
       (r'\bChuyên viên trưởng\s+thứ\s+nhất\b', NOI_DUNG),
       (r'\bChuyên viên trưởng\s+(?:số\s*)?2\b', TRUYEN_THONG),
