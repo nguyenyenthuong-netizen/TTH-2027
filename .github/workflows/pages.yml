@@ -13,6 +13,7 @@ on:
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/site_consistency_audit.py'
       - 'scripts/khung_dinh_bien_chi_so_audit.py'
+      - 'scripts/khung_cvt_deep_audit_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -92,6 +93,8 @@ jobs:
           assert 'tth-floating-arrow' in s and 'tth-slide-once-19112026' in s
           print('PASS: Khu ng',len(k),'ki tu; slide 27 trang',len(s),'ki tu')
           PY
+      - name: Doi chieu CVT1 CVT2 tren tat ca bang chuc danh va quy trinh
+        run: python3 scripts/khung_cvt_deep_audit_2027.py _site
       - name: Kiem tra va bao ve hien thi ban ghi de cuoi cung
         run: python3 scripts/final_pages_guard.py _site
       - name: Bo nut tang giam co chu va chong cat bang cua khung
