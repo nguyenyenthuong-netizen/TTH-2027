@@ -415,3 +415,72 @@ html.tth-demo-controls #catalog.open{display:block!important}
     full=full.replace("</head>",visibility_css+"</head>",1).replace("</body>",demo_js+"</body>",1)
     file.write_text(full,"utf-8")
     print("FIX-MOBILE-MENU-1911",folder,"responsive-pages",fixed,"shell-controls-hidden",True)
+
+
+# Cross-check the live slide against the current same-commit marketing structure.
+# The marketing framework remains read-only here; this stage only updates slide.
+print("KHUNG-SLIDE-CROSSCHECK-2027 starting")
+framework=(root/"khung-marketing"/"index.html").read_text("utf-8")
+slide_doc=slide.read_text("utf-8")
+reference_checks=(
+    "36 suất (22 TCT + 14 bệnh viện)",
+    "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở",
+    "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số",
+    "mkt-org-local-row",
+    "Tổ Truyền thông và Thương hiệu",
+    "Tổ Tăng trưởng số",
+)
+for expected in reference_checks:
+    if expected not in framework:
+        raise AssertionError("Framework baseline missing: "+expected)
+# Retire the incorrect/obsolete 'Tổ trưởng Marketing cơ sở' naming used in
+# earlier deck examples, but preserve the team-leader titles at HQ.
+changes={}
+for old,new in (
+ ("TỔ TRƯỞNG MARKETING CƠ SỞ","TRƯỞNG NHÓM MARKETING CƠ SỞ"),
+ ("Tổ trưởng Marketing cơ sở","Trưởng nhóm Marketing cơ sở"),
+ ("Tổ trưởng Marketing BVĐK","Trưởng nhóm Marketing BVĐK"),
+ ("Ba tổ chuyên môn trực thuộc Trưởng phòng","Ba tổ chuyên môn do 02 Chuyên viên trưởng quản lý theo chức năng; Trưởng phòng Marketing điều hành toàn phòng"),
+ ("CVT Nội dung – Cơ sở điều phối chuyên môn Nội dung – Thiết kế – Media tại Tổng công ty và các cơ sở.",
+  "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở quản lý trực tiếp Tổ Nội dung và Sáng tạo TCT cùng Trưởng nhóm Marketing cơ sở thuộc cả hai nhóm."),
+ ("CVT Truyền thông – Số phụ trách Tổ Truyền thông và Thương hiệu, Tổ Tăng trưởng số; hướng dẫn nghiệp",
+  "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số quản lý hai tổ chuyên môn TCT; hướng dẫn nghiệp"),
+ ("Chuyên viên trưởng đúng tuyến (khi có phân quyền)",
+  "Chuyên viên trưởng được phân quyền hợp lệ bằng văn bản (không có quyền duyệt mặc định)"),
+):
+    n=slide_doc.count(old)
+    if n:
+        slide_doc=slide_doc.replace(old,new)
+        changes[old]=n
+# The independent Communications role is not a separately allocated post at
+# specialized Group 2 hospitals; the on-site Marketing leader handles it.
+role_slide=re.search(r'<section class="slide" data-index="7">.*?</section>',slide_doc,re.S)
+if not role_slide:raise AssertionError("Missing role-boundary slide")
+role_html=role_slide.group(0)
+role_needle='<b>Phụ trách hiện trường</b><span>Đối tác địa phương, sự kiện, khảo sát biển bảng, phát thanh/màn hình tại chỗ.</span>'
+if role_needle not in role_html:raise AssertionError("Unexpected local communications copy")
+role_html=role_html.replace(role_needle,
+    '<b>Phụ trách hiện trường</b><span>Đối tác địa phương, sự kiện, biển bảng, màn hình và phát thanh. '
+    'Tại bệnh viện chuyên khoa nhóm 2, Trưởng nhóm Marketing cơ sở kiêm nhiệm nhiệm vụ truyền thông.</span>',1)
+slide_doc=slide_doc[:role_slide.start()]+role_html+slide_doc[role_slide.end():]
+# Validate the decision layer against the actual organization's direct-reporting chain.
+expect_deck=[
+ "36 suất", "22 TCT", "14 cơ sở", "02 Chuyên viên trưởng",
+ "TRƯỞNG NHÓM MARKETING CƠ SỞ",
+ "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở",
+ "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số",
+ "Truyền thông cơ sở",
+]
+for term in expect_deck:
+    if term.lower() not in slide_doc.lower():
+        raise AssertionError("Slide cross-check missing: "+term)
+if "Tổ trưởng Marketing cơ sở" in slide_doc or "TỔ TRƯỞNG MARKETING CƠ SỞ" in slide_doc:
+    raise AssertionError("Outdated field leader title survives")
+if "34 suất" in slide_doc:
+    raise AssertionError("Slide still contains legacy headcount 34")
+if slide_doc.count('<section class="slide')!=27:
+    raise AssertionError("Cross-check changed deck slide count")
+slide.write_text(slide_doc,"utf-8")
+print("KHUNG-SLIDE-CROSSCHECK-2027 PASS, changes",changes,
+      "framework legacy 34-suat references:",framework.count("34 suất"),
+      "slides",slide_doc.count('<section class="slide'))
