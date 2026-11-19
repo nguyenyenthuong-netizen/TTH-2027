@@ -76,7 +76,7 @@ c2["phan_dinh_chu_tri_dau_ra"] += (
  "danh mục điểm nghẽn kèm nguyên nhân gốc, phương án cải tiến đã phân công và biên bản "
  "đánh giá trước–sau; hồ sơ phiên bản quy trình và bằng chứng hướng dẫn triển khai. "
  "Đánh giá kết quả cải tiến theo thời gian xử lý, chất lượng, tuân thủ và hiệu suất nguồn lực; "
- "không quy thành số sản phẩm của Chuyên viên trưởng."
+ "không quy thành số sản phẩm cá nhân của "+T+"."
 )
 c2["phan_dinh_ban_giao_dau_vao"] += (
  " Hai Tổ trưởng cung cấp dữ liệu mã việc và nhật ký tải đã phân loại giờ, lịch, vòng sửa, "
@@ -99,10 +99,10 @@ c2["toi_uu_hieu_suat"] = (
 )
 c2["chu_trinh_cai_tien"] = (
  "1. Tổ trưởng ghi nhận mã việc, thời gian thực làm/chờ, số vòng chỉnh sửa và chứng từ; "
- "2. Chuyên viên trưởng phân tích nguyên nhân xuyên hai tổ, lập danh sách ưu tiên; "
+ "2. "+T+" phân tích nguyên nhân xuyên hai tổ, lập danh sách ưu tiên; "
  "3. Xác định một người chủ trì hành động và xin phê duyệt khi sửa quy trình/hạn mức; "
  "4. Tổ trưởng thực hiện thử nghiệm và theo dõi không làm gián đoạn phê duyệt bắt buộc; "
- "5. Đo lường đối soát kết quả, Chuyên viên trưởng kết luận giữ/sửa/hoàn nguyên; "
+ "5. Đo lường đối soát kết quả, "+T+" kết luận giữ/sửa/hoàn nguyên; "
  "6. Trình cấp có quyền ban hành phiên bản chuẩn, hướng dẫn và kiểm tra lỗi tái diễn."
 )
 c2["ranh_gioi_kpi"] = (
@@ -129,7 +129,7 @@ D["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]={
     "Tỷ lệ thiết lập chiến dịch/trang đích đúng lịch = số nhiệm vụ đúng hạn / tổng nhiệm vụ đến hạn",
     "Tỷ lệ sai cấu hình/phân quyền/nguồn đo = nhiệm vụ phát sinh lỗi / nhiệm vụ đã nghiệm thu",
     "Thời gian từ nhận đủ đầu vào đến kích hoạt hợp lệ, tách thời gian chờ phê duyệt",
-    "Tỷ lệ hoàn tất hành động tối ưu được đo trước–sau và xác minh bởi dữ liệu độc lập"
+    "Tỷ lệ cải tiến đạt mục tiêu đã duyệt = hành động đến hạn đạt mục tiêu sau kiểm chứng / tổng hành động cải tiến đến hạn"
    ],
    "dau_ra_cai_tien":"Chuẩn hóa checklist trước phát hành, điểm bàn giao CRM/kênh/trang đích, giảm lỗi thiết lập và thời gian xử lý",
    "chu_nguon_so_lieu":"Tổ trưởng, chuyên viên kênh số và hồ sơ nền tảng; Đo lường đối soát số liệu nguồn"}
