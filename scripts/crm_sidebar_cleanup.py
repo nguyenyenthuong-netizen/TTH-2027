@@ -47,7 +47,7 @@ js=r"""
    var old=document.getElementById('ux-sidebar-toggle');
    if(old)old.remove();
    controls().forEach(function(b){
-     if(/(?:^|\\s)mo danh muc(?:\\s|$)/.test(norm(b.textContent||''))
+     if(norm(b.textContent||'').includes('mo danh muc')
         && b.closest('aside')) b.remove();
    });
    document.body.classList.remove('ux-crm-min');
