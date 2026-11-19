@@ -303,6 +303,81 @@ nav_spacing_css=r"""<style id="tth-crm-nav-number-spacing-1911">
 s=s.replace("</head>",nav_spacing_css+"</head>",1)
 assert 'tth-crm-nav-number-spacing-1911' in s
 
+
+# The original footer used inline <strong>...<br/>text</div>. A former
+# .crm-sidebar-mini { display:flex } rule turns the title, <br> and anonymous
+# text into three flex items; in 228px width the title becomes a ~50px column.
+# Rewrite it structurally, not just by changing text size.
+import re
+footer_pattern=r'(<div class=["\x27]asideFoot["\x27]>)\s*<strong>([^<]+)</strong>\s*<br\s*/?>\s*([^<]+)(</div>)'
+def footer_stack(m):
+    return (m.group(1)+"<strong>"+m.group(2).strip()+"</strong>"
+            +'<p class="crm-aside-summary">'+m.group(3).strip()+"</p>"+m.group(4))
+s,footer_n=re.subn(footer_pattern,footer_stack,s,count=1,flags=re.I)
+if footer_n!=1:
+    raise AssertionError("CRM sidebar footer structure not found; avoid blind CSS patch")
+footer_css=r"""<style id="tth-crm-aside-summary-stack-1911">
+/* Title occupies its own line; paragraph flows below without flex columns. */
+.layout>aside .asideFoot,
+.layout.crm-sidebar-mini>aside .asideFoot{
+ display:block!important;
+ flex-direction:initial!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ flex:0 0 auto!important;
+ box-sizing:border-box!important;
+ margin:18px 0 8px!important;
+ padding:14px 9px 0!important;
+ border-top:1px solid #B8C9DF!important;
+ text-align:left!important;
+ writing-mode:horizontal-tb!important;
+ white-space:normal!important;
+ word-break:normal!important;
+ overflow-wrap:break-word!important;
+ color:#315071!important;
+ font:500 14px/1.55 Arial,Tahoma,sans-serif!important;
+}
+.layout>aside .asideFoot>strong,
+.layout.crm-sidebar-mini>aside .asideFoot>strong{
+ display:block!important;
+ float:none!important;
+ width:auto!important;
+ min-width:0!important;
+ max-width:none!important;
+ margin:0 0 7px!important;
+ white-space:normal!important;
+ overflow-wrap:normal!important;
+ word-break:normal!important;
+ font:800 15px/1.45 Arial,Tahoma,sans-serif!important;
+ color:#092F6C!important;
+}
+.layout>aside .asideFoot>p.crm-aside-summary,
+.layout.crm-sidebar-mini>aside .asideFoot>p.crm-aside-summary{
+ display:block!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+ padding:0!important;
+ white-space:normal!important;
+ word-break:normal!important;
+ overflow-wrap:break-word!important;
+ font:500 14px/1.55 Arial,Tahoma,sans-serif!important;
+ color:#315071!important;
+}
+@media(max-width:900px){
+ .layout>aside .asideFoot,
+ .layout.crm-sidebar-mini>aside .asideFoot{
+  margin:8px 0!important;
+  padding:10px 4px!important;
+ }
+}
+</style>"""
+s=s.replace("</head>",footer_css+"</head>",1)
+assert '<p class="crm-aside-summary">' in s and 'tth-crm-aside-summary-stack-1911' in s
+print("PASS CRM footer one-column markup, title above paragraph")
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
