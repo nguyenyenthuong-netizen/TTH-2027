@@ -222,8 +222,13 @@ d["ma_tran_cvt_nam_quy_trinh_1911"]={
 for id in ("cvt","cvt-2"):
     a=d["ma_tran_cvt_nam_quy_trinh_1911"][id]
     allcodes=a["chuyen_sau"]+a["phoi_hop"]+d["ma_tran_cvt_nam_quy_trinh_1911"]["chung"]
+    all_process_codes=[f"QT.{i}" for i in range(1,61)]
     unknown=[c for c in allcodes if c not in {x["ma"] for x in d["danh_muc_van_ban"]}]
     if unknown: raise ValueError("Invalid mandatory procedure codes: "+",".join(unknown))
+    if len(allcodes)!=len(set(allcodes)): raise ValueError("Overlapping procedure classes: "+id)
+    a["nhan_biet_he_thong"]=[c for c in all_process_codes if c not in allcodes]
+    if set(allcodes+a["nhan_biet_he_thong"])!=set(all_process_codes):
+        raise ValueError("Procedure knowledge coverage not 60/60 for "+id)
 
 # Render quick-to-verify visual summary in actual Position Description tab.
 docs=d["danh_muc_van_ban"]
@@ -233,7 +238,7 @@ def documents(role_id):
     return "<details><summary>"+str(len(selected))+" văn bản ghi đầu mối soạn/quản lý</summary><ol>"+li+"</ol></details>"
 def learn(role_id):
     L=d["ma_tran_cvt_nam_quy_trinh_1911"][role_id]
-    return '<p><b>Nắm chuyên sâu:</b> '+escape(", ".join(L["chuyen_sau"]))+'</p><p><b>Nắm phối hợp:</b> '+escape(", ".join(L["phoi_hop"]))+'</p>'
+    return '<p><b>Nắm chuyên sâu:</b> '+escape(", ".join(L["chuyen_sau"]))+'</p><p><b>Nắm phối hợp:</b> '+escape(", ".join(L["phoi_hop"]))+'</p><p><b>Nắm quy tắc chặn chung:</b> '+escape(", ".join(d["ma_tran_cvt_nam_quy_trinh_1911"]["chung"]))+'</p><p><b>Nhận biết các quy trình còn lại:</b> '+escape(", ".join(L["nhan_biet_he_thong"]))+'</p>'
 summary_html='<section id="tth-cvt-deep-audit-1911" style="border:1px solid #d4e3f1;border-left:5px solid #ED3237;background:#fff;border-radius:12px;padding:18px;margin:18px 0;">'
 summary_html+='<h3 style="color:#0837A1;margin:0 0 8px">Đối chiếu trách nhiệm hai Chuyên viên trưởng theo cơ cấu 2027</h3>'
 summary_html+='<p>Phạm vi quản lý, kiểm chuẩn chuyên môn, trách nhiệm xây dựng văn bản và quyền phê duyệt là bốn loại trách nhiệm khác nhau. Các quy trình, tỷ trọng KPI chưa phê duyệt không được coi là quy định đã ban hành.</p>'
