@@ -8,11 +8,13 @@ import sys
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("_site")
 targets = {
     "khung-marketing": """
-/* Prevent the long left-hand Marketing cơ sở column from inflating
-   the first grid row and pushing both right-hand teams down. */
+/* Keep the CVT Truyền thông header row sized to its own text.
+   The tall left-hand Marketing cơ sở column spans both rows and must
+   NEVER inflate the first row or overlap the two right-hand teams.
+   Preserve the original four-child organizational chart DOM. */
 @media (min-width:1000px){
  #v-org .org-cols{
-   grid-template-rows: 76px auto!important;
+   grid-template-rows: minmax(0,max-content) auto!important;
    align-content:start!important;
  }
  #v-org .org-cols>.mkt-org-cvt-2{
