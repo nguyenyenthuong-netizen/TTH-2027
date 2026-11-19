@@ -48,17 +48,23 @@ jobs:
           touch _site/.nojekyll
       - name: Sua loi chong nut, che noi dung va o nhap App
         run: python3 scripts/layout_fix.py _site
-      - name: Cap nhat slide 60 trang dung ban moi nhat
+      - name: Cap nhat ban trinh chieu 27 trang - van phong chinh thuc
         shell: bash
         run: |
           set -euo pipefail
           test -s pages-overrides/trinh-chieu-marketing/index.html
+          test -s pages-overrides/trinh-chieu-marketing/assets/tth-logo.png
           mkdir -p _site/trinh-chieu-marketing
           cp -a pages-overrides/trinh-chieu-marketing/. _site/trinh-chieu-marketing/
           test -s _site/trinh-chieu-marketing/index.html
-          for n in $(seq -w 1 60); do
-            test -s "_site/trinh-chieu-marketing/slides/slide-${n}.webp" || exit 1
-          done
+          test -s _site/trinh-chieu-marketing/assets/tth-logo.png
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('_site/trinh-chieu-marketing/index.html').read_text(encoding='utf-8')
+          assert s.count('<section class="slide') == 27
+          assert 'Bốn nội dung trọng tâm của phương án' in s
+          assert 'Không tranh luận quy tắc đặt tên' not in s
+          PY
       - name: Bo thanh dieu huong phu tren ca 5 giao dien
         run: python3 scripts/remove_extra_navigation.py _site
       - name: Cau hinh GitHub Pages
