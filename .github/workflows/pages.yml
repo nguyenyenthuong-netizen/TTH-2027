@@ -24,6 +24,7 @@ on:
       - 'scripts/khung_operational_integrity_2027.py'
       - 'scripts/khung_integrity_runtime_guard_2027.py'
       - 'scripts/khung_output_contract_audit_2027.py'
+      - 'scripts/khung_output_semantic_review_2027.py'
       - 'scripts/khung_browser_acceptance_2027.py'
       - 'scripts/khung_scenario_acceptance_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
@@ -159,6 +160,8 @@ jobs:
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: Doi soat 568 dau ra voi mot chu tri mot tuyen mot quyen duyet va mot so gio
         run: python3 scripts/khung_output_contract_audit_2027.py _site
+      - name: Doi chieu ngu nghia 568 dau ra, chung tu va tung nguoi chiu trach nhiem
+        run: python3 scripts/khung_output_semantic_review_2027.py _site
       - name: Kiem tra lai JavaScript sau khi them bang dau ra
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: Kiem thu 18 tinh huong nghiep vu ve duyet phat hanh va tai viec
