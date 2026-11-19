@@ -92,6 +92,13 @@ for name in ("healthcare-app","healthcare-website"):
     for pos in (0, text.lower().find("<body"), text.lower().find("<iframe"), max(0,len(text)-900)):
         if pos>=0:
             print("PROBE-EXCERPT",name,pos,redacted(text[pos:pos+1000]).replace("\n"," ")[:1050])
+    scripts=re.findall(r'<script\\b([^>]*)>([\\s\\S]*?)</script>',text,flags=re.I)
+    for attrs,body in scripts:
+        if len(body)<24000 and 'application/json' not in attrs:
+            print("PROBE-SCRIPT",name,"attrs",attrs[:150],"length",len(body),"source",redacted(body[:10500]).replace("\\n"," ")[:10500])
+    blocks=re.findall(r'<script\\b[^>]*type=["\\\']application/json["\\\'][^>]*>([\\s\\S]*?)</script>',text,flags=re.I)
+    for block in blocks[:1]:
+        print("PROBE-DATA",name,"length",len(block),"start",redacted(block[:350]).replace("\\n"," ")[:350])
     if '<iframe' not in text.lower():
         print("PROBE-WARNING",name,"no literal iframe found; review dynamic DOM before changes")
 print("FIX-PASS slide/web/app audit completed")
