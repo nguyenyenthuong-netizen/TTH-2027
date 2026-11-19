@@ -138,8 +138,8 @@ for shell, tag, event in (
    if(!destination){
      // Never send users to an absent local .html page (404 or blank iframe).
      // Keep external links, in-page anchors, phone and email actions intact.
-     if(typeof raw==="string" && !/^(?:https?:|\\/\\/|mailto:|tel:|sms:|data:|blob:|javascript:|#)/i.test(raw.trim()) &&
-        /\\.html(?:[?#]|$)/i.test(raw.trim())){
+     if(typeof raw==="string" && !/^(?:https?:|\/\/|mailto:|tel:|sms:|data:|blob:|javascript:|#)/i.test(raw.trim()) &&
+        /\.html(?:[?#]|$)/i.test(raw.trim())){
        ev.preventDefault();ev.stopImmediatePropagation();
        var note=document.getElementById("tth-missing-page-notice");
        if(!note){
