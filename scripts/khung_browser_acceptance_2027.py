@@ -59,20 +59,19 @@ with sync_playwright() as p:
         if before==after:issues.append(form+": nhấn chuột không đổi trạng thái bảng đầu ra")
         if not after:sixth.locator("summary").click(timeout=8000)
         if not sixth.evaluate("(e)=>e.open"):issues.append(form+": không mở được bảng đầu ra sản xuất")
-        row_count=sixth.locator("tbody tr").count()
+        row_count=sixth.locator(".ops-output-card").count()
         if row_count!=3:issues.append(form+": bước 6 cần 3 đầu ra, thấy "+str(row_count))
-        vals=sixth.locator("tbody tr").all_text_contents()
+        vals=sixth.locator(".ops-output-card").all_text_contents()
         if not (any("biên tập" in x.lower() for x in vals)
                 and any("thiết kế" in x.lower() for x in vals)
                 and any("media" in x.lower() for x in vals)):
             issues.append(form+": ba đầu ra chưa đủ Biên tập/Thiết kế/Media")
-        scroller=sixth.locator("div").first
         if form=="mobile":
-            props=scroller.evaluate("(e)=>({scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,overflow:getComputedStyle(e).overflowX})")
-            if props["scrollWidth"]<=props["clientWidth"]:
-                issues.append("mobile: bảng chi tiết không có vùng cuộn ngang độc lập")
-            if props["overflow"] not in ("auto","scroll"):
-                issues.append("mobile: bảng không cuộn ngang độc lập")
+            card_dims=sixth.locator(".ops-output-card").first.evaluate(
+                "(e)=>({scroll:e.scrollWidth,client:e.clientWidth,rect:e.getBoundingClientRect().width})"
+            )
+            if card_dims["scroll"]>card_dims["client"]+3:
+                issues.append("mobile: thẻ đầu ra vượt chiều rộng: "+str(card_dims))
 
         # Tình huống thực tế: xem đủ luồng và mở ra được bằng nhấn thật.
         for flow,expected,label in flows:
@@ -93,7 +92,7 @@ with sync_playwright() as p:
             if not now_open:details.locator("summary").click(timeout=8000)
             if not details.evaluate("(e)=>e.open"):
                 issues.append(form+": không thao tác được bảng đầu ra "+flow)
-            if details.locator("tbody tr").count()<1:
+            if details.locator(".ops-output-card").count()<1:
                 issues.append(form+": không có dòng trách nhiệm trong "+flow)
             results.append({"giao_dien":form,"luong":flow,"so_buoc":n,"thao_tac":"Mở bảng đầu ra"})
         # Cân lề trên cả trang: các bảng có cuộn riêng, trang không tràn ngang.
