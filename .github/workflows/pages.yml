@@ -28,6 +28,7 @@ on:
       - 'scripts/khung_export_output_matrix_2027.py'
       - 'scripts/khung_browser_acceptance_2027.py'
       - 'scripts/khung_scenario_acceptance_2027.py'
+      - 'scripts/khung_cvt_examples_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -169,6 +170,10 @@ jobs:
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: Kiem thu 18 tinh huong nghiep vu ve duyet phat hanh va tai viec
         run: python3 scripts/khung_scenario_acceptance_2027.py _site
+      - name: Bo sung 14 vi du van hanh hai Chuyen vien truong theo tung quy trinh
+        run: python3 scripts/khung_cvt_examples_2027.py _site
+      - name: Kiem tra JavaScript sau khi bo sung vi du
+        run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: Cai thu vien kiem tra giao dien bang Chrome
         run: python3 -m pip install --user --break-system-packages --disable-pip-version-check playwright==1.55.0 Pillow
       - name: Thu 8 luong thuc te tren desktop va mobile
