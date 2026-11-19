@@ -93,6 +93,50 @@ css=r"""
  white-space:normal!important;overflow-wrap:break-word!important;
  opacity:1!important;line-height:1.48!important;
 }
+/* The overlapping table shown in review uses .mkt-rg (not .tbl).
+   Its legacy rule ".mkt-rg th { position:sticky }" incorrectly affects all
+   header cells and gives the scrolling heading only z-index:1. Scope
+   stickiness strictly to THEAD, isolate painting, keep agreed glass tint. */
+#main .mkt-rg .rg-wrap{
+ position:relative!important;
+ isolation:isolate!important;
+ max-width:100%!important;
+ overflow-x:auto!important;
+ overflow-y:auto!important;
+ -webkit-overflow-scrolling:touch!important;
+}
+#main .mkt-rg table{
+ border-collapse:separate!important;
+ border-spacing:0!important;
+ table-layout:auto!important;
+}
+#main .mkt-rg tbody tr,
+#main .mkt-rg tbody td,
+#main .mkt-rg tbody th{
+ position:static!important;
+ z-index:auto!important;
+}
+#main .mkt-rg thead th{
+ position:sticky!important;
+ top:0!important;
+ z-index:30!important;
+ background:rgba(235,243,255,.985)!important;
+ color:#17365c!important;
+ opacity:1!important;
+ -webkit-backdrop-filter:var(--tth-title-blur)!important;
+ backdrop-filter:var(--tth-title-blur)!important;
+ box-shadow:0 4px 8px rgba(8,42,104,.10)!important;
+ border-bottom:2px solid #acc3df!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ white-space:normal!important;
+ overflow-wrap:break-word!important;
+ vertical-align:top!important;
+ padding:11px 12px!important;
+ line-height:1.5!important;
+}
+#main .mkt-rg thead th>*{position:relative!important;z-index:1!important}
+#main .mkt-rg tbody th{background:inherit!important}
+/* Preserve legible sticky heading at text zoom; body remains beneath it. */
 /* All table heading rows adopt one light blue glass tint. No squeezed,
    clipped columns or changing darkness between standard and scroll tables. */
 #main :is(.tbl,.std-table,.rel-scroll){
