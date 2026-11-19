@@ -26,6 +26,8 @@ warnings=[]
 stats=Counter()
 cvt_step=[]
 suspicious_both=[]
+lead_cvt2=[]
+output_cvt2=[]
 for qid,i,b in all_steps:
  owner=code(b.get("chu_tri_chinh",""))
  actors=[code(x) for x in b.get("thuc_hien",[])]
@@ -39,6 +41,10 @@ for qid,i,b in all_steps:
   suspicious_both.append({"quy_trinh":qid,"buoc":i,"chu_tri":owner})
  if owner in ("cvt","cvt-2"):
   stats["buoc_chu_tri_"+owner]+=1
+ if owner=="cvt-2":
+  lead_cvt2.append({"quy_trinh":qid,"buoc":i,"thuc_hien":actors,
+    "phoi_hop":assistants,"noi_dung":str(b.get("noi_dung",""))[:320],
+    "ghi_nhan":str(b.get("ghi_nhan",""))[:140]})
  if owner in assistants:
   stats["buoc_chu_tri_trung_ma_phoi_hop"]+=1
   if not b.get("chan_trung_nguoi_2027"):
@@ -48,6 +54,7 @@ for qid,i,b in all_steps:
   desc=z.get("dien_giai","")
   if actor=="cvt-2":
    stats["dau_ra_vai_tro_cvt_truyen_thong"]+=1
+   output_cvt2.append({"quy_trinh":qid,"buoc":i,"ma_dau_ra":z.get("ma_dau_ra"),"dien_giai":desc[:260]})
    if desc.startswith("Phần nghiệp vụ của Quản lý Nội dung"):
     errors.append({"ma":"NHAM_CVT_TREN_DAU_RA","quy_trinh":qid,"buoc":i,
                    "id":z.get("ma_dau_ra"),"dien_giai":desc[:180]})
@@ -128,10 +135,14 @@ report={
  "loi":errors,
  "can_xac_minh":warnings,
  "buoc_co_ca_hai_cvt":suspicious_both,
+ "buoc_cvt_truyen_thong_chu_tri":lead_cvt2,
+ "dau_ra_cvt_truyen_thong":output_cvt2,
  "quy_tac":"Một chủ trì, một tuyến quản lý trực tiếp, người kiểm độc lập, quyền duyệt theo văn bản; không cộng trùng giờ sản xuất/điều phối/quản trị."
 }
 dest=root/"khung-marketing"/"doi-soat-hai-chuyen-vien-truong-2027.json"
 dest.write_text(json.dumps(report,ensure_ascii=False,indent=2),"utf-8")
+print("CVT-ROLE-CHECK:",json.dumps({"lead_cvt_truyen_thong":lead_cvt2,
+ "dau_ra_cvt_truyen_thong":output_cvt2,"cung_tham_gia":suspicious_both},ensure_ascii=False))
 print("CVT-SEMANTIC-AUDIT:",json.dumps({"trang_thai":report["trang_thai"],
  "thong_ke":dict(stats),"loi":errors[:12],"can_xac_minh":warnings},ensure_ascii=False))
 assert not errors,"Còn trộn tuyến CVT/biểu mẫu: "+str(errors[:5])
