@@ -487,3 +487,63 @@ slide.write_text(slide_doc,"utf-8")
 print("KHUNG-SLIDE-CROSSCHECK-2027 PASS, changes",changes,
       "framework legacy 34-suat references:",framework.count("34 suất"),
       "slides",slide_doc.count('<section class="slide'))
+
+
+# BRAND-ARCH-WINMED-TDD-2027 — public source verification 19/11/2026.
+# Sources: tthgroup.vn corporate news (23/01/2026); winmed.vn official;
+# public business-register listings for Tuệ Đức Thiện.
+# Treat these as Group 2 marketing brands/units, not as medical hospitals
+# and do not claim a particular parent/subsidiary equity relation.
+slide_doc=slide.read_text("utf-8")
+framework=(root/"khung-marketing"/"index.html").read_text("utf-8")
+for name in ("Winmed Việt Nam","Công ty TNHH Tuệ Đức Thiện"):
+    if name not in framework:raise AssertionError("Group 2 brand missing from current framework: "+name)
+def update_section(doc,index,fn):
+    m=re.search(r'<section class="slide" data-index="'+str(index)+r'">.*?</section>',doc,flags=re.S)
+    if not m:raise AssertionError("Missing slide data-index "+str(index))
+    section=fn(m.group(0))
+    return doc[:m.start()]+section+doc[m.end():]
+def update_arch(s):
+    old='<div class="brand-banner dark">THƯƠNG HIỆU CHUYÊN KHOA</div>'
+    new='<div class="brand-banner dark">THƯƠNG HIỆU CHUYÊN KHOA VÀ ĐƠN VỊ KHÁC</div>'
+    if s.count(old)!=1:raise AssertionError("Cannot locate brand architecture right heading")
+    s=s.replace(old,new,1)
+    marker='<p>Viện dưỡng lão Thái Thượng Hoàng</p></div></div></div></main>'
+    replacement=(
+      '<p>Viện dưỡng lão Thái Thượng Hoàng</p></div>'
+      '<div class="minor tth-group2-other">'
+      '<b>DOANH NGHIỆP / THƯƠNG HIỆU KHÁC</b>'
+      '<p><strong>Winmed Việt Nam</strong> – thiết bị và giải pháp y tế</p>'
+      '<p><strong>Tuệ Đức Thiện</strong> – kiến trúc, tư vấn kỹ thuật</p>'
+      '</div></div></div></main>'
+    )
+    if s.count(marker)!=1:raise AssertionError("Unrecognized brand diagram block")
+    return s.replace(marker,replacement,1)
+slide_doc=update_section(slide_doc,3,update_arch)
+def update_group(s):
+    old='Bệnh viện Y học cổ truyền Nguyên Phúc · Bệnh viện Răng Hàm Mặt và Phẫu thuật Tạo hình Thẩm mỹ Thái Thượng Hoàng · các thương hiệu chuyên khoa khác, Winmed, Tuệ Đức Thiện...'
+    new=('Bệnh viện Y học cổ truyền Nguyên Phúc · Bệnh viện Răng Hàm Mặt và Phẫu thuật Tạo hình Thẩm mỹ Thái Thượng Hoàng · '
+         'các thương hiệu chuyên khoa khác; <strong>Winmed Việt Nam</strong> (thiết bị y tế) và '
+         '<strong>Tuệ Đức Thiện</strong> (kiến trúc, tư vấn kỹ thuật).')
+    if s.count(old)!=1:raise AssertionError("Group 2 paragraph not found for corrections")
+    return s.replace(old,new,1)
+slide_doc=update_section(slide_doc,4,update_group)
+css=r"""<style id="tth-group2-other-brands-1911">
+/* Fit the extra verified Group 2 brands without cutting or tiny fonts. */
+.slide[data-index="3"] .brand-column{padding:11px!important}
+.slide[data-index="3"] .brand-column .brand-banner{font-size:16px!important;line-height:1.2!important;margin-bottom:8px!important;padding:10px!important}
+.slide[data-index="3"] .brand-column>.minor{padding:7px 10px!important;margin-bottom:7px!important}
+.slide[data-index="3"] .brand-column>.minor p{font-size:15px!important;line-height:1.24!important;margin:3px 0!important}
+.slide[data-index="3"] .brand-column>.minor b{font-size:12px!important;line-height:1.3!important}
+.slide[data-index="3"] .tth-group2-other{background:#edf3fc!important;border:1px solid #bfd3f1!important;border-left:4px solid #0837a1!important}
+.slide[data-index="3"] .tth-group2-other strong{font-weight:700!important}
+.slide[data-index="4"] .card .bodycopy{font-size:17px!important;line-height:1.37!important}
+.slide[data-index="4"] .card .bodycopy p{margin:6px 0 10px!important}
+</style>"""
+if 'tth-group2-other-brands-1911' in slide_doc:raise AssertionError("Duplicate brand CSS")
+slide_doc=slide_doc.replace("</head>",css+"</head>",1)
+assert slide_doc.count('<section class="slide')==27
+assert slide_doc.count('tth-group2-other')>=2
+assert "DOANH NGHIỆP / THƯƠNG HIỆU KHÁC" in slide_doc
+slide.write_text(slide_doc,"utf-8")
+print("BRAND-ARCH-WINMED-TDD-2027 PASS: both brands visible on architecture and group-2 slide")
