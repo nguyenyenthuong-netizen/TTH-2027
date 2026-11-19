@@ -113,6 +113,48 @@ with sync_playwright() as p:
         if panel.count()!=1:issues.append(form+": thiếu bảng tổng hợp 568 hợp đồng đầu ra")
         elif not panel.is_visible():
             issues.append(form+": bảng 568 đầu ra đang bị ẩn khi vào mục 4.3")
+        # Kiểm tra 14 ví dụ trên trình duyệt, không chỉ kiểm tra mã HTML.
+        examples=page.locator("#tth-cvt-worked-examples-2027 .cvt-case")
+        if examples.count()!=14:
+            issues.append(form+": thiếu ví dụ hai tuyến, thấy "+str(examples.count())+"/14")
+        else:
+            for pos in (0,6,13):
+                card=examples.nth(pos)
+                card.scroll_into_view_if_needed(timeout=8000)
+                old=card.evaluate("(e)=>e.open")
+                card.locator("summary").click(timeout=8000)
+                new=card.evaluate("(e)=>e.open")
+                if old==new:
+                    issues.append(form+": ví dụ "+str(pos+1)+" không mở/thu được")
+                if not new:
+                    card.locator("summary").click(timeout=8000)
+                link=card.locator('a[href^="#vh-qt-"]')
+                if link.count()!=1:
+                    issues.append(form+": ví dụ "+str(pos+1)+" thiếu liên kết quy trình")
+                else:
+                    target=link.get_attribute("href")[1:]
+                    if page.locator("[id='"+target+"']").count()!=1:
+                        issues.append(form+": liên kết ví dụ sai ID "+target)
+            panel_width=page.locator("#tth-cvt-worked-examples-2027").evaluate(
+                "(e)=>({client:e.clientWidth,scroll:e.scrollWidth})")
+            if panel_width["scroll"]>panel_width["client"]+3:
+                issues.append(form+": ví dụ tràn ngang "+str(panel_width))
+        contract=page.evaluate("""() => {
+            const el=document.getElementById('csdl');
+            if (!el) return {problem:'missing-csdl'};
+            const d=JSON.parse(el.textContent);
+            const arr=d.quy_trinh.flatMap(q=>q.buoc.flatMap(b=>b.doi_soat_tung_dau_ra_2027||[]));
+            const mkt=arr.filter(x=>(x.ma_chu_tri_theo_nhom||{}).can_phan_giai==='mkt-tct');
+            return {total:arr.length,blocked:arr.filter(x=>x.trang_thai_nghiem_thu_2027==='CHƯA NGHIỆM THU HỒ SƠ THỰC TẾ').length,
+              unresolvedTct:mkt.length,unsafeTct:mkt.filter(x=>x.chu_tri_01.indexOf('Trưởng phòng chỉ')<0).length,
+              gate:!!d.kiem_toan_chong_cheo_chot_2027}
+        }""")
+        if (contract.get("total")!=568 or contract.get("blocked")!=568
+                or contract.get("unsafeTct",0)>0 or not contract.get("gate")):
+            issues.append(form+": dữ liệu 568 đầu ra chưa nhất quán "+str(contract))
+        latest_dims=page.evaluate("() => document.documentElement.scrollWidth")
+        if latest_dims>width+18:
+            issues.append(form+": tràn trang sau khi mở 14 ví dụ: "+str(latest_dims))
         page.goto(url+"#vh-qt-hang-muc",wait_until="domcontentloaded",timeout=30000)
         page.wait_for_timeout(700)
         shot_details=page.locator("#vh-qt-hang-muc .ops-output-audit").nth(5)
