@@ -314,7 +314,9 @@ navjs=r"""<script id="tth-slide-chief-line-and-nav-2027">
    const b=document.createElement('button');
    b.type='button';b.className='tth-floating-arrow tth-extra-control';
    b.setAttribute('aria-label',label);b.title=label;
-   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg><small>'+subtitle+'</small>';
+   // Compact controls: the visible glyph is the SVG only. Tooltip and ARIA carry the full label.
+   // Do not create a <small> caption: older CSS could display it outside the 44px button.
+   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
    return b;
  }
  const list=button('Danh sách 27 slide','Danh sách','<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>');
@@ -581,3 +583,16 @@ if "tth-slide-nav-icons-only-1911" not in slide_doc:
 slide.write_text(slide_doc,"utf-8")
 assert slide_doc.count('<section class="slide')==27
 print("PASS tth-slide-nav-icons-only-1911: small-label overlap removed; navigation controls retain title and aria-label")
+
+
+# Prevent regressions: the two floating controls must have SVG icons only,
+# full accessible names, no child caption, and should not reinstate #controls.
+tth_controls=slide.read_text("utf-8")
+if "const list=button('Danh sách 27 slide'" not in tth_controls or "const full=button('Toàn màn hình'" not in tth_controls:
+    raise AssertionError("Required slide controls missing")
+nav_block=tth_controls.split('const nav=document.querySelector(\'.tth-floating-arrows\');',1)[-1]
+if '</svg><small>' in nav_block[:1300]:
+    raise AssertionError("Overflowing slide control text is still inserted")
+if tth_controls.count('<section class="slide')!=27:
+    raise AssertionError("Slide count changed while repairing controls")
+print("PASS-SLIDE-NAV-ICONS: two controls are SVG-only and keep accessible labels")
