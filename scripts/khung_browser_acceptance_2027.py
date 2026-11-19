@@ -139,6 +139,33 @@ with sync_playwright() as p:
                 "(e)=>({client:e.clientWidth,scroll:e.scrollWidth})")
             if panel_width["scroll"]>panel_width["client"]+3:
                 issues.append(form+": ví dụ tràn ngang "+str(panel_width))
+        # Kiểm tra 25 luồng giao thoa giữa hai Chuyên viên trưởng trên UI thực.
+        cross=page.locator("#tth-cvt-cross-25-review-2027")
+        if cross.count()!=1:
+            issues.append(form+": thiếu danh mục kiểm thử 25 bước phối hợp hai CVT")
+        else:
+            cross.scroll_into_view_if_needed(timeout=8000)
+            cross.locator("summary").first.click(timeout=8000)
+            if not cross.evaluate("(e)=>e.open"):
+                issues.append(form+": không thể mở mục đối chiếu 25 bước")
+            cases=cross.locator("details")
+            if cases.count()!=25:
+                issues.append(form+": sai số bước phối hợp CVT "+str(cases.count())+"/25")
+            else:
+                for pos in (0,12,24):
+                    block=cases.nth(pos)
+                    block.locator("summary").click(timeout=8000)
+                    if not block.evaluate("(e)=>e.open"):
+                        issues.append(form+": mục CVT "+str(pos+1)+" không mở được")
+                    else:
+                        content=block.text_content()
+                        if ("Nội dung – Sáng tạo" not in content
+                                or "Truyền thông – Thương hiệu" not in content
+                                or "Điều kiện phối hợp" not in content):
+                            issues.append(form+": mục CVT "+str(pos+1)+" thiếu phân vai")
+            dimensions=cross.evaluate("(e)=>({client:e.clientWidth,scroll:e.scrollWidth})")
+            if dimensions["scroll"]>dimensions["client"]+3:
+                issues.append(form+": mục kiểm soát 25 CVT tràn ngang "+str(dimensions))
         contract=page.evaluate("""() => {
             const el=document.getElementById('csdl');
             if (!el) return {problem:'missing-csdl'};
@@ -147,10 +174,13 @@ with sync_playwright() as p:
             const mkt=arr.filter(x=>(x.ma_chu_tri_theo_nhom||{}).can_phan_giai==='mkt-tct');
             return {total:arr.length,blocked:arr.filter(x=>x.trang_thai_nghiem_thu_2027==='CHƯA NGHIỆM THU HỒ SƠ THỰC TẾ').length,
               unresolvedTct:mkt.length,unsafeTct:mkt.filter(x=>x.chu_tri_01.indexOf('Trưởng phòng chỉ')<0).length,
-              gate:!!d.kiem_toan_chong_cheo_chot_2027}
+              gate:!!d.kiem_toan_chong_cheo_chot_2027,
+              cross:d.doi_soat_25_buoc_lien_tuyen_hai_cvt_2027?.danh_sach?.length,
+              pending:d.kiem_toan_568_dau_ra_chuyen_biet_2027?.can_xac_nhan}
         }""")
         if (contract.get("total")!=568 or contract.get("blocked")!=568
-                or contract.get("unsafeTct",0)>0 or not contract.get("gate")):
+                or contract.get("unsafeTct",0)>0 or not contract.get("gate")
+                or contract.get("cross")!=25 or contract.get("pending")!=512):
             issues.append(form+": dữ liệu 568 đầu ra chưa nhất quán "+str(contract))
         latest_dims=page.evaluate("() => document.documentElement.scrollWidth")
         if latest_dims>width+18:
