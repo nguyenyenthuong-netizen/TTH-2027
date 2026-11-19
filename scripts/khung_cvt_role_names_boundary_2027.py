@@ -57,6 +57,57 @@ def walk(node):
     return node
 D=walk(D)
 
+# KIỂM TOÁN 19/11: tải Tổ trưởng và tuyến báo cáo tự tham chiếu là lỗi,
+# không được 'chốt đủ tải' khi chưa đo phần điều phối kiêm nhiệm.
+brand2=next(x for x in D["vi_tri"] if x["id"]=="qlth-bc")
+digital=next(x for x in D["vi_tri"] if x["id"]=="qlsps")
+assert "88–91" in brand2["gio_ke_hoach"] and "19 giờ" in digital["gio_ke_hoach"]
+brand2["gio_ke_hoach"]=(
+ "≈ 88–91 giờ/tháng là tải chuyên môn Quản lý thương hiệu nhóm 2 theo phương án trước; "
+ "CHƯA cộng giờ kiêm Tổ trưởng Tổ Truyền thông và Thương hiệu. "
+ "Phải ghi riêng số lượt giao việc, xử lý xung đột, họp tổ, rà tiến độ và giờ thực đo; "
+ "chưa được kết luận tổng tải hoặc giờ dư."
+)
+brand2["bao_cao_cho"]=(
+ TRUYEN_THONG+" quản lý chuyên môn và kiểm soát tải cả chức danh Quản lý thương hiệu nhóm 2 "
+ "lẫn vai trò kiêm Tổ trưởng Tổ Truyền thông và Thương hiệu. "
+ "Không có tuyến báo cáo 'Tổ trưởng báo cáo cho chính mình'. "
+ "Trong vai trò Quản lý thương hiệu, chịu trách nhiệm hạng mục nhóm 2; trong vai trò Tổ trưởng, "
+ "chỉ điều phối lịch của tổ, không kiểm/duyệt độc lập sản phẩm do mình làm; "
+ "Trưởng phòng xử lý xung đột vượt quyền."
+)
+digital["bao_cao_cho"]=(
+ TRUYEN_THONG+" quản lý trực tiếp về nghiệp vụ, tiến độ và tải việc "
+ "của Quản lý sản phẩm số, bao gồm phần kiêm Tổ trưởng Tổ Tăng trưởng số. "
+ "Không tự đánh giá hoặc tự phê duyệt phần việc, chi phí, quyền hệ thống của mình; "
+ "Trưởng phòng xử lý vượt quyền theo ma trận."
+)
+D["kiem_toan_tai_quan_ly_2027"]={
+ "trang_thai":"CHƯA ĐỦ SỐ GIỜ ĐO THỰC TẾ; không công bố đủ tải hay dư tải của hai Chuyên viên trưởng",
+ "co_so_cau_truc":"26 mã chức danh; 36 suất định biên mục tiêu (22 Tổng công ty, 14 cơ sở); 3 tổ; 2 nhóm thương hiệu. Mã chức danh không đồng nghĩa số nhân sự.",
+ "tien_de_bat_buoc":[
+  "Mã việc duy nhất; tổ phụ trách; người làm; người kiểm; người phê duyệt; tần suất tháng; định mức phút/lượt; chứng từ giờ thực tế",
+  "Giờ người thực hiện và giờ Tổ trưởng kiêm nhiệm không cộng vào giờ Chuyên viên trưởng; phần họp/phối hợp chỉ ghi một lần cho một người",
+  "Với cơ sở: phân biệt số bệnh viện, số Trưởng nhóm trực thuộc, số nhân viên cơ sở, loại bệnh viện và số yêu cầu phát sinh",
+  "Số buổi kiểm chuẩn thực tế và số lỗi tái diễn; tách báo cáo định kỳ với xử lý sự cố",
+  "Chưa đủ giờ đo thì chỉ ghi tải dự kiến/nguồn giả định và cảnh báo, không khẳng định định biên 36 là đủ nhân sự thực tế"
+ ],
+ "cong_thuc":"Tổng giờ quản trị/tháng = tổng theo nhóm việc (số lượt thực tế × số phút quản trị chuẩn/lượt ÷ 60) + thời gian quản trị định kỳ duy nhất + thời gian đào tạo, xử lý phát sinh thực đo - phần giờ đã ghi trùng. Không lấy giờ sản xuất của tổ làm giờ quản trị.",
+ "tuyen_noi_dung":{
+  "chuc_danh":NOI_DUNG,
+  "danh_muc":"Điều phối tải Tổ Nội dung và Sáng tạo; quản lý Trưởng nhóm bệnh viện hai nhóm; họp/đánh giá; kiểm soát chất lượng sản xuất; rủi ro; phát sinh liên cơ sở",
+  "khong_duoc_tinh":"Giờ Biên tập/Thiết kế/Media trực tiếp sản xuất; giờ Tổ trưởng nhóm 1 phân công đã hạch toán"},
+ "tuyen_truyen_thong":{
+  "chuc_danh":TRUYEN_THONG,
+  "danh_muc":"Quản lý 2 tổ Truyền thông và Thương hiệu, Tăng trưởng số; kiểm chuẩn truyền thông/cơ sở; rủi ro PR/OOH/kênh số; đào tạo; đánh giá chất lượng vận hành",
+  "khong_duoc_tinh":"Giờ PR, quản trị quảng cáo, sản phẩm số và giờ 2 Tổ trưởng điều phối đã hạch toán"},
+ "bat_cap_cu_the":[
+  "Quản lý thương hiệu nhóm 2 kiêm Tổ trưởng nhưng trường 88–91 giờ trước đây ghi rõ 'không kiêm Tổ trưởng'; hiện đã đánh dấu thiếu tải kiêm nhiệm",
+  "Quản lý thương hiệu nhóm 2 và Quản lý sản phẩm số kiêm Tổ trưởng không được ghi cấp trên là chính Tổ trưởng do mình đảm nhiệm",
+  "Tổ trưởng Tổ Nội dung và Sáng tạo đang điều phối chủ yếu nhóm 1, nhóm 2/ngoại tuyến bị đẩy lên Chuyên viên trưởng làm điều phối hằng ngày: cần chốt văn bản giao phạm vi điều phối và người dự phòng, không tự thêm suất định biên"
+ ]
+}
+
 # Ánh xạ tên người quản lý trong trường diễn giải, không đánh số chức danh.
 legacy=D.get("phan_dinh_quan_ly_hai_cvt_19112026",{}).get("tuyen",{})
 if "CVT1" in legacy and "CVT2" in legacy:
@@ -229,6 +280,15 @@ visible=re.sub(r'<[^>]+>',' ',visible)
 if GENERIC_CVT.search(visible):remaining.append('HTML tĩnh')
 if remaining:raise ValueError('Còn tên chức danh chung: '+', '.join(remaining[:18]))
 print('FULL-TITLE-AUDIT PASS: 26 vị trí, 60 quy trình, 83 văn bản; không còn Chuyên viên trưởng chung trong dữ liệu và HTML tĩnh')
+
+# Cập nhật các nhãn mô tả tải/chức danh đã sinh sẵn trong sơ đồ HTML gốc.
+# Bản dữ liệu động đọc D nên chỉ thay chữ tĩnh đúng mẫu, không thay thuộc tính.
+html=html.replace(
+ "≈ 88–91 giờ/tháng (không kiêm Tổ trưởng; chỉ nghiệm thu, không kiểm lời)",
+ "≈ 88–91 giờ/tháng tải chuyên môn; CHƯA cộng tải kiêm Tổ trưởng (đo riêng trước khi kết luận tải)")
+# Không để hồ sơ chức danh giữ mẫu tự tham chiếu.
+assert "Không có tuyến báo cáo 'Tổ trưởng báo cáo cho chính mình'." in D["vi_tri"][4]["bao_cao_cho"]
+assert "Không tự đánh giá" in D["vi_tri"][18]["bao_cao_cho"]
 
 # Tự động từ chối nếu còn tên đánh số trong vùng chữ hiển thị hoặc CSDL dạng văn bản.
 all_names=json.dumps(D,ensure_ascii=False)
