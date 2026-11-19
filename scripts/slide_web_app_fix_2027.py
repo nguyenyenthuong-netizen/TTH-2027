@@ -1126,3 +1126,48 @@ print("WEBSITE-GLOBAL-DISPLAY-PASS",
       "public-pages",public_count,"admin-pages",admin_count,
       "header-mobile",True,"CTA-state-parent-bridge",True,
       "prototype-tools-hidden",True,"admin-table-scroll",True)
+
+
+# TTH_WEBSITE_BACK_TO_TOP_FIX_20261119
+# The native CTA "Lên đầu trang" uses href="#top" on 115 pages, but the
+# markup contains no id="top". A document-level capture handler from the
+# original prototype intercepts missing anchors and shows a placeholder
+# notification instead of scrolling. Register on window capture (which runs
+# before document capture), handle #top and stop the stale placeholder.
+webfile=root/"healthcare-website"/"index.html"
+websrc=webfile.read_text("utf-8")
+datam=re.search(r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',
+                websrc,re.S|re.I)
+if not datam:raise AssertionError("Website page catalog missing for top-button repair")
+webpages=json.loads(datam.group(2))
+top_js=r"""<script id="tth-website-back-to-top-1911">
+(function(){
+ "use strict";
+ window.addEventListener("click",function(ev){
+   var t=ev.target && (ev.target.nodeType===1?ev.target:ev.target.parentElement);
+   var a=t&&t.closest?t.closest('a[href="#top"]'):null;
+   if(!a)return;
+   ev.preventDefault();
+   ev.stopImmediatePropagation();
+   window.scrollTo(0,0);
+   if(document.scrollingElement)document.scrollingElement.scrollTop=0;
+ },true);
+})();
+</script>"""
+fixed=[]
+for name,doc in webpages.items():
+ if '<a class="fabx " href="#top"' not in doc:
+  continue
+ if 'tth-website-back-to-top-1911' in doc:
+  raise AssertionError("Duplicate top-button repair on "+name)
+ if "</body>" not in doc:raise AssertionError("Missing body end on "+name)
+ doc=doc.replace("</body>",top_js+"</body>",1)
+ webpages[name]=doc
+ fixed.append(name)
+if len(fixed)!=115:
+ raise AssertionError("Expected 115 CTA top buttons, got "+str(len(fixed)))
+encoded=(json.dumps(webpages,ensure_ascii=False,separators=(",",":"))
+ .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
+websrc=websrc[:datam.start(2)]+encoded+websrc[datam.end(2):]
+webfile.write_text(websrc,"utf-8")
+print("PASS WEBSITE BACK TO TOP 115/115: window capture precedes original document handler")
