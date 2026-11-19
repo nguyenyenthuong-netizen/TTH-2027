@@ -141,5 +141,21 @@ active_markers=[
 for pattern in active_markers:
     if re.search(pattern,s,re.IGNORECASE):
         raise ValueError("Legacy 34/35 still active: "+pattern)
+# Surface residual misleading 34/35 staffing statements for follow-up, excluding
+# unrelated identifiers like KPI-34/35 and QT.34/35.
+html_without_scripts=re.sub(r'<script\b[^>]*>[\s\S]*?</script>',' ',s,flags=re.I)
+html_without_scripts=re.sub(r'<style\b[^>]*>[\s\S]*?</style>',' ',html_without_scripts,flags=re.I)
+plain=re.sub(r'<[^>]+>',' ',html_without_scripts)
+plain=re.sub(r'\s+',' ',plain)
+old_refs=[]
+for match in re.finditer(r'(?<!\d)(?:34|35)(?!\d)',plain):
+    context=plain[max(0,match.start()-95):match.end()+90]
+    if re.search(r'định biên|nhân sự|suất|hiện có|người|tuyển|giai đoạn|cơ cấu|marketing cơ sở',context,re.I):
+        if re.search(r'(?:KPI|QT|mảng|mục|số)\s*[-. ]\s*(?:34|35)\b',context,re.I):
+            continue
+        old_refs.append(context[:190])
+print("LEGACY-STAFFING-NEARBY",len(old_refs))
+for line in old_refs[:30]:
+    print("LEGACY-CONTEXT",line)
 path.write_text(s,"utf-8")
 print("PASS FIX 36: 22 TCT + 14 CO SO; 2 CVT; 26 roles; active roadmap one 36-seat baseline")
