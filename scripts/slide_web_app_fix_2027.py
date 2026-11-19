@@ -555,27 +555,74 @@ print("BRAND-ARCH-WINMED-TDD-2027 PASS: both brands visible on architecture and 
 # from painting outside a 44px button and overlapping one another.
 slide_doc=slide.read_text("utf-8")
 icon_style=r"""<style id="tth-slide-nav-icons-only-1911">
-.tth-floating-arrows{
- display:grid!important;grid-template-columns:repeat(2,44px)!important;
- grid-auto-rows:44px!important;flex-direction:row!important;
- width:max-content!important;max-width:calc(100vw - 16px)!important;
- gap:9px!important;right:10px!important;bottom:10px!important;
- left:auto!important;top:auto!important;align-items:center!important;
- justify-items:center!important;z-index:2000!important;transform:none!important;
+/* NAVIGATION DOCK -- outside the canvas rather than floating above slide text.
+   The 1280x720 stage continues scaling with #viewport via its existing fit(). */
+:root{--tth-slide-rail-width:72px;--tth-slide-mobile-dock:68px}
+@media screen and (min-width:850px){
+ #viewport{
+   position:fixed!important;inset:0 0 0 var(--tth-slide-rail-width)!important;
+   top:0!important;bottom:0!important;left:var(--tth-slide-rail-width)!important;
+   right:0!important;width:calc(100vw - var(--tth-slide-rail-width))!important;
+   height:100dvh!important;max-height:100dvh!important;
+   padding:0!important;box-sizing:border-box!important;
+ }
+ .tth-floating-arrows{
+   position:fixed!important;inset:auto!important;
+   left:7px!important;right:auto!important;top:50%!important;bottom:auto!important;
+   transform:translateY(-50%)!important;width:58px!important;height:auto!important;
+   display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;
+   align-items:center!important;justify-content:center!important;gap:11px!important;
+   padding:10px 5px!important;margin:0!important;box-sizing:border-box!important;
+   background:#e6eef9!important;border:1px solid #c7d8ec!important;
+   border-radius:18px!important;z-index:2000!important;pointer-events:auto!important;
+ }
+}
+@media screen and (max-width:849px){
+ #viewport{
+   position:fixed!important;inset:0 0 var(--tth-slide-mobile-dock) 0!important;
+   top:0!important;left:0!important;right:0!important;
+   bottom:var(--tth-slide-mobile-dock)!important;width:100vw!important;
+   height:calc(100dvh - var(--tth-slide-mobile-dock))!important;
+   max-height:calc(100dvh - var(--tth-slide-mobile-dock))!important;
+   padding:0!important;box-sizing:border-box!important;
+ }
+ .tth-floating-arrows{
+   position:fixed!important;inset:auto!important;top:auto!important;
+   left:0!important;right:0!important;bottom:0!important;
+   transform:none!important;display:flex!important;flex-direction:row!important;
+   align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;
+   width:100vw!important;height:var(--tth-slide-mobile-dock)!important;
+   min-height:var(--tth-slide-mobile-dock)!important;gap:12px!important;
+   margin:0!important;padding:7px 10px!important;box-sizing:border-box!important;
+   background:#e6eef9!important;border-top:1px solid #b6c9e3!important;
+   border-radius:0!important;z-index:2000!important;pointer-events:auto!important;
+ }
 }
 .tth-floating-arrows .tth-floating-arrow{
+ appearance:none!important;position:relative!important;
  display:flex!important;align-items:center!important;justify-content:center!important;
  flex:0 0 44px!important;min-width:44px!important;max-width:44px!important;
- width:44px!important;height:44px!important;min-height:44px!important;
- max-height:44px!important;padding:7px!important;box-sizing:border-box!important;
- overflow:hidden!important;white-space:nowrap!important;line-height:1!important;
+ width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important;
+ border-radius:12px!important;border:1px solid #fff!important;
+ padding:0!important;margin:0!important;box-sizing:border-box!important;
+ overflow:hidden!important;white-space:nowrap!important;
+ line-height:1!important;color:#fff!important;background:#0837a1!important;
+ font-size:0!important;text-indent:0!important;cursor:pointer!important;
+ pointer-events:auto!important;
 }
-.tth-floating-arrows .tth-extra-control{flex-direction:row!important}
-.tth-floating-arrows .tth-extra-control small{display:none!important}
-.tth-floating-arrows .tth-floating-arrow svg{flex:0 0 21px!important;width:21px!important;height:21px!important}
-@media(max-width:720px){
- .tth-floating-arrows{right:5px!important;bottom:6px!important;gap:6px!important;grid-template-columns:repeat(2,40px)!important;grid-auto-rows:40px!important}
- .tth-floating-arrows .tth-floating-arrow{width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important;max-height:40px!important}
+.tth-floating-arrows .tth-floating-arrow svg{
+ display:block!important;flex:0 0 22px!important;
+ width:22px!important;height:22px!important;min-width:22px!important;
+ max-width:22px!important;margin:0!important;padding:0!important;
+ color:#fff!important;stroke:#fff!important;
+}
+.tth-floating-arrows .tth-floating-arrow small{display:none!important}
+.tth-floating-arrows .tth-floating-arrow:focus-visible{
+ outline:3px solid #ED3237!important;outline-offset:2px!important
+}
+@media print{
+ #viewport{position:static!important;inset:auto!important;width:1280px!important;height:auto!important}
+ .tth-floating-arrows{display:none!important}
 }
 </style>"""
 if "tth-slide-nav-icons-only-1911" not in slide_doc:
@@ -596,3 +643,11 @@ if '</svg><small>' in nav_block[:1300]:
 if tth_controls.count('<section class="slide')!=27:
     raise AssertionError("Slide count changed while repairing controls")
 print("PASS-SLIDE-NAV-ICONS: two controls are SVG-only and keep accessible labels")
+
+
+dock_html=slide.read_text("utf-8")
+assert 'NAVIGATION DOCK -- outside the canvas' in dock_html
+assert 'var(--tth-slide-rail-width)' in dock_html
+assert 'var(--tth-slide-mobile-dock)' in dock_html
+assert dock_html.count('<section class="slide')==27
+print("PASS-SLIDE-DOCK: controls outside slide viewport; 27 slides intact")
