@@ -11,7 +11,6 @@ on:
       - 'scripts/final_pages_guard.py'
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/site_consistency_audit.py'
-      - 'scripts/remove_personnel_steps.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
@@ -94,8 +93,6 @@ jobs:
         run: python3 scripts/final_pages_guard.py _site
       - name: CRM chuyen nut ve sidebar, bo thanh ngang phu
         run: python3 scripts/crm_sidebar_cleanup.py _site
-      - name: Bo bang 07 buoc dieu chuyen nhan su khoi Khung Marketing
-        run: python3 scripts/remove_personnel_steps.py _site
       - name: Ra soat thong nhat khung slide CRM va hien thi
         run: python3 scripts/site_consistency_audit.py _site
       - name: Cau hinh GitHub Pages
