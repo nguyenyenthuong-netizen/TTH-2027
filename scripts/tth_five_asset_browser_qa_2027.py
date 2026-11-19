@@ -20,6 +20,10 @@ with sync_playwright() as p:
      try:
       inner=page.frame_locator('iframe').locator('body').inner_text(timeout=7000)
       info['frame_chars']=len(inner.strip())
+      frame=page.frame_locator('iframe')
+      frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
+      info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
+      if info['frame_overflow']>40:failed.append(name+' '+str(size)+': embedded horizontal overflow '+str(frame_metrics))
       if info['frame_chars']<70:failed.append(name+' '+str(size)+': empty embedded page')
      except Exception as ex:failed.append(name+' '+str(size)+': iframe could not be inspected '+str(ex)[:150])
     elif info['body']<50:failed.append(name+' '+str(size)+': empty body')
@@ -28,6 +32,7 @@ with sync_playwright() as p:
     if name=='khung-marketing' and page.locator('#m-5-2').count()==0:failed.append(name+': missing staffing table')
     if name in ('healthcare-website','healthcare-app') and info['fr']==0:failed.append(name+': missing page frame')
     if info['width']>size[0]+40:failed.append(name+' '+str(size)+': horizontal overflow '+str(info))
+    if errors:failed.append(name+' '+str(size)+': uncaught JavaScript errors '+str(errors[:3]))
     checks.append(dict(asset=name,screen=size,title=info['title'],body=info['body'],slides=info['slides'],buttons=info['buttons'],pageerrors=errors[:3],overflow=info['width']-size[0]))
    except Exception as ex:failed.append(name+': '+str(ex)[:250])
    finally:page.close()
