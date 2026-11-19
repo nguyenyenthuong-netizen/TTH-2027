@@ -141,7 +141,7 @@ js=r'''
 </script>'''
 if "</body>" not in html: raise SystemExit("Missing body end")
 html=html.replace("</body>",js+"</body>",1)
-assert html.count(marker)==1
+assert html.count('id="tth-readability-controls-2027"')==1
 assert html.count("tth-readability-script-2027")==1
 p.write_text(html,"utf-8")
 print("PASS font controls: six levels 90-135%; table-safe scroll; 4-col visual separation",len(html))
