@@ -330,3 +330,88 @@ if s.count('<section class="slide')!=27 or 'tth-chief-strip' not in s or 'ĐANG 
     raise AssertionError("Post-update slide QA failed")
 slide.write_text(s,"utf-8")
 print("PASS-SLIDE chief positions, three role disclaimers, correct labels, menu and fullscreen; slides=27")
+
+
+# A single native mobile website menu: reuse the existing hamburger in the
+# website header instead of placing a second floating "Danh mục" button over
+# the page. The outer HTML-shell tools are QA controls, not product controls.
+mobile_css=r"""<style id="tth-responsive-burger-menu-1911">
+@media(max-width:960px){
+#app header.gh>div:first-child{padding:6px 10px!important;gap:8px!important;box-sizing:border-box!important;max-width:100vw!important}
+#app header.gh>div:first-child>a[href="Main.html"]{flex:0 0 auto!important;max-width:94px!important}
+#app header.gh>div:first-child>a[href="Main.html"] img{height:44px!important;max-width:94px!important;object-fit:contain!important}
+#app header.gh .gsrch{max-width:min(38vw,150px)!important;min-width:0!important;width:min(38vw,150px)!important}
+#app header.gh .gsrch .q .t{display:none!important}
+#app header.gh .burger{display:flex!important;flex:0 0 40px!important;min-width:40px!important;width:40px!important;max-width:40px!important}
+#app header.gh>div:first-child>div:last-child{gap:5px!important;min-width:0!important;flex-shrink:1!important}
+.tth-offline-menu-mobile{display:block!important;position:fixed!important;top:150px!important;right:12px!important;bottom:auto!important;left:auto!important;width:auto!important;z-index:2147482500!important}
+.tth-offline-menu-mobile>button{display:none!important}
+.tth-offline-menu-mobile nav{display:none!important;position:static!important;bottom:auto!important;right:auto!important;width:min(325px,calc(100vw - 24px))!important;max-height:calc(100dvh - 170px)!important}
+.tth-offline-menu-mobile[data-open="1"] nav{display:block!important}
+}
+</style>"""
+mobile_js=r"""<script id="tth-responsive-burger-menu-1911">(function(){
+ function init(){
+  var burger=document.querySelector('header.gh .burger');
+  var tray=document.querySelector('.tth-offline-menu-mobile');
+  if(!burger||!tray||burger.dataset.tthBurgerConnected==='1')return;
+  burger.dataset.tthBurgerConnected='1';
+  var pane=tray.querySelector('nav');if(!pane)return;
+  pane.id='tth-native-mobile-menu';
+  burger.setAttribute('aria-controls',pane.id);burger.setAttribute('aria-expanded','false');
+  function setOpen(state){
+   tray.dataset.open=state?'1':'0';burger.setAttribute('aria-expanded',String(state));
+   if(state){var r=burger.getBoundingClientRect();tray.style.top=Math.min(window.innerHeight-120,Math.max(8,r.bottom+5))+'px';}
+  }
+  burger.addEventListener('click',function(e){e.preventDefault();setOpen(tray.dataset.open!=='1')});
+  document.addEventListener('click',function(e){if(!tray.contains(e.target)&&!burger.contains(e.target))setOpen(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false)});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();</script>"""
+
+for folder, tag in (("healthcare-website","pagesData"),("healthcare-app","pageData")):
+    file=root/folder/"index.html"
+    full=file.read_text("utf-8")
+    if folder=="healthcare-website":
+        mt=re.search(r'(<script\b[^>]*\bid=["\']'+tag+r'["\'][^>]*>)(.*?)(</script>)',full,flags=re.I|re.S)
+        if not mt:raise AssertionError("website page catalog absent")
+        entries=json.loads(mt.group(2))
+        fixed=0
+        for key,doc in entries.items():
+            if 'class="burger"' not in doc or 'tth-offline-menu-mobile' not in doc:continue
+            if 'tth-responsive-burger-menu-1911' in doc:continue
+            if '</head>' not in doc or '</body>' not in doc:raise AssertionError("website page HTML incomplete: "+key)
+            entries[key]=doc.replace('</head>',mobile_css+'</head>',1).replace('</body>',mobile_js+'</body>',1)
+            fixed+=1
+        if fixed<100:raise AssertionError("Unexpectedly few mobile website menu pages: "+str(fixed))
+        encoded=json.dumps(entries,ensure_ascii=False,separators=(',',':'))
+        encoded=encoded.replace('<',r'\u003c').replace('>',r'\u003e').replace('&',r'\u0026')
+        full=full[:mt.start(2)]+encoded+full[mt.end(2):]
+        visibility_css=r"""<style id="tth-hide-demo-tools-1911">
+/* Outer catalog controls are for QA only. Keep native website controls visible. */
+#tools,#catalog{display:none!important}
+html.tth-demo-controls #tools{display:flex!important}
+html.tth-demo-controls #catalog.open{display:block!important}
+</style>"""
+    else:
+        visibility_css=r"""<style id="tth-hide-demo-tools-1911">
+/* The app has its own navigation. Do not obscure it with prototype controls. */
+@media(max-width:1000px){
+ .toptools,#drawer{display:none!important}
+ html.tth-demo-controls .toptools{display:flex!important}
+ html.tth-demo-controls #drawer:not([hidden]){display:block!important}
+}
+</style>"""
+        fixed=0
+    demo_js=r"""<script id="tth-demo-control-switch-1911">
+(function(){
+ if(new URLSearchParams(location.search).get('demo')==='1'){
+  document.documentElement.classList.add('tth-demo-controls');
+ }
+})();
+</script>"""
+    if "tth-hide-demo-tools-1911" in full:raise AssertionError("Duplicate QA shell rules")
+    full=full.replace("</head>",visibility_css+"</head>",1).replace("</body>",demo_js+"</body>",1)
+    file.write_text(full,"utf-8")
+    print("FIX-MOBILE-MENU-1911",folder,"responsive-pages",fixed,"shell-controls-hidden",True)
