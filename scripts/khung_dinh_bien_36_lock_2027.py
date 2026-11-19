@@ -220,6 +220,16 @@ s=s.replace('<strong>37</strong> (hiện có 35)',
 s=s.replace('so với 35 người hiện có: giảm 01',
             'không dùng số người thực có năm 2026 để suy ra giảm/tăng suất định biên')
 
+# Clean two legacy staffing tables whose numeric cells are split by tags.
+s=s.replace('<tr><td>Định biên</td><td>34 (Media 03 theo Kế hoạch hoạt động năm 2026)</td><td>34</td></tr>',
+            '<tr><td>Định biên cơ cấu chuẩn</td><td><b>36 suất</b> (22 Tổng công ty, 14 cơ sở; 03 Chuyên viên media theo phương án)</td><td><b>36 suất</b></td></tr>')
+s=s.replace('<tr><td><strong>Toàn hệ thống</strong></td><td><strong>34</strong></td><td>56</td></tr>',
+            '<tr><td><strong>Toàn hệ thống</strong></td><td><strong>36</strong></td><td>Chưa chốt</td></tr>')
+s=s.replace('<th>Đủ 10 bệnh viện, 02 phòng khám</th>',
+            '<th>Giai đoạn mở rộng – phải tính lại trước phê duyệt</th>')
+# The historical TCT=34 of QyĐ.02.MKT is a source reference, not 2027 staffing;
+# leave it under the dated historical comparison rather than changing facts.
+
 # Output JSON from corrected data after all visible replacements.
 j2=re.search(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)',s)
 if j2 is None: raise ValueError("Lost CSDL after replacements")
