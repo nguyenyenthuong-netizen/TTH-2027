@@ -547,3 +547,37 @@ assert slide_doc.count('tth-group2-other')>=2
 assert "DOANH NGHIỆP / THƯƠNG HIỆU KHÁC" in slide_doc
 slide.write_text(slide_doc,"utf-8")
 print("BRAND-ARCH-WINMED-TDD-2027 PASS: both brands visible on architecture and group-2 slide")
+
+
+# Compact icon-only presentation controls prevent the previous small captions
+# from painting outside a 44px button and overlapping one another.
+slide_doc=slide.read_text("utf-8")
+icon_style=r"""<style id="tth-slide-nav-icons-only-1911">
+.tth-floating-arrows{
+ display:grid!important;grid-template-columns:repeat(2,44px)!important;
+ grid-auto-rows:44px!important;flex-direction:row!important;
+ width:max-content!important;max-width:calc(100vw - 16px)!important;
+ gap:9px!important;right:10px!important;bottom:10px!important;
+ left:auto!important;top:auto!important;align-items:center!important;
+ justify-items:center!important;z-index:2000!important;transform:none!important;
+}
+.tth-floating-arrows .tth-floating-arrow{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 44px!important;min-width:44px!important;max-width:44px!important;
+ width:44px!important;height:44px!important;min-height:44px!important;
+ max-height:44px!important;padding:7px!important;box-sizing:border-box!important;
+ overflow:hidden!important;white-space:nowrap!important;line-height:1!important;
+}
+.tth-floating-arrows .tth-extra-control{flex-direction:row!important}
+.tth-floating-arrows .tth-extra-control small{display:none!important}
+.tth-floating-arrows .tth-floating-arrow svg{flex:0 0 21px!important;width:21px!important;height:21px!important}
+@media(max-width:720px){
+ .tth-floating-arrows{right:5px!important;bottom:6px!important;gap:6px!important;grid-template-columns:repeat(2,40px)!important;grid-auto-rows:40px!important}
+ .tth-floating-arrows .tth-floating-arrow{width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important;max-height:40px!important}
+}
+</style>"""
+if "tth-slide-nav-icons-only-1911" not in slide_doc:
+ slide_doc=slide_doc.replace("</head>",icon_style+"</head>",1)
+slide.write_text(slide_doc,"utf-8")
+assert slide_doc.count('<section class="slide')==27
+print("PASS tth-slide-nav-icons-only-1911: small-label overlap removed; navigation controls retain title and aria-label")
