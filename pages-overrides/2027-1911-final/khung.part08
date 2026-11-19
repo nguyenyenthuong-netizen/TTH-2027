@@ -149,9 +149,9 @@ document.addEventListener('click',function(e){
 function doAct(a){
   if(a==='print'){window.print()}
   else if(a==='fs'){toggleFs()}
-  else if(a==='open-all-grp'){$$('.grp').forEach(function(d){if(d.tagName==='DETAILS')d.open=true})}
-  else if(a==='close-all-grp'){$$('.grp').forEach(function(d){if(d.tagName==='DETAILS')d.open=false})}
-  else if(a==='toggle-sub'){var o=$('.org'),b=$('.sub-tg');if(o&&b){var on=!o.classList.contains('show-sub');o.classList.toggle('show-sub',on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'Ẩn kỹ năng, người thay':'Hiện kỹ năng, người thay'}}
+  else if(a==='open-all-grp'){var o=document.querySelector('#v-org .org');if(o){o.querySelectorAll('details.grp').forEach(function(d){d.open=true})}}
+  else if(a==='close-all-grp'){var o=document.querySelector('#v-org .org'),b=document.querySelector('#v-org .sub-tg');if(o){o.querySelectorAll('details.grp').forEach(function(d){d.open=false});o.classList.remove('show-sub');closePanels()}if(b){b.setAttribute('aria-pressed','false');b.textContent='Hiện kỹ năng, người thay'}}
+  else if(a==='toggle-sub'){var o=document.querySelector('#v-org .org'),b=document.querySelector('#v-org .sub-tg');if(o&&b){buildOrgShortDetails();var on=!o.classList.contains('show-sub');o.classList.toggle('show-sub',on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'Ẩn kỹ năng, người thay':'Hiện kỹ năng, người thay'}}
   else if(a==='open-all-jd'){$$('.jd-d').forEach(function(d){if(!d.closest('.jd').hidden)d.open=true})}
   else if(a==='close-all-jd'){$$('.jd-d').forEach(function(d){d.open=false})}
 }
@@ -169,6 +169,38 @@ $$('.fbtn').forEach(function(b){b.addEventListener('click',function(){
     s.innerHTML='<b>Nhóm '+g+': '+p2(n)+' mô tả công việc liên quan</b> – lãnh đạo, quản lý, phê duyệt '+p2(cnt.lead)+'; phụ trách trực tiếp '+p2(cnt.direct)+'; chuyên môn dùng chung '+p2(cnt.shared)+'; người nhóm '+o+' tham gia '+p2(cnt.cross)+'. Vị trí không liên quan đã ẩn. Ban Tổng Giám đốc, Ban Giám đốc cơ sở: bộ lọc ở trang <a href="#gfilter" data-go="gfilter">Bộ máy</a>.';s.hidden=false}
    else{s.hidden=true;s.innerHTML=''}}
 })});
+/* Compact, source-based skills and substitution shown without opening full job cards. */
+function buildOrgShortDetails(){
+  var org=document.querySelector('#v-org .org');if(!org)return;
+  org.querySelectorAll('.pos[data-jd],.pos-lead[data-jd]').forEach(function(btn){
+    if(btn.querySelector('.org-sr-summary'))return;
+    var sub=btn.querySelector('.pos-sub');
+    var replaceText='';
+    if(sub){Array.from(sub.children).some(function(line){
+      var i=line.querySelector('i');if(!i)return false;
+      if(i.textContent.toLowerCase().indexOf('người thay chính')<0)return false;
+      replaceText=line.textContent.replace(/^\s*Người thay chính\s*:\s*/i,'').trim();return true;
+    })}
+    var jd=document.getElementById('jd-'+btn.dataset.jd);
+    var skillText='';
+    if(jd){Array.from(jd.querySelectorAll('.jd-quick dt')).some(function(dt){
+      if(dt.textContent.trim().toLowerCase()!=='kỹ năng chính')return false;
+      var dd=dt.nextElementSibling;
+      if(dd&&dd.tagName==='DD')skillText=dd.textContent.trim();
+      return true;
+    })}
+    var panel=document.createElement('span');panel.className='org-sr-summary';
+    function addRow(title,value){
+      var row=document.createElement('span'),label=document.createElement('b');
+      row.className='org-sr-row';label.textContent=title+':';
+      row.appendChild(label);row.appendChild(document.createTextNode(' '+value));
+      panel.appendChild(row);
+    }
+    addRow('Kỹ năng chính',skillText||'Chưa có nội dung kỹ năng riêng trong mô tả công việc');
+    addRow('Người thay chính',replaceText.replace(/\|/g,'; ')||'Chưa được phân công; Trưởng phòng Marketing quyết định bằng văn bản');
+    btn.appendChild(panel);
+  });
+}
 /* xem mô tả công việc ngay trong sơ đồ */
 function closePanels(){$$('.pos-panel').forEach(function(x){x.remove()});$$('.pos[aria-expanded="true"],.pos-lead[aria-expanded="true"]').forEach(function(x){x.setAttribute('aria-expanded','false')})}
 function togglePanel(btn){
