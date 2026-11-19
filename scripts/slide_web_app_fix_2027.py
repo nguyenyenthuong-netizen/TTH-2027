@@ -126,13 +126,16 @@ for shell, tag, event in (
    if(!raw||/^(?:https?:|\/\/|mailto:|tel:|sms:|data:|blob:|javascript:|#)/i.test(raw))return null;
    var p=raw.split(/[?#]/)[0].split("/").pop();
    if(!known.has(p))return null;
-   return p+raw.slice(raw.indexOf(p)+p.length);
+   var suffix=raw.match(/[?#].*$/);
+   return p+(suffix?suffix[0]:"");
  }
  document.addEventListener("click",function(ev){
+   // Preserve native browser shortcuts and download actions.
+   if(ev.defaultPrevented||ev.button!==0||ev.ctrlKey||ev.metaKey||ev.shiftKey||ev.altKey)return;
    var target=ev.target;
    if(!target||!target.closest)return;
    var item=target.closest("a[href],button[data-href],button[data-route],[role=button][data-href]");
-   if(!item)return;
+   if(!item||item.hasAttribute("download")||item.getAttribute("target")==="_blank")return;
    var raw=item.getAttribute("href")||item.getAttribute("data-href")||item.getAttribute("data-route");
    var destination=linkTarget(raw);
    if(!destination){
