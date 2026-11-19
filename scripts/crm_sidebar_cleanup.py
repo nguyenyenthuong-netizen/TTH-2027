@@ -239,6 +239,70 @@ legible_js=r"""<script id="tth-crm-readable-nonoverlap-1911">
 s=s.replace("</head>",legible_css+"</head>",1).replace("</body>",legible_js+"</body>",1)
 assert 'tth-crm-readable-nonoverlap-1911' in s
 
+
+# Number and section title must sit next to one another, with a consistent
+# 7px gap; prevent the number or word wraps from collapsing them together.
+nav_spacing_css=r"""<style id="tth-crm-nav-number-spacing-1911">
+.layout>aside #sideNav .navbtn{
+ display:grid!important;
+ grid-template-columns:23px minmax(0,1fr)!important;
+ column-gap:7px!important;
+ align-items:center!important;
+ justify-content:start!important;
+ text-align:left!important;
+ padding:11px 12px!important;
+ min-height:44px!important;
+ box-sizing:border-box!important;
+}
+.layout>aside #sideNav .navbtn .navnum{
+ grid-column:1!important;
+ width:23px!important;
+ min-width:23px!important;
+ max-width:23px!important;
+ margin:0!important;
+ padding:0!important;
+ display:block!important;
+ flex-shrink:0!important;
+ font:800 13px/1.3 Arial,Tahoma,sans-serif!important;
+ letter-spacing:0!important;
+ text-align:left!important;
+ white-space:nowrap!important;
+ color:#3B5C86!important;
+}
+.layout>aside #sideNav .navbtn .navtxt{
+ grid-column:2!important;
+ display:block!important;
+ min-width:0!important;
+ width:auto!important;
+ margin:0!important;
+ padding:0!important;
+ font:700 14px/1.4 Arial,Tahoma,sans-serif!important;
+ color:#163B70!important;
+ white-space:normal!important;
+ overflow-wrap:normal!important;
+ word-break:normal!important;
+}
+.layout>aside #sideNav .navbtn.active .navnum,
+.layout>aside #sideNav .navbtn.active .navtxt{color:#fff!important}
+@media(max-width:900px){
+ .layout>aside #sideNav .navbtn{
+   display:grid!important;
+   grid-template-columns:22px minmax(0,1fr)!important;
+   column-gap:6px!important;
+   padding:8px 10px!important;
+   min-width:135px!important;
+ }
+ .layout>aside #sideNav .navbtn .navnum{
+   width:22px!important;min-width:22px!important;max-width:22px!important;
+ }
+ .layout>aside #sideNav .navbtn .navtxt{
+   font-size:13px!important;line-height:1.3!important;
+ }
+}
+</style>"""
+s=s.replace("</head>",nav_spacing_css+"</head>",1)
+assert 'tth-crm-nav-number-spacing-1911' in s
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
