@@ -208,6 +208,8 @@ html=''.join(hparts)
 html=html.replace("d.chu_tri==='cvt'?'Chuyên viên trưởng'",
                   "d.chu_tri==='cvt'?'"+NOI_DUNG+"'")
 html=html.replace("'ql':['tp','cvt']","'ql':['tp','cvt','cvt-2']")
+html=html.replace("'ql':['Trưởng phòng, Chuyên viên trưởng và Tổ trưởng có liên quan']",
+                  "'ql':['Trưởng phòng, "+NOI_DUNG+" và "+TRUYEN_THONG+"; Tổ trưởng có liên quan đúng tuyến']")
 html=html.replace("'Chuyên viên trưởng':'Chức danh kiểm soát chuyên môn, phối hợp liên tổ và quản lý văn bản theo phân công;",
                   "'Chuyên viên trưởng':'"+NOI_DUNG+" và "+TRUYEN_THONG+" là hai chức danh quản lý khác nhau;")
 # Chặn xuất bản khi văn bản nhập lại tiếp tục tạo vai trò chung.
