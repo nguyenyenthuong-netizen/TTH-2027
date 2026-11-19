@@ -112,6 +112,122 @@ if 'id="tth-cvt-cross-role-boundaries-2027"' not in html:
     offset=html.index('</p>',start)+4
     html=html[:offset]+section+html[offset:]
 
+
+# Kiểm tra bổ sung: xoá hoàn toàn tên gọi Chuyên viên trưởng chung trong CSDL
+# và HTML hiển thị. Không biến chức danh thành cấp có quyền duyệt mặc nhiên.
+GENERIC_CVT=re.compile(r'Chuyên viên trưởng(?!\s+(?:Nội dung|Truyền thông))',re.I)
+BOTH_CVT=NOI_DUNG+' và '+TRUYEN_THONG+' (phân vai theo đúng tuyến)'
+AUTH_CVT='người được phân quyền theo ma trận thẩm quyền có hiệu lực'
+SIGN_CVT='cấp có thẩm quyền phê duyệt theo phân cấp có hiệu lực'
+STANDIN_CVT='người được Ban Tổng Giám đốc giao phụ trách bằng văn bản còn hiệu lực'
+FLOW_ND=set('hang-muc yeu-cau-le tin-trong-ngay bo-nhan-dien ke-hoach-nam ho-tro-lien-co-so xung-dot-lich yeu-cau-gap ra-soat-noi-dung-y-khoa'.split())
+FLOW_TT=set('kol su-kien-co-so tuyen-dung le-tet mua-truyen-thong bao-chi-bac-si noi-bo-phong-ban mao-danh phat-thanh-man-hinh dinh-chinh su-co-tai-khoan doi-tac phat-truc-tiep dich-benh-thien-tai quang-cao-san-pham quang-cao-tra-phi phap-luat nghien-cuu-thi-truong'.split())
+
+def remove_generic(text,role=None):
+    if not isinstance(text,str) or not GENERIC_CVT.search(text): return text
+    text=re.sub(r'một trong hai Chuyên viên trưởng\b',
+        'một trong hai chức danh ('+NOI_DUNG+' hoặc '+TRUYEN_THONG+') theo văn bản ủy quyền',text,flags=re.I)
+    text=re.sub(r'Chuyên viên trưởng còn lại\b',
+        'người giữ chức danh còn lại, nếu có văn bản giao quyền',text,flags=re.I)
+    text=re.sub(r'(?:hai|02|2)\s+Chuyên viên trưởng\b',BOTH_CVT,text,flags=re.I)
+    def sub(m):
+        l=text[max(0,m.start()-125):m.start()].lower()
+        r=text[m.end():m.end()+140].lower()
+        a=l+' '+r
+        if re.search(r'^\s*(?:duyệt|phê duyệt|ký|ban hành)\b',r):return SIGN_CVT
+        if re.search(r'^\s*(?:cấp|thu hồi|quản quyền)\b',r) or ('quyền:' in l[-18:]):
+            return AUTH_CVT
+        if 'chưa có trưởng phòng' in l or 'trưởng phòng vắng' in l or 'phụ trách phòng' in r[:55]:
+            return STANDIN_CVT
+        if role in ('cvt','cvt-2'):
+            return NOI_DUNG if role=='cvt' else TRUYEN_THONG
+        nd=any(w in a for w in ('biên tập','thiết kế','media','tổ nội dung','trưởng nhóm',
+               'marketing cơ sở','lịch sản xuất','nguồn lực sản xuất','kho tư liệu'))
+        tt=any(w in a for w in ('truyền thông','quảng cáo','báo chí','kênh số',
+               'phát thanh','màn hình','quan hệ công chúng','chính sách nền tảng'))
+        if nd and not tt:return NOI_DUNG
+        if tt and not nd:return TRUYEN_THONG
+        return BOTH_CVT
+    return GENERIC_CVT.sub(sub,text)
+
+# CSDL nguồn: phân loại theo vị trí, quy trình, mã văn bản chủ trì; biểu mẫu
+# người xem phải thể hiện từng tuyến, không tự cấp quyền đọc toàn hệ thống.
+def resolve_generic(obj,role=None,section=''):
+    if isinstance(obj,str):
+        if obj in ('cvt','cvt-2','cvt2'):return obj
+        if obj.startswith(('cvt|','cvt-2|')) and '|' in obj:
+            id_,desc=obj.split('|',1)
+            return id_+'|'+remove_generic(desc,id_)
+        return remove_generic(obj,role)
+    if isinstance(obj,list):
+        out=[]
+        for x in obj:
+            r=role
+            if section=='vi_tri' and isinstance(x,dict):
+                r=('cvt' if x.get('to') in ('nd','coso') or x.get('id')=='qlml'
+                   else 'cvt-2' if x.get('to') in ('th','ts')
+                   else None)
+                if x.get('id') in ('cvt','cvt-2'):r=x['id']
+            elif section=='quy_trinh' and isinstance(x,dict):
+                r=('cvt' if x.get('id') in FLOW_ND else
+                   'cvt-2' if x.get('id') in FLOW_TT else None)
+            elif section=='danh_muc_van_ban' and isinstance(x,dict):
+                r=x.get('chu_tri') if x.get('chu_tri') in ('cvt','cvt-2') else None
+            elif section=='mang_viec' and isinstance(x,dict):
+                n=x.get('so')
+                if n in (3,4,5,6,7,9,28,37):r='cvt'
+                elif n in (2,10,11,12,13,14,15,19,20,23,25,26,27,39,41,42):r='cvt-2'
+                else:r=None
+            elif section=='buoc' and isinstance(x,dict):
+                lead=str(x.get('chu_tri_chinh','')).split('|')[0]
+                if lead in ('cvt','cvt-2'):r=lead
+            out.append(resolve_generic(x,r,section+'[]'))
+        return out
+    if isinstance(obj,dict):
+        return {k:resolve_generic(v,role,k) for k,v in obj.items()}
+    return obj
+
+mm=re.search(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)',html)
+source=json.loads(mm.group(2))
+source=resolve_generic(source)
+# Mã kỹ thuật vẫn là mã kỹ thuật, KHÔNG đổi bất kỳ định danh vị trí nào.
+assert {v['id'] for v in source['vi_tri']}=={v['id'] for v in D['vi_tri']}
+assert len(source['quy_trinh'])==60 and len(source['danh_muc_van_ban'])==83
+html=html[:mm.start(2)]+json.dumps(source,ensure_ascii=False,separators=(',',':')).replace('</script>','<\\/script>')+html[mm.end(2):]
+# Thay trong TEXT NODE của HTML tĩnh, bỏ qua thuộc tính CSS/JS để không
+# làm hỏng cơ chế tương tác và màu nền tiêu đề đã được duyệt.
+hparts=re.split(r'(<(?:script|style)\b[^>]*>[\s\S]*?</(?:script|style)>)',html,flags=re.I)
+for i in range(0,len(hparts),2):
+    nodes=re.split(r'(<[^>]+>)',hparts[i])
+    for j in range(0,len(nodes),2):
+        nodes[j]=remove_generic(nodes[j])
+    hparts[i]=''.join(nodes)
+html=''.join(hparts)
+# Các nhãn cũ được JS dựng lên khi người dùng bấm mở danh sách quy trình.
+# Chỉ thay giá trị nhãn; không sửa khóa tra cứu role ID.
+html=html.replace("d.chu_tri==='cvt'?'Chuyên viên trưởng'",
+                  "d.chu_tri==='cvt'?'"+NOI_DUNG+"'")
+html=html.replace("'ql':['tp','cvt']","'ql':['tp','cvt','cvt-2']")
+html=html.replace("'Chuyên viên trưởng':'Chức danh kiểm soát chuyên môn, phối hợp liên tổ và quản lý văn bản theo phân công;",
+                  "'Chuyên viên trưởng':'"+NOI_DUNG+" và "+TRUYEN_THONG+" là hai chức danh quản lý khác nhau;")
+# Chặn xuất bản khi văn bản nhập lại tiếp tục tạo vai trò chung.
+verify=json.loads(re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>',html).group(1))
+remaining=[]
+def check_generic(obj,path=''):
+    if isinstance(obj,str):
+        if obj not in ('cvt','cvt-2','cvt2') and GENERIC_CVT.search(obj):
+            remaining.append(path)
+    elif isinstance(obj,list):
+        for i,v in enumerate(obj):check_generic(v,path+'['+str(i)+']')
+    elif isinstance(obj,dict):
+        for k,v in obj.items():check_generic(v,path+'.'+k)
+check_generic(verify)
+visible=re.sub(r'<(?:script|style)\b[^>]*>[\s\S]*?</(?:script|style)>',' ',html,flags=re.I)
+visible=re.sub(r'<[^>]+>',' ',visible)
+if GENERIC_CVT.search(visible):remaining.append('HTML tĩnh')
+if remaining:raise ValueError('Còn tên chức danh chung: '+', '.join(remaining[:18]))
+print('FULL-TITLE-AUDIT PASS: 26 vị trí, 60 quy trình, 83 văn bản; không còn Chuyên viên trưởng chung trong dữ liệu và HTML tĩnh')
+
 # Tự động từ chối nếu còn tên đánh số trong vùng chữ hiển thị hoặc CSDL dạng văn bản.
 all_names=json.dumps(D,ensure_ascii=False)
 # ID kỹ thuật còn được phép tồn tại: mã, khóa JSON, nhóm thương hiệu.
