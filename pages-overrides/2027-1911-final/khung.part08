@@ -67,7 +67,8 @@ R.vt_du_phong=function(v){var x=VT(v);return x?cdl(A_(x.du_phong)):''};
 R.vt_la_thay_cua=function(v){return cdl((D.vi_tri||[]).filter(function(y){return A_(y.thay_chinh).some(function(r){return cd(r)===v})}).map(function(y){var n=A_(y.thay_chinh).filter(function(r){return cd(r)===v})[0].split('|')[1];return y.id+(n?'|'+n:'')}))||'–'};
 R.vt_la_du_phong_cua=function(v){return cdl((D.vi_tri||[]).filter(function(y){return A_(y.du_phong).some(function(r){return cd(r)===v})}).map(function(y){return y.id}))||'–'};
 R.vt_to_truong=function(v){var r=(D.vai_tro||[]).filter(function(t){return t.vi_tri===v});var h=r.map(function(t){return '<b>'+esc(t.ten)+'</b> ('+esc(t.gio)+'): '+tx(t.viec)+'. Vắng: '+esc(t.dieu_kien_giu_tam ? ('một '+ref(t.giu_tam).label+' khác người giữ Tổ trưởng') : ref(t.giu_tam).label)+' giữ tạm khi có văn bản chỉ định/ủy quyền, trong phạm vi đã được phép'}).join('<br>');
- if(v==='cvt')h+=(h?'<br>':'')+'Giữ tạm vai trò Tổ trưởng khi Tổ trưởng vắng; xử lý yêu cầu cần xử lý của Tổ Truyền thông và Thương hiệu (tổ có Tổ trưởng kiêm nhiệm là Quản lý thương hiệu nhóm 2 (chỉ điều phối))';
+ if(v==='cvt')h+=(h?'<br>':'')+'Quản lý chuyên môn Tổ Nội dung và Sáng tạo; không mặc nhiên giữ tạm vai trò Tổ trưởng của hai tổ còn lại.';
+ if(v==='cvt-2')h+=(h?'<br>':'')+'Quản lý chuyên môn Tổ Truyền thông và Thương hiệu và Tổ Tăng trưởng số; chỉ giữ tạm Tổ trưởng Tăng trưởng số khi có quyết định có hiệu lực.';
  return h||'Không'};
 R.vt_kpi=function(v){var K=(D.kpi_vi_tri||{})[v];if(!K)return '';function rows(a){return a.map(function(x){return '<tr><td>'+tx(x.chi_tieu)+'</td><td>'+tx(x.nguon)+'</td><td>'+(x.ty_trong<10?'0':'')+x.ty_trong+'%</td></tr>'}).join('')}
  var h=tbl(['Chỉ tiêu cá nhân'+(K.nhan_ca_nhan?' – '+esc(K.nhan_ca_nhan):''),'Nguồn','Tỷ trọng'],[rows(K.ca_nhan)]);
@@ -174,20 +175,18 @@ function buildOrgShortDetails(){
   var org=document.querySelector('#v-org .org');if(!org)return;
   org.querySelectorAll('.pos[data-jd],.pos-lead[data-jd]').forEach(function(btn){
     if(btn.querySelector('.org-sr-summary'))return;
-    var sub=btn.querySelector('.pos-sub');
-    var replaceText='';
+    var jd=document.getElementById('jd-'+btn.dataset.jd);
+    function getQuick(label){
+      if(!jd)return '';
+      var ds=Array.from(jd.querySelectorAll('.jd-quick dt'));
+      var dt=ds.find(function(e){return e.textContent.trim().toLowerCase()===label.toLowerCase()});
+      return dt&&dt.nextElementSibling ? dt.nextElementSibling.textContent.trim() : '';
+    }
+    var sub=btn.querySelector('.pos-sub'),fallback='';
     if(sub){Array.from(sub.children).some(function(line){
       var i=line.querySelector('i');if(!i)return false;
       if(i.textContent.toLowerCase().indexOf('người thay chính')<0)return false;
-      replaceText=line.textContent.replace(/^\s*Người thay chính\s*:\s*/i,'').trim();return true;
-    })}
-    var jd=document.getElementById('jd-'+btn.dataset.jd);
-    var skillText='';
-    if(jd){Array.from(jd.querySelectorAll('.jd-quick dt')).some(function(dt){
-      if(dt.textContent.trim().toLowerCase()!=='kỹ năng chính')return false;
-      var dd=dt.nextElementSibling;
-      if(dd&&dd.tagName==='DD')skillText=dd.textContent.trim();
-      return true;
+      fallback=line.textContent.replace(/^\s*Người thay chính\s*:\s*/i,'').trim();return true;
     })}
     var panel=document.createElement('span');panel.className='org-sr-summary';
     function addRow(title,value){
@@ -196,8 +195,12 @@ function buildOrgShortDetails(){
       row.appendChild(label);row.appendChild(document.createTextNode(' '+value));
       panel.appendChild(row);
     }
-    addRow('Kỹ năng chính',skillText||'Chưa có nội dung kỹ năng riêng trong mô tả công việc');
-    addRow('Người thay chính',replaceText.replace(/\|/g,'; ')||'Chưa được phân công; Trưởng phòng Marketing quyết định bằng văn bản');
+    addRow('Kỹ năng chính',getQuick('Kỹ năng chính')||'Đang cập nhật tiêu chuẩn chức danh');
+    addRow('Kỹ năng phụ',getQuick('Kỹ năng phụ bắt buộc')||'Đang cập nhật tiêu chuẩn chức danh');
+    var primary=getQuick('Người thay chính khi vắng');
+    addRow('Người thay chính', (primary||fallback).replace(/\|/g,'; ')||'Chưa phân công người thay cụ thể');
+    var backup=getQuick('Dự phòng');
+    if(backup&&backup!=='–'&&backup!=='-')addRow('Dự phòng',backup.replace(/\|/g,'; '));
     btn.appendChild(panel);
   });
 }
