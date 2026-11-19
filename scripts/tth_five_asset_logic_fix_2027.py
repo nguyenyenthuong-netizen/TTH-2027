@@ -41,7 +41,7 @@ def crm(s):
    f['edges'] += [dict(a='o',b='n',label='Đủ',kind='normal'),dict(a='o',b='p',label='Chưa đủ',kind='exception')]
  return s[:m.start()]+'const flows='+json.dumps(flows,ensure_ascii=False,separators=(',',':'))+';'+s[m.end():]
 def pages(s,scriptid):
- p=r'(<script\\s+(?:id="'+scriptid+r'"\\s+type="application/json"|type="application/json"\\s+id="'+scriptid+r'")>)(.*?)(</script>)'
+ p=r'(<script\s+(?:id="'+scriptid+r'"\s+type="application/json"|type="application/json"\s+id="'+scriptid+r'")>)(.*?)(</script>)'
  m=re.search(p,s,re.S)
  if not m:return s
  data=json.loads(m.group(2))
