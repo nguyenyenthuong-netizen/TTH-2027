@@ -482,6 +482,47 @@ s=s.replace("</head>",nav_footer_css+"</head>",1)
 assert s.count('tth-crm-nav-footer-isolation-1911')==1
 print("CRM-QA nav/footer: independent natural heights; sidebar scroll container")
 
+
+# 19/11: opening CRM slide; keep "Không phải một tổng đài mới." on one
+# line. The red dot from the diagram :before decoration collided with the
+# "TÁCH ĐÚNG CHỨC NĂNG" label. Remove only that dot (not actual buttons).
+hero_src='<h1>Không phải<br/><span>một tổng đài mới.</span></h1>'
+hero_dst='<h1 class="crm-hero-one-line">Không phải <span>một tổng đài mới.</span></h1>'
+if s.count(hero_src)!=1:
+    raise AssertionError("CRM opening headline markup changed; cannot safely force single line")
+s=s.replace(hero_src,hero_dst,1)
+hero_css=r"""<style id="tth-crm-hero-one-line-1911">
+#s1 .hero-copy h1.crm-hero-one-line{
+ display:block!important;width:100%!important;max-width:100%!important;
+ white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;
+ font-size:clamp(19px,3.25vw,50px)!important;
+ letter-spacing:-.035em!important;line-height:1.22!important
+}
+#s1 .hero-copy h1.crm-hero-one-line span{
+ display:inline!important;white-space:nowrap!important
+}
+/* This decorative red pseudo-dot intersected the final letters of the label. */
+#s1 .hero-visual:before{content:none!important;display:none!important}
+#s1 .hero-visual .hv-top{
+ display:flex!important;flex-wrap:wrap!important;gap:8px 20px!important;
+ align-items:center!important;justify-content:space-between!important;
+ min-height:29px!important;line-height:1.35!important
+}
+#s1 .hero-visual .hv-top>span{
+ position:relative!important;white-space:nowrap!important;
+ flex:0 1 auto!important;padding-right:8px!important;
+ color:#bc2535!important;letter-spacing:.045em!important
+}
+@media(max-width:700px){
+ #s1 .hero-copy h1.crm-hero-one-line{
+  font-size:clamp(18px,5.15vw,24px)!important;letter-spacing:-.04em!important
+ }
+}
+</style>"""
+s=s.replace("</head>",hero_css+"</head>",1)
+assert 'tth-crm-hero-one-line-1911' in s and hero_src not in s
+print("PASS CRM opening: single-line headline, no red pseudo-dot over functional label")
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
