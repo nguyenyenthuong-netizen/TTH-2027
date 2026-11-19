@@ -172,6 +172,31 @@ for shell, tag, event in (
           "html-links",nrefs,"unresolved-targets",list(sorted(missing.items(),key=lambda v:-v[1]))[:12])
     print("FIX-NAV-PAGES",shell,",".join(names)[:3400])
 
+    # Structural audit covers the embedded pages, not merely the host shell.
+    for entry in ("Main.html", "DatLich_XacNhan.html" if shell=="healthcare-app" else "DatLich.html"):
+        if entry not in original: continue
+        doc=original[entry]
+        head=doc[:min(30000,len(doc))]
+        summary={
+            "chars":len(doc),
+            "scroll_hidden":len(re.findall(r'overflow(?:-[xy])?\s*:\s*hidden',head,flags=re.I)),
+            "scroll_auto":len(re.findall(r'overflow(?:-[xy])?\s*:\s*(?:auto|scroll)',head,flags=re.I)),
+            "sliders":len(re.findall(r'(?i)swiper|slider|carousel|type\s*=\s*["\']range',doc)),
+            "buttons":len(re.findall(r'<button\b',doc,flags=re.I)),
+            "links":len(re.findall(r'<a\b',doc,flags=re.I)),
+        }
+        print("AUDIT-INNER",shell,entry,summary)
+    img_m=re.search(r'<script\b[^>]*\bid=["\'](?:imageData|imagesData)["\'][^>]*>(.*?)</script>',full,flags=re.I|re.S)
+    if img_m:
+        image_keys=set(json.loads(img_m.group(1)).keys())
+        refs={}
+        for p,h in original.items():
+            for asset in re.findall(r'../assets/img/([^"\'\s\)]+)',h):
+                asset=asset.split('?')[0]
+                if asset not in image_keys: refs[asset]=refs.get(asset,0)+1
+        print("AUDIT-IMAGES",shell,"images",len(image_keys),"unresolved",len(refs),"sample",list(sorted(refs.items(),key=lambda z:-z[1]))[:10])
+
+
 
 # Inspect external app shells; the internal UI may be stored in encoded iframe assets.
 # This check prevents inventing a fix for a page that we have not structurally inspected.
