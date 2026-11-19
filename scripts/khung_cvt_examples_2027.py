@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Thêm ví dụ vận hành thực tế của hai Chuyên viên trưởng, không tự cấp quyền duyệt."""
+"""Thêm ví dụ vận hành của hai tuyến chuyên viên quản lý; không tự cấp quyền duyệt."""
 from pathlib import Path
 from html import escape
 import json,re,sys
@@ -46,7 +46,7 @@ D["vi_du_van_hanh_hai_chuyen_vien_truong_2027_nguyen_tac"]={
 "nguoi_chiu_trach_nhiem":"Một người được chỉ định trên từng mã đầu ra thực tế, không lấy chức danh làm thay mã nhân sự",
 "tuyen_quan_ly":"Chỉ một tuyến quản lý trực tiếp; ý kiến chuyên môn liên tuyến không tạo quản lý kép",
 "phe_duyet":"Chỉ người có quyền theo ma trận còn hiệu lực; kiểm tra, nghiệm thu, phê duyệt phát hành và chi phí là bốn cửa riêng",
-"tai":"Giờ chuyên viên, giờ Tổ trưởng/Trưởng nhóm và giờ Chuyên viên trưởng thực đo tách nhau; không tính trùng sản lượng"}
+"tai":"Giờ chuyên viên, giờ Tổ trưởng/Trưởng nhóm và giờ quản trị của hai chức danh thực đo tách nhau; không tính trùng sản lượng"}
 m=rx.search(s)
 s=s[:m.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("</script>","<\\/script>")+s[m.end(2):]
 marker='<section class="doc-sec sub" data-title="4.3. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
