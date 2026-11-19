@@ -144,7 +144,7 @@ c1["phan_dinh_chu_tri_dau_ra"]=(
  "Quản trị năng lực và chất lượng khối Nội dung – Sáng tạo; trực tiếp quản lý dọc các Trưởng nhóm "
  "Marketing bệnh viện thuộc hai nhóm thương hiệu CHƯA được bàn giao hợp lệ cho Quản lý mạng lưới "
  "Marketing cơ sở theo vùng. Sau khi có quyết định bàn giao, Quản lý mạng lưới đánh giá trực tiếp "
- "cấp 1 đối với đúng danh sách đã nhận; Chuyên viên trưởng quản trị, kiểm tra và tổng hợp theo tuyến "
+ "cấp 1 đối với đúng danh sách đã nhận; "+N+" quản trị, kiểm tra và tổng hợp theo tuyến "
  "Quản lý mạng lưới, không đánh giá trực tiếp trùng cùng một Trưởng nhóm. Đầu ra quản trị là bảng tải, "
  "phương án điều phối, báo cáo chất lượng sản xuất và đánh giá theo đúng tuyến có hiệu lực; "
  "không nhận trùng sản lượng bài, thiết kế, video của chuyên viên hoặc giờ điều phối thường lệ của Tổ trưởng."
