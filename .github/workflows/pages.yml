@@ -8,6 +8,7 @@ on:
       - '.github/workflows/pages.yml'
       - 'scripts/layout_fix.py'
       - 'scripts/remove_extra_navigation.py'
+      - 'scripts/final_pages_guard.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
@@ -86,6 +87,8 @@ jobs:
           assert 'tth-floating-arrow' in s and 'tth-slide-once-19112026' in s
           print('PASS: Khu ng',len(k),'ki tu; slide 27 trang',len(s),'ki tu')
           PY
+      - name: Kiem tra va bao ve hien thi ban ghi de cuoi cung
+        run: python3 scripts/final_pages_guard.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
