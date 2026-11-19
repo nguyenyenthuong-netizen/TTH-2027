@@ -98,7 +98,7 @@ R.vt_vang=function(v){var x=VT(v);if(!x)return '';var lt=(D.vi_tri||[]).filter(f
  else if(x.pham_vi==='nhom_1'||x.pham_vi==='nhom_2')cuoi='Không thay chéo nhóm (mục 15.4).';
  else if(x.pham_vi==='theo_nhom')cuoi='Mỗi nhóm 01 người khi đạt ngưỡng; không thay chéo nhóm (mục 15.4).';
  else cuoi='Vị trí trung lập; người thay nhận việc theo mục 15.4.';
- return 'Khi vắng mặt: người thay chính: '+lab(A_(x.thay_chinh))+'. Dự phòng: '+lab(A_(x.du_phong))+'. Là người thay chính của: '+(lt.join('; ')||'–')+'. '+(['tp','cvt','qlsps'].indexOf(v)>=0?'Thứ tự ủy quyền khi Trưởng phòng vắng: R07. ':'')+cuoi};
+ return 'Khi vắng mặt: người thay chính: '+lab(A_(x.thay_chinh))+'. Dự phòng: '+lab(A_(x.du_phong))+'. Là người thay chính của: '+(lt.join('; ')||'–')+'. '+(['tp','cvt','cvt-2'].indexOf(v)>=0?'Thứ tự ủy quyền khi Trưởng phòng vắng: R07. ':'')+cuoi};
 R.vt_viec_chung=function(v){var x=VT(v);return x?tx(x.viec_chung||'Không'):''};
 R.bang_viec_chung=function(){return '<p class="mini">Việc chung toàn hệ thống giao vị trí trung lập hoặc mỗi nhóm làm phần của nhóm mình; làm chéo nhóm chỉ theo 04 ngoại lệ CN-1 đến CN-4 (mục 15.4). Dựng từ cơ sở dữ liệu.</p>'+tbl(['Vị trí','Phạm vi','Việc chung giữ thêm'],(D.vi_tri||[]).filter(function(x){return x.viec_chung&&x.viec_chung!=='Không'}).map(function(x){return '<tr><td>'+chip(x.id)+'</td><td>'+({nhom_1:'Nhóm 1',nhom_2:'Nhóm 2',trung_lap:'Trung lập',theo_nhom:'Theo nhóm'}[x.pham_vi]||'')+'</td><td>'+tx(x.viec_chung)+'</td></tr>'}),'wide')};
 R.vt_muc_dich=function(v){var x=VT(v);return x?tx(x.muc_dich||''):''};
