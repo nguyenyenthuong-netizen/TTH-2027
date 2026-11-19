@@ -129,7 +129,8 @@ move_forms={
 for f in D["danh_muc_tai_lieu"]:
     id=f["ma"]
     if id in move_forms:
-        if f.get("nam_giu")=="cvt":
+        nguoi_giu_goc=f.get("nam_giu")
+        if nguoi_giu_goc=="cvt":
             f["nam_giu"]="cvt-2"
         elif f.get("nam_giu") in ("cvtt","qc","tk-nt","cvt-2"):
             f["kiem_chuan_cvt2_1911"]="Giữ người vận hành chuyên môn hiện hữu làm chủ tài liệu; CVT Truyền thông – Thương hiệu và Tăng trưởng số kiểm chuẩn nghiệp vụ, không nhận quyền duyệt hoặc phát hành mặc định."
@@ -139,9 +140,13 @@ for f in D["danh_muc_tai_lieu"]:
             if key in f: f[key]=["cvt-2" if x=="cvt" else x for x in f[key]]
         if "co_che_quan_tri" in f:
             c=f["co_che_quan_tri"]
-            c["nguoi_nam_giu"]="cvt-2"
-            for key in ("nguoi_lap",):
-                if key in c: c[key]=["cvt-2" if x=="cvt" else x for x in c[key]]
+            # Chủ quản hồ sơ phải nhất quán với người nắm giữ thật. Người
+            # kiểm chuẩn liên tổ không tự nhiên trở thành chủ quản tài liệu.
+            c["nguoi_nam_giu"]=f["nam_giu"]
+            if nguoi_giu_goc=="cvt":
+                for key in ("nguoi_lap",):
+                    if key in c: c[key]=["cvt-2" if x=="cvt" else x for x in c[key]]
+            assert c["nguoi_nam_giu"]==f["nam_giu"],("Trùng/nhầm chủ hồ sơ",id)
         f["ranh_gioi_cvt_1911"]=move_forms[id]+"; tài liệu dự thảo, chưa thay người phê duyệt."
     if id in ("BM-7","SO-1","BM-21","BM-23","DM-8","DM-5","DS-4"):
         f["phoi_hop_cvt2_1911"]=(
