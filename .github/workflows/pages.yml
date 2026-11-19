@@ -7,6 +7,7 @@ on:
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
       - 'scripts/layout_fix.py'
+      - 'pages-overrides/trinh-chieu-marketing/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -46,6 +47,17 @@ jobs:
           touch _site/.nojekyll
       - name: Sua loi chong nut, che noi dung va o nhap App
         run: python3 scripts/layout_fix.py _site
+      - name: Cap nhat slide 60 trang dung ban moi nhat
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s pages-overrides/trinh-chieu-marketing/index.html
+          mkdir -p _site/trinh-chieu-marketing
+          cp -a pages-overrides/trinh-chieu-marketing/. _site/trinh-chieu-marketing/
+          test -s _site/trinh-chieu-marketing/index.html
+          for n in $(seq -w 1 60); do
+            test -s "_site/trinh-chieu-marketing/slides/slide-${n}.webp" || exit 1
+          done
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
