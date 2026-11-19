@@ -97,9 +97,30 @@ for page, css in targets.items():
         raise ValueError(f"{page}: missing head tag")
     s=s.replace("</head>",start+font_guard+css+"</style></head>",1)
     if page == "khung-marketing":
-        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row", "mkt-org-line-to-local", "Tuyến quản lý trực tiếp", "tth-org-skills-controls-1911", "function buildOrgShortDetails()", "Chưa chỉ định cố định; Trưởng phòng Marketing phân công"):
+        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row", "mkt-org-line-to-local", "Tuyến quản lý trực tiếp", "tth-org-skills-controls-1911", "function buildOrgShortDetails()", "id=\"jd-cvt-2\"", "data-vt=\"cvt-2\"", "Kỹ năng phụ", "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số"):
             if term not in s:
                 raise ValueError(f"{page}: critical baseline not found: {term}")
+        # 26 positions, 26 distinct job descriptions, both chiefs, and draft KPI source.
+        import re, json
+        source = re.search(r'<script id="csdl" type="application/json">([\\s\\S]*?)</script>', s)
+        if not source: raise ValueError("Marketing framework has no embedded position data")
+        D = json.loads(source.group(1))
+        source_ids = [p["id"] for p in D["vi_tri"]]
+        cards = re.findall(r'<article class="jd"[^>]*\\bid="jd-([^"]+)"', s)
+        if len(source_ids)!=26 or len(cards)!=26 or set(source_ids)!=set(cards) or len(cards)!=len(set(cards)):
+            raise ValueError("Position/JD mismatch: source %s, JD %s" % (source_ids,cards))
+        for key in ("cvt","cvt-2"):
+            K = D.get("kpi_vi_tri",{}).get(key)
+            if not K: raise ValueError("Missing KPI for "+key)
+            value=sum(row["ty_trong"] for row in K.get("ca_nhan",[])+K.get("chung",[]))
+            if value!=100 or "chưa phê duyệt" not in K.get("trang_thai_phe_duyet","").lower():
+                raise ValueError("Unapproved/misweighted chief KPI: "+key)
+        if '<span class="jd-name">Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở</span>' not in s:
+            raise ValueError("Missing first chief's full JD title")
+        j=s[s.index('id="jd-cvt-2"'):]
+        j=j[:j.index('<article class="jd"',8)]
+        for q in ("Kỹ năng chính","Kỹ năng phụ bắt buộc","Người thay chính khi vắng","Phụ lục 1.","Phụ lục 8."):
+            if q not in j: raise ValueError("Incomplete CVT2 JD: "+q)
     else:
         if s.count('<section class="slide') != 27:
             raise ValueError("Slide count changed; expected 27")
