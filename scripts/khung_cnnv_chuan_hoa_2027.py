@@ -364,7 +364,7 @@ assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "trực tiếp quản lý" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "không tự chuyển sang Quản lý mạng lưới theo vùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
-assert "không đánh giá trực tiếp trùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
+assert "không tạo tuyến chỉ huy nghiệp vụ thứ hai" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "giảm lãng phí" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "đánh giá trước–sau" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["phan_dinh_chu_tri_dau_ra"]
 assert len(check["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]["pham_vi"])==2
