@@ -34,6 +34,7 @@ on:
       - 'scripts/khung_cvt_25_boundary_lock_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'scripts/slide_tree_after8_2027.py'
+      - 'scripts/tth_five_asset_logic_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
@@ -203,6 +204,8 @@ jobs:
           if-no-files-found: ignore
       - name: Bo sung so do cay co cau Marketing sau trang 8 va doi thanh 28 slide
         run: python3 scripts/slide_tree_after8_2027.py _site
+      - name: Kiem soat logic lien thong Khung Slide Website App CRM
+        run: python3 scripts/tth_five_asset_logic_fix_2027.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
