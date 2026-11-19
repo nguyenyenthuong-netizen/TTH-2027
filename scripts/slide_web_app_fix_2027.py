@@ -635,17 +635,27 @@ assert slide_doc.count('<section class="slide')==27
 print("PASS tth-slide-nav-icons-only-1911: small-label overlap removed; navigation controls retain title and aria-label")
 
 
-# Prevent regressions: the two floating controls must have SVG icons only,
-# full accessible names, no child caption, and should not reinstate #controls.
+# Validate actual two-arrow controls of the published deck without re-adding
+# deleted list/fullscreen caption buttons that caused overlap.
 tth_controls=slide.read_text("utf-8")
-if "const list=button('Danh sách 27 slide'" not in tth_controls or "const full=button('Toàn màn hình'" not in tth_controls:
-    raise AssertionError("Required slide controls missing")
-nav_block=tth_controls.split('const nav=document.querySelector(\'.tth-floating-arrows\');',1)[-1]
-if '</svg><small>' in nav_block[:1300]:
-    raise AssertionError("Overflowing slide control text is still inserted")
+nav_marker='<script id="tth-floating-arrows-nav-20261119">'
+if tth_controls.count(nav_marker)!=1:
+    raise AssertionError("Required slide two-arrow controller missing")
+nav_block=tth_controls.split(nav_marker,1)[1].split("</script>",1)[0]
+for required in ("const prev=document.createElement('button')",
+                 "const next=document.createElement('button')",
+                 "prev.setAttribute('aria-label','Trang trước')",
+                 "next.setAttribute('aria-label','Trang tiếp')",
+                 "nav.append(prev,next)",
+                 "document.getElementById('prev')?.click()",
+                 "document.getElementById('next')?.click()"):
+    if required not in nav_block:
+        raise AssertionError("Slide arrow wiring missing: "+required)
+if "<small>" in nav_block or "<br" in nav_block:
+    raise AssertionError("Slide navigation contains overflowing captions")
 if tth_controls.count('<section class="slide')!=27:
     raise AssertionError("Slide count changed while repairing controls")
-print("PASS-SLIDE-NAV-ICONS: two controls are SVG-only and keep accessible labels")
+print("PASS-SLIDE-NAV-ICONS: two arrow-only controls with accessible labels and working click targets")
 
 
 dock_html=slide.read_text("utf-8")
