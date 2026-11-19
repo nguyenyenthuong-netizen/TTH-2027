@@ -651,3 +651,59 @@ assert 'var(--tth-slide-rail-width)' in dock_html
 assert 'var(--tth-slide-mobile-dock)' in dock_html
 assert dock_html.count('<section class="slide')==27
 print("PASS-SLIDE-DOCK: controls outside slide viewport; 27 slides intact")
+
+
+# Repair an independently reproducible slide clipping case: fixed 146px headers
+# do not expand for long Vietnamese titles or responsive browser font metrics.
+# Do not shrink headings below a legible size or alter the business text.
+slide_doc=slide.read_text("utf-8")
+heading_marker="tth-slide-header-overflow-2027"
+if heading_marker not in slide_doc:
+    heading_css=r"""<style id="tth-slide-header-overflow-2027">
+.slide .head{overflow:visible!important}
+.slide .head h2{overflow-wrap:break-word!important;word-break:normal!important;hyphens:none!important}
+.slide .head p{overflow-wrap:break-word!important;word-break:normal!important}
+.slide .head[data-tth-heading-overflow="1"]{height:auto!important;min-height:146px!important;z-index:4!important}
+.slide .head[data-tth-heading-overflow="1"] h2{font-size:clamp(23px,2.25vw,31px)!important;line-height:1.16!important}
+.slide .head[data-tth-heading-overflow="1"] p{font-size:14px!important}
+.slide .head[data-tth-heading-overflow="1"] + .content{top:190px!important;overflow-y:auto!important}
+.slide.cover .head[data-tth-heading-overflow="1"] + .content{top:240px!important}
+</style>"""
+    heading_js=r"""<script id="tth-slide-header-overflow-2027-js">
+(function(){
+  "use strict";
+  var scheduled=false;
+  function measure(){
+    scheduled=false;
+    var slide=document.querySelector('.slide.active');
+    if(!slide)return;
+    var head=slide.querySelector('.head'), title=head&&head.querySelector('h2');
+    if(!head||!title)return;
+    delete head.dataset.tthHeadingOverflow;
+    var sub=head.querySelector('p');
+    var headBottom=head.getBoundingClientRect().bottom;
+    var titleBottom=title.getBoundingClientRect().bottom;
+    var subBottom=sub?sub.getBoundingClientRect().bottom:0;
+    // Only activate the fallback for content that actually crosses the header boundary.
+    if(Math.max(titleBottom,subBottom)>headBottom-5){
+      head.dataset.tthHeadingOverflow='1';
+    }
+  }
+  function schedule(){
+    if(scheduled)return;scheduled=true;
+    requestAnimationFrame(function(){requestAnimationFrame(measure)});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+  window.addEventListener('resize',schedule);
+  var stage=document.getElementById('stage');
+  if(stage)new MutationObserver(schedule).observe(stage,{subtree:true,attributes:true,attributeFilter:['class']});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(schedule);
+})();
+</script>"""
+    if "</head>" not in slide_doc or "</body>" not in slide_doc:
+        raise AssertionError("Slide heading repair: invalid HTML")
+    slide_doc=slide_doc.replace("</head>",heading_css+"</head>",1).replace("</body>",heading_js+"</body>",1)
+    if slide_doc.count('<section class="slide')!=27:
+        raise AssertionError("Slide heading repair changed slide count")
+    slide.write_text(slide_doc,"utf-8")
+    print("PASS-SLIDE-HEADINGS: measured overflow fallback installed, 27 slides preserved")
