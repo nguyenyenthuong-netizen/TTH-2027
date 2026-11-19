@@ -48,6 +48,17 @@ for q in Q:
    b["xac_minh_kiem_doc_lap_2027"]="BẮT BUỘC hai mã cá nhân khác nhau, không chỉ hai vai trò trên sơ đồ; người kiểm không được tự duyệt."
    assert b.get("chan_trung_nguoi_2027") is True
    possible_same_codes.append(q["id"]+"-"+str(step_no))
+  if code=="mkt-tct":
+   b["phan_cong_thuc_thi_2027"]=(
+    "CHẶN GIAO VIỆC CHUNG: 'Marketing Tổng công ty' không phải cá nhân hay một chức danh. "
+    "Mỗi đầu ra phải phân giải về chuyên viên chuyên môn tương ứng; "
+    "chỉ báo cáo tổng hợp và quyết định thuộc thẩm quyền mới giao Trưởng phòng Marketing. "
+    "Không sử dụng mã kỹ thuật quy đổi Trưởng phòng như quyết định giao sản xuất."
+   )
+   b["dieu_kien_giao_viec_2027"]=(
+    "Phải có mã nhân sự, chức danh thực tế, một tuyến quản lý và đầu ra cụ thể "
+    "trước khi chuyển trạng thái giao việc; nếu không thì khóa."
+   )
   b["chot_luong_giao_viec_2027"]=(
    "Một mã việc và một tuyến quản lý; Tổ trưởng/Trưởng nhóm giao việc thường lệ; "
    +ND+" chỉ điều phối sản xuất/cơ sở vượt tuyến; "+TT+
