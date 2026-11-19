@@ -39,7 +39,8 @@ def fix_label(s):
       (r'\bCVT Nội dung\s*[–-]\s*Sáng tạo\b',NOI_DUNG),
     ]
     for pat,new in replaces:
-        s=re.sub(pat,lambda _m:new,s,flags=re.I)
+        flags=0 if pat.startswith(r'\bCVT') else re.I
+        s=re.sub(pat,lambda _m:new,s,flags=flags)
     return s
 
 # Chỉ tác động chuỗi văn bản, KHÔNG thay các khóa "CVT1"/"CVT2" trong dữ liệu
