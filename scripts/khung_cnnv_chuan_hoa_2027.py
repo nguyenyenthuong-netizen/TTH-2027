@@ -287,7 +287,7 @@ for role in key_roles:
       '<p><b>Chu trình cải tiến và trách nhiệm:</b> '+escape(x["chu_trinh_cai_tien"])+'</p>'
       '<p><b>Ranh giới trách nhiệm và KPI:</b> '+escape(x["ranh_gioi_kpi"])+'</p>'
       if role=="cvt-2" else '')
-      '<small>Đối chiếu với CNNV phòng tại mục 4.1. Chưa thay văn bản MTCV do Phòng Nhân lực ban hành.</small>'
+      +'<small>Đối chiếu với CNNV phòng tại mục 4.1. Chưa thay văn bản MTCV do Phòng Nhân lực ban hành.</small>'
       '</div>'
     )
     pat=r'(<article\b[^>]*\bid="jd-'+re.escape(role)+r'"[^>]*>[\s\S]*?<div class="jd-body">)'
