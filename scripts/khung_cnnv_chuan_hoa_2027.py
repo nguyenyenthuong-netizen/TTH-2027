@@ -98,7 +98,7 @@ V["bt-ac"]["phan_dinh_ban_giao_dau_vao"]=(
  "Trong phạm vi Biên tập nhóm 1: nhận yêu cầu theo nhóm và giao nội dung đã kiểm cho Thiết kế/Media. "
  "Khi được chỉ định kiêm Tổ trưởng Nội dung và Sáng tạo, chỉ điều phối thường lệ trong phạm vi "
  "văn bản giao nhiệm vụ; phần nhân sự nhóm 2 và thiết kế ngoại tuyến phải có đầu mối điều phối "
- "được chỉ định rõ, không tự coi Chuyên viên trưởng là Tổ trưởng thường trực và không tự cho phép "
+ "được chỉ định rõ, không tự coi "+N+" là Tổ trưởng thường trực và không tự cho phép "
  "xử lý chéo nội dung của hai nhóm."
 )
 
