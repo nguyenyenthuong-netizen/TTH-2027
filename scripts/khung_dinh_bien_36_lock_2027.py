@@ -55,6 +55,39 @@ D["doi_chieu_so_luong_nhan_su_19112026"]["ghi_chu_nguon"]="36 suất: 22 Tổng 
 D["phan_dinh_quan_ly_hai_cvt_19112026"]["lo_trinh"]=(
  "Định biên chuẩn 36 suất, không sử dụng mốc 34/35 làm cơ cấu 2027; chỉ xây dựng lộ trình tăng nhân sự khi có tải giờ và quyết định."
 )
+# Normalize staffing references in role descriptions / operational catalogue;
+# retain historical logs and numeric process codes unchanged.
+def fix_staffing_strings(node):
+    if isinstance(node,list):
+        return [fix_staffing_strings(x) for x in node]
+    if isinstance(node,dict):
+        return {key:fix_staffing_strings(val) for key,val in node.items()}
+    if not isinstance(node,str): return node
+    replacements={
+      "Bố trí người theo định biên 34":"Bố trí người theo định biên chuẩn 36 suất (22 TCT, 14 cơ sở)",
+      "căn cứ giữ 34 người":"căn cứ quản lý 36 suất định biên, không lấy số thực có cũ làm định biên",
+      "định biên 34 người":"định biên chuẩn 36 suất",
+      "định biên 34 suất":"định biên chuẩn 36 suất",
+      "định biên hiện tại 34":"định biên hiện tại 36",
+      "34 suất định biên":"36 suất định biên",
+      "khung 34 người":"khung 36 suất",
+      "hiện có 35":"số nhân sự thực có tại thời điểm cũ (chưa xác minh kỳ hiện hành)",
+      "34 / 40 / 43 / 50 / 53 / 56":"các mốc mở rộng của phương án cũ, chưa được tính lại",
+      "34 người/suất định biên với 25 loại vị trí":"36 suất định biên với 26 loại vị trí",
+      "≈ 15 phút/người/tuần × 34":"≈ 15 phút/người/tuần × 36 (cần đo lại)",
+      "Bước 34":"Cơ cấu giai đoạn đầu 36",
+      "ở bước 34":"ở cơ cấu giai đoạn đầu 36",
+      "mốc 34 suất cũ":"mốc cơ cấu cũ",
+      "lộ trình 34 / 40 / 43 / 50 / 53 / 55":"lộ trình mở rộng cũ, chưa cập nhật sau cơ cấu 36 suất"
+    }
+    for k,v in replacements.items(): node=node.replace(k,v)
+    return node
+for section in ("vi_tri","danh_muc_van_ban","phan_mem_dac_ta",
+                "phan_dinh_vi_tri_chi_tiet_17112026","ma_tran_TCT_chi_nhanh_17112026",
+                "dieu_chinh_17112026","ghi_chu_giai_quyet_4_dieu_kien"):
+    if section in D:
+        D[section]=fix_staffing_strings(D[section])
+
 # Previous scenario notes may be retained in document history, but not as the
 # active staffing baseline; correct the relevant old active prose.
 replacements=[
@@ -122,6 +155,35 @@ s=s.replace('<div class="stat"><b>56</b><span>khi đủ 10 bệnh viện, 02 ph�
             '<div class="stat"><b>36</b><span>suất cơ cấu hiện hành; lộ trình mở rộng chưa tính lại</span></div>')
 s=s.replace('Định biên 34 (Media 03 theo Kế hoạch hoạt động năm 2026)',
             'Định biên hiện tại 36 suất (Media 03 theo phương án sử dụng lao động)')
+# Fix remaining active paragraphs and table labels. Historical decision log
+# numbers are left intact as records of past proposals, not present staffing.
+s=s.replace('Định biên 34 (mục 5.2 ); cách 3 cũng là 34 khi có 03 Chuyên viên media theo Kế hoạch hoạt động năm 2026',
+            'Định biên cơ cấu 2027 là 36 suất (mục 5.2); phương án có 03 Chuyên viên media theo danh mục sử dụng lao động')
+s=s.replace('Định biên 34 (Media 03 theo Kế hoạch hoạt động năm 2026)',
+            'Định biên chuẩn 36 suất (bao gồm 03 Chuyên viên media)')
+s=s.replace('Không cần bố trí đủ 34 người trước thí điểm',
+            'Không mặc nhiên tuyển đủ 36 suất trước thí điểm; nhân sự thực tế bố trí theo kế hoạch được phê duyệt')
+s=s.replace('Nhân sự: 34;', 'Nhân sự cơ cấu chuẩn: 36 suất;')
+s=s.replace('Ổn định và xây dựng (Quý III/2027 – Quý IV/2028)</td><td>34;',
+            'Ổn định và xây dựng (Quý III/2027 – Quý IV/2028)</td><td>36;')
+# An old side-by-side 34 / 56 table is still static: retire the old comparisons
+# without falsely recalculating the 56-seat extended forecast.
+s=s.replace('<td>21</td><td>31</td><td>13</td><td>25</td><td>34</td><td>56</td>',
+            '<td>22</td><td>Chưa tính lại</td><td>14</td><td>Chưa tính lại</td><td><b>36</b></td><td>Chưa chốt</td>')
+s=s.replace('Phòng Marketing Tổng công ty</td><td>21</td><td>31</td>',
+            'Phòng Marketing Tổng công ty</td><td>22</td><td>Chưa chốt</td>')
+s=s.replace('Marketing cơ sở</td><td>13</td><td>25</td>',
+            'Marketing cơ sở</td><td>14</td><td>Chưa chốt</td>')
+s=s.replace('Toàn hệ thống</td><td>34</td><td>56</td>',
+            'Toàn hệ thống</td><td><b>36</b></td><td>Chưa chốt</td>')
+# Old history is not a current report. Avoid leaving 34 labels in
+# front-facing staffing narrative even when clearly marked as old.
+s=s.replace('Mốc 34/40/43/50/53/56 là kịch bản trước điều chỉnh',
+            'Các mốc mở rộng trong kịch bản trước điều chỉnh')
+s=s.replace('Các mốc 34 → 56 trong mục này thuộc phương án cũ',
+            'Các mốc mở rộng trong mục này thuộc phương án cũ')
+s=s.replace('mốc 34 suất là phương án cũ','mốc cơ cấu cũ đã được thay thế')
+
 # Output JSON from corrected data after all visible replacements.
 j2=re.search(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)',s)
 if j2 is None: raise ValueError("Lost CSDL after replacements")
