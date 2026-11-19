@@ -200,7 +200,7 @@ s=s[:m.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("
 needle="'+<div class=\"ops-meta\">"
 # Cắm trước phần metadata (đoạn JS chính có '+<div class...'),
 # sử dụng vị trí gắn duy nhất theo code hiện có.
-idx=s.find("'<div class=\"ops-meta\">'")
+idx=s.find("+\'<div class=\"ops-meta\">")
 if idx<0:raise RuntimeError("Không tìm thấy điểm chèn giao diện đối soát đầu ra")
 fragment=(
  "+(b.doi_soat_tung_dau_ra_2027?"
@@ -217,7 +217,7 @@ fragment=(
  "<td>'+tx(a.cach_hach_toan_tai_01)+'</td></tr>'}).join('')"
  "+'</tbody></table></div></details>':'')"
 )
-s=s[:idx]+fragment+"+"+s[idx:]
+s=s[:idx]+fragment+s[idx:]
 
 marker='<section class="doc-sec sub" data-title="4.3. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
 assert marker in s
