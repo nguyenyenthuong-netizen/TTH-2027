@@ -7,6 +7,7 @@ on:
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
       - 'scripts/layout_fix.py'
+      - 'scripts/remove_extra_navigation.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
   workflow_dispatch:
 permissions:
@@ -58,6 +59,8 @@ jobs:
           for n in $(seq -w 1 60); do
             test -s "_site/trinh-chieu-marketing/slides/slide-${n}.webp" || exit 1
           done
+      - name: Bo thanh dieu huong phu tren ca 5 giao dien
+        run: python3 scripts/remove_extra_navigation.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
