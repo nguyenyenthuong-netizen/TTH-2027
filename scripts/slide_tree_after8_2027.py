@@ -232,10 +232,11 @@ s=s.replace("Danh mục 27 slide","Danh mục 28 slide")
 s=s.replace("27 trang trình chiếu","28 trang trình chiếu")
 if s.count('<section class="slide')!=28:
     raise SystemExit("28-slide structural guard failed")
-if s.find('data-index="org-tree-after8"')<s.find('data-index="7"'):
-    raise SystemExit("Tree slide incorrectly positioned")
-if s.find('data-index="org-tree-after8"')>s.find('data-index="8"'):
-    raise SystemExit("Tree slide must appear before old slide 9")
+# CSS may contain data-index="8" selectors before the HTML sections,
+# so compare section attributes in document order, not raw string find().
+slide_order=re.findall(r'<section class="slide[^>]*data-index="([^"]+)"',s)
+if len(slide_order)!=28 or slide_order[7:10]!=['7','org-tree-after8','8']:
+    raise SystemExit("Tree slide not between page 8 and original page 9: "+str(slide_order[7:10]))
 for title in (
     "Nội dung – Sáng tạo và Marketing cơ sở",
     "Truyền thông – Thương hiệu và Tăng trưởng số",
