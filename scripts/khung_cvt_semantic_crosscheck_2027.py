@@ -32,6 +32,15 @@ for qid,i,b in all_steps:
  owner=code(b.get("chu_tri_chinh",""))
  actors=[code(x) for x in b.get("thuc_hien",[])]
  assistants=[code(x) for x in b.get("phoi_hop",[])]
+ if len(assistants)!=len(set(assistants)):
+  errors.append({"ma":"TRUNG_MA_PHOI_HOP","quy_trinh":qid,"buoc":i,"danh_sach":assistants})
+ if qid=="nhan-viec-moi" and i in (2,3,4,5,6):
+  a=b.get("chu_tri_thuc_te_theo_tuyen_cvt_2027",{})
+  if a.get("nhan_su_noi_dung_sang_tao_hoac_marketing_co_so")!="cvt" or a.get("nhan_su_truyen_thong_thuong_hieu_hoac_tang_truong_so")!="cvt-2":
+   errors.append({"ma":"NHAN_VIEC_MAC_DINH_MOT_CVT","quy_trinh":qid,"buoc":i})
+  zlist=b.get("doi_soat_tung_dau_ra_2027",[])
+  if not any("CHỜ CHỌN MỘT TUYẾN" in x.get("chu_tri_01","") for x in zlist):
+   errors.append({"ma":"DAU_RA_NHAN_VIEC_THIEU_CHON_TUYEN","quy_trinh":qid,"buoc":i})
  present=set([owner]+actors+assistants)&{"cvt","cvt-2"}
  if present:
   stats["buoc_lien_quan_hai_cvt"]+=1
