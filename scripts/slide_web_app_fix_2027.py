@@ -80,6 +80,92 @@ if marker not in s:
     slide.write_text(s,"utf-8")
 print("FIX-SLIDE fitted overflow cards; total",s.count('<section class="slide'))
 
+
+# Repair navigation inside the actual iframe documents. A normal relative .html
+# link inside srcdoc otherwise navigates the iframe to a missing server file.
+# Only targets already existing in the embedded page catalog are intercepted.
+import json
+for shell, tag, event in (
+    ("healthcare-app", "pageData", "TTH_OFFLINE_NAV"),
+    ("healthcare-website", "pagesData", "TTH_WEBSITE_OFFLINE_NAV"),
+):
+    file=root/shell/"index.html"
+    full=file.read_text("utf-8")
+    match=re.search(
+        r'(<script\b[^>]*\bid=["\']'+re.escape(tag)+r'["\'][^>]*>)(.*?)(</script>)',
+        full,flags=re.I|re.S)
+    if not match:
+        raise ValueError(shell+": embedded page catalog not found")
+    original=json.loads(match.group(2))
+    if not isinstance(original,dict) or len(original)<6:
+        raise ValueError(shell+": catalog missing expected pages")
+    names=sorted(original.keys())
+    names_js=json.dumps(names,ensure_ascii=False)
+    modified={}
+    changes=0
+    for page_name,page_html in original.items():
+        if not isinstance(page_html,str):
+            raise ValueError(shell+": expected HTML string for "+page_name)
+        if 'id="tth-offline-link-bridge-2027"' in page_html:
+            modified[page_name]=page_html
+            continue
+        js=r'''<script id="tth-offline-link-bridge-2027">
+(function(){
+ "use strict";
+ var known=new Set(__TTH_KNOWN_PAGES__);
+ function linkTarget(raw){
+   if(typeof raw!=="string")return null;
+   raw=raw.trim();
+   if(!raw||/^(?:https?:|\/\/|mailto:|tel:|sms:|data:|blob:|javascript:|#)/i.test(raw))return null;
+   var p=raw.split(/[?#]/)[0].split("/").pop();
+   if(!known.has(p))return null;
+   return p+raw.slice(raw.indexOf(p)+p.length);
+ }
+ document.addEventListener("click",function(ev){
+   var target=ev.target;
+   if(!target||!target.closest)return;
+   var item=target.closest("a[href],button[data-href],button[data-route],[role=button][data-href]");
+   if(!item)return;
+   var raw=item.getAttribute("href")||item.getAttribute("data-href")||item.getAttribute("data-route");
+   var destination=linkTarget(raw);
+   if(!destination)return;
+   ev.preventDefault();
+   ev.stopImmediatePropagation();
+   window.parent.postMessage({type:"__TTH_NAV_EVENT__",target:destination},"*");
+ },true);
+})();
+</script>'''
+        js=js.replace("__TTH_KNOWN_PAGES__",names_js).replace("__TTH_NAV_EVENT__",event)
+        if re.search(r'</body\s*>',page_html,flags=re.I):
+            new=re.sub(r'</body\s*>',lambda m:js+m.group(0),page_html,count=1,flags=re.I)
+        elif re.search(r'</html\s*>',page_html,flags=re.I):
+            new=re.sub(r'</html\s*>',lambda m:js+m.group(0),page_html,count=1,flags=re.I)
+        else:
+            new=page_html+js
+        modified[page_name]=new
+        changes+=1
+    encoded=json.dumps(modified,ensure_ascii=False,separators=(',',':'))
+    # Keep embedded </script> tokens inert in application/json.
+    encoded=(encoded.replace('<',r'\u003c')
+                    .replace('>',r'\u003e')
+                    .replace('&',r'\u0026'))
+    updated=full[:match.start(2)]+encoded+full[match.end(2):]
+    if set(json.loads(encoded))!=set(original):
+        raise AssertionError(shell+": names changed during repair")
+    file.write_text(updated,"utf-8")
+    nrefs=0
+    missing={}
+    for page_name,page_html in original.items():
+        for ref in re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)["\']',page_html,flags=re.I):
+            key=ref.split(/[?#]/)[0].split('/')[-1]
+            if key.lower().endswith(".html"):
+                nrefs+=1
+                if key not in original:missing[key]=missing.get(key,0)+1
+    print("FIX-NAV",shell,"pages",len(names),"bridged",changes,
+          "html-links",nrefs,"unresolved-targets",list(sorted(missing.items(),key=lambda v:-v[1]))[:12])
+    print("FIX-NAV-PAGES",shell,",".join(names)[:3400])
+
+
 # Inspect external app shells; the internal UI may be stored in encoded iframe assets.
 # This check prevents inventing a fix for a page that we have not structurally inspected.
 for name in ("healthcare-app","healthcare-website"):
