@@ -9,6 +9,7 @@ on:
       - 'scripts/layout_fix.py'
       - 'scripts/remove_extra_navigation.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
+      - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -67,6 +68,24 @@ jobs:
           PY
       - name: Bo thanh dieu huong phu tren ca 5 giao dien
         run: python3 scripts/remove_extra_navigation.py _site
+      - name: Cap nhat khung va slide 19-11-2026 tren GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          override_dir=pages-overrides/2027-1911-final
+          mkdir -p _site/khung-marketing _site/trinh-chieu-marketing
+          cat "$override_dir"/khung.part* > _site/khung-marketing/index.html
+          cat "$override_dir"/slide.part* > _site/trinh-chieu-marketing/index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          k=Path('_site/khung-marketing/index.html').read_text('utf-8')
+          s=Path('_site/trinh-chieu-marketing/index.html').read_text('utf-8')
+          assert '<html' in k and 'tth-standard-review' in k and 'KB-DV12' in k
+          assert 'Chuyên viên trưởng Nội dung' in k and 'tth-line-audit' in k
+          assert s.count('<section class="slide') == 27
+          assert 'tth-floating-arrow' in s and 'tth-slide-once-19112026' in s
+          print('PASS: Khu ng',len(k),'ki tu; slide 27 trang',len(s),'ki tu')
+          PY
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
