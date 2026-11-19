@@ -92,7 +92,7 @@ for page, css in targets.items():
         raise ValueError(f"{page}: missing head tag")
     s=s.replace("</head>",start+font_guard+css+"</style></head>",1)
     if page == "khung-marketing":
-        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row"):
+        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row", "mkt-org-line-to-local", "Tuyến quản lý trực tiếp"):
             if term not in s:
                 raise ValueError(f"{page}: critical baseline not found: {term}")
     else:
