@@ -16,6 +16,7 @@ on:
       - 'scripts/khung_cvt_deep_audit_2027.py'
       - 'scripts/khung_contradiction_resolution_2027.py'
       - 'scripts/khung_dinh_bien_36_lock_2027.py'
+      - 'scripts/khung_cvt_final_authority_guard_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -111,6 +112,8 @@ jobs:
         run: python3 scripts/slide_web_app_fix_2027.py _site
       - name: Khoa dinh bien chuan 36 suat - 22 TCT va 14 co so
         run: python3 scripts/khung_dinh_bien_36_lock_2027.py _site
+      - name: Khoa quyen hai Chuyen vien truong va chong luong quy trinh
+        run: python3 scripts/khung_cvt_final_authority_guard_2027.py _site
       - name: Doi soat dinh bien, dau ra, KPI va quy trinh cua 26 vi tri
         run: python3 scripts/khung_dinh_bien_chi_so_audit.py _site
       - name: Cau hinh GitHub Pages
