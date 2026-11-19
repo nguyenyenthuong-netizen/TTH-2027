@@ -12,6 +12,7 @@ on:
       - 'scripts/khung_text_zoom.py'
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/site_consistency_audit.py'
+      - 'scripts/khung_dinh_bien_chi_so_audit.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -101,6 +102,8 @@ jobs:
         run: python3 scripts/site_consistency_audit.py _site
       - name: Sua noi dung slide bi cat va kiem tra cau truc website app
         run: python3 scripts/slide_web_app_fix_2027.py _site
+      - name: Doi soat dinh bien, dau ra, KPI va quy trinh cua 26 vi tri
+        run: python3 scripts/khung_dinh_bien_chi_so_audit.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
