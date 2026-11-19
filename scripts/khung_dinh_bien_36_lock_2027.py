@@ -184,6 +184,42 @@ s=s.replace('Các mốc 34 → 56 trong mục này thuộc phương án cũ',
             'Các mốc mở rộng trong mục này thuộc phương án cũ')
 s=s.replace('mốc 34 suất là phương án cũ','mốc cơ cấu cũ đã được thay thế')
 
+# Exact HTML markup corrections for static cells whose numbers were hidden
+# behind tags and escaped the first pass (retains historical code references).
+s=s.replace(
+ 'Định biên 34 (mục <a class="xref" data-sec="m-5-2" href="#m-5-2">5.2</a>); cách 3 cũng là 34 khi có 03 Chuyên viên media theo Kế hoạch hoạt động năm 2026',
+ 'Định biên chuẩn 36 suất (mục <a class="xref" data-sec="m-5-2" href="#m-5-2">5.2</a>); bố trí 03 Chuyên viên media theo cơ cấu 2027')
+s=s.replace('<b>Nhân sự:</b> 34 (Tổng công ty 21, cơ sở 13)',
+            '<b>Định biên chuẩn:</b> 36 suất (Tổng công ty 22, cơ sở 14)')
+s=s.replace('<b>Nhân sự:</b> 34; Chuyên viên biên tập nhóm 2 thứ hai',
+            '<b>Định biên cơ cấu:</b> 36 suất; Chuyên viên biên tập nhóm 2 thứ hai')
+s=s.replace('<td>34; Chuyên viên biên tập nhóm 2 thứ hai',
+            '<td>36 suất cơ cấu; Chuyên viên biên tập nhóm 2 thứ hai')
+s=s.replace(
+ '<tr><td>Phòng Marketing Tổng công ty</td><td>21</td><td>31</td></tr><tr><td>Marketing cơ sở</td><td>13</td><td>25</td></tr><tr><td><strong>Toàn hệ thống</strong></td><td><strong>34</strong></td><td>56</td></tr>',
+ '<tr><td>Phòng Marketing Tổng công ty</td><td><b>22</b></td><td>Chưa chốt</td></tr>'
+ '<tr><td>Marketing cơ sở</td><td><b>14</b></td><td>Chưa chốt</td></tr>'
+ '<tr><td><strong>Toàn hệ thống</strong></td><td><strong>36</strong></td><td>Chưa chốt</td></tr>')
+s=s.replace('Mức 56 gồm Quản lý mạng lưới vùng theo lộ trình đã chốt ngày 14/11/2026.',
+            'Mốc mở rộng phải tính lại theo định biên chuẩn 36 suất; Quản lý mạng lưới vùng chỉ triển khai khi có quyết định.')
+s=s.replace('Định biên 34 (Media 03 theo Kế hoạch hoạt động năm 2026)',
+            'Định biên chuẩn 36 suất (Media 03 trong cơ cấu hiện hành)')
+s=s.replace('Không cần bố trí đủ 34 người trước thí điểm',
+            'Không mặc nhiên tuyển đủ 36 suất trước thí điểm')
+s=s.replace('ở định biên 34','ở định biên cơ cấu 36 suất')
+s=s.replace('định biên 34, Tổng công ty 21',
+            'định biên chuẩn 36 suất, Tổng công ty 22')
+# Historical audit tables may retain prior figures, but must be clearly labeled.
+s=s.replace('<section class="doc-sec" data-title="28. Những vấn đề đã trao đổi, chưa chốt" id="m-28">',
+            '<section class="doc-sec" data-title="28. Những vấn đề đã trao đổi, chưa chốt" id="m-28"><p class="mini"><b>LỊCH SỬ PHƯƠNG ÁN – KHÔNG ÁP DỤNG THAY CƠ CẤU 2027:</b> các số định biên trong bảng lịch sử dưới đây thuộc bản ghi ngày cũ. Định biên cơ cấu chuẩn năm 2027 là 36 suất: 22 TCT và 14 cơ sở.</p>')
+# Separate actual 2026 headcount from the 2027-seat number.
+s=s.replace('<strong>35</strong> (Tổng công ty 09; bệnh viện 26)',
+            'Số thực có tại kỳ thống kê năm 2026 (xem báo cáo nhân sự gốc)')
+s=s.replace('<strong>37</strong> (hiện có 35)',
+            '<strong>37</strong> (định biên năm 2026; số thực có xem hồ sơ năm 2026)')
+s=s.replace('so với 35 người hiện có: giảm 01',
+            'không dùng số người thực có năm 2026 để suy ra giảm/tăng suất định biên')
+
 # Output JSON from corrected data after all visible replacements.
 j2=re.search(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)',s)
 if j2 is None: raise ValueError("Lost CSDL after replacements")
