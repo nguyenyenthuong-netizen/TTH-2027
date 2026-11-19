@@ -232,6 +232,47 @@ if 'id="tth-cvt-deep-audit-1911"' not in src:
     if marker not in src: raise ValueError("JD section not found")
     index=src.index(marker)+len(marker)
     src=src[:index]+summary_html+src[index:]
+# Fix old view renderer: CVT-2 had no leave-approval branch and printed an empty value.
+# These are display clarifications; the authoritative approval still follows HR policy.
+old="if(x.to==='nd'&&x.nhom_thuong_hieu!=='N1')t='Chuyên viên trưởng duyệt lịch nghỉ';"
+new="if(x.to==='nd'&&x.nhom_thuong_hieu!=='N1')t='"+first+" duyệt lịch nghỉ';"
+if old not in src: raise ValueError("Leave renderer changed; check CVT2 branch")
+src=src.replace(old,new,1)
+old="cvt:'Trưởng phòng duyệt lịch nghỉ','tk-nt':'Chuyên viên trưởng duyệt lịch nghỉ',qlsps:'Trưởng phòng duyệt lịch nghỉ',qlml:'Chuyên viên trưởng duyệt lịch nghỉ','tn-a':'Chuyên viên trưởng duyệt lịch nghỉ; chấm công: cơ sở','tn-b':'Chuyên viên trưởng duyệt lịch nghỉ; chấm công: cơ sở',dmpk:'Phòng khám duyệt lịch nghỉ; báo Chuyên viên trưởng'"
+new=("cvt:'Trưởng phòng duyệt lịch nghỉ','cvt-2':'Trưởng phòng duyệt lịch nghỉ',"
+     "'tk-nt':'"+first+" duyệt lịch nghỉ',qlsps:'Trưởng phòng duyệt lịch nghỉ',"
+     "qlml:'"+first+" duyệt lịch nghỉ theo tuyến còn hiệu lực',"
+     "'tn-a':'"+first+" duyệt lịch nghỉ theo tuyến; chấm công: cơ sở',"
+     "'tn-b':'"+first+" duyệt lịch nghỉ theo tuyến; chấm công: cơ sở',"
+     "dmpk:'Phòng khám duyệt lịch nghỉ; báo "+first+" trong phạm vi Marketing'")
+if old not in src: raise ValueError("Leave role list changed")
+src=src.replace(old,new,1)
+# Render ambiguous approval labels as specific to proven scope or approved matrix.
+replacements=[
+ ("Chuyên viên trưởng duyệt đánh giá, điều hành chuyên môn",
+  first+" duyệt đánh giá, điều hành chuyên môn theo tuyến"),
+ ("Chuyên viên trưởng duyệt người nhóm 2, Chuyên viên thiết kế ngoại tuyến",
+  first+" duyệt người nhóm 2 của Tổ Nội dung và Sáng tạo, Chuyên viên thiết kế ngoại tuyến"),
+ ("Chuyên viên trưởng duyệt nội dung</td>",
+  first+" duyệt nội dung theo ma trận thẩm quyền có hiệu lực</td>"),
+ ("Chuyên viên trưởng duyệt phần thường xuyên theo phân cấp",
+  "Người được phân quyền tại ma trận có hiệu lực duyệt phần thường xuyên theo từng loại sản phẩm"),
+ ("Chuyên viên trưởng duyệt phương án",
+  second+" kiểm chuẩn phương án chuyên môn; phê duyệt theo ma trận thẩm quyền"),
+ ("Chuyên viên trưởng duyệt; Chuyên viên quảng cáo và kênh số của nhóm áp dụng",
+  second+" kiểm chuẩn nghiệp vụ; người được phân quyền phê duyệt, Chuyên viên quảng cáo và kênh số của nhóm áp dụng")
+]
+for a,b in replacements:
+    if a in src:
+        src=src.replace(a,b)
+# Never pretend a missed deadline grants authority by default.
+old="quá hạn: Chuyên viên trưởng duyệt (người duyệt là Chuyên viên trưởng: Trưởng phòng)"
+new=("quá hạn: báo người được phân quyền duyệt thay theo văn bản còn hiệu lực; "
+     "trường hợp người duyệt là Chuyên viên trưởng thì chuyển Trưởng phòng; "
+     "không tự động phát sinh quyền do quá hạn")
+if old in src: src=src.replace(old,new)
+assert "'cvt-2':'Trưởng phòng duyệt lịch nghỉ'" in src
+
 # Guard source counts, not only visual content.
 d2=json.loads(re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>',src).group(1))
 assert sum(x.get("chu_tri")=="cvt-2" for x in d2["danh_muc_van_ban"])>=len(cvt2_doc_ids)
