@@ -24,6 +24,15 @@ flows = d.get("quy_trinh", [])
 steps = [step for q in flows for step in q.get("buoc", [])]
 lead_step = Counter(step.get("chu_tri_chinh", "").split("|")[0].strip() for step in steps)
 lead_doc = Counter(doc.get("chu_tri", "").split("|")[0].strip() for doc in docs)
+flows_by_role = {role_id: [] for role_id in ids}
+for flow in flows:
+    involved = set()
+    for step in flow.get("buoc", []):
+        involved.add(str(step.get("chu_tri_chinh", "")).split("|")[0].strip())
+        involved.update(str(x).split("|")[0].strip() for x in step.get("thuc_hien", []))
+        involved.update(str(x).split("|")[0].strip() for x in step.get("phoi_hop", []))
+    for role_id in ids.intersection(involved):
+        flows_by_role[role_id].append(flow.get("ten", flow.get("id", "?")))
 missing = [r for r in roles if r["id"] not in kpis]
 draft = [r for r in roles if r["id"] in kpis and "chưa" in kpis[r["id"]].get("trang_thai_phe_duyet", "").lower()]
 approved_note = [r for r in roles if r["id"] in kpis and "đã chốt" in kpis[r["id"]].get("trang_thai_phe_duyet", "").lower()]
@@ -54,12 +63,15 @@ for r in roles:
     hours = r.get("gio_ke_hoach") or "Chưa có định lượng trong hồ sơ vị trí"
     output = r.get("phan_dinh_chu_tri_dau_ra") or "Chưa tách đầu ra"
     kpi_n = len(kpis.get(role_id, {}).get("ca_nhan", [])) + len(kpis.get(role_id, {}).get("chung", []))
+    involved = flows_by_role[role_id]
+    involved_html = "<details><summary>" + str(len(involved)) + " quy trình có ghi tham gia</summary>" + "<ul>" + "".join("<li>" + escape(n) + "</li>" for n in involved) + "</ul></details>" if involved else "Chưa ánh xạ chính xác mã vị trí"
     rows.append(
         "<tr><td><b>" + escape(r.get("ten", role_id)) + "</b><small>" + escape(role_id) + "</small></td>"
         "<td>" + escape(hours) + "</td>"
         "<td>" + pill(label, kind) + "<small>" + str(kpi_n) + " chỉ số trong bảng</small></td>"
         "<td class=num>" + str(lead_step[role_id]) + "</td>"
         "<td class=num>" + str(lead_doc[role_id]) + "</td>"
+        "<td>" + involved_html + "</td>"
         "<td>" + escape(output) + "</td></tr>"
     )
 
@@ -78,6 +90,8 @@ alerts = [
      "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số chưa được gắn bước chủ trì trong quy trình mẫu; không suy từ đó rằng vị trí này không có trách nhiệm chuyên môn."),
     ("Định lượng giờ công Media cơ sở", "Chưa có đủ dữ liệu",
      "Ngưỡng kế hoạch không đồng nghĩa giờ đã sử dụng hoặc giờ còn dư; phải đối soát nhật ký đầu việc của từng cơ sở."),
+    ("Quy trình phải nắm theo vị trí", "Chưa có ma trận nghiệm thu riêng",
+     "Quy trình có ghi tham gia không thay thế danh mục bắt buộc phải nắm, cấp độ hiểu/thực hiện, kiểm tra định kỳ và chứng cứ đào tạo."),
     ("Đầu ra & tiêu chuẩn", "Cần chốt theo sản phẩm",
      "Mô tả phạm vi và KPI tỷ trọng chưa thay thế định mức đầu ra theo sản phẩm, độ phức tạp, số lượng, thời gian chuẩn và tiêu chí nghiệm thu.")
 ]
@@ -104,6 +118,7 @@ output_fields = [
     "Nguồn dữ liệu, mã chứng cứ, kỳ chốt, người đối soát và người duyệt",
     "Quy trình/văn bản phải nắm, chủ trì xây dựng, kiểm chuẩn, thực hiện; hiệu lực",
     "Người thay thế và điều kiện ủy quyền, bàn giao, thu hồi quyền",
+    "Ma trận quy trình bắt buộc phải nắm: tên quy trình, cấp độ, đánh giá và cập nhật",
     "Quy tắc chặn thiếu chứng cứ, vượt quyền, xung đột nhóm hoặc vượt tải",
     "Điều kiện xem xét bổ sung nhân sự, thời điểm đo và cấp phê duyệt"
 ]
@@ -137,8 +152,8 @@ html_page = """<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta 
 <section><h2>Các điểm phải đối soát trước khi chốt</h2><div class="cards">""" + alert_html + """</div></section>
 <section><h2>Bảng đối chiếu 26 loại vị trí</h2><p class="note">Bước chủ trì = lần xuất hiện của mã vị trí đúng trong trường chủ trì của 407 bước. Văn bản chủ trì = trách nhiệm soạn/quản lý văn bản, không phải toàn bộ trách nhiệm nghiệp vụ. Cột đầu ra là mô tả, chưa phải cam kết sản lượng.</p>
 <input id="find" type="search" aria-label="Tìm kiếm vị trí" placeholder="Tìm vị trí, KPI, giờ, đầu ra..."><div class="table-wrap">
-<table id="matrix"><thead><tr><th>Vị trí</th><th>Giờ kế hoạch nguồn</th><th>KPI</th><th>Chủ trì bước</th><th>Chủ trì văn bản</th><th>Đầu ra thuộc phạm vi</th></tr></thead><tbody>""" + rows_html + """</tbody></table></div></section>
-<section><h2>18 trường dữ liệu bắt buộc để nghiệm thu định biên và đầu ra</h2><ol>""" + field_html + """</ol></section>
+<table id="matrix"><thead><tr><th>Vị trí</th><th>Giờ kế hoạch nguồn</th><th>KPI</th><th>Chủ trì bước</th><th>Chủ trì văn bản</th><th>Quy trình đang ghi tham gia</th><th>Đầu ra thuộc phạm vi</th></tr></thead><tbody>""" + rows_html + """</tbody></table></div></section>
+<section><h2>19 trường dữ liệu bắt buộc để nghiệm thu định biên và đầu ra</h2><ol>""" + field_html + """</ol></section>
 <section><h2>Nguyên tắc chốt</h2><p><b>Không suy từ số suất cơ cấu ra số người phải tuyển.</b> Sản lượng theo định mức chỉ được phê duyệt khi có số giờ thực đo, tiêu chuẩn chất lượng, tỷ lệ việc trọng điểm/phát sinh và năng lực thực tế theo người. Không cộng trùng giờ kiêm nhiệm, không giao hai tuyến quản lý và không lấy chỉ tiêu dự thảo để tính thưởng.</p>
 <p class="note">Bảng được tạo lại cùng quy trình xuất bản để thay đổi khi nguồn khung thay đổi; mọi điều chỉnh mốc 34/36/56 phải được đối soát trên cùng một cơ sở tính.</p></section>
 </main><script>document.getElementById('find').addEventListener('input',function(){const q=this.value.toLocaleLowerCase('vi');document.querySelectorAll('#matrix tbody tr').forEach(tr=>tr.hidden=!tr.textContent.toLocaleLowerCase('vi').includes(q))})</script>
