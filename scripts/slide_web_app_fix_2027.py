@@ -823,12 +823,13 @@ html body .fab.tth-cta-fixed a.fabx .lb{
 html body .fab.tth-cta-fixed a.fabx.intro .lb{animation:none!important}
 html body .fab.tth-cta-fixed .tth-cta-toggle{
  appearance:none!important;display:flex!important;align-items:center!important;
- justify-content:center!important;gap:6px!important;width:109px!important;
- min-height:42px!important;max-width:calc(100vw - 12px)!important;
- padding:7px 10px!important;margin:0!important;border-radius:24px!important;
- border:1px solid #0837A1!important;background:#fff!important;color:#0837A1!important;
- box-shadow:0 4px 15px rgba(8,55,161,.18)!important;
- font:800 15px/1.2 Arial,Tahoma,sans-serif!important;
+ justify-content:center!important;gap:0!important;width:36px!important;
+ min-width:36px!important;max-width:36px!important;height:36px!important;
+ min-height:36px!important;max-height:36px!important;
+ padding:0!important;margin:0!important;border-radius:50%!important;
+ border:1px solid #9db5d7!important;background:rgba(255,255,255,.95)!important;color:#0837A1!important;
+ box-shadow:0 2px 8px rgba(8,55,161,.12)!important;
+ font-size:0!important;line-height:1!important;
  cursor:pointer!important;white-space:nowrap!important;pointer-events:auto!important
 }
 html body .fab.tth-cta-fixed .tth-cta-toggle:focus-visible{
@@ -838,8 +839,9 @@ html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-stack>a.fabx{
  display:none!important
 }
 html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-toggle{
- width:126px!important;min-height:48px!important;background:#0837A1!important;
- color:white!important
+ width:36px!important;min-width:36px!important;max-width:36px!important;
+ height:36px!important;min-height:36px!important;max-height:36px!important;
+ background:rgba(255,255,255,.95)!important;color:#0837A1!important
 }
 @media(max-width:640px){
  html body .fab.tth-cta-fixed{right:8px!important}
@@ -852,7 +854,7 @@ html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-toggle{
   height:52px!important;width:52px!important;min-width:52px!important;flex-basis:52px!important
  }
  html body .fab.tth-cta-fixed a.fabx .ic>span{font-size:17px!important}
- html body .fab.tth-cta-fixed .tth-cta-toggle{min-height:39px!important;font-size:14px!important}
+ html body .fab.tth-cta-fixed .tth-cta-toggle{width:36px!important;min-width:36px!important;max-width:36px!important;height:36px!important;min-height:36px!important;max-height:36px!important}
 }
 </style>"""
 cta_js=r"""<script id="tth-fixed-cta-center-1911-js">
@@ -864,6 +866,7 @@ cta_js=r"""<script id="tth-fixed-cta-center-1911-js">
   var stack=fab.firstElementChild;if(!stack)return;
   fab.dataset.tthCtaReady='1';stack.classList.add('tth-cta-stack');
   var btn=document.createElement('button');btn.type='button';btn.className='tth-cta-toggle';
+  btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5l7 7-7 7"/></svg>';
   var key='tth-healthcare-cta-collapsed-1911';
   function mobile(){return window.matchMedia&&window.matchMedia('(max-width:640px)').matches}
   function stored(){
@@ -875,7 +878,8 @@ cta_js=r"""<script id="tth-fixed-cta-center-1911-js">
   function save(on){try{localStorage.setItem(key,on?'1':'0')}catch(e){}}
   function apply(on){
    fab.dataset.collapsed=on?'true':'false';
-   btn.textContent=on?'Mở hỗ trợ':'Thu gọn';
+   var arrow=btn.querySelector('svg path');
+   if(arrow)arrow.setAttribute('d',on?'M14 5l-7 7 7 7':'M10 5l7 7-7 7');
    btn.setAttribute('aria-expanded',String(!on));
    btn.setAttribute('aria-label',on?'Mở cụm hỗ trợ liên hệ':'Thu gọn cụm hỗ trợ liên hệ');
    btn.title=on?'Mở cụm hỗ trợ':'Thu gọn cụm hỗ trợ';
@@ -910,6 +914,7 @@ serialized=(json.dumps(website_pages,ensure_ascii=False,separators=(",",":"))
 website_html=website_html[:m.start(2)]+serialized+website_html[m.end(2):]
 website_file.write_text(website_html,"utf-8")
 assert 'tth-cta-fixed' in website_html and cta_count>=100
+print("PASS WEBSITE CTA ARROW-ONLY, arrow right to collapse and left to expand, no button label text")
 print("PASS TTH WEBSITE FIXED COLLAPSIBLE CTA",
       "pages",cta_count,"links-per-page",4,
       "center-right",True,"persistent-state",True,
