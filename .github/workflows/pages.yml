@@ -24,6 +24,7 @@ on:
       - 'scripts/khung_operational_integrity_2027.py'
       - 'scripts/khung_integrity_runtime_guard_2027.py'
       - 'scripts/khung_output_contract_audit_2027.py'
+      - 'scripts/khung_browser_acceptance_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -159,6 +160,17 @@ jobs:
         run: python3 scripts/khung_output_contract_audit_2027.py _site
       - name: Kiem tra lai JavaScript sau khi them bang dau ra
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
+      - name: Cai thu vien kiem tra giao dien bang Chrome
+        run: python3 -m pip install --user --break-system-packages --disable-pip-version-check playwright==1.55.0 Pillow
+      - name: Thu 8 luong thuc te tren desktop va mobile
+        run: python3 scripts/khung_browser_acceptance_2027.py _site
+      - name: Luu anh va bien ban kiem tra giao dien
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: khung-marketing-e2e-${{ github.run_number }}
+          path: artifacts/khung-e2e/
+          if-no-files-found: ignore
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
