@@ -84,10 +84,6 @@ if mode=="pre":
         "Chỉ nhận danh sách cơ sở, Trưởng nhóm, chỉ tiêu và kỳ đánh giá theo quyết định phân vùng "
         "có hiệu lực; báo cáo lên "+ND+". Không có bàn giao thì không phát sinh tuyến quản lý."
     )
-    v["qlml"]["phan_dinh_kiem_duyet"]=(
-        "Cấp có thẩm quyền phê duyệt phân vùng, quyết định giao quyền và đánh giá theo ma trận "
-        "hiệu lực; "+ND+" đề xuất và kiểm tra hồ sơ, không tự phê duyệt việc chuyển tuyến."
-    )
     v["qlml"]["thay_chinh"]=(
         "cvt|Chỉ điều phối tạm thời khi có quyết định phân công, còn giới hạn số người "
         "đánh giá trực tiếp; không tự động thu hồi toàn bộ tuyến vùng."
@@ -109,9 +105,6 @@ if mode=="pre":
         z.replace("do Chuyên viên trưởng kiểm","do "+TT+" kiểm độc lập")
         for z in v["dl-1"]["du_phong"]
     ]
-    v["md-ac"]["viec_chung"]=v["md-ac"]["viec_chung"].replace(
-        "Chuyên viên trưởng giữ",ND+" quản trị phiên bản"
-    )
     for rid in ("cvtt-a","cvtt-bc"):
         for key in ("viec_chung","muc_dich"):
             if key in v[rid]:
@@ -179,7 +172,7 @@ elif mode=="post":
     assert "chưa được bàn giao" in v["cvt"]["muc_dich"]
     assert "Một Trưởng nhóm chỉ có một" in v["qlml"]["muc_dich"]
     assert "03 người" in v["tn-a"]["muc_dich"]
-    assert "không tự phê duyệt" in v["qlml"]["phan_dinh_kiem_duyet"]
+    assert "Trưởng phòng/cấp có thẩm quyền" in v["qlml"]["phan_dinh_kiem_duyet"]
     assert "Không viết kịch bản lời" in v["mdcs-a"]["phan_dinh_khong_thuoc_trach_nhiem"] or "không viết kịch bản lời" in v["mdcs-a"]["phan_dinh_khong_thuoc_trach_nhiem"]
     assert "màn hình" in v["qhcs"]["muc_dich"] and "phát thanh" in v["qhcs"]["muc_dich"]
     static=re.sub(r'<(?:script|style)\b[^>]*>[\s\S]*?</(?:script|style)>',' ',src,flags=re.I)
