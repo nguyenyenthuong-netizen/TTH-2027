@@ -1184,3 +1184,120 @@ encoded=(json.dumps(webpages,ensure_ascii=False,separators=(",",":"))
 websrc=websrc[:datam.start(2)]+encoded+websrc[datam.end(2):]
 webfile.write_text(websrc,"utf-8")
 print("PASS WEBSITE BACK TO TOP 115/115: window capture precedes original document handler")
+
+
+# TTH_WEBSITE_COMPACT_SAFE_CTA_20261119
+# Fix overlap seen at 200% zoom/right-edge screenshot. Size each native CTA
+# to 42 desktop / 38 mobile (rather than 62/52), prevent hidden label text
+# from expanding over content on hover, and reserve a real right-side inset
+# in the page body only while the CTA is expanded. Keep original link targets,
+# colors, icon artwork, accessibility labels and the arrow-only toggle.
+site_path=root/"healthcare-website"/"index.html"
+site_html=site_path.read_text("utf-8")
+catalog_m=re.search(
+ r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',
+ site_html,flags=re.S|re.I)
+if not catalog_m:raise AssertionError("Healthcare Website pagesData not found")
+site_pages=json.loads(catalog_m.group(2))
+compact_css=r"""<style id="tth-cta-compact-safe-1911">
+html body .fab.tth-cta-fixed{
+ right:4px!important;max-width:48px!important;
+ width:48px!important;pointer-events:none!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack{
+ width:48px!important;max-width:48px!important;
+ gap:7px!important;padding:2px!important;
+ align-items:center!important;overflow:visible!important;
+ pointer-events:none!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx{
+ display:flex!important;flex:0 0 42px!important;
+ width:42px!important;min-width:42px!important;max-width:42px!important;
+ height:42px!important;min-height:42px!important;max-height:42px!important;
+ border-radius:50%!important;overflow:visible!important;
+ justify-content:center!important;align-items:center!important;
+ box-shadow:0 2px 9px rgba(8,55,161,.14)!important;
+ pointer-events:auto!important;
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic{
+ width:42px!important;min-width:42px!important;max-width:42px!important;
+ height:42px!important;min-height:42px!important;max-height:42px!important;
+ flex:0 0 42px!important;margin:0!important;padding:0!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic>svg{
+ width:30px!important;height:30px!important;
+ max-width:30px!important;max-height:30px!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic>span{
+ font-size:13px!important;line-height:1!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx>.lb{
+ display:none!important;max-width:0!important;
+ width:0!important;opacity:0!important;
+ padding:0!important;animation:none!important;
+ pointer-events:none!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx>span[aria-hidden="true"]{
+ top:-4px!important;right:-3px!important;
+ font-size:9px!important;padding:2px 4px!important;
+ line-height:1!important
+}
+html body .fab.tth-cta-fixed .tth-cta-toggle,
+html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-toggle{
+ flex:0 0 29px!important;width:29px!important;min-width:29px!important;
+ max-width:29px!important;height:29px!important;min-height:29px!important;
+ max-height:29px!important;border-radius:50%!important;
+ pointer-events:auto!important
+}
+html body .fab.tth-cta-fixed .tth-cta-toggle svg{
+ width:15px!important;height:15px!important
+}
+/* Real safe area: text and interactive cards end to the left of expanded CTAs.
+   Never change the native full-width header, footer or brand colors. */
+body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
+ padding-right:max(70px,5.2vw)!important;
+ box-sizing:border-box!important
+}
+@media(max-width:640px){
+ html body .fab.tth-cta-fixed{
+  right:3px!important;width:44px!important;max-width:44px!important
+ }
+ html body .fab.tth-cta-fixed .tth-cta-stack{
+  width:44px!important;max-width:44px!important;gap:6px!important
+ }
+ html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx{
+  width:38px!important;min-width:38px!important;max-width:38px!important;
+  height:38px!important;min-height:38px!important;max-height:38px!important;
+  flex-basis:38px!important
+ }
+ html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic{
+  width:38px!important;min-width:38px!important;max-width:38px!important;
+  height:38px!important;min-height:38px!important;max-height:38px!important;
+  flex:0 0 38px!important
+ }
+ html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic>svg{
+  width:27px!important;height:27px!important;
+  max-width:27px!important;max-height:27px!important
+ }
+ html body .fab.tth-cta-fixed .tth-cta-stack>a.fabx .ic>span{
+  font-size:12px!important
+ }
+ body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
+  padding-right:60px!important
+ }
+}
+</style>"""
+applied=0
+for page,doc in site_pages.items():
+ if 'class="fab tth-cta-fixed"' not in doc:continue
+ if 'tth-cta-compact-safe-1911' in doc:
+  raise AssertionError("CTA compact CSS duplicated on "+page)
+ if "</head>" not in doc:raise AssertionError("Missing head in "+page)
+ site_pages[page]=doc.replace("</head>",compact_css+"</head>",1)
+ applied+=1
+if applied!=115:raise AssertionError("Expected 115 compact CTA pages; got "+str(applied))
+encoded=(json.dumps(site_pages,ensure_ascii=False,separators=(",",":"))
+ .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
+site_html=site_html[:catalog_m.start(2)]+encoded+site_html[catalog_m.end(2):]
+site_path.write_text(site_html,"utf-8")
+print("PASS WEBSITE COMPACT SAFE CTA 115/115, desktop 42px mobile 38px, arrow 29px, reserved text inset")
