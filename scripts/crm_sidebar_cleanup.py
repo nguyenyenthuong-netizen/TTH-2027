@@ -378,6 +378,110 @@ s=s.replace("</head>",footer_css+"</head>",1)
 assert '<p class="crm-aside-summary">' in s and 'tth-crm-aside-summary-stack-1911' in s
 print("PASS CRM footer one-column markup, title above paragraph")
 
+
+# 19/11: fix actual sidebar collision. The root cause is compact sidebar
+# CSS shrinking the nav while the footer is laid out in the same fixed-height
+# flex column. Give nav/footer independent natural heights and make aside
+# the only vertical scroll container. Manual browser QA: 390/920/1280/1440/
+# 1678px: last nav item bottom < footer top, with 24px separation.
+nav_footer_css=r"""<style id="tth-crm-nav-footer-isolation-1911">
+@media(min-width:901px){
+ .layout,.layout.crm-sidebar-mini{
+  grid-template-columns:clamp(248px,18vw,292px) minmax(0,1fr)!important;
+ }
+ .layout>aside,.layout.crm-sidebar-mini>aside{
+  position:sticky!important;top:0!important;width:100%!important;
+  min-width:0!important;max-width:none!important;
+  height:100dvh!important;max-height:100dvh!important;min-height:0!important;
+  overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin!important;
+  box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;padding:16px 14px 20px!important;
+ }
+}
+.layout>aside>.identity,.layout.crm-sidebar-mini>aside>.identity{
+ flex:0 0 auto!important;position:relative!important;min-height:0!important;
+ height:auto!important;overflow:visible!important
+}
+.layout>aside>.navtitle,.layout.crm-sidebar-mini>aside>.navtitle{
+ display:block!important;flex:0 0 auto!important;position:relative!important;
+ height:auto!important;min-height:0!important;margin:20px 8px 9px!important
+}
+.layout>aside>#sideNav,.layout.crm-sidebar-mini>aside>#sideNav{
+ display:flex!important;flex-direction:column!important;
+ align-items:stretch!important;justify-content:flex-start!important;gap:9px!important;
+ position:relative!important;flex:0 0 auto!important;
+ height:auto!important;min-height:0!important;max-height:none!important;
+ margin:0!important;padding:0!important;overflow:visible!important;
+ grid-template-columns:none!important
+}
+.layout>aside>#sideNav>.navbtn,.layout.crm-sidebar-mini>aside>#sideNav>.navbtn{
+ position:relative!important;flex:0 0 auto!important;display:grid!important;
+ grid-template-columns:24px minmax(0,1fr)!important;gap:7px!important;
+ align-items:center!important;justify-content:start!important;
+ width:100%!important;height:auto!important;min-height:47px!important;max-height:none!important;
+ padding:11px 12px!important;margin:0!important;font-size:14px!important;
+ line-height:1.35!important;text-align:left!important;white-space:normal!important;
+ overflow:visible!important
+}
+.layout>aside>#sideNav>.navbtn .navnum,
+.layout.crm-sidebar-mini>aside>#sideNav>.navbtn .navnum{
+ display:block!important;grid-column:1!important;width:24px!important;
+ max-width:24px!important;min-width:24px!important;
+ font:800 13px/1.35 Arial,Tahoma,sans-serif!important;white-space:nowrap!important
+}
+.layout>aside>#sideNav>.navbtn .navtxt,
+.layout.crm-sidebar-mini>aside>#sideNav>.navbtn .navtxt{
+ display:block!important;grid-column:2!important;min-width:0!important;width:auto!important;
+ font:700 14px/1.35 Arial,Tahoma,sans-serif!important;
+ white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important
+}
+.layout>aside>#sideNav>.navbtn.active{
+ background:#0837A1!important;border-color:#0837A1!important;
+ color:#fff!important
+}
+.layout>aside>#sideNav>.navbtn.active .navtxt,
+.layout>aside>#sideNav>.navbtn.active .navnum{
+ color:#fff!important
+}
+.layout>aside>.asideFoot,.layout.crm-sidebar-mini>aside>.asideFoot{
+ display:block!important;position:relative!important;inset:auto!important;
+ float:none!important;flex:0 0 auto!important;order:0!important;
+ height:auto!important;min-height:0!important;max-height:none!important;
+ max-width:100%!important;width:100%!important;box-sizing:border-box!important;
+ margin:24px 0 12px!important;padding:17px 8px 0!important;
+ overflow:visible!important;white-space:normal!important;word-break:normal!important
+}
+.layout>aside>.asideFoot>strong{display:block!important;width:auto!important;min-width:0!important;
+ margin:0 0 7px!important;font:800 15px/1.4 Arial,Tahoma,sans-serif!important;color:#092F6C!important}
+.layout>aside>.asideFoot>p{display:block!important;margin:0!important;width:100%!important;
+ font:500 14px/1.55 Arial,Tahoma,sans-serif!important;color:#315071!important}
+.layout>aside>#ux-search-launch,.layout.crm-sidebar-mini>aside>#ux-search-launch{
+ display:block!important;position:relative!important;flex:0 0 auto!important;
+ order:10!important;align-self:stretch!important;margin:12px 0 0!important;
+ width:100%!important;height:auto!important;min-height:46px!important;
+ max-height:none!important;word-break:normal!important;white-space:normal!important
+}
+@media(max-width:900px){
+ .layout>aside,.layout.crm-sidebar-mini>aside{
+  display:flex!important;flex-direction:column!important;position:relative!important;
+  width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;
+  overflow:visible!important;padding:12px!important
+ }
+ .layout>aside>#sideNav,.layout.crm-sidebar-mini>aside>#sideNav{
+  display:flex!important;flex-direction:row!important;gap:7px!important;
+  max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;
+  scrollbar-width:thin!important
+ }
+ .layout>aside>#sideNav>.navbtn{flex:0 0 auto!important;
+  width:145px!important;min-height:45px!important;padding:8px!important
+ }
+ .layout>aside>.asideFoot{margin:12px 0!important}
+}
+</style>"""
+s=s.replace("</head>",nav_footer_css+"</head>",1)
+assert s.count('tth-crm-nav-footer-isolation-1911')==1
+print("CRM-QA nav/footer: independent natural heights; sidebar scroll container")
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
