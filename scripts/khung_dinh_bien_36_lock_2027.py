@@ -51,7 +51,7 @@ D["doi_chieu_so_luong_nhan_su_19112026"]={
 # a cross-reference (QT.34 etc).
 for key in ("phan_mem_dac_ta","ghi_chu_kiem_soat_mot_luot"):
     if key not in D: continue
-D["bo_quy_chuan_da_dong_bo"]["dinh_bien_hien_hanh_1911"]="36 suất: 22 Tổng công ty, 14 cơ sở; các mốc trước đó không còn dùng cho cơ cấu 2027"
+D["doi_chieu_so_luong_nhan_su_19112026"]["ghi_chu_nguon"]="36 suất: 22 Tổng công ty, 14 cơ sở; các mốc trước đó không còn dùng cho cơ cấu 2027"
 D["phan_dinh_quan_ly_hai_cvt_19112026"]["lo_trinh"]=(
  "Định biên chuẩn 36 suất, không sử dụng mốc 34/35 làm cơ cấu 2027; chỉ xây dựng lộ trình tăng nhân sự khi có tải giờ và quyết định."
 )
