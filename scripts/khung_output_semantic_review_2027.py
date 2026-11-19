@@ -101,7 +101,7 @@ def desc(q,step_no,b,actor):
  if note and len(note)>15 and len(note)<220 and ";" not in note:
     return normalize(note,200), "GHI CHÚ CHỨC NĂNG TẠI BƯỚC"
  if action:
-    return action+"; bằng chứng: "+normalize(b.get("ghi_nhan") or "nhật ký công việc",65),"PHÂN VAI MẪU, CẦN XÁC NHẬN"
+    return ((R[code]["ten"] if code in R else label)+": "+action+"; bằng chứng: "+normalize(b.get("ghi_nhan") or "nhật ký công việc",65)),"PHÂN VAI MẪU, CẦN XÁC NHẬN"
  # Đơn vị bên ngoài Marketing không được gán mặc nhiên sản phẩm marketing.
  return ("Phần nghiệp vụ của "+label+" tại bước "+str(step_no)+
          "; kết quả/bằng chứng: "+normalize(b.get("ghi_nhan") or b.get("dau_ra_kiem_chung") or "",90),
@@ -129,6 +129,13 @@ for q in D["quy_trinh"]:
       n+=1
     if len(outputs)>1:
        multi+=1
+       labels={}
+       for z in outputs:
+         label=z["dien_giai"]
+         labels[label]=labels.get(label,0)+1
+         if labels[label]>1:
+           z["dien_giai"]=label+" — phần đầu ra tiếp theo của cùng chức năng (CẦN XÁC NHẬN tách người/đầu ra)"
+           z["can_cu_phan_vai_2027"]="CHƯA ĐỦ CĂN CỨ PHÂN TÁCH, CHẶN GIAO VIỆC"
        assert len({x["dien_giai"] for x in outputs})==len(outputs),(q["id"],i,[x["dien_giai"] for x in outputs])
 # Đừng coi tình huống 3 người bệnh viện nhóm 2 là có sẵn Chuyên viên truyền thông
 # từ Nhóm 1; vai trò này chỉ hình thành sau khi phân bổ nhân sự hợp lệ.
