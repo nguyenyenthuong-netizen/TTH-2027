@@ -129,8 +129,12 @@ move_forms={
 for f in D["danh_muc_tai_lieu"]:
     id=f["ma"]
     if id in move_forms:
-        if f.get("nam_giu")!="cvt": raise ValueError("Form owner changed "+id)
-        f["nam_giu"]="cvt-2"
+        if f.get("nam_giu")=="cvt":
+            f["nam_giu"]="cvt-2"
+        elif f.get("nam_giu") in ("cvtt","qc","tk-nt","cvt-2"):
+            f["kiem_chuan_cvt2_1911"]="Giữ người vận hành chuyên môn hiện hữu làm chủ tài liệu; CVT Truyền thông – Thương hiệu và Tăng trưởng số kiểm chuẩn nghiệp vụ, không nhận quyền duyệt hoặc phát hành mặc định."
+        else:
+            raise ValueError("Unrecognized form owner "+id+"="+str(f.get("nam_giu")))
         for key in ("xay_dung","cap_nhat"):
             if key in f: f[key]=["cvt-2" if x=="cvt" else x for x in f[key]]
         if "co_che_quan_tri" in f:
@@ -155,7 +159,7 @@ for f in D["danh_muc_tai_lieu"]:
             field["loai_du_lieu"]="enum"
             field["quy_tac_kiem_tra"]="Chọn mã nhóm từ danh mục nhóm thương hiệu của vị trí người làm, không phải mã cá nhân"
 # Cross-check form control source when notes say changed.
-assert next(x for x in D["danh_muc_tai_lieu"] if x["ma"]=="BM-5")["nam_giu"]=="cvt-2"
+assert next(x for x in D["danh_muc_tai_lieu"] if x["ma"]=="BM-5")["nam_giu"] in ("cvt-2","qc","cvtt")
 assert next(f for f in D["danh_muc_tai_lieu"] if f["ma"]=="BM-21")["truong"][3]["loai_du_lieu"]=="text"
 
 # 4. Single lead for a step and specialist checks separate from deployment rights.
