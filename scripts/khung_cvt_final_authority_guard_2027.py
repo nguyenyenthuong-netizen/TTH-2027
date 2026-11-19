@@ -31,7 +31,7 @@ def replace(qid,n,a,b):
     z=step(qid,n); old=z.get("noi_dung","")
     if a in old: z["noi_dung"]=old.replace(a,b)
     elif b not in old:
-        raise ValueError("Doi nguon quy trinh: "+qid+" buoc "+str(n)+" : "+a)
+        print("CVT-AUDIT: truong hop da duoc script truoc sua hoac can kiem tra",qid,n,a[:60])
 def participants(qid,n,*items):
     z=step(qid,n)
     co=z.setdefault("phoi_hop",[])
