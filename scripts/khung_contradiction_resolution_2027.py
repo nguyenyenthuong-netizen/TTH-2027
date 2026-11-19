@@ -300,7 +300,7 @@ assert len(D["kpi_vi_tri"])==26
 # Render present-day staffing separately from the old chart 34 → 56, which is not reconciled.
 old_phase=scenario["buoc"]
 rows="".join("<tr><td>"+escape(x["buoc"].replace("Tham chiếu lịch sử – ",""))+
- "<td>"+str(x["tct"])+"</td><td>"+str(x["co_so"])+"</td><td>"+str(x["tong"])+
+ "</td><td>"+str(x["tct"])+"</td><td>"+str(x["co_so"])+"</td><td>"+str(x["tong"])+
  "</td></tr>" for x in old_phase)
 header='<div class="card" id="tth-dinh-bien-corrected-1911" style="border-left:5px solid #ED3237">'
 header+='<h3 style="color:#0837A1;margin-top:0">Định biên cơ cấu hiện tại: 36 suất (phương án trình, chưa ban hành quyết định sử dụng nhân sự)</h3>'
@@ -317,7 +317,9 @@ s=s.replace('<div class="stat"><b>56</b><span>khi đủ 10 bệnh viện, 02 ph�
 s=s.replace('<section class="doc-sec" data-title="21. Quy tắc định biên, ngưỡng và lộ trình bổ sung" id="m-21">',
  '<section class="doc-sec" data-title="21. Quy tắc định biên, ngưỡng và lộ trình bổ sung" id="m-21"><p style="padding:12px;border-left:4px solid #ED3237;background:#FFF9F9"><b>Lưu ý đối soát:</b> Các mốc 34 → 56 trong mục này thuộc phương án cũ; khi đổi sang 02 Chuyên viên trưởng và định biên hiện tại 36 suất, chưa thể coi các con số tiếp theo là lộ trình được chốt. Phải tính lại giờ thực đo theo từng chức danh/cơ sở và trình phê duyệt.</p>')
 # KPI extra data must remain read-only proposal, not a salary policy.
-s=s[:m.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("</script>","<\\/script>")+s[m.end(2):]
+m2=re.search(r'(<script id="csdl" type="application/json">)([\\s\\S]*?)(</script>)',s)
+if not m2: raise ValueError("JSON script marker removed during view repair")
+s=s[:m2.start(2)]+json.dumps(D,ensure_ascii=False,separators=(",",":")).replace("</script>","<\\/script>")+s[m2.end(2):]
 check=json.loads(re.search(r'<script id="csdl" type="application/json">([\s\S]*?)</script>',s).group(1))
 assert len(check["kpi_vi_tri"])==26
 assert check["danh_muc_tai_lieu"][0]["ma"]==D["danh_muc_tai_lieu"][0]["ma"]
