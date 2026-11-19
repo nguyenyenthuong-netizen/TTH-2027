@@ -36,6 +36,29 @@ targets = {
    align-self:start!important;
  }
 }
+/* Balanced organization columns: the detailed local teams need more width.
+   Keep CVT header spanning both right-hand columns without vertical gaps. */
+@media (min-width:1251px){
+ #v-org .org-cols{grid-template-columns:minmax(420px,1.55fr) minmax(280px,1fr) minmax(280px,1fr)!important;gap:12px!important}
+ #v-org .hosp-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (min-width:1000px) and (max-width:1250px){
+ #v-org .org-cols{grid-template-columns:minmax(360px,1.35fr) minmax(255px,1fr) minmax(255px,1fr)!important;gap:10px!important}
+ #v-org .hosp-grid{grid-template-columns:1fr!important}
+}
+@media (max-width:999px){
+ #v-org .org-cols{display:flex!important;flex-direction:column!important;gap:12px!important}
+ #v-org .org-cols>.col,#v-org .org-cols>.mkt-org-cvt-2{width:100%!important;min-width:0!important}
+}
+#v-org .org-cols>.col,#v-org .org-cols>.mkt-org-cvt-2{min-width:0!important}
+#v-org .col-b,#v-org .grp,#v-org .hosp,#v-org .pos{min-width:0!important}
+#v-org .pos-n{overflow-wrap:break-word!important;word-break:normal!important}
+/* Balanced data table columns: long descriptions receive real room.
+   Do not apply to specialized matrices with their own colgroup widths. */
+#main .tbl table{table-layout:auto!important}
+#main .tbl table th,#main .tbl table td{min-width:85px}
+#main .tbl table th:first-child,#main .tbl table td:first-child{min-width:155px}
+#main .tbl{max-width:100%;overflow-x:auto!important}
 /* Legible Vietnamese text, while retaining natural widths. */
 #main{font-family:Arial,"Segoe UI",Tahoma,sans-serif;font-size:16px}
 #main table.t,#main .tbl table{font-size:15px!important;line-height:1.5!important}
