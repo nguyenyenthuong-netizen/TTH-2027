@@ -8,6 +8,34 @@ import sys
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("_site")
 targets = {
     "khung-marketing": """
+/* Prevent the long left-hand Marketing cơ sở column from inflating
+   the first grid row and pushing both right-hand teams down. */
+@media (min-width:1000px){
+ #v-org .org-cols{
+   grid-template-rows: 76px auto!important;
+   align-content:start!important;
+ }
+ #v-org .org-cols>.mkt-org-cvt-2{
+   grid-column:2 / span 2!important;
+   grid-row:1!important;
+   align-self:start!important;
+ }
+ #v-org .org-cols>.col:nth-child(2){
+   grid-column:1!important;
+   grid-row:1 / span 2!important;
+   align-self:start!important;
+ }
+ #v-org .org-cols>.col:nth-child(3){
+   grid-column:2!important;
+   grid-row:2!important;
+   align-self:start!important;
+ }
+ #v-org .org-cols>.col:nth-child(4){
+   grid-column:3!important;
+   grid-row:2!important;
+   align-self:start!important;
+ }
+}
 /* Khung: permit wide tables to scroll instead of clipping their cells. */
 html,body{max-width:100%;overflow-x:hidden}
 main,section,article,.view,.card,.doc-sec{min-width:0}
