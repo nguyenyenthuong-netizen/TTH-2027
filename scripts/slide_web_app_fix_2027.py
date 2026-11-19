@@ -1189,8 +1189,8 @@ print("PASS WEBSITE BACK TO TOP 115/115: window capture precedes original docume
 # TTH_WEBSITE_COMPACT_SAFE_CTA_20261119
 # Fix overlap seen at 200% zoom/right-edge screenshot. Size each native CTA
 # to 42 desktop / 38 mobile (rather than 62/52), prevent hidden label text
-# from expanding over content on hover, and reserve a real right-side inset
-# in the page body only while the CTA is expanded. Keep original link targets,
+# from expanding over content on hover, and reserve an equal left/right inset
+# in the page body while the CTA is expanded (no off-centre layout). Keep original link targets,
 # colors, icon artwork, accessibility labels and the arrow-only toggle.
 site_path=root/"healthcare-website"/"index.html"
 site_html=site_path.read_text("utf-8")
@@ -1255,7 +1255,10 @@ html body .fab.tth-cta-fixed .tth-cta-toggle svg{
 /* Real safe area: text and interactive cards end to the left of expanded CTAs.
    Never change the native full-width header, footer or brand colors. */
 body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
+ /* Equal left/right inset keeps the 1320px content canvas centered. */
+ padding-left:max(70px,5.2vw)!important;
  padding-right:max(70px,5.2vw)!important;
+ margin-inline:auto!important;
  box-sizing:border-box!important
 }
 @media(max-width:640px){
@@ -1283,7 +1286,10 @@ body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
   font-size:12px!important
  }
  body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
-  padding-right:60px!important
+  /* Match both margins; keep an open CTA off text at 320–640px. */
+  padding-left:clamp(48px,14vw,58px)!important;
+  padding-right:clamp(48px,14vw,58px)!important;
+  margin-inline:auto!important
  }
 }
 </style>"""
@@ -1300,4 +1306,6 @@ encoded=(json.dumps(site_pages,ensure_ascii=False,separators=(",",":"))
  .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
 site_html=site_html[:catalog_m.start(2)]+encoded+site_html[catalog_m.end(2):]
 site_path.write_text(site_html,"utf-8")
-print("PASS WEBSITE COMPACT SAFE CTA 115/115, desktop 42px mobile 38px, arrow 29px, reserved text inset")
+assert 'padding-left:max(70px,5.2vw)' in compact_css and 'padding-right:max(70px,5.2vw)' in compact_css
+assert 'padding-left:clamp(48px,14vw,58px)' in compact_css and 'padding-right:clamp(48px,14vw,58px)' in compact_css
+print("PASS WEBSITE COMPACT SAFE CTA 115/115; balanced left/right margins, desktop 42px mobile 38px")
