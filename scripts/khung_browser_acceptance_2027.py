@@ -53,8 +53,12 @@ with sync_playwright() as p:
         if audited.count()!=11:issues.append(form+": hạng mục phải có 11 bảng đầu ra, thấy "+str(audited.count()))
         # Bước 6 gồm Biên tập + Thiết kế + Media = 3 đầu ra riêng.
         sixth=audited.nth(5)
+        before=sixth.evaluate("(e)=>e.open")
         sixth.locator("summary").click(timeout=8000)
-        if not sixth.get_attribute("open"):issues.append(form+": không mở được bảng đầu ra sản xuất")
+        after=sixth.evaluate("(e)=>e.open")
+        if before==after:issues.append(form+": nhấn chuột không đổi trạng thái bảng đầu ra")
+        if not after:sixth.locator("summary").click(timeout=8000)
+        if not sixth.evaluate("(e)=>e.open"):issues.append(form+": không mở được bảng đầu ra sản xuất")
         row_count=sixth.locator("tbody tr").count()
         if row_count!=3:issues.append(form+": bước 6 cần 3 đầu ra, thấy "+str(row_count))
         vals=sixth.locator("tbody tr").all_text_contents()
@@ -81,8 +85,13 @@ with sync_playwright() as p:
             assert n>0,form+" "+flow+" không có đối soát đầu ra"
             details=section.locator(".ops-output-audit").first
             details.scroll_into_view_if_needed(timeout=8000)
+            was_open=details.evaluate("(e)=>e.open")
             details.locator("summary").click(timeout=8000)
-            if not details.get_attribute("open"):
+            now_open=details.evaluate("(e)=>e.open")
+            if was_open==now_open:
+                issues.append(form+": nhấn không đổi trạng thái "+flow)
+            if not now_open:details.locator("summary").click(timeout=8000)
+            if not details.evaluate("(e)=>e.open"):
                 issues.append(form+": không thao tác được bảng đầu ra "+flow)
             if details.locator("tbody tr").count()<1:
                 issues.append(form+": không có dòng trách nhiệm trong "+flow)
@@ -107,7 +116,10 @@ with sync_playwright() as p:
             issues.append(form+": bảng 568 đầu ra đang bị ẩn khi vào mục 4.3")
         page.goto(url+"#vh-qt-hang-muc",wait_until="domcontentloaded",timeout=30000)
         page.wait_for_timeout(700)
-        page.locator("#vh-qt-hang-muc .ops-output-audit").nth(5).locator("summary").click()
+        shot_details=page.locator("#vh-qt-hang-muc .ops-output-audit").nth(5)
+        if not shot_details.evaluate("(e)=>e.open"):
+            shot_details.locator("summary").click()
+        assert shot_details.evaluate("(e)=>e.open")
         screenshot=out/("khung_"+form+"_dau_ra.jpg")
         page.locator("#vh-qt-hang-muc .ops-output-audit").nth(5).screenshot(
             path=str(screenshot),type="jpeg",quality=48,animations="disabled",timeout=20000
