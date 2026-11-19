@@ -11,6 +11,7 @@ on:
       - 'scripts/final_pages_guard.py'
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/site_consistency_audit.py'
+      - 'scripts/inspect_problem_ui.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
@@ -95,6 +96,8 @@ jobs:
         run: python3 scripts/crm_sidebar_cleanup.py _site
       - name: Ra soat thong nhat khung slide CRM va hien thi
         run: python3 scripts/site_consistency_audit.py _site
+      - name: Kiem tra cac UI chua khop
+        run: python3 scripts/inspect_problem_ui.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
