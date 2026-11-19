@@ -34,7 +34,7 @@ page=(
 '<p>Hai tuyến Chuyên viên trưởng · Ba tổ chuyên môn tại Tổng công ty · Một tuyến quản lý Marketing cơ sở</p>'
 +official_logo+
 '</header>'
-'<main class="content tth-org-tree-body">'
+'<main class="content tth-org-tree-body" tabindex="0" aria-label="Sơ đồ tổ chức Marketing; cuộn để xem đầy đủ khi màn hình nhỏ">'
 ' <div class="tth-tree-root">'
 '   <strong>TRƯỞNG PHÒNG MARKETING TỔNG CÔNG TY</strong>'
 '   <span>Điều hành toàn phòng · Quản lý hai Chuyên viên trưởng · Phê duyệt theo phân cấp</span>'
@@ -105,11 +105,12 @@ css=r"""<style id="tth-org-tree-slide-after8-style">
 }
 .slide.tth-organization-tree-after-8 .tth-org-tree-body{
  position:absolute!important;top:154px!important;left:36px!important;
- right:36px!important;bottom:40px!important;overflow:hidden!important;
+ right:36px!important;bottom:40px!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;
  display:flex!important;flex-direction:column!important;gap:0!important;
  padding:7px 0 0!important;box-sizing:border-box!important
 }
 .tth-org-tree-body *{box-sizing:border-box}
+.tth-organization-tree-after-8 .tth-org-tree-body:focus-visible{outline:2px solid #0837A1;outline-offset:-2px}\n.tth-organization-tree-after-8 .tth-tree-branches{flex-shrink:0!important;min-height:285px!important}\n.tth-organization-tree-after-8 .tth-tree-note{flex-shrink:0!important}\n
 .tth-tree-root{
  display:flex;flex-direction:column;align-items:center;justify-content:center;
  gap:4px;flex:0 0 68px;align-self:center;
