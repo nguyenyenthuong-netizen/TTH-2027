@@ -153,6 +153,33 @@ elif mode=="post":
     )
     d=get_data()
     v=check_shape(d)
+    # CNNV thêm mới các trường sau bước chuẩn hóa tên; đổi đúng theo
+    # từng tuyến thay vì phép thay toàn cục có thể cấp nhầm quyền.
+    for node in (
+        v["bt-ac"],
+        v["bt-ac"].get("cnnv_2027",{}),
+    ):
+        for key in ("phan_dinh_ban_giao_dau_vao","dau_vao_va_ban_giao"):
+            if isinstance(node.get(key),str):
+                node[key]=node[key].replace("Chuyên viên trưởng",ND)
+    for x in d.get("cnnv_kiem_soat_nghiep_vu_2027",[]):
+        if isinstance(x.get("phe_duyet"),str):
+            x["phe_duyet"]=x["phe_duyet"].replace(
+                "không duyệt mặc nhiên bởi Chuyên viên trưởng",
+                "không mặc nhiên giao quyền phê duyệt cho "+ND+" hoặc "+TT
+            )
+    ng=d.get("cnnv_nguyen_tac_2027",{})
+    for key in ("to_truong_noi_dung","ba_tang_tai","kpi"):
+        if isinstance(ng.get(key),str):
+            if key=="to_truong_noi_dung":
+                ng[key]=ng[key].replace("Chuyên viên trưởng",ND)
+            else:
+                ng[key]=ng[key].replace(
+                    "Chuyên viên trưởng",ND+" và "+TT
+                )
+    put_data(d)
+    d=get_data()
+    v=check_shape(d)
     assert BAD not in src
     # Tránh tái nhập mã/nhãn chung qua CNNV hoặc các bước dựng cuối.
     bad=re.compile(r'Chuyên viên trưởng(?!\s+(?:Nội dung|Truyền thông))',re.I)
