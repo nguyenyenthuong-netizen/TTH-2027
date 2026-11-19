@@ -199,9 +199,15 @@ s=s[:m.start(2)]+json.dumps(d,ensure_ascii=False,separators=(",",":")).replace("
 
 # 6. Hiển thị ngay trong từng bước quy trình, không để quy tắc mới thành
 # dữ liệu ẩn. Giữ nguyên nút, thanh, thiết kế, màu nhận diện đã chốt.
-old="'<p>'+tx(b.noi_dung)+'</p><div class=\"ops-meta\">'"
-new=(
- "'<p>'+tx(b.noi_dung)+'</p>'"
+pos=s.find("tx(b.noi_dung)")
+if pos<0:
+    raise RuntimeError("Không tìm thấy trình dựng bước quy trình để chèn phân quyền")
+end_p=s.find("</p>",pos)
+if end_p<0 or end_p-pos>500:
+    raise RuntimeError("Không tìm thấy thẻ kết thúc mô tả bước quy trình")
+# Đoạn '</p><div ...' vốn nằm trong cùng một literal của JS;
+# chia literal đúng vị trí để thêm nội dung có điều kiện.
+addon=(
  "+(b.phan_cong_thuc_thi_2027?"
  "'<p class=\"ops-resolved-owner\" style=\"border-left:3px solid #0837A1;"
  "padding:8px 10px;background:#f5f9ff;margin:7px 0;overflow-wrap:anywhere\">"
@@ -210,11 +216,8 @@ new=(
  "'<p style=\"border-left:3px solid #ED3237;padding:8px 10px;"
  "background:#fff9f9;margin:7px 0;overflow-wrap:anywhere\">"
  "<b>Chặn tự kiểm:</b> '+tx(b.kiem_soat_khong_tu_kiem_2027)+'</p>':'')"
- "+'<div class=\"ops-meta\">'"
 )
-if old not in s:
-    raise RuntimeError("Không tìm được mẫu hiển thị từng bước quy trình; ngừng để tránh xuất bản dữ liệu ẩn")
-s=s.replace(old,new,1)
+s=s[:end_p]+"</p>'"+addon+"+'"+s[end_p+len("</p>"):]
 
 # Thông tin cơ cấu/thẩm quyền có thể xem tại mục CNNV hiện hữu, không tạo menu mới.
 mark='<section class="doc-sec sub" data-title="4.3. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
