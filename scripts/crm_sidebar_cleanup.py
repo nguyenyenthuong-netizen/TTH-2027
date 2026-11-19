@@ -165,6 +165,80 @@ brand_js=r"""<script id="tth-crm-brand-sidebar-final-1911">
 s=s.replace("</head>",brand_css+"</head>",1).replace("</body>",brand_js+"</body>",1)
 assert 'tth-crm-brand-sidebar-final-1911' in s
 
+
+# Final legibility/layout layer: restore natural card heights; never squeeze all
+# four workflow phases into a fixed viewport, and remove redundant subtitle.
+legible_css=r"""<style id="tth-crm-readable-nonoverlap-1911">
+/* 1. Sidebar brand: original logo, project name only (no TTH Group subtitle). */
+.layout>aside .identity{align-items:flex-start!important;min-width:0!important}
+.layout>aside .identity strong{font-size:18px!important;line-height:1.38!important;letter-spacing:0!important;white-space:normal!important;word-break:normal!important;color:#082E6A!important}
+.layout>aside .identity small{display:none!important}
+.layout>aside .navtitle{color:#304E78!important}
+.layout>aside .navbtn{color:#123968!important;background:transparent!important;line-height:1.4!important;letter-spacing:0!important;word-break:normal!important;white-space:normal!important}
+.layout>aside .navbtn span,.layout>aside .navbtn .navtxt{color:inherit!important;line-height:inherit!important}
+.layout>aside .navbtn.active{background:#0837A1!important;color:#fff!important}
+.layout>aside .navbtn.active span,.layout>aside .navbtn.active .navtxt{color:#fff!important}
+.layout>aside .asideFoot{color:#334F73!important;line-height:1.55!important}
+.layout>aside .asideFoot strong{color:#082E6A!important}
+/* 2. Workflow text blocks: readable contrast and natural intrinsic height. */
+#s3 .stepnum{font-size:13px!important;color:#CF2631!important;letter-spacing:.08em!important}
+#s3 .slideHeader h1{color:#112E64!important;line-height:1.25!important;letter-spacing:-.012em!important}
+#s3 .slideHeader h1 em{color:#0837A1!important}
+#s3 .slideHeader p{font-size:15px!important;line-height:1.55!important;color:#334E72!important}
+#s3 .diagram-stage{overflow:visible!important;max-height:none!important;height:auto!important}
+#s3 .diagramWrap{max-height:none!important;height:auto!important;overflow:visible!important;min-height:0!important}
+#s3 .flow-chart-scroll{max-height:none!important;height:auto!important;overflow-x:auto!important;overflow-y:visible!important}
+#s3 .flow-svg-host{height:auto!important;min-height:0!important;max-height:none!important}
+#s3 .crm-overview-top{font-size:14px!important;line-height:1.5!important;color:#365477!important;flex-wrap:wrap!important;padding:10px 12px!important;gap:8px!important}
+#s3 .crm-overview-top b{color:#082F75!important}
+#s3 .crm-compact-grid{width:100%!important;max-width:100%!important;min-width:0!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important}
+#s3 .crm-phase{min-width:0!important;max-width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important}
+#s3 .crm-phase:after{display:none!important}
+#s3 .crm-phase-head{display:flex!important;align-items:center!important;gap:10px!important;min-height:56px!important;height:auto!important;max-height:none!important;padding:12px 12px!important;font-size:15px!important;line-height:1.4!important;font-weight:800!important;color:#102F6C!important;white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;background:#E5EEFC!important}
+#s3 .crm-phase-body{display:flex!important;flex-direction:column!important;gap:10px!important;padding:12px!important;min-height:0!important;height:auto!important;max-height:none!important;overflow:visible!important}
+#s3 button.crm-flow-node{display:grid!important;grid-template-columns:32px minmax(0,1fr) 18px!important;align-items:start!important;gap:9px!important;padding:12px 10px!important;min-height:91px!important;height:auto!important;max-height:none!important;width:100%!important;min-width:0!important;overflow:visible!important;white-space:normal!important;word-break:normal!important}
+#s3 .crm-node-copy{display:flex!important;flex-direction:column!important;gap:5px!important;min-width:0!important;height:auto!important;overflow:visible!important;overflow-wrap:normal!important}
+#s3 .crm-node-copy strong{display:block!important;color:#112F65!important;font-size:16px!important;line-height:1.38!important;font-weight:800!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}
+#s3 .crm-node-copy small{display:block!important;color:#395572!important;font-size:14px!important;line-height:1.4!important;font-weight:550!important;white-space:normal!important;overflow-wrap:break-word!important}
+#s3 .crm-node-routes{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:4px 7px!important;padding-top:5px!important;line-height:1.35!important}
+#s3 .crm-route{color:#073B8E!important;font-size:13px!important;font-weight:750!important;line-height:1.35!important;white-space:normal!important}
+#s3 .crm-stepnum{font-size:15px!important;line-height:1.3!important}
+#s3 .crm-kindmark{color:#275A9D!important;font-size:15px!important}
+#s3 .diagram-toolbar{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;overflow:visible!important}
+#s3 .flowBar{min-width:0!important;max-width:100%!important;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin!important;gap:8px!important}
+#s3 .flowbtn{font-size:14px!important;line-height:1.3!important;min-height:43px!important;padding:10px 13px!important;flex:0 0 auto!important;background:#fff!important;border-color:#9AB6DE!important;color:#17457E!important;white-space:nowrap!important}
+#s3 .flowbtn.active{background:#0837A1!important;color:#fff!important;border-color:#0837A1!important}
+#s3 .flowFooter,#s3 .flowFootNote{color:#355474!important;line-height:1.45!important}
+#s3 .crm-flow-help-button{color:#08377A!important;background:#fff!important;border:1px solid #A7BFE0!important}
+/* 3. Responsive: two phases before text becomes too narrow; single on mobile. */
+@media(max-width:1599px){#s3 .crm-compact-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:800px){#s3 .crm-compact-grid{grid-template-columns:1fr!important}}
+@media(max-width:730px){
+ .layout>aside .identity strong{font-size:15px!important}
+ #s3 .slideHeader h1{font-size:clamp(23px,5vw,31px)!important;line-height:1.3!important}
+ #s3 .crm-phase-body{padding:10px!important}
+ #s3 .crm-node-copy strong{font-size:16px!important}
+ #s3 .crm-node-copy small{font-size:14px!important}
+}
+</style>"""
+legible_js=r"""<script id="tth-crm-readable-nonoverlap-1911">
+(function(){
+ function cleanBrand(){
+   var identity=document.querySelector(".layout>aside .identity");
+   if(!identity)return;
+   var small=identity.querySelector("small");
+   if(small)small.remove();
+   var title=identity.querySelector("strong");
+   if(title)title.textContent="ĐỀ ÁN CRM ĐA KÊNH";
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",cleanBrand);
+ else cleanBrand();
+ window.addEventListener("pageshow",cleanBrand);
+})();
+</script>"""
+s=s.replace("</head>",legible_css+"</head>",1).replace("</body>",legible_js+"</body>",1)
+assert 'tth-crm-readable-nonoverlap-1911' in s
+
 p.write_text(s,encoding="utf-8")
 assert marker in s and "tth-crm-retired-topbar" in s
 print("PASS CRM sidebar cleanup injected; HTML bytes:",p.stat().st_size)
