@@ -159,6 +159,10 @@ for q in D["quy_trinh"]:
           "quyen_duyet_cuoi_01":approval,
           "trang_thai_duyet":status,
           "cach_hach_toan_tai_01":load_rule(code),
+          "cach_hach_toan_ngan_2027":("Ghi một lần giờ thực tế cho đúng mã việc, đầu ra, cá nhân, loại giờ."+
+            (" Tách giờ Tổ trưởng kiêm nhiệm." if code in ("qlth-bc","qlsps","bt-ac") else "")+
+            (" Không cộng giờ sản xuất của tổ vào giờ quản trị." if code in ("cvt","cvt-2") else "")+
+            " Chưa đo: để CHƯA XÁC NHẬN."),
           "ma_viec_duy_nhat":"Phải ghép với mã Hạng mục/Hoạt động, nhóm thương hiệu, cơ sở và cá nhân thực tế trước khi thực hiện",
           "can_xac_nhan_y_te":bool(b.get("can_nguoi_xac_nhan_chuyen_mon")),
           "ngan_sach":"Nếu phát sinh chi: duyệt chi độc lập theo ma trận tài chính, KHÔNG gộp với duyệt phát hành",
@@ -204,18 +208,22 @@ idx=s.find("+\'<div class=\"ops-meta\">")
 if idx<0:raise RuntimeError("Không tìm thấy điểm chèn giao diện đối soát đầu ra")
 fragment=(
  "+(b.doi_soat_tung_dau_ra_2027?"
- "'<details class=\"ops-output-audit\" style=\"margin:9px 0;max-width:100%;overflow-wrap:anywhere\">"
- "<summary style=\"cursor:pointer;color:#0837A1;font-weight:700\">"
- "Đối soát '+b.doi_soat_tung_dau_ra_2027.length+' đầu ra: chủ trì – tuyến quản lý – duyệt – tải</summary>"
- "<div style=\"overflow-x:auto;max-width:100%\"><table class=\"t\" style=\"min-width:740px;table-layout:auto\">"
- "<thead><tr><th>Mã/đầu ra</th><th>Chịu trách nhiệm chính</th>"
- "<th>Tuyến quản lý</th><th>Phê duyệt/bàn giao</th><th>Hạch toán giờ</th></tr></thead><tbody>'"
+ "'<details class=\"ops-output-audit\" style=\"margin:9px 0;max-width:100%;"
+ "width:100%;overflow-wrap:anywhere;border:1px solid #d3e1f1;border-radius:8px;"
+ "background:#fff;padding:8px 10px\">"
+ "<summary style=\"cursor:pointer;color:#0837A1;font-weight:700;font-size:14px\">"
+ "Đối soát '+b.doi_soat_tung_dau_ra_2027.length+' đầu ra: chủ trì – tuyến quản lý – duyệt – tải</summary>'"
  "+b.doi_soat_tung_dau_ra_2027.map(function(a){return"
- "'<tr><td><b>'+tx(a.ma_dau_ra)+'</b><p>'+tx(a.dien_giai)+'</p></td>"
- "<td>'+tx(a.chu_tri_01)+'</td><td>'+tx(a.tuyen_quan_ly_01)+'</td>"
- "<td>'+tx(a.quyen_duyet_cuoi_01)+'</td>"
- "<td>'+tx(a.cach_hach_toan_tai_01)+'</td></tr>'}).join('')"
- "+'</tbody></table></div></details>':'')"
+ "'<div class=\"ops-output-card\" style=\"min-width:0;max-width:100%;padding:10px 0;"
+ "border-top:1px solid #d3e1f1;font-size:14px;line-height:1.5;overflow-wrap:anywhere\">"
+ "<b style=\"color:#0837A1\">'+tx(a.ma_dau_ra)+'</b>"
+ "<p><b>Đầu ra:</b> '+tx(a.dien_giai)+'</p>"
+ "<p><b>Chủ trì duy nhất:</b> '+tx(a.chu_tri_01)+'</p>"
+ "<p><b>Tuyến quản lý:</b> '+tx(a.tuyen_quan_ly_01)+'</p>"
+ "<p><b>Quyền duyệt / bàn giao:</b> '+tx(a.quyen_duyet_cuoi_01)+'</p>"
+ "<p><b>Hạch toán tải:</b> '+tx(a.cach_hach_toan_ngan_2027)+'</p>"
+ "</div>'}).join('')"
+ "+'</details>':'')"
 )
 s=s[:idx]+fragment+s[idx:]
 
@@ -246,6 +254,29 @@ for panel_id in ("tth-operations-integrity-2027","tth-output-contracts-2027"):
     h3=s.find("</h3>",location)
     if h3<0 or h3-location>1200:raise RuntimeError("Không tìm thấy đề mục 4.3")
     s=s[:h3+5]+block+s[h3+5:]
+
+
+# Khi thay đổi liên kết #mục trong cùng một trang, bật đúng tab tương ứng.
+# Nếu không, nhảy từ VH.5 về mục 4.3 làm nội dung ẩn dù ID vẫn tồn tại.
+script=(
+'<script id="tth-hash-view-consistency-2027">(function(){'
+'function syncHash(){'
+'var id=decodeURIComponent((location.hash||"").slice(1));if(!id)return;'
+'var el=document.getElementById(id);if(!el)return;'
+'var v=el.closest(".view");'
+'if(v&&!v.classList.contains("on")){'
+'var tab=document.querySelector(".tab[data-target=\""+v.dataset.view+"\"]");'
+'if(tab)tab.click();'
+'}'
+'if(v&&v.classList.contains("on")){setTimeout(function(){'
+'el.scrollIntoView({block:"start",behavior:"auto"});},70);}'
+'}'
+'window.addEventListener("hashchange",syncHash);'
+'})();</script>'
+)
+if 'id="tth-hash-view-consistency-2027"' not in s:
+    if "</body>" not in s:raise RuntimeError("Mất body")
+    s=s.replace("</body>",script+"</body>",1)
 
 check=json.loads(RX.search(s).group(2))
 assert sum(len(b["doi_soat_tung_dau_ra_2027"]) for q in check["quy_trinh"] for b in q["buoc"])==output_count
