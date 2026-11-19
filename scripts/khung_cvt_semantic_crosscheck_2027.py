@@ -84,9 +84,9 @@ assert stats["buoc_chu_tri_trung_ma_phoi_hop"]==14
 assert stats["buoc_chu_tri_cvt"]>=1 and stats["buoc_chu_tri_cvt-2"]>=1
 assert stats["buoc_co_ca_hai_cvt"]<=407
 # Một Trưởng nhóm chỉ có một người quản lý trực tiếp trong danh sách, theo thời điểm bàn giao.
-if "CHƯA được bàn giao hợp lệ" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra",""):
+if "Mọi thay đổi tuyến quản lý chỉ có hiệu lực khi có quyết định" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra","") or "không tự chuyển sang Quản lý mạng lưới theo vùng" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra",""):
  errors.append({"ma":"QL_CO_SO_2_TUYEN","vi_tri":"cvt","noi_dung":"MTCV thiếu điều kiện bàn giao"})
-if "không đánh giá trực tiếp trùng" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra",""):
+if "đánh giá nghiệp vụ các Trưởng nhóm Marketing cơ sở theo một tuyến" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra","") or "không tạo tuyến chỉ huy nghiệp vụ thứ hai" not in R["cvt"].get("phan_dinh_chu_tri_dau_ra",""):
  errors.append({"ma":"QL_CO_SO_2_DANH_GIA","vi_tri":"cvt"})
 if "Một Trưởng nhóm chỉ có một" not in R["qlml"].get("muc_dich",""):
  errors.append({"ma":"QLML_KHONG_KHOA_1_TUYEN","vi_tri":"qlml"})
