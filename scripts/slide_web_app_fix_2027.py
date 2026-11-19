@@ -196,3 +196,94 @@ for name in ("healthcare-app","healthcare-website"):
     if '<iframe' not in text.lower():
         print("PROBE-WARNING",name,"no literal iframe found; review dynamic DOM before changes")
 print("FIX-PASS slide/web/app audit completed")
+
+
+# 19/11/2026: Final slide corrections. Target the deployed 27-slide override
+# after assembly, so the full slide HTML, logos and other content stay intact.
+s=slide.read_text("utf-8")
+if s.count('<section class="slide')!=27:
+    raise AssertionError("Expected 27 slides before final corrections")
+old_status='<div class="minor future"><b>ĐANG NGHIÊN CỨU</b><p>TTH Đức Thọ · TTH Quốc tế Huế</p></div>'
+new_status='<div class="minor future"><b>ĐANG XÂY DỰNG</b><p>TTH Đức Thọ · TTH Quốc tế Huế</p></div>'
+if old_status not in s: raise AssertionError("Expected hospital construction-status text absent")
+s=s.replace(old_status,new_status,1)
+old_brands='Nguyên Phúc · Thái Thượng Hoàng · các thương hiệu chuyên khoa, Winmed, Tuệ Đức Thiện...'
+new_brands='Bệnh viện Y học cổ truyền Nguyên Phúc · Bệnh viện Răng Hàm Mặt và Phẫu thuật Tạo hình Thẩm mỹ Thái Thượng Hoàng · các thương hiệu chuyên khoa khác, Winmed, Tuệ Đức Thiện...'
+if old_brands not in s:raise AssertionError("Expected group 2 names absent")
+s=s.replace(old_brands,new_brands,1)
+# Explicitly identify the two management lines on the role-boundary slide:
+# the second chief coordinates local communications professionally, but
+# does not directly manage local Marketing staff.
+chief_line="""<div class="tth-chief-strip" aria-label="Hai tuyến Chuyên viên trưởng">
+<div class="tth-chief tth-chief-1"><strong>Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở</strong><span>Quản lý trực tiếp Tổ Nội dung và Sáng tạo, cùng tuyến Marketing cơ sở thuộc cả hai nhóm.</span></div>
+<div class="tth-chief tth-chief-2"><strong>Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số</strong><span>Quản lý các tổ chuyên môn tương ứng tại Tổng công ty; phối hợp nghiệp vụ, không quản lý trực tiếp nhân sự Marketing cơ sở.</span></div>
+</div>"""
+m=re.search(r'<section class="slide" data-index="7">.*?</section>',s,flags=re.S)
+if not m:raise AssertionError("Role-boundary slide not found")
+section=m.group(0)
+needle='<div class="cols cols3"><article class="card left-blue"><h3>QUẢN LÝ THƯƠNG HIỆU'
+if needle not in section:raise AssertionError("Expected 3-card content on role-boundary slide absent")
+section=section.replace(needle,chief_line+'<div class="cols cols3 tth-card-row"><article class="card left-blue"><h3>QUẢN LÝ THƯƠNG HIỆU',1)
+section=section.replace('Ba vị trí có chức năng, phạm vi thẩm quyền và đầu ra riêng.','Hai Chuyên viên trưởng theo tuyến; ba vị trí chuyên môn có nhiệm vụ, thẩm quyền và đầu ra riêng.',1)
+for a,b in (
+ ('Duyệt toàn bộ sản phẩm hoặc chi phí.','Không tự động duyệt mọi sản phẩm hay chi phí; thực hiện theo phân quyền từng hạng mục.'),
+ ('Phát ngôn, ký hợp đồng hoặc trực tiếp ra lệnh nhân viên cơ sở.','Không tự ý phát ngôn, ký hợp đồng hoặc giao việc vượt tuyến quản lý nhân sự cơ sở.'),
+ ('Duyệt phát hành, duyệt chi hay quản lý kênh số toàn hệ thống.','Không tự duyệt phát hành, chi phí hay quản lý kênh số toàn hệ thống.'),
+):
+    if a not in section:raise AssertionError("Role-boundary disclaimer not found: "+a)
+    section=section.replace(a,b,1)
+s=s[:m.start()]+section+s[m.end():]
+# The old full-width bottom bar stays hidden (explicit user requirement).
+# Add two functional controls within the existing side-gutter arrow cluster.
+css=r"""<style id="tth-slide-chief-line-and-nav-2027">
+.slide[data-index="7"] .content:has(.tth-chief-strip){display:flex!important;flex-direction:column!important;gap:12px!important;overflow:hidden!important}
+.slide[data-index="7"] .tth-chief-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;flex:0 0 auto;min-width:0}
+.slide[data-index="7"] .tth-chief{border:1px solid #cbd9e9;border-left:6px solid #0837a1;border-radius:11px;background:#fff;padding:10px 14px;min-width:0;min-height:104px;display:flex;flex-direction:column;gap:6px}
+.slide[data-index="7"] .tth-chief-2{border-left-color:#ed3237}
+.slide[data-index="7"] .tth-chief strong{font-size:16px;line-height:1.18;color:#0837a1;font-weight:800}
+.slide[data-index="7"] .tth-chief span{font-size:14px;line-height:1.27;color:#203750}
+.slide[data-index="7"] .tth-card-row{flex:1 1 auto!important;min-height:0!important;height:auto!important}
+.slide[data-index="7"] .tth-card-row .bodycopy{font-size:15px!important}
+.slide[data-index="7"] .tth-card-row .pt b{font-size:16px!important}
+.slide[data-index="7"] .tth-card-row .pt span{font-size:15px!important;line-height:1.3!important}
+.slide[data-index="4"] .card .bodycopy p{overflow-wrap:break-word}
+.tth-floating-arrows .tth-extra-control{display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;gap:1px!important;color:#fff!important;background:#0837a1!important;cursor:pointer!important;pointer-events:auto!important;border-radius:10px!important;min-height:45px!important;min-width:44px!important;padding:4px!important}
+.tth-floating-arrows .tth-extra-control svg{width:19px;height:19px}
+.tth-floating-arrows .tth-extra-control small{font:700 9px/1.1 Arial,sans-serif;letter-spacing:0;white-space:nowrap}
+.tth-floating-arrows .tth-extra-control:focus-visible{outline:3px solid #ed3237!important;outline-offset:2px!important}
+body #index.index.open{display:block!important;visibility:visible!important;position:fixed!important;left:66px!important;right:auto!important;top:10px!important;bottom:10px!important;width:min(430px,calc(100vw - 78px))!important;height:auto!important;padding:22px!important;background:#f7f9fd!important;box-shadow:0 8px 28px #10335440!important;border:1px solid #cbd9e9!important;z-index:1500!important;overflow:auto!important}
+body #index.index.open .index-list{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+body #index.index.open .index-list button{display:block!important;width:100%!important;text-align:left!important;padding:9px 12px!important;font-size:13px!important;line-height:1.35!important}
+@media(max-width:849px){
+ body #index.index.open{left:10px!important;right:10px!important;top:10px!important;bottom:72px!important;width:auto!important}
+ .tth-floating-arrows .tth-extra-control{min-width:44px!important}
+}
+</style>"""
+navjs=r"""<script id="tth-slide-chief-line-and-nav-2027">
+(function(){
+ "use strict";
+ const nav=document.querySelector('.tth-floating-arrows');
+ if(!nav)return;
+ function button(label,subtitle,path){
+   const b=document.createElement('button');
+   b.type='button';b.className='tth-floating-arrow tth-extra-control';
+   b.setAttribute('aria-label',label);b.title=label;
+   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg><small>'+subtitle+'</small>';
+   return b;
+ }
+ const list=button('Danh sách 27 slide','Danh sách','<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>');
+ const full=button('Toàn màn hình','Toàn màn hình','<path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3M21 16v3a2 2 0 0 1-2 2h-3"/>');
+ nav.insertBefore(full,nav.firstChild);
+ nav.insertBefore(list,full);
+ list.addEventListener('click',()=>{document.getElementById('overview')?.click();});
+ full.addEventListener('click',()=>{document.getElementById('fullscreen')?.click();});
+ document.addEventListener('fullscreenchange',()=>{full.setAttribute('aria-pressed',String(!!document.fullscreenElement));});
+})();
+</script>"""
+if "tth-slide-chief-line-and-nav-2027" in s:raise AssertionError("Final controls already present unexpectedly")
+if "</head>" not in s or "</body>" not in s:raise AssertionError("Missing slide boundaries")
+s=s.replace("</head>",css+"</head>",1).replace("</body>",navjs+"</body>",1)
+if s.count('<section class="slide')!=27 or 'tth-chief-strip' not in s or 'ĐANG XÂY DỰNG' not in s:
+    raise AssertionError("Post-update slide QA failed")
+slide.write_text(s,"utf-8")
+print("PASS-SLIDE chief positions, three role disclaimers, correct labels, menu and fullscreen; slides=27")
