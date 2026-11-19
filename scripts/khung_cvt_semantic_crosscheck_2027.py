@@ -138,12 +138,18 @@ for qid,i,b in all_steps:
 stats["dau_ra_cho_ho_so"]=sum(
  z.get("trang_thai_nghiem_thu_2027")=="CHƯA NGHIỆM THU HỒ SƠ THỰC TẾ"
  for _,_,b in all_steps for z in b.get("doi_soat_tung_dau_ra_2027",[]))
+cross=D.get("doi_soat_25_buoc_lien_tuyen_hai_cvt_2027",{})
+assert len(cross.get("danh_sach",[]))==25
+assert cross.get("can_chot_nguoi")==7
+semantic=D.get("kiem_toan_568_dau_ra_chuyen_biet_2027",{})
+assert semantic.get("tong")==568 and semantic.get("can_xac_nhan")==512
+assert s.count('id="tth-cvt-cross-25-review-2027"')==1
 assert stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]==95
-assert stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]==5
+assert stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]==7
 warnings.append({"ma":"PHAN_VAI_TRO_THEO_NHOM","so_buoc":95,
   "ghi_chu":"Chọn nhóm, cơ sở, chức danh và mã nhân sự thật trước khi giao"})
-warnings.append({"ma":"CHOT_CHUYEN_VIEN_TRUONG_THEO_NGUOI_NHAN_VIEC","so_buoc":5,
-  "ghi_chu":"Năm bước tiếp nhận nhân sự mới phải chọn một trong hai tuyến CVT theo tổ/vị trí, không mặc định Nội dung"})
+warnings.append({"ma":"CHOT_CHUYEN_VIEN_TRUONG_THEO_NGUOI_NHAN_VIEC_VA_BAN_GIAO","so_buoc":7,
+  "ghi_chu":"Năm bước tiếp nhận nhân sự và hai bước vắng mặt/nghỉ việc phải chọn đúng tuyến theo mã nhân sự, không mặc định Nội dung"})
 if stats["buoc_kiem_tra_nguoi_doc_lap"]:
  warnings.append({"ma":"CHUA_XAC_NHAN_HAI_NGUOI_KHAC_NHAU","so_buoc":stats["buoc_kiem_tra_nguoi_doc_lap"]})
 if stats["dau_ra_cho_ho_so"]:
