@@ -135,7 +135,25 @@ for shell, tag, event in (
    if(!item)return;
    var raw=item.getAttribute("href")||item.getAttribute("data-href")||item.getAttribute("data-route");
    var destination=linkTarget(raw);
-   if(!destination)return;
+   if(!destination){
+     // Never send users to an absent local .html page (404 or blank iframe).
+     // Keep external links, in-page anchors, phone and email actions intact.
+     if(typeof raw==="string" && !/^(?:https?:|\\/\\/|mailto:|tel:|sms:|data:|blob:|javascript:|#)/i.test(raw.trim()) &&
+        /\\.html(?:[?#]|$)/i.test(raw.trim())){
+       ev.preventDefault();ev.stopImmediatePropagation();
+       var note=document.getElementById("tth-missing-page-notice");
+       if(!note){
+         note=document.createElement("div");note.id="tth-missing-page-notice";
+         note.setAttribute("role","status");note.setAttribute("aria-live","polite");
+         note.style.cssText="position:fixed;bottom:18px;left:12px;right:12px;max-width:480px;margin:auto;padding:13px 17px;background:#fff;color:#0837A1;border:2px solid #ED3237;border-radius:10px;box-shadow:0 8px 30px #001b4140;z-index:2147483647;font:600 14px/1.45 Arial,sans-serif";
+         document.body.appendChild(note);
+       }
+       note.textContent="Trang này chưa có trong bản giới thiệu. Vui lòng chọn mục khác.";
+       clearTimeout(window.__tthMissingPageTimer);
+       window.__tthMissingPageTimer=setTimeout(function(){note.remove();},5000);
+     }
+     return;
+   }
    ev.preventDefault();
    ev.stopImmediatePropagation();
    window.parent.postMessage({type:"__TTH_NAV_EVENT__",target:destination},"*");
