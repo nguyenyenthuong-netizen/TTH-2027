@@ -31,6 +31,7 @@ on:
       - 'scripts/khung_cvt_examples_2027.py'
       - 'scripts/khung_final_conflict_gate_2027.py'
       - 'scripts/khung_cvt_semantic_crosscheck_2027.py'
+      - 'scripts/khung_cvt_25_boundary_lock_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'scripts/slide_tree_after8_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
@@ -183,6 +184,10 @@ jobs:
         run: python3 scripts/khung_final_conflict_gate_2027.py _site
       - name: Kiem tra lai JavaScript sau khi khoa xung dot
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
+      - name: Kiem tra cu phap khoa 25 buoc va 568 dau ra chuyen biet
+        run: python3 -m py_compile scripts/khung_cvt_25_boundary_lock_2027.py
+      - name: Phan dinh 25 buoc hai CVT va danh muc 568 dau ra can chot chung tu
+        run: python3 scripts/khung_cvt_25_boundary_lock_2027.py _site
       - name: Kiem toan cheo chuc nang luong van hanh va 568 dau ra hai Chuyen vien truong
         run: python3 scripts/khung_cvt_semantic_crosscheck_2027.py _site
       - name: Cai thu vien kiem tra giao dien bang Chrome
