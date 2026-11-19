@@ -180,7 +180,7 @@ d["kiem_soat_nguoi_ky_kiem_2027"]={
  "phat_hanh":"Thiếu một trường phê duyệt bắt buộc theo loại việc thì trạng thái phải là CHƯA ĐỦ ĐIỀU KIỆN PHÁT HÀNH.",
  "tu_kiem":"Cấm người làm tự kiểm chính sản phẩm khi quy định cần kiểm độc lập; cùng mã chức danh không có nghĩa cùng mã nhân sự.",
  "hai_tuyen":"Chỉ "+ND+" có tuyến quản lý dọc Trưởng nhóm chưa bàn giao; "+TT+" chỉ có quyền kiểm chuẩn nghiệp vụ truyền thông và số.",
- "bao_cao":"KPI sản phẩm cho người thực hiện; KPI điều phối cho Tổ trưởng; KPI quản trị nội dung và Marketing cơ sở cho "+ND+"; KPI quản trị truyền thông, thương hiệu và số cho "+TT+"; không ghi trùng cùng giờ của một cá nhân.",
+ "bao_cao":"KPI sản phẩm cho người thực hiện; KPI điều phối cho Tổ trưởng; KPI quản trị nội dung và Marketing cơ sở cho "+ND+"; KPI quản trị truyền thông, thương hiệu và số cho "+TT+"; không cộng trùng một giờ của cùng một cá nhân.",
  "uy_quyen":"Người thay chỉ được kích hoạt sau văn bản phân công/ủy quyền ghi rõ phạm vi, thời hạn và quyền; nếu chưa có thì chặn việc vượt quyền.",
  "co_so":"Ban Giám đốc cơ sở quản lý hành chính tại chỗ; không mặc nhiên tạo tuyến quản lý Marketing thứ hai.",
  "do_luong":"Định biên 36 suất là phương án cấu trúc, chưa chứng minh đủ tải do thiếu nhật ký giờ thực tế."
