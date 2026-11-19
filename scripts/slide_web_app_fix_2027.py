@@ -767,3 +767,150 @@ webfile.write_text(web,"utf-8")
 print("PASS WEBSITE FACILITY IMAGES",changed,
  "bundled-image-count",len(image_catalog),
  "unresolved-blob-links",0)
+
+
+# TTH_WEBSITE_FIXED_COLLAPSIBLE_CTA_1911
+# Existing native CTA links (top/Hotline/Zalo/AI) exist on public website
+# pages, but their wrapper has inline position:sticky at the bottom.
+# Keep the existing links, move their common container to the middle of the
+# right viewport edge, and allow expansion/collapse without new fake actions.
+website_file=root/"healthcare-website"/"index.html"
+website_html=website_file.read_text("utf-8")
+m=re.search(r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',
+            website_html,flags=re.S|re.I)
+if not m:raise AssertionError("Website page catalog missing for CTA fix")
+website_pages=json.loads(m.group(2))
+cta_css=r"""<style id="tth-fixed-cta-center-1911">
+html body .fab.tth-cta-fixed{
+ position:fixed!important;top:50%!important;
+ right:clamp(9px,1.2vw,22px)!important;bottom:auto!important;left:auto!important;
+ transform:translateY(-50%)!important;display:block!important;
+ width:auto!important;height:auto!important;max-width:calc(100vw - 10px)!important;
+ max-height:calc(100dvh - 30px)!important;margin:0!important;padding:0!important;
+ z-index:1800!important;pointer-events:none!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack{
+ display:flex!important;flex-direction:column!important;align-items:flex-end!important;
+ gap:10px!important;max-height:calc(100dvh - 30px)!important;
+ max-width:calc(100vw - 10px)!important;overflow-y:auto!important;
+ overflow-x:visible!important;scrollbar-width:thin!important;
+ padding:5px!important;pointer-events:auto!important
+}
+html body .fab.tth-cta-fixed .tth-cta-stack>sc-if{display:none!important}
+html body .fab.tth-cta-fixed a.fabx{
+ display:flex!important;flex-direction:row-reverse!important;
+ flex:0 0 62px!important;min-width:62px!important;width:62px!important;
+ height:62px!important;min-height:62px!important;max-height:62px!important;
+ align-items:center!important;justify-content:flex-start!important;
+ border-radius:30px!important;overflow:visible!important;box-sizing:border-box!important;
+ pointer-events:auto!important
+}
+html body .fab.tth-cta-fixed a.fabx .ic{
+ width:62px!important;height:62px!important;min-width:62px!important;
+ flex:0 0 62px!important;display:flex!important;align-items:center!important;
+ justify-content:center!important
+}
+html body .fab.tth-cta-fixed a.fabx .ic>span{
+ font-size:18px!important;font-weight:800!important;line-height:1.1!important
+}
+html body .fab.tth-cta-fixed a.fabx .ic>svg{
+ max-width:49px!important;max-height:49px!important
+}
+html body .fab.tth-cta-fixed a.fabx .lb{
+ font-family:Arial,Tahoma,sans-serif!important;font-size:16px!important;
+ font-weight:700!important;line-height:1.35!important
+}
+html body .fab.tth-cta-fixed a.fabx.intro .lb{animation:none!important}
+html body .fab.tth-cta-fixed .tth-cta-toggle{
+ appearance:none!important;display:flex!important;align-items:center!important;
+ justify-content:center!important;gap:6px!important;width:109px!important;
+ min-height:42px!important;max-width:calc(100vw - 12px)!important;
+ padding:7px 10px!important;margin:0!important;border-radius:24px!important;
+ border:1px solid #0837A1!important;background:#fff!important;color:#0837A1!important;
+ box-shadow:0 4px 15px rgba(8,55,161,.18)!important;
+ font:800 15px/1.2 Arial,Tahoma,sans-serif!important;
+ cursor:pointer!important;white-space:nowrap!important;pointer-events:auto!important
+}
+html body .fab.tth-cta-fixed .tth-cta-toggle:focus-visible{
+ outline:3px solid #ED3237!important;outline-offset:2px!important
+}
+html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-stack>a.fabx{
+ display:none!important
+}
+html body .fab.tth-cta-fixed[data-collapsed="true"] .tth-cta-toggle{
+ width:126px!important;min-height:48px!important;background:#0837A1!important;
+ color:white!important
+}
+@media(max-width:640px){
+ html body .fab.tth-cta-fixed{right:8px!important}
+ html body .fab.tth-cta-fixed .tth-cta-stack{gap:7px!important;padding:3px!important}
+ html body .fab.tth-cta-fixed a.fabx{
+  width:52px!important;height:52px!important;min-height:52px!important;
+  max-height:52px!important;min-width:52px!important;flex-basis:52px!important
+ }
+ html body .fab.tth-cta-fixed a.fabx .ic{
+  height:52px!important;width:52px!important;min-width:52px!important;flex-basis:52px!important
+ }
+ html body .fab.tth-cta-fixed a.fabx .ic>span{font-size:17px!important}
+ html body .fab.tth-cta-fixed .tth-cta-toggle{min-height:39px!important;font-size:14px!important}
+}
+</style>"""
+cta_js=r"""<script id="tth-fixed-cta-center-1911-js">
+(function(){
+ "use strict";
+ function init(){
+  var fab=document.querySelector('.fab.tth-cta-fixed');
+  if(!fab||fab.dataset.tthCtaReady==='1')return;
+  var stack=fab.firstElementChild;if(!stack)return;
+  fab.dataset.tthCtaReady='1';stack.classList.add('tth-cta-stack');
+  var btn=document.createElement('button');btn.type='button';btn.className='tth-cta-toggle';
+  var key='tth-healthcare-cta-collapsed-1911';
+  function mobile(){return window.matchMedia&&window.matchMedia('(max-width:640px)').matches}
+  function stored(){
+   try{
+    var value=localStorage.getItem(key);
+    return value===null?mobile():value==='1';
+   }catch(e){return mobile()}
+  }
+  function save(on){try{localStorage.setItem(key,on?'1':'0')}catch(e){}}
+  function apply(on){
+   fab.dataset.collapsed=on?'true':'false';
+   btn.textContent=on?'Mở hỗ trợ':'Thu gọn';
+   btn.setAttribute('aria-expanded',String(!on));
+   btn.setAttribute('aria-label',on?'Mở cụm hỗ trợ liên hệ':'Thu gọn cụm hỗ trợ liên hệ');
+   btn.title=on?'Mở cụm hỗ trợ':'Thu gọn cụm hỗ trợ';
+  }
+  btn.addEventListener('click',function(e){
+   e.preventDefault();
+   var on=fab.dataset.collapsed!=='true';apply(on);save(on);
+  });
+  stack.insertBefore(btn,stack.firstChild);apply(stored());
+ }
+ if(document.readyState==='loading')
+  document.addEventListener('DOMContentLoaded',init,{once:true});
+ else init();
+})();
+</script>"""
+cta_count=0
+for page,html in website_pages.items():
+    if '<div class="fab"' not in html:continue
+    if html.count('<div class="fab"')!=1:raise AssertionError("CTA wrapper count unexpected on "+page)
+    if cta_css.split('id="')[1].split('"')[0] in html:
+        raise AssertionError("CTA code already injected on "+page)
+    if "</head>" not in html or "</body>" not in html:
+        raise AssertionError("Incomplete HTML page for CTA: "+page)
+    html=html.replace('<div class="fab"','<div class="fab tth-cta-fixed"',1)
+    html=html.replace("</head>",cta_css+"</head>",1).replace("</body>",cta_js+"</body>",1)
+    website_pages[page]=html
+    cta_count+=1
+if cta_count<100:
+    raise AssertionError("Unexpectedly few public site pages with native CTA: "+str(cta_count))
+serialized=(json.dumps(website_pages,ensure_ascii=False,separators=(",",":"))
+    .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
+website_html=website_html[:m.start(2)]+serialized+website_html[m.end(2):]
+website_file.write_text(website_html,"utf-8")
+assert 'tth-cta-fixed' in website_html and cta_count>=100
+print("PASS TTH WEBSITE FIXED COLLAPSIBLE CTA",
+      "pages",cta_count,"links-per-page",4,
+      "center-right",True,"persistent-state",True,
+      "mobile-default-collapsed",True)
