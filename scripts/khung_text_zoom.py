@@ -99,6 +99,85 @@ css=r'''
  #main .scope-grid{grid-template-columns:1fr!important}
 }
 @media(max-width:520px){#main .card.meta .tbl table tr>*{font-size:calc(13px * var(--tth-readable-factor))!important}}
+
+/* Unified raised, softly translucent titles, with guaranteed separation.
+   Static headings remain in the document flow; only pre-existing
+   sticky headers remain sticky. This avoids headings covering body text. */
+#main{
+ --tth-title-glass:rgba(245,249,255,.975);
+ --tth-title-border:rgba(8,55,161,.20);
+ --tth-title-shadow:0 5px 15px rgba(8,42,104,.105);
+}
+#main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head,.scope-card>h3,.mkt-one-line h3){
+ box-sizing:border-box!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ overflow:visible!important;text-overflow:clip!important;
+ white-space:normal!important;overflow-wrap:break-word!important;
+ line-height:1.5!important;letter-spacing:normal!important;
+ background:var(--tth-title-glass)!important;
+ border:1px solid var(--tth-title-border)!important;
+ border-left:4px solid #0837A1!important;
+ border-radius:11px!important;
+ box-shadow:var(--tth-title-shadow)!important;
+ padding:11px 14px!important;
+ -webkit-backdrop-filter:blur(12px);
+ backdrop-filter:blur(12px);
+}
+#main .doc-sec>.sec-h{
+ display:flex!important;flex-wrap:wrap!important;
+ align-items:flex-start!important;
+ gap:8px 12px!important;
+}
+#main .doc-sec>.sec-h .sec-num{flex:0 0 auto!important;line-height:1.5!important;align-self:flex-start!important}
+#main :is(.view-h .vt,.card-h,.sec-h,.jd-name,.jd-meta,.pp-h,.std-head h4,.scope-card>h3,.mkt-one-line h3){
+ line-height:1.5!important;height:auto!important;max-height:none!important;
+ white-space:normal!important;overflow:visible!important;letter-spacing:normal!important;
+}
+#main .view-h .vt{margin:0 0 6px!important}
+#main .view-h .lede{margin:0!important;line-height:1.6!important}
+#main .jd-head{
+ align-items:flex-start!important;gap:12px!important;flex-wrap:wrap!important;
+}
+#main .jd-head .jd-tt{flex:1 1 320px!important;min-width:0!important}
+#main .jd-head :is(.jd-name,.jd-meta){display:block!important;overflow-wrap:break-word!important}
+#main .jd-d[open]>.jd-head,
+#main .pp-h{
+ z-index:12!important;background:rgba(245,249,255,.985)!important;
+ box-shadow:0 8px 18px rgba(8,42,104,.14)!important;
+ -webkit-backdrop-filter:blur(16px);
+ backdrop-filter:blur(16px);
+}
+#main .pp-h{margin-top:0!important}
+#main :is(.col-h,.mkt-org-cvt-2 .col-h){
+ box-sizing:border-box!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ line-height:1.48!important;white-space:normal!important;
+ overflow:visible!important;overflow-wrap:break-word!important;
+ padding:12px 15px!important;
+ background:rgba(8,55,161,.97)!important;color:#fff!important;
+ border:1px solid rgba(255,255,255,.25)!important;
+ border-radius:11px 11px 0 0!important;
+ box-shadow:0 5px 14px rgba(8,42,104,.15)!important;
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+#main .col-h :is(small,b,span){line-height:1.5!important}
+#main :is(.tbl thead th,.std-table thead th,.fhead th){
+ height:auto!important;max-height:none!important;min-height:0!important;
+ line-height:1.5!important;padding:10px 12px!important;
+ white-space:normal!important;overflow-wrap:break-word!important;
+ background:rgba(235,243,255,.985)!important;
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+#main .fhead{background:rgba(245,249,255,.99)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media(max-width:900px){
+ #main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head){padding:10px 12px!important}
+ #main .jd-head .jd-tt{flex-basis:220px!important}
+}
+@media print{
+ #main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head){background:#fff!important;box-shadow:none!important;backdrop-filter:none!important}
+ #main .jd-d[open]>.jd-head,#main .pp-h{position:static!important}
+}
+
 </style>'''
 if "</head>" not in html: raise SystemExit("Missing head")
 html=html.replace("</head>",css+"</head>",1)
