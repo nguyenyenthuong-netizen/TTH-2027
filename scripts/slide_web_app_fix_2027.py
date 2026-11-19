@@ -24,7 +24,8 @@ if marker not in s:
 /* Keep all slide copy accessible; internal scrolling is the last-resort fallback. */
 .slide .content .card,.slide .content .brand-column,.slide .content .minor{scrollbar-width:thin}
 .slide .content .card[data-tth-overflow="1"],.slide .content .brand-column[data-tth-overflow="1"],
-.slide .content .minor[data-tth-overflow="1"]{overflow-y:auto!important;overscroll-behavior:contain}
+.slide .content .minor[data-tth-overflow="1"],.slide .content .org-child[data-tth-overflow="1"],
+.slide .content .decision-list[data-tth-overflow="1"]{overflow-y:auto!important;overscroll-behavior:contain}
 .slide .head h2,.slide .head p{overflow-wrap:break-word;white-space:normal}
 @media print{.slide .content .card,.slide .content .brand-column,.slide .content .minor{overflow:visible!important}}
 </style>
@@ -42,6 +43,12 @@ if marker not in s:
     var boxes=Array.from(document.querySelectorAll(selectors));
     boxes.forEach(function(box){
       var nodes=Array.from(box.querySelectorAll(fontSelectors));
+      // Restore measured baseline before each resize/slide activation.
+      // Otherwise fonts only shrink and never recover when space grows.
+      nodes.forEach(function(el){
+        if(el.dataset.tthBaseFont){el.style.setProperty('font-size',el.dataset.tthBaseFont+'px','important');}
+      });
+      delete box.dataset.tthOverflow;
       // Capture original computed fonts once, before fitting.
       nodes.forEach(function(el){
         if(!el.dataset.tthBaseFont){
@@ -64,7 +71,7 @@ if marker not in s:
       // Avoid silent clipping for layouts denser than their 1280x720 page.
       content.style.setProperty('overflow-y','auto','important');
       content.style.setProperty('overscroll-behavior','contain');
-    }else if(content){content.style.removeProperty('overflow-y');}
+    }else if(content){content.style.removeProperty('overflow-y');content.style.removeProperty('overscroll-behavior');}
   }
   function schedule(){cancelAnimationFrame(timer);timer=requestAnimationFrame(function(){requestAnimationFrame(fit)})}
   var stage=document.getElementById('stage');
