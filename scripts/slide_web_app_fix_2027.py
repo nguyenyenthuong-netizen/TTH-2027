@@ -1201,7 +1201,8 @@ if not catalog_m:raise AssertionError("Healthcare Website pagesData not found")
 site_pages=json.loads(catalog_m.group(2))
 compact_css=r"""<style id="tth-cta-compact-safe-1911">
 html body .fab.tth-cta-fixed{
- right:4px!important;max-width:48px!important;
+ /* Nudge away from the native scrollbar and give arrow a clear border. */
+ right:clamp(12px,1.4vw,20px)!important;max-width:48px!important;
  width:48px!important;pointer-events:none!important
 }
 html body .fab.tth-cta-fixed .tth-cta-stack{
@@ -1255,15 +1256,23 @@ html body .fab.tth-cta-fixed .tth-cta-toggle svg{
 /* Real safe area: text and interactive cards end to the left of expanded CTAs.
    Never change the native full-width header, footer or brand colors. */
 body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
- /* Equal left/right inset keeps the 1320px content canvas centered. */
- padding-left:max(70px,5.2vw)!important;
- padding-right:max(70px,5.2vw)!important;
+ /* Match the footer .ftgrid: 1320px outer width + 24px content inset. */
+ max-width:1320px!important;
+ width:100%!important;
+ padding-left:24px!important;
+ padding-right:24px!important;
  margin-inline:auto!important;
  box-sizing:border-box!important
 }
+/* Reserve extra CTA space only in viewports where the 1320px canvas has no outside gutter. */
+@media(min-width:641px) and (max-width:1399px){
+ body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
+  padding-right:68px!important;
+ }
+}
 @media(max-width:640px){
  html body .fab.tth-cta-fixed{
-  right:3px!important;width:44px!important;max-width:44px!important
+  right:12px!important;width:44px!important;max-width:44px!important
  }
  html body .fab.tth-cta-fixed .tth-cta-stack{
   width:44px!important;max-width:44px!important;gap:6px!important
@@ -1286,9 +1295,8 @@ body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
   font-size:12px!important
  }
  body:has(.fab.tth-cta-fixed[data-collapsed="false"]) #app main{
-  /* Match both margins; keep an open CTA off text at 320–640px. */
-  padding-left:clamp(48px,14vw,58px)!important;
-  padding-right:clamp(48px,14vw,58px)!important;
+  padding-left:16px!important;
+  padding-right:70px!important;
   margin-inline:auto!important
  }
 }
@@ -1306,6 +1314,7 @@ encoded=(json.dumps(site_pages,ensure_ascii=False,separators=(",",":"))
  .replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026"))
 site_html=site_html[:catalog_m.start(2)]+encoded+site_html[catalog_m.end(2):]
 site_path.write_text(site_html,"utf-8")
-assert 'padding-left:max(70px,5.2vw)' in compact_css and 'padding-right:max(70px,5.2vw)' in compact_css
-assert 'padding-left:clamp(48px,14vw,58px)' in compact_css and 'padding-right:clamp(48px,14vw,58px)' in compact_css
-print("PASS WEBSITE COMPACT SAFE CTA 115/115; balanced left/right margins, desktop 42px mobile 38px")
+assert 'padding-left:24px!important' in compact_css and 'padding-right:24px!important' in compact_css
+assert 'right:clamp(12px,1.4vw,20px)' in compact_css and 'right:12px!important' in compact_css
+assert 'padding-right:70px!important' in compact_css
+print("PASS WEBSITE CTA aligned to 1320px footer canvas: desktop 24px symmetric, responsive safe gutter, CTA shifted left")
