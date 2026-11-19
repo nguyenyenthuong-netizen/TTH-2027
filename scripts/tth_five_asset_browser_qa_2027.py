@@ -16,7 +16,13 @@ with sync_playwright() as p:
     page.goto(path.as_uri(),wait_until='domcontentloaded',timeout=45000)
     page.wait_for_timeout(800)
     info=page.evaluate('''() => ({title:document.title,body:document.body?.innerText?.length||0,slides:document.querySelectorAll('section.slide').length,buttons:[...document.querySelectorAll('button')].filter(x=>x.getBoundingClientRect().height>0).length,fr:document.querySelectorAll('iframe').length,width:document.documentElement.scrollWidth,viewport:innerWidth})''')
-    if info['body']<50:failed.append(name+' '+str(size)+': empty body')
+    if name in ('healthcare-website','healthcare-app'):
+     try:
+      inner=page.frame_locator('iframe').locator('body').inner_text(timeout=7000)
+      info['frame_chars']=len(inner.strip())
+      if info['frame_chars']<70:failed.append(name+' '+str(size)+': empty embedded page')
+     except Exception as ex:failed.append(name+' '+str(size)+': iframe could not be inspected '+str(ex)[:150])
+    elif info['body']<50:failed.append(name+' '+str(size)+': empty body')
     if name=='trinh-chieu-marketing' and info['slides']!=28:failed.append(name+': should have 28 slides; got '+str(info['slides']))
     if name=='crm-da-kenh' and info['slides']<5:failed.append(name+': CRM display missing')
     if name=='khung-marketing' and page.locator('#m-5-2').count()==0:failed.append(name+': missing staffing table')
