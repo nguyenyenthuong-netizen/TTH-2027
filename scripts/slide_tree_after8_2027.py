@@ -232,11 +232,13 @@ s=s.replace("Danh mục 27 slide","Danh mục 28 slide")
 s=s.replace("27 trang trình chiếu","28 trang trình chiếu")
 if s.count('<section class="slide')!=28:
     raise SystemExit("28-slide structural guard failed")
-# CSS may contain data-index="8" selectors before the HTML sections,
-# so compare section attributes in document order, not raw string find().
-slide_order=re.findall(r'<section class="slide[^>]*data-index="([^"]+)"',s)
-if len(slide_order)!=28 or slide_order[7:10]!=['7','org-tree-after8','8']:
-    raise SystemExit("Tree slide not between page 8 and original page 9: "+str(slide_order[7:10]))
+# Match exact literal opening tags. Dynamic templates can contain other
+# <section class="slide-like"> tags; the three relevant slide tags are unique.
+pos8=s.find('<section class="slide" data-index="7">')
+pos_tree=s.find('<section class="slide tth-organization-tree-after-8" data-index="org-tree-after8">')
+pos9=s.find('<section class="slide" data-index="8">')
+if not (0<=pos8<pos_tree<pos9):
+    raise SystemExit("Tree slide must appear after the actual slide 8 and before slide 9")
 for title in (
     "Nội dung – Sáng tạo và Marketing cơ sở",
     "Truyền thông – Thương hiệu và Tăng trưởng số",
