@@ -128,6 +128,16 @@ participants("nghien-cuu-thi-truong",2,"cvt-2|kiểm chuẩn khảo sát, phân 
 # 4. Bàn giao tài sản và thu hồi quyền là ba nhóm khác nhau.
 setlead("chuyen-quyen",1,"cvt-2")
 participants("chuyen-quyen",1,"cvt|lập danh mục kho tư liệu/file sản xuất; đối soát với Trưởng nhóm cơ sở")
+# Một bước tổng hợp quyền chỉ có một người chịu trách nhiệm chính.
+# CVT Nội dung cung cấp hồ sơ kho sản xuất, không là người lập đầu ra kênh số.
+assert [str(x).split("|",1)[0] for x in step("chuyen-quyen",1)["thuc_hien"]]==["cvt"]
+step("chuyen-quyen",1)["thuc_hien"]=["cvt-2"]
+step("chuyen-quyen",1)["ranh_gioi_quyen_va_kho_2027"]={
+ "chu_tri_bien_ban_tong_hop":"cvt-2",
+ "phoi_hop_kho_tu_lieu":"cvt",
+ "quyen_cap_thu_hoi":"Người được phân quyền theo ma trận còn hiệu lực",
+ "quy_tac":"Một hồ sơ bàn giao tổng hợp; quyền kênh do CVT Truyền thông kiểm chuẩn, kho sản xuất do CVT Nội dung đối chiếu; không tự phê duyệt quyền."}
+
 replace("chuyen-quyen",2,"Trưởng phòng – chưa có: Chuyên viên trưởng",
         "Trưởng phòng – nếu chức danh trống: người được Ban Tổng Giám đốc chỉ định bằng văn bản")
 replace("chuyen-quyen",2,"quyền đăng bài, trả lời tin nhắn: Chuyên viên trưởng cấp",
@@ -138,6 +148,14 @@ replace("chuyen-quyen",6,"quyền đăng bài, trả lời tin nhắn: Chuyên v
         "quyền đăng bài, trả lời tin nhắn: người được phân quyền thu hồi theo ma trận hiệu lực")
 setlead("chuyen-quyen",7,"cvt-2")
 participants("chuyen-quyen",7,"cvt|đối chiếu kho tư liệu, file sản xuất và hạn bàn giao","tp|nghiệm thu quyền/ủy quyền theo ma trận")
+assert [str(x).split("|",1)[0] for x in step("chuyen-quyen",7)["thuc_hien"]]==["cvt"]
+step("chuyen-quyen",7)["thuc_hien"]=["cvt-2"]
+step("chuyen-quyen",7)["ranh_gioi_quyen_va_kho_2027"]={
+ "chu_tri_ho_so_chuyen_quyen":"cvt-2",
+ "du_lieu_kho_san_xuat":"cvt cung cấp phiếu đối chiếu kho tư liệu/file thiết kế, không cùng duyệt cuối",
+ "nghiem_thu_tham_quyen":"Trưởng phòng hoặc cấp được ủy quyền theo ma trận",
+ "quy_tac":"CVT Truyền thông chịu hồ sơ bàn giao quyền kênh; CVT Nội dung xác nhận phần kho sản xuất; duyệt/quyền hệ thống do đúng cấp thực hiện."}
+
 replace("nghi-viec",4,"Thu hồi quyền đăng bài, trả lời tin nhắn: Chuyên viên trưởng (theo ma trận quyền)",
         "Thu hồi quyền đăng bài, trả lời tin nhắn: "+AUTH+
         " thao tác, "+C2+" đối soát theo danh sách tài sản")
