@@ -104,7 +104,7 @@ css=r'''
    Static headings remain in the document flow; only pre-existing
    sticky headers remain sticky. This avoids headings covering body text. */
 #main{
- --tth-title-glass:rgba(245,249,255,.975);
+ --tth-title-glass:rgba(245,249,255,.985);
  --tth-title-border:rgba(8,55,161,.20);
  --tth-title-shadow:0 5px 15px rgba(8,42,104,.105);
 }
@@ -120,8 +120,8 @@ css=r'''
  border-radius:11px!important;
  box-shadow:var(--tth-title-shadow)!important;
  padding:11px 14px!important;
- -webkit-backdrop-filter:blur(12px);
- backdrop-filter:blur(12px);
+ -webkit-backdrop-filter:blur(16px);
+ backdrop-filter:blur(16px);
 }
 #main .doc-sec>.sec-h{
  display:flex!important;flex-wrap:wrap!important;
@@ -154,7 +154,7 @@ css=r'''
  line-height:1.48!important;white-space:normal!important;
  overflow:visible!important;overflow-wrap:break-word!important;
  padding:12px 15px!important;
- background:rgba(8,55,161,.97)!important;color:#fff!important;
+ background:rgba(8,55,161,.985)!important;color:#fff!important;
  border:1px solid rgba(255,255,255,.25)!important;
  border-radius:11px 11px 0 0!important;
  box-shadow:0 5px 14px rgba(8,42,104,.15)!important;
@@ -168,7 +168,7 @@ css=r'''
  background:rgba(235,243,255,.985)!important;
  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
 }
-#main .fhead{background:rgba(245,249,255,.99)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+#main .fhead{background:rgba(245,249,255,.985)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 @media(max-width:900px){
  #main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head){padding:10px 12px!important}
  #main .jd-head .jd-tt{flex-basis:220px!important}
