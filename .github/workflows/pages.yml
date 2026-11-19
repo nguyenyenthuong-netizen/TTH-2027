@@ -171,6 +171,8 @@ jobs:
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: Kiem thu 18 tinh huong nghiep vu ve duyet phat hanh va tai viec
         run: python3 scripts/khung_scenario_acceptance_2027.py _site
+      - name: Kiem tra cu phap Python truoc khi cap nhat nhom luong cuoi
+        run: python3 -m py_compile scripts/khung_cvt_examples_2027.py scripts/khung_final_conflict_gate_2027.py scripts/khung_browser_acceptance_2027.py
       - name: Bo sung 14 vi du van hanh hai Chuyen vien truong theo tung quy trinh
         run: python3 scripts/khung_cvt_examples_2027.py _site
       - name: Kiem tra JavaScript sau khi bo sung vi du
