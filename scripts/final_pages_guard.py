@@ -8,51 +8,16 @@ import sys
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("_site")
 targets = {
     "khung-marketing": """
-/* Keep the CVT Truyền thông header row sized to its own text.
-   The tall left-hand Marketing cơ sở column spans both rows and must
-   NEVER inflate the first row or overlap the two right-hand teams.
-   Preserve the original four-child organizational chart DOM. */
-@media (min-width:1000px){
- #v-org .org-cols{
-   grid-template-rows: minmax(0,max-content) auto!important;
-   align-content:start!important;
- }
- #v-org .org-cols>.mkt-org-cvt-2{
-   grid-column:2 / span 2!important;
-   grid-row:1!important;
-   align-self:start!important;
- }
- #v-org .org-cols>.col:nth-child(2){
-   grid-column:1!important;
-   grid-row:1 / span 2!important;
-   align-self:start!important;
- }
- #v-org .org-cols>.col:nth-child(3){
-   grid-column:2!important;
-   grid-row:2!important;
-   align-self:start!important;
- }
- #v-org .org-cols>.col:nth-child(4){
-   grid-column:3!important;
-   grid-row:2!important;
-   align-self:start!important;
- }
-}
-/* Balanced organization columns: the detailed local teams need more width.
-   Keep CVT header spanning both right-hand columns without vertical gaps. */
-@media (min-width:1251px){
- #v-org .org-cols{grid-template-columns:minmax(420px,1.55fr) minmax(280px,1fr) minmax(280px,1fr)!important;gap:12px!important}
- #v-org .hosp-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-}
-@media (min-width:1000px) and (max-width:1250px){
- #v-org .org-cols{grid-template-columns:minmax(360px,1.35fr) minmax(255px,1fr) minmax(255px,1fr)!important;gap:10px!important}
- #v-org .hosp-grid{grid-template-columns:1fr!important}
-}
-@media (max-width:999px){
- #v-org .org-cols{display:flex!important;flex-direction:column!important;gap:12px!important}
- #v-org .org-cols>.col,#v-org .org-cols>.mkt-org-cvt-2{width:100%!important;min-width:0!important}
-}
-#v-org .org-cols>.col,#v-org .org-cols>.mkt-org-cvt-2{min-width:0!important}
+/* 2027 two-branch organization tree: one Chief plus their team(s) per column.
+   Hospital Marketing is outside the two-column tree in a full-width band. */
+#v-org .org-cols{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto!important;grid-auto-flow:row!important;align-items:start!important;gap:16px!important}
+#v-org .org-cols>.org-left,#v-org .org-cols>.org-right{display:flex!important;flex-direction:column!important;gap:12px!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:auto!important}
+#v-org .org-right-teams{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+#v-org .org-cols .col,#v-org .org-cols .mkt-org-cvt-2{min-width:0!important;width:100%!important;grid-column:auto!important;grid-row:auto!important;align-self:start!important}
+#v-org .org-cols .col-h{display:block!important;box-sizing:border-box!important;height:auto!important;min-height:0!important;white-space:normal!important;overflow-wrap:break-word!important;padding:14px 16px!important}
+#v-org .mkt-org-local-row{width:100%!important;min-width:0!important;clear:both}
+#v-org .mkt-org-local-row .hosp-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))!important}
+@media(max-width:1100px){#v-org .org-cols{grid-template-columns:minmax(0,1fr)!important}}
 #v-org .col-b,#v-org .grp,#v-org .hosp,#v-org .pos{min-width:0!important}
 #v-org .pos-n{overflow-wrap:break-word!important;word-break:normal!important}
 /* Balanced data table columns: long descriptions receive real room.
@@ -127,7 +92,7 @@ for page, css in targets.items():
         raise ValueError(f"{page}: missing head tag")
     s=s.replace("</head>",start+font_guard+css+"</style></head>",1)
     if page == "khung-marketing":
-        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-line-audit"):
+        for term in ("Chuyên viên trưởng Nội dung", "KB-DV12", "tth-org-layout-rebuild-2027", "mkt-org-local-row"):
             if term not in s:
                 raise ValueError(f"{page}: critical baseline not found: {term}")
     else:

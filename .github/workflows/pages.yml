@@ -85,7 +85,7 @@ jobs:
           k=Path('_site/khung-marketing/index.html').read_text('utf-8')
           s=Path('_site/trinh-chieu-marketing/index.html').read_text('utf-8')
           assert '<html' in k and 'tth-standard-review' in k and 'KB-DV12' in k
-          assert 'Chuyên viên trưởng Nội dung' in k and 'tth-line-audit' in k
+          assert 'Chuyên viên trưởng Nội dung' in k and 'tth-org-layout-rebuild-2027' in k and 'mkt-org-local-row' in k and 'class="org-right-teams"' in k
           assert s.count('<section class="slide') == 27
           assert 'tth-floating-arrow' in s and 'tth-slide-once-19112026' in s
           print('PASS: Khu ng',len(k),'ki tu; slide 27 trang',len(s),'ki tu')
