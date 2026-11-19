@@ -142,10 +142,12 @@ D["hieu_suat_cvt_truyen_thong_tang_truong_so_2027"]={
 c1=V["cvt"]
 c1["phan_dinh_chu_tri_dau_ra"]=(
  "Quản trị năng lực và chất lượng khối Nội dung – Sáng tạo; trực tiếp quản lý dọc các Trưởng nhóm "
- "Marketing bệnh viện thuộc hai nhóm thương hiệu CHƯA được bàn giao hợp lệ cho Quản lý mạng lưới "
- "Marketing cơ sở theo vùng. Sau khi có quyết định bàn giao, Quản lý mạng lưới đánh giá trực tiếp "
- "cấp 1 đối với đúng danh sách đã nhận; "+N+" quản trị, kiểm tra và tổng hợp theo tuyến "
- "Quản lý mạng lưới, không đánh giá trực tiếp trùng cùng một Trưởng nhóm. Đầu ra quản trị là bảng tải, "
+ "Marketing cơ sở thuộc cả hai nhóm thương hiệu theo cơ cấu 2027; trực tiếp quản lý, "
+ "kiểm chuẩn và đánh giá nghiệp vụ các Trưởng nhóm Marketing cơ sở theo một tuyến. "
+ "Ban Giám đốc cơ sở quản lý hành chính và xác nhận dữ liệu tại chỗ, không tạo tuyến "
+ "chỉ huy nghiệp vụ thứ hai. Mọi thay đổi tuyến quản lý chỉ có hiệu lực khi có quyết định "
+ "phân quyền hoặc bàn giao được ban hành; không tự chuyển sang Quản lý mạng lưới theo vùng. "
+ "Đầu ra quản trị là bảng tải, "
  "phương án điều phối, báo cáo chất lượng sản xuất và đánh giá theo đúng tuyến có hiệu lực; "
  "không nhận trùng sản lượng bài, thiết kế, video của chuyên viên hoặc giờ điều phối thường lệ của Tổ trưởng."
 )
@@ -360,7 +362,8 @@ assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
 assert s.count('id="cvt-2-perf-metrics-2027"')==1
 assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
-assert "CHƯA được bàn giao hợp lệ" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
+assert "trực tiếp quản lý" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
+assert "không tự chuyển sang Quản lý mạng lưới theo vùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "không đánh giá trực tiếp trùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "giảm lãng phí" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "đánh giá trước–sau" in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["phan_dinh_chu_tri_dau_ra"]
