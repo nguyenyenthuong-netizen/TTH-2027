@@ -39,6 +39,35 @@ with sync_playwright() as p:
       frame=page.frame_locator('iframe')
       inner=frame.locator('body').inner_text(timeout=7000)
       info['frame_chars']=len(inner.strip())
+      if name in ('healthcare-app','healthcare-website'):
+       test_question='Tôi muốn hỏi cách chuẩn bị trước khi khám'
+       field_sel='#tth-app-inline-question' if name=='healthcare-app' else 'header.gh .gsrch input.tth-ai-question'
+       promptfield=frame.locator(field_sel).first
+       if promptfield.count()==0:
+        failed.append(name+' '+str(size)+': assistant input absent; clicking old search still redirects')
+       else:
+        original_url=page.url
+        promptfield.click(timeout=6000)
+        page.wait_for_timeout(100)
+        if page.url!=original_url:failed.append(name+': search field click navigated before question was submitted')
+        promptfield.fill(test_question)
+        page.wait_for_timeout(100)
+        if page.url!=original_url:failed.append(name+': typing question triggered a result-page redirect')
+        submit=frame.locator('[data-tth-assistant-submit="1"]').first
+        if submit.count()==0:failed.append(name+': assistant-only icon submit missing')
+        else:
+         submit.click(timeout=6000)
+         route='HoTro_TroLy.html' if name=='healthcare-app' else 'Web_TroLy.html'
+         try:page.wait_for_function('(expected)=>decodeURIComponent(location.hash).includes(expected)',arg=route,timeout=6000)
+         except Exception:failed.append(name+': assistant icon did not route to '+route)
+         page.wait_for_timeout(200)
+         prefill=frame.locator('input').evaluate_all('''(els,q)=>els.some(e=>e.value===q)''',test_question)
+         if not prefill:failed.append(name+': assistant did not receive the submitted question')
+         if test_question in page.url:failed.append(name+': sensitive question leaked into URL')
+        # Reset the original home screen before standard responsive / catalog QA.
+        page.goto(path.as_uri()+('?demo=1' if name=='healthcare-app' else ''),wait_until='domcontentloaded',timeout=45000)
+        page.wait_for_timeout(260)
+        frame=page.frame_locator('iframe')
       if name=='healthcare-app':
        app_catalog=page.evaluate('''() => {
         const pages=JSON.parse(document.getElementById('pageData').textContent);
