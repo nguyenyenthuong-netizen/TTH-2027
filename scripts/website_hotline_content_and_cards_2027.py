@@ -130,6 +130,35 @@ for name,doc in pages.items():
  pages[name]=doc.replace('</head>',css+popup_style+'</head>',1).replace('</body>',script+'</body>',1)
  count+=1
 if count<100:raise SystemExit('Unexpected public page count '+str(count))
+# Home page: keep all four trust/information cards at exactly equal height,
+# including the card that wraps onto the next grid row.
+home=pages.get('Main.html','')
+if 'span class="thu"' not in home and 'class="thu"' not in home:
+ raise SystemExit('Website home statistic cards missing; inspect source before patching')
+if 'tth-home-equal-info-cards-2027' in home:
+ raise SystemExit('Duplicate home equal-card patch')
+home_css=r'''<style id="tth-home-equal-info-cards-2027">
+/* Restrict to the four home cards which display statistics; other website
+   card grids retain their natural image/portrait sizes. */
+#app main [style*="grid-template-columns"]:has(> article.card span.thu){
+ align-items:stretch!important;grid-auto-rows:1fr!important
+}
+#app main [style*="grid-template-columns"]:has(> article.card span.thu) > article.card{
+ box-sizing:border-box!important;min-width:0!important;min-height:100%!important;
+ height:100%!important;align-self:stretch!important;
+ display:flex!important;flex-direction:column!important
+}
+#app main [style*="grid-template-columns"]:has(> article.card span.thu) > article.card > :last-child{
+ margin-top:auto!important
+}
+@media(max-width:740px){
+ #app main [style*="grid-template-columns"]:has(> article.card span.thu){
+  grid-template-columns:minmax(0,1fr)!important
+ }
+}
+</style>'''
+if '</head>' not in home:raise SystemExit('Website home head missing')
+pages['Main.html']=home.replace('</head>',home_css+'</head>',1)
 packed=json.dumps(pages,ensure_ascii=False,separators=(',',':')).replace('<',r'\u003c').replace('>',r'\u003e').replace('&',r'\u0026')
 source=source[:m.start(2)]+packed+source[m.end(2):]
 needle="function go(target,historyUpdate){const route=String(target||'Main.html'),name=route.split(/[?#]/)[0].split('/').pop();"
