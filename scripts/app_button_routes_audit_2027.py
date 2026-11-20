@@ -35,6 +35,21 @@ for directory,script_id in (("healthcare-app","pageData"),("healthcare-website",
   if name=="Main.html":
    for q in re.findall(r'<(?:input|button|a|form)\b[^>]*>',clean,re.I):
     if re.search("search|trợ lý|tim|hỏi|q=|submit|placeholder",q,re.I):forms.append(q[:500])
+ if directory=="healthcare-app":
+  onclick_pages=[]
+  all_button_samples=[]
+  placeholder_links=[]
+  for pname,pdoc in pages.items():
+   for m2 in re.finditer(r'<button\b[^>]*>[\s\S]*?<\/button>',pdoc,re.I):
+    frag=re.sub(r'<[^>]*>',' ',m2.group(0))
+    label=html.unescape(' '.join(frag.split()))[:72]
+    attrs=m2.group(0).split('>')[0][:170]
+    all_button_samples.append((pname,label,attrs))
+   for m2 in re.finditer(r'<a\b[^>]*\bhref=["\']#["\'][^>]*>[\s\S]*?<\/a>',pdoc,re.I):
+    label=html.unescape(' '.join(re.sub(r'<[^>]*>',' ',m2.group(0)).split()))[:72]
+    placeholder_links.append((pname,label))
+  print('APP_BUTTON_MAP',all_button_samples[:120])
+  print('APP_PLACEHOLDER_LINKS',len(placeholder_links),placeholder_links[:35])
  print("AUDIT",directory,"COUNTS",dict(counts),"BROKEN_LINKS",missing.most_common(18))
  for name,length,bcount,excerpts in suspicious:
   print("APP_SURFACE",directory,name,"len",length,"buttons",bcount)
