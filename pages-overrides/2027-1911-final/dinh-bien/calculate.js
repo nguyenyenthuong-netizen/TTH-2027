@@ -6,6 +6,7 @@ const TTHStaffing = (() => {
   const sum=a=>a.reduce((x,y)=>x+y,0);
   const empty=()=>({direct:0,coord:0,check:0,fix:0,travel:0,regular:0,incident:0,setup:0,maint:0,lead:0,next:0,external:0});
   const timeKeys=['direct','coord','check','fix','travel'];
+  const hqVideoPlan={g1:{short:9,complex:4,film:2},g2:{short:6,complex:3,film:1}};
   function capacity(settings={}){
     const weekly=settings.week??47, days=settings.days??6, leave=settings.leave??24, share=(settings.share??75)/100;
     const gross=(365/7*weekly-leave*weekly/days)/12, plan=gross*share;
@@ -24,6 +25,28 @@ const TTHStaffing = (() => {
     }
     return count;
   }
+  function compareHours(row,planLimit,totalLimit,includeSetup=true){
+    const planned=row.regular+row.maint+(includeSetup?row.setup:0);
+    const all=planned+row.incident;
+    const excess=Math.max(0,planned-planLimit,all-totalLimit);
+    return {planned,all,excess:excess<1e-7?0:excess};
+  }
+  function reviewPosition(run,keys,seats,clinicHours){
+    const monthly=run.monthly(keys),annual=run.roll(monthly);
+    const isClinic=keys.some(k=>k.endsWith('@clinic'));
+    const planLimit=isClinic?clinicHours:seats*run.cap.plan;
+    const totalLimit=isClinic?clinicHours:seats*run.cap.gross;
+    const result={annual,avgHours:annual.total/12,planLimit,totalLimit,periods:[],peak:null,annualExcess:null};
+    if(planLimit==null||totalLimit==null||seats===0)return result;
+    result.annualExcess=compareHours(annual,planLimit*12,totalLimit*12).excess;
+    result.periods=monthly.map((v,i)=>{
+      const full=compareHours(v,planLimit,totalLimit);
+      const ongoing=compareHours(v,planLimit,totalLimit,false);
+      return {m:i+1,...full,ongoing:ongoing.excess,setup:full.excess-ongoing.excess};
+    });
+    result.peak=result.periods.reduce((best,next)=>next.excess>best.excess?next:best);
+    return result;
+  }
   const periodMap={};['m','w','2w','q','y9','y12'].forEach(p=>{periodMap[p]=months.map(m=>periods(p,m))});
   function simulate(data,scenario='base',edits={}){
     const cap=capacity(edits.capacity), roles={};const consume=(r,m)=>{if(!roles[r])roles[r]=months.map(empty);return roles[r][m-1]};
@@ -39,8 +62,11 @@ const TTHStaffing = (() => {
       }
       const [g,k]=q.split(':');const count=cat=>sum(data.sites.filter(s=>s.group===g).map(s=>siteInputs[s.id][m-1][cat]));
       const plus=scenario==='high'&&peak(m)?1:0;
-      const short=(g==='g1'?9:6)+plus,complex=(g==='g1'?4:3)+plus,film=(g==='g1'?2:1)+plus,review=count('v2')+count('v3');
-      return {short,complex,film,review,script:review+short+complex+film}[k];
+      const planned=type=>(edits.hqVideo?.[g]?.[type]??hqVideoPlan[g][type])+plus;
+      const review=count('v2')+count('v3');
+      if(k==='review')return review;
+      if(k==='script')return review+planned('short')+planned('complex')+planned('film');
+      return planned(k);
     };
     for(const item of data.work){
       const isLocal=data.roles[item.role].to==='coso';
@@ -122,6 +148,6 @@ const TTHStaffing = (() => {
     }
     return {scenario,cap,works,docs,roles,monthly,roll,siteInputs,siteRoles};
   }
-  return {simulate,capacity,scenarios,sum,months};
+  return {simulate,capacity,scenarios,sum,months,hqVideoPlan,reviewPosition};
 })();
 if(typeof module!=='undefined'&&module.exports)module.exports=TTHStaffing;

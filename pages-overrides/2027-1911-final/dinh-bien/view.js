@@ -4,13 +4,13 @@ const host=document.getElementById('dinh-bien-2027');if(!host||host.shadowRoot)r
 const root=host.attachShadow({mode:'open'}),db=JSON.parse(document.getElementById('csdl').textContent),model=db.dinh_bien_theo_dau_ra_2027;
 const {sum,months,simulate}=TTHStaffing;
 const cases={base:'Cơ sở',high:'Tải cao',opt:'Tối ưu'};
-const tabs={summary:'Tổng hợp',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
+const tabs={roadmap:'Lộ trình và đầu ra',summary:'Quyết định nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
 const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việc dùng dự phòng',K:'Quản lý theo MTCV',T:'Kiêm Tổ trưởng',G:'Theo lộ trình vùng'};
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
 const titles={...model.external,...Object.fromEntries(db.don_vi.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vai_tro.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vi_tri.map(x=>[x.id,x.ten]))};
-const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},docs:{},work:{}});
-let edits=defaults(),runs;const u={panel:'summary',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0};
+const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},docs:{},work:{}});
+let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0};
 function compute(){runs=Object.fromEntries(Object.keys(cases).map(c=>[c,simulate(model,c,edits)]));}compute();
 const e=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const format=(x,n=1)=>x==null?'Chờ xác nhận':Number(x).toLocaleString('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:n});
@@ -23,7 +23,7 @@ const periodName=p=>p==='m'?'tháng':p==='w'?'tuần':p==='2w'?'2 tuần':p==='q
 const tag=t=>`<span class="tag">${e(t)}</span>`;
 function table(headers,rows,numbers=[],mobile=true){return `<div class="scroll"><table class="tbl ${mobile?'mobile':''}"><thead><tr>${headers.map(x=>`<th scope="col">${e(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map((cell,i)=>`<td data-label="${e(headers[i])}" class="${numbers.includes(i)?'num':''}">${cell??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
 const stack=rows=>'<dl class="stack">'+rows.map(([l,v])=>'<div><dt>'+e(l)+'</dt><dd>'+v+'</dd></div>').join('')+'</dl>';
-const detail=(title,body,open=false)=>`<details class="entry"${open?' open':''}><summary>${title}</summary><div class="inner">${body}</div></details>`;
+const detail=(title,body,open=false,workKey=null)=>`<details class="entry"${workKey?' data-work-key="'+e(workKey)+'"':''}${open?' open':''}><summary>${title}</summary><div class="inner">${body}</div></details>`;
 const metrics=rows=>'<div class="metrics">'+rows.map(([v,t])=>`<div class="metric"><b>${v}</b><span>${e(t)}</span></div>`).join('')+'</div>';
 const btn=(label,to,arg='')=>`<button type="button" class="link" data-go="${e(to)}" data-arg="${e(arg)}">${e(label)}</button>`;
 const opt=(list,value)=>Object.entries(list).map(([k,n])=>`<option value="${e(k)}" ${String(value)===k?'selected':''}>${e(n)}</option>`).join('');
@@ -49,47 +49,69 @@ function decision(base,seats,role){
 function roleKeys(r,id,pool=false){const ids=scopeKeys(r,id);return pool&&id==='dl-1'?[...ids,...scopeKeys(r,'dl-2')]:ids;}
 function roleCap(r,id,span=12){if(id==='dmpk')return edits.clinic==null?null:edits.clinic*span;return model.seats[id]*r.cap.plan*span;}
 function quarterly(values){return [0,1,2,3].map(q=>sum(values.slice(q*3,q*3+3)));}
-function staffingConstraints(r){
- const pools=[];
- for(const [rid,profile] of Object.entries(model.roles)){
-  if(['dl-2','qlml'].includes(rid))continue;
-  if(profile.to!=='coso')pools.push({label:name(rid)+(rid==='dl-1'?' (gồm dữ liệu kiêm nhiệm)':''),keys:roleKeys(r,rid,true),n:model.seats[rid]});
-  else for(const k of scopeKeys(r,rid)){
-    const n=rid==='dmpk'?(edits.clinic==null?null:edits.clinic/r.cap.plan):1;
-    pools.push({label:name(k),keys:[k],n});
-  }
- }
- return months.map(m=>{
-  const all=pools.filter(p=>p.n!==null).map(p=>{const v=roll(r,p.keys,m);const run=Math.max(0,v.fteRun-p.n),withProject=Math.max(0,v.fte-p.n);return {label:p.label,run,project:withProject-run,full:withProject};});
-  return {month:m,run:sum(all.map(x=>x.run)),project:sum(all.map(x=>x.project)),full:sum(all.map(x=>x.full)),affected:all.filter(x=>x.full>0.000001).sort((a,b)=>b.full-a.full)};
- });
-}
 function summary(){const r=getRun(),keys=runsKeys(r,'all'),a=roll(r,keys);const monthRows=months.map((m,i)=>{const z=roll(r,keys,m);return [String(m),nu(z.regular+z.maint),nu(z.setup),nu(z.incident),nu(z.total),nu(z.fte,2)];});
  const groups=[['all','Toàn hệ thống',36],['tct','Tổng công ty',22],['bv','Năm bệnh viện',13],['clinic','TTH Clinic',1]];
  const compare=groups.map(([key,label,seats])=>{const vals=Object.values(runs).map(rr=>roll(rr,runsKeys(rr,key)));return [e(label),key==='clinic'?'1 kiêm nhiệm':String(seats),...vals.map(v=>nu(v.fte,2)),nu(vals[0].fteRun,2),nu(vals[0].fteProject,2)];});
  const totals=Object.values(runs).map(rr=>{const z=roll(rr,runsKeys(rr,'all'));return [cases[rr.scenario],nu(z.regular+z.incident),nu(z.maint),nu(z.setup),nu(z.total),nu(z.peak,2)+' (T'+(z.peakIndex+1)+')',nu(z.fteNext,2)];});
- const headroom=edits.clinic==null?'35 suất chuyên trách có quỹ giờ tham chiếu. Chênh năng lực toàn hệ thống còn phụ thuộc số giờ Marketing được phân tại Clinic.':`Quỹ kế hoạch của 35 suất chuyên trách và đầu mối Clinic là ${format(35*r.cap.plan+edits.clinic)} giờ/tháng.`;
- const deficits=staffingConstraints(r);const peakDef=deficits.reduce((a,b)=>a.full>=b.full?a:b);
- const pool=['tp','cvt','cvt-2','qlth-a','qlth-bc','cvtt-a','cvtt-bc','bt-ac','bt-b','tk-a','tk-b','tk-nt','md-ac','md-b','qc-a','qc-b','dl-1','qlsps','qlml','tn-a','tn-b','mdcs-a','mdcs-b','qhcs','dmpk'];const pos=pool.map(id=>{const seat=model.seats[id],z=roll(r,roleKeys(r,id,true)),c=roleCap(r,id);const gap=id==='dmpk'?(c==null?'Chờ giờ Clinic':nu(z.fte-c/(r.cap.plan*12),2)):nu(z.fte-seat,2);return [cellRole(id)+(id==='dl-1'?'<small>Gồm phần kiêm dữ liệu khách hàng và thị trường.</small>':''),id==='dmpk'?'1 kiêm nhiệm':String(seat),nu(z.run),nu(z.setup),nu(z.fte,2),gap,e(decision(z,seat,id))];});
- return `<h3>Nhu cầu nhân sự năm 2027</h3><p>36 suất là phương án tổ chức để đối chiếu. Nhu cầu bên dưới quy đổi từ số giờ có đầu ra trong từng kịch bản.</p><div class="control">${selCase()}</div>`+
- metrics([[nu(a.run,0),'Giờ vận hành năm 2027'],[nu(a.setup,0),'Giờ thiết lập một lần trong năm'],[nu(a.fte,2),'Suất toàn thời gian quy đổi bình quân'],[nu(a.peak,2),'Suất quy đổi tháng cao nhất · T'+(a.peakIndex+1)]])+`<p class="note">Số tính thử, chưa phê duyệt. ${e(headroom)} Giờ dưới trần ở một chức danh chỉ có thể chuyển khi đủ kỹ năng, đúng nhóm và có lịch tiếp nhận.</p>`+
- '<h4>Ba kịch bản so với cơ cấu</h4>'+table(['Phạm vi','Suất cơ cấu','Cơ sở · suất','Tải cao · suất','Tối ưu · suất','Thường xuyên · cơ sở','Thiết lập tăng thêm · cơ sở'],compare,[1,2,3,4,5,6])+table(['Kịch bản','Vận hành, sự việc (giờ/năm)','Duy trì tài liệu 2027 (giờ)','Thiết lập (giờ)','Tổng giờ năm','Đỉnh tháng (suất)','Năm sau đủ kỳ¹ (suất)'],totals,[1,2,3,4,5,6])+`<p class="fine">¹ Giữ sản lượng dịch vụ của kịch bản, tính đủ chu kỳ rà phiên bản đã bàn giao, loại tải thiết lập một lần. Kịch bản tối ưu dàn lịch các gói độc lập. Giờ thiết kế chỉ giảm khi có số bản đổi cỡ đủ điều kiện được nhập trong Căn cứ và kiểm toán.</p>`+
- detail('Thiếu năng lực ở đúng chức danh và địa điểm',`<p>Trong tháng ${peakDef.month}, phần vượt quỹ ở từng người/nhóm chuyên môn cộng lại là <b>${format(peakDef.full,2)} suất quy đổi</b>, gồm ${format(peakDef.run,2)} suất từ tải vận hành và ${format(peakDef.project,2)} suất tăng thêm do đợt thiết lập. Quỹ của các cơ sở và nhóm khác chỉ sử dụng được sau khi kiểm tra khả năng điều phối.${edits.clinic==null?' Clinic được tách khỏi phép tính thiếu quỹ đến khi có giờ được giao.':''}</p>`+table(['Tháng','Phần thiếu do vận hành (suất)','Tăng thêm do dự án (suất)','Vị trí, địa điểm vượt quỹ'],deficits.map(d=>[String(d.month),nu(d.run,2),nu(d.project,2),e(d.affected.map(x=>x.label+' (+'+format(x.full,2)+')').join(' · ')||'Trong quỹ thử')]),[1,2]),true)+
- detail('Nhu cầu từng tháng trong năm',table(['Tháng','Giờ kế hoạch vận hành','Giờ thiết lập','Giờ sự việc','Tổng giờ','Suất quy đổi'],monthRows,[1,2,3,4,5]))+
- '<h4>Đối chiếu theo vị trí chịu tải</h4><p class="fine">Chênh = nhu cầu quy đổi trừ năng lực được phân. Số dương thể hiện nhu cầu vượt quỹ so sánh. Các vai trò kiêm nhiệm dùng chung quỹ của người giữ vị trí.</p>'+table(['Chức danh / quỹ giờ','Suất cơ cấu','Giờ vận hành/năm','Giờ thiết lập/năm','Nhu cầu (suất)','Chênh (suất)','Điều kiện xử lý'],pos,[1,2,3,4,5]);
+ const all=poolReviews(r);
+ return '<h3>Quyết định nhân sự năm 2027</h3><div class="control">'+selCase()+'</div>'+
+ metrics([[nu(a.total,0),'Giờ công đã định lượng trong năm'],[nu(a.setup,0),'Trong đó, giờ thiết lập một lần']])+
+ decisions(r,all)+
+ detail('So sánh ba kịch bản và phép quy đổi từ giờ ra suất', '<p>Các suất dưới đây biểu thị khối lượng công việc của mô hình đủ phạm vi, tính bình quân cả năm. Bố trí tại chỗ và các tháng vượt quỹ được xét riêng ở trên. Xem bảng Lộ trình và đầu ra để giao việc theo từng đợt.</p>'+table(['Phạm vi','Bố trí theo cơ cấu','Cơ sở · suất quy đổi','Tải cao · suất quy đổi','Tối ưu · suất quy đổi','Thường xuyên · cơ sở','Thiết lập tăng thêm · cơ sở'],compare,[1,2,3,4,5,6])+table(['Kịch bản','Vận hành, sự việc (giờ/năm)','Duy trì tài liệu (giờ)','Thiết lập (giờ)','Tổng giờ năm','Đỉnh tháng (suất)','Năm sau đủ kỳ (suất)'],totals,[1,2,3,4,5,6]))+
+ detail('Giờ vận hành, thiết lập và phát sinh của từng tháng',table(['Tháng','Giờ kế hoạch vận hành','Giờ thiết lập','Giờ sự việc','Tổng giờ','Quy đổi từ giờ ra suất'],monthRows,[1,2,3,4,5]));
+
 }
-function volumeReason(w){const q=w.item.q;if(w.site&&typeof q==='string')return 'Đầu vào riêng của '+siteTitle(w.site)+'. Sản lượng giả định theo nhu cầu hiện trường, thay tại Từng cơ sở.';if(typeof q==='string')return 'Tổng từ sản lượng V2/V3 của bệnh viện đúng nhóm và số video TCT nhận theo kịch bản. Thay sản lượng ở từng cơ sở sẽ cập nhật bảng này.';if(w.item.code==='du-gb')return 'Số suất được bố trí trong nhóm × một lượt giao ban mỗi tuần.';if(w.item.id.startsWith('qc-')&&['fb','tik','khac','ads'].includes(w.item.code))return 'Danh mục 30 kênh, định mức theo nền tảng và 8 chiến dịch/tháng ở mục 6. Phân chiến dịch giữa hai nhóm là giả định.';if(w.item.role==='cvt'&&w.item.code==='bv')return 'Năm Trưởng nhóm bệnh viện × một lượt/tuần.';if(w.item.role==='cvt-2'&&w.item.code==='tai')return 'Hai tổ phụ trách × một phiếu cân tải/tổ/tuần.';return 'Số lượt theo kỳ tính thử từ loại đầu ra và nhịp công việc trong MTCV. Chưa có phiếu giao sản lượng 2027 hoặc nhật ký đo đủ kỳ.';}
-function workdetail(w){const z=w.item,p=u.period,quant=p?w.qty[p-1]:sum(w.qty),hours=p?w.hours[p-1]:sum(w.hours);const current=edits.work[w.id]||{}, q=typeof z.q==='number'?String(current.q??z.q):null;const allowQ=q!==null&&z.kind!=='G'&&z.code!=='du-gb';const dur=w.t;const per=periodName(z.period);const quarter=quarterly(w.qty);const hquarter=quarterly(w.hours);
- const evidence=roleMap[z.role].bao_cao_cho||'';const nperiod=z.period==='y12'?'năm':'kỳ';
- const tracing=(z.jd||[]).filter(i=>model.jd[z.role][i]).map(i=>`PL1.${i} ${model.jd[z.role][i][0]}`).join(' · ');
- const displays=months.map((m,i)=>[String(m),nu(w.qty[i]),nu(w.hours[i])]);
- return detail(`${e(z.name)} <small>${e(w.id)} · ${format(quant)} đơn vị · ${format(hours)} giờ ${p?'trong tháng '+p:'trong năm'}</small>`,
- stack([['Nhóm nhiệm vụ',e(kind[z.kind])],['Người thực hiện',e(name(w.rid))],['Phạm vi, nghiệm thu',e(z.note)],['Căn cứ',e(z.ref)+(tracing?'<small>'+e(tracing)+'</small>':'')],['Sản lượng và tần suất',e(volumeReason(w))+'<small>'+e(per)+' · cao điểm cộng '+format(z.extra)+' đơn vị/lần trong tháng áp dụng.</small>'],['Định mức theo công đoạn',segment.map((lab,i)=>`${e(lab)} ${format(dur[i])} phút`).join(' · ')],['Cách tính',`${format(quant)} đơn vị × ${format(sum(dur))} phút ÷ 60${u.scenario==='opt'&&z.code==='c1'?' (trừ thời gian của số bản đủ điều kiện)':''} = <b>${format(hours)} giờ</b>.`],['Sản lượng quý I–IV',quarter.map(x=>format(x)).join(' / ')],['Giờ quý I–IV',hquarter.map(x=>format(x)).join(' / ')],['Xác nhận',e(name(z.role))+' ghi nhật ký, quản lý xác minh theo tuyến '+e(evidence)+'.']])+detail('Sản lượng và giờ đủ 12 tháng',table(['Tháng','Số đơn vị','Giờ'],displays,[1,2]))+
- (z.kind==='G'?'<p class="note">Chưa kích hoạt vị trí vùng. Khi có quyết định, phải lập lại lịch và người nhận phần việc bàn giao.</p>':`<form class="form" data-edit-work="${e(w.id)}">${allowQ?fLabel('Sản lượng/'+nperiod,input('q',q)):''}${segment.map((n,i)=>fLabel(n+' (phút)',input('t'+i,dur[i],0,20000,'0.1'))).join('')}${apply}</form>`) );
+function volumeReason(w){
+ const {q,code,id,role}=w.item;
+ if(w.site&&typeof q==='string'){
+   const basis=q==='@lot'?'Tổng số V1, V2, V3, bộ ảnh độc lập và buổi ghi sự kiện.':model.drivers[q.slice(1)]+'.';
+   return siteTitle(w.site)+' · '+basis+' Sản lượng tháng thường và phần tăng trong tháng cao điểm lấy từ bảng Từng cơ sở.';
+ }
+ if(typeof q==='string'){
+   const [group,type]=q.split(':');
+   if(type==='review')return 'Một lượt kiểm kỹ thuật cho mỗi V2 hoặc V3 trong mẫu do bệnh viện thuộc nhóm bàn giao. Tính từ sản lượng riêng của từng bệnh viện.';
+   if(type==='script')return 'Tổng số V2 và V3 trong mẫu của các bệnh viện thuộc nhóm, cộng video ngắn, V3 vượt mẫu và V4 do Tổng công ty nhận sản xuất trong cùng nhóm.';
+   const standard=edits.hqVideo[group]?.[type]??TTHStaffing.hqVideoPlan[group][type];
+   return 'Kế hoạch sản xuất riêng tại Tổng công ty, nhóm '+group.slice(1)+'. Giả định '+format(standard)+' sản phẩm/tháng thường. Kịch bản tải cao cộng 1 sản phẩm loại này ở mỗi tháng 4, 9 và 11.';
+ }
+ if(code==='du-gb')return 'Số suất được bố trí trong nhóm × một lượt giao ban mỗi tuần.';
+ if(id.startsWith('qc-')&&['fb','tik','khac','ads'].includes(code))return 'Danh mục 30 kênh, định mức theo nền tảng và 8 chiến dịch/tháng ở mục 6. Phân chiến dịch giữa hai nhóm là giả định.';
+ if(role==='cvt'&&code==='bv')return 'Năm Trưởng nhóm bệnh viện × một lượt/tuần.';
+ if(role==='cvt-2'&&code==='tai')return 'Hai tổ phụ trách × một phiếu cân tải/tổ/tuần.';
+ return 'Số lượt theo kỳ tính thử từ loại đầu ra và nhịp công việc trong MTCV. Chưa có phiếu giao sản lượng 2027 hoặc nhật ký đo đủ kỳ.';
 }
-function origOutputs(id){const a=model.jd[id];return table([...a[0],'Hạch toán vào đâu'],a.slice(1).map((r,i)=>{const [key,note]=model.crosswalk[id][i];const link=key.startsWith('@')?btn(key.slice(1),'docs',key.slice(1)):btn(key,'roles',key.split('/')[0]);return [...r.map((x,j)=>(j===0?`<b>PL1.${i+1}</b> · `:'')+e(x||'Chưa ghi trong nguồn')),link+'<small>'+e(note)+'</small>'];}));}
+function workdetail(w){
+ const z=w.item,p=u.period,quant=p?w.qty[p-1]:sum(w.qty),hours=p?w.hours[p-1]:sum(w.hours);
+ const current=edits.work[w.id]||{},dur=w.t,personnel=roleMap[z.role];
+ const per=periodName(z.period),quarter=quarterly(w.qty),hquarter=quarterly(w.hours);
+ const directVideo=typeof z.q==='string'&&/:(short|complex|film)$/.test(z.q)?z.q.split(':'):null;
+ const rateInput=directVideo?fLabel('Sản lượng TCT/tháng thường',input('driver',edits.hqVideo[directVideo[0]]?.[directVideo[1]]??TTHStaffing.hqVideoPlan[directVideo[0]][directVideo[1]])):
+   typeof z.q==='number'&&z.kind!=='G'&&z.code!=='du-gb'?fLabel('Sản lượng/'+(z.period.startsWith('y')?'năm':per),input('q',current.q??z.q)):'';
+ const linkedRows=new Set(z.jd||[]);
+ model.crosswalk[z.role].forEach(([target],i)=>{if(target===z.id)linkedRows.add(i+1);});
+ const refs=[...linkedRows].filter(i=>model.jd[z.role][i]).sort((a,b)=>a-b);
+ const sourceRows=refs.map(i=>{const [output,term,receiver,registry,reason]=model.jd[z.role][i];return ['PL1.'+i,e(output),e(term),e(receiver),e(registry),e(reason)];});
+ const links=[...new Set(z.ref.match(/QT\.\d+(?![\d.])/g)||[])].map(code=>btn(code,'flows',code));
+ const optionalPeak=z.extra?' · cao điểm cộng riêng '+format(z.extra)+' đơn vị/lần.':'';
+ const controls=z.kind==='G'?'<p class="note">Chưa kích hoạt vị trí vùng. Khi có quyết định, phải lập lại lịch và người nhận phần việc bàn giao.</p>':
+   '<form class="form" data-edit-work="'+e(w.id)+'">'+rateInput+segment.map((n,i)=>fLabel(n+' (phút)',input('t'+i,dur[i],0,20000,'0.1'))).join('')+apply+'</form>';
+ const rows=[
+   ['Nhóm nhiệm vụ',e(kind[z.kind])],['Người thực hiện công đoạn',e(name(w.rid))],
+   ['Phạm vi, nghiệm thu',e(z.note)],['Căn cứ',e(z.ref)+(links.length?'<small>Tra trách nhiệm theo từng bước · '+links.join(' · ')+'</small>':'')],
+   ['Sản lượng và tần suất',e(volumeReason(w))+'<small>Kỳ tính · '+e(per)+e(optionalPeak)+'</small>'],
+   ['Định mức theo công đoạn',segment.map((lab,i)=>e(lab)+' '+format(dur[i])+' phút').join(' · ')],
+   ['Cách tính',format(quant)+' đơn vị × '+format(sum(dur))+' phút ÷ 60'+(u.scenario==='opt'&&z.code==='c1'?' (điều chỉnh theo số bản đủ điều kiện)':'')+' = <b>'+format(hours)+' giờ</b>.'],
+   ['Sản lượng quý I–IV',quarter.map(x=>format(x)).join(' / ')],['Giờ quý I–IV',hquarter.map(x=>format(x)).join(' / ')],
+   ['Phối hợp, giao nhận theo MTCV',e(personnel.phan_dinh_ban_giao_dau_vao)],['Phạm vi kiểm và duyệt của chức danh',e(personnel.phan_dinh_kiem_duyet)],
+   ['Tuyến quản lý',e(personnel.bao_cao_cho)],['Xác minh định mức',e(name(w.rid))+' ghi nhật ký thực hiện. Quản lý đối chiếu số lượng và thời gian với chứng từ.']
+ ];
+ const source=sourceRows.length?detail('Đầu ra, người nhận và thời hạn trong MTCV',table(['Dòng','Đầu ra nguồn','Kỳ, hạn','Người nhận, duyệt theo nguồn','Nơi ghi nhận','Căn cứ'],sourceRows)):'';
+ const byMonth=detail('Sản lượng và giờ đủ 12 tháng',table(['Tháng','Số đơn vị','Giờ'],months.map((m,i)=>[String(m),nu(w.qty[i]),nu(w.hours[i])]),[1,2]));
+ return detail(e(z.name)+' <small>'+e(w.id)+' · '+format(quant)+' đơn vị · '+format(hours)+' giờ '+(p?'trong tháng '+p:'trong năm')+'</small>',stack(rows)+source+byMonth+controls,false,w.id);
+}
+function origOutputs(id){const a=model.jd[id];return table([...a[0],'Hạch toán vào đâu'],a.slice(1).map((r,i)=>{const [key,note]=model.crosswalk[id][i];const link=key.startsWith('@')?btn(key.slice(1),'docs',key.slice(1)):btn(key,'roles',key);return [...r.map((x,j)=>(j===0?`<b>PL1.${i+1}</b> · `:'')+e(x||'Chưa ghi trong nguồn')),link+'<small>'+e(note)+'</small>'];}));}
 function peopleClarity(id){const r=roleMap[id];const j=db.kpi_vi_tri[id];const rows=Array.isArray(j?.ca_nhan)?j.ca_nhan:[];return stack([['Mục tiêu / chức năng',e(r.muc_dich||r.cnnv_2027?.chuc_nang)],['Đầu ra chủ trì',e(r.phan_dinh_chu_tri_dau_ra)],['Tuyến quản lý',e(r.bao_cao_cho)],['Bàn giao, phối hợp',e(r.phan_dinh_ban_giao_dau_vao)],['Giới hạn trách nhiệm',e(r.phan_dinh_khong_thuoc_trach_nhiem)],['Kiểm và duyệt',e(r.phan_dinh_kiem_duyet)],['Người thay chính',e(person(r.thay_chinh)||'Theo văn bản phân công có hiệu lực')],['Dự phòng',e(person(r.du_phong)||'Chờ phân công')],['Giờ tham chiếu hồ sơ cũ',e(r.gio_ke_hoach)],['Thực có 2027','Chờ Phòng Nhân lực đối chiếu người, thời điểm và quyết định phân công.']])+ (rows.length?table(['Chỉ tiêu dự thảo','Nguồn kiểm','Tỷ trọng (%)'],rows.map(x=>[e(x.chi_tieu),e(x.nguon||'Chờ xác nhận'),nu(x.ty_trong)]),[2]):`<p>${e(plain(j))}</p>`);}
-function docRoleRows(r,id,site){const rows=[];for(const d of r.docs){const match=d.monthly.flat().filter(x=>x.internal&&x.r.split('@')[0]===id&&(!site||x.r.endsWith('@'+site)));if(!match.length)continue;const by=t=>sum(match.filter(z=>z.type===t).map(x=>x.h));rows.push([btn(d.d.code+' · '+d.d.name,'docs',d.d.code),e(d.d.scope),e([...new Set(match.map(z=>z.stage))].join(', ')),nu(by('setup')),nu(by('maint')),nu(by('next'))]);}return rows;}
+function docRoleRows(r,id,site){const rows=[];for(const d of r.docs){const match=d.monthly.flat().filter(x=>x.internal&&x.r.split('@')[0]===id&&(!site||x.r.endsWith('@'+site)));if(!match.length)continue;const by=t=>sum(match.filter(z=>z.type===t).map(x=>x.h));rows.push([btn(d.d.code+' · '+d.d.name,'docs',d.d.id),e(d.d.scope),e([...new Set(match.map(z=>z.stage))].join(', ')),nu(by('setup')),nu(by('maint')),nu(by('next'))]);}return rows;}
 function rolePanel(){const r=getRun(),id=u.role,info=roleMap[id],a=roll(r,roleKeys(r,id),u.period);const own=r.works.filter(w=>w.item.role===id);const dr=docRoleRows(r,id);const cards=Object.values(runs).map(rr=>{const z=roll(rr,roleKeys(rr,id),u.period);return [cases[rr.scenario],nu(z.regular+z.incident),nu(z.maint),nu(z.setup),nu(z.fteRun,2),nu(z.fte,2)];});const nr=db.quy_trinh.flatMap(f=>f.buoc.flatMap(b=>b.doi_soat_tung_dau_ra_2027)).filter(c=>Object.values(c.ma_chu_tri_theo_nhom||{}).includes(id)).length;
  return `<h3>Sản lượng và định mức theo chức danh</h3><div class="control">${roleSel()}${selCase()}${selPeriod()}</div><h4>${e(info.ten)}</h4><p>${e(groupMap[info.to])} · ${e(info.nhom_thuong_hieu||'Phạm vi chung theo MTCV')} · ${model.seats[id]} suất cơ cấu${id==='dmpk'?' kiêm nhiệm':''}.</p>`+metrics([[nu(a.run),'Giờ vận hành kỳ chọn'],[nu(a.setup),'Giờ thiết lập kỳ chọn'],[nu(a.fte,2),'Nhu cầu quy đổi của nghiệp vụ']])+ (id==='dl-2'||id==='dl-1'?'<p class="note">Hai nghiệp vụ dữ liệu đang do một người kiêm. Tổng hợp cộng hai phần giờ vào quỹ của Chuyên viên đo lường và đối soát đúng một lần.</p>':'')+`<p>${e(decision(a,model.seats[id],id))}</p>`+table(['Kịch bản','Vận hành, sự việc (giờ)','Duy trì tài liệu (giờ)','Thiết lập (giờ)','Thường xuyên (suất)','Cả kỳ (suất)'],cards,[1,2,3,4,5])+
  '<h4>Đầu ra tính giờ</h4><p class="fine">Mở một dòng để xem sản lượng tháng, quý, năm, định mức từng công đoạn, quy cách và căn cứ.</p>'+own.map(w=>w.site?detail(e(siteTitle(w.site))+' · '+e(w.item.name)+' · '+format(u.period?w.hours[u.period-1]:sum(w.hours))+' giờ',workdetail(w)):workdetail(w)).join('')+
@@ -101,7 +123,7 @@ function sitePanel(){const r=getRun(),s=siteMap[u.site],period=u.period,n=period
  const sites=model.sites.map(i=>{const z=roll(r,scopeKeys(r,null,i.id),period);return [btn(i.name,'sites',i.id),i.group==='clinic'?'1 đầu mối kiêm':String(r.siteRoles(i).length),nu(z.regular+z.incident),nu(z.setup+z.maint),nu(z.fte,2)];});const items=r.works.filter(w=>w.site===s.id);const v=edits.sites[s.id]||s.inputs;const siteCap=cs?`<p class="note">Hai phòng khám dùng chung một đầu mối. ${edits.clinic==null?'Chưa có số giờ Marketing được bảo đảm.':'Quỹ giờ đã nhập là '+format(edits.clinic)+' giờ kế hoạch/tháng.'} Khi phải hiện diện đồng thời, cần phân lịch với đơn vị chủ quản.</p>`:'';
  return '<h3>Khối lượng theo từng bệnh viện và TTH Clinic</h3><p>Ba bệnh viện đa khoa có người làm truyền thông tại chỗ. Tại hai bệnh viện chuyên khoa, Trưởng nhóm kiêm phần truyền thông. Mỗi nhiệm vụ chỉ vào quỹ giờ của đúng cá nhân.</p>'+`<div class="control">${siteSel()}${selCase()}${selPeriod()}</div>`+table(['Đơn vị','Suất cơ cấu','Vận hành và sự việc (giờ)','Thiết lập và duy trì tài liệu (giờ)','Nhu cầu (suất)'],sites,[2,3,4])+`<h4>${e(s.name)}</h4>`+metrics([[nu(selected.total),'Tổng giờ kỳ chọn'],[nu(capacity),'Quỹ kế hoạch của đơn vị (giờ)'],[nu(selected.fte,2),'Nhu cầu nhân lực quy đổi']])+siteCap+
  detail('Đầu vào sản lượng riêng của cơ sở',`<p>Giả định để so sánh nhu cầu từng địa điểm. Mỗi giá trị là số đơn vị/tháng thường. Giá trị thực hiện 2027 chờ nhật ký và kế hoạch được xác nhận.</p><form class="form" data-edit-site="${e(s.id)}">${Object.entries(model.drivers).filter(([k])=>!cs||['rq','evt','photo','trip','consent','change'].includes(k)).map(([k,n])=>fLabel(n,input(k,v[k]??s.inputs[k]))).join('')}${apply}</form>`,true)+
- r.siteRoles(s).map(id=>{const mine=items.filter(w=>w.item.role===id);const z=roll(r,[id+'@'+s.id],period);return detail(e(name(id))+' · '+format(z.total)+' giờ',table(['Sản phẩm / phần việc','Số lượng kỳ chọn','Phút/đơn vị','Giờ kỳ chọn'],mine.map(w=>[e(w.item.name),nu(period?w.qty[period-1]:sum(w.qty)),nu(sum(w.t)),nu(period?w.hours[period-1]:sum(w.hours))]),[1,2,3])+`<p>${btn('Mở đầy đủ định mức và kỹ năng theo MTCV','roles',id)}</p>`,true);}).join('')+
+ r.siteRoles(s).map(id=>{const mine=items.filter(w=>w.item.role===id);const z=roll(r,[id+'@'+s.id],period);return detail(e(name(id))+' · '+format(z.total)+' giờ',table(['Sản phẩm / phần việc','Số lượng kỳ chọn','Phút/đơn vị','Giờ kỳ chọn'],mine.map(w=>[btn(w.item.name,'roles',w.id),nu(period?w.qty[period-1]:sum(w.qty)),nu(sum(w.t)),nu(period?w.hours[period-1]:sum(w.hours))]),[1,2,3])+`<p>${btn('Mở đầy đủ định mức và kỹ năng theo MTCV','roles',id)}</p>`,true);}).join('')+
  `<p class="fine">Số thực có theo bảng lịch sử năm 2026 của đơn vị: ${s.historic==null?'chưa tách cho đầu mối Clinic':format(s.historic)+' người'}. Danh sách thực vị 2027 chờ Phòng Nhân lực đối chiếu. Mốc 306/200/25 giờ của phụ lục trước dùng để so sánh phương pháp.</p>`;
 }
 function managePanel(){const r=getRun();const managers=['cvt','cvt-2','bt-ac','qlth-bc','qlsps'];const rows=managers.map(id=>{const chief=id.startsWith('cvt'),z=roll(r,[id]);const own=r.works.filter(w=>w.item.role===id&&(chief?w.item.kind==='K':w.item.kind==='T'));const hm=sum(own.map(w=>sum(w.hours)));const n=chief?(id==='cvt'?'1 tổ, 5 Trưởng nhóm bệnh viện':'2 tổ, qua 2 Tổ trưởng'):'Vai trò Tổ trưởng kiêm nhiệm';return [cellRole(id),e(n),nu(hm),nu(z.setup),nu(z.maint),nu(z.total),nu(z.fte,2)];});return `<h3>Tải quản lý và kiêm nhiệm</h3><div class="control">${selCase()}</div>`+table(['Chức danh giữ việc','Phạm vi','Giờ quản lý định kỳ/năm','Giờ thiết lập/năm','Duy trì tài liệu/năm','Tổng giờ vị trí/năm','Nhu cầu (suất)'],rows,[2,3,4,5,6])+`<p class="note">Giờ quản lý là một phần của tổng giờ vị trí. Khi Tổ trưởng là người kiêm nhiệm, cùng một lần họp, phân việc hoặc kiểm tra chỉ được ghi một lần. Đào tạo, thử mẫu và ký kiểm tính cho người tham gia thực tế.</p>`+managers.map(id=>{const chief=id.startsWith('cvt'),items=r.works.filter(w=>w.item.role===id&&(chief?['K','U'].includes(w.item.kind):w.item.kind==='T'));return detail(e(name(id)),items.map(workdetail).join('')+detail('Phạm vi và quan hệ báo cáo',peopleClarity(id)));}).join('')+'<h4>Điểm bàn giao cần kiểm</h4>'+stack([['Lịch sản xuất','Tổ trưởng Tổ Nội dung và Sáng tạo phân lịch từng việc theo phạm vi được giao. Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở cân năng lực toàn tuyến và giải quyết xung đột.'],['Nghiệp vụ tại bệnh viện','Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số kiểm chuẩn PR, OOH và số. Yêu cầu làm thay đổi lịch cơ sở đi qua Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở và Trưởng nhóm của đơn vị.'],['Ba Tổ trưởng','Một Biên tập nhóm 1, Quản lý thương hiệu nhóm 2 và Quản lý sản phẩm số giữ vai trò điều phối khi đã có quyết định. Giờ quản lý không tạo thêm suất.'],['Người thay','Khi người kiêm vắng, nghiệp vụ và thẩm quyền phải được bàn giao đúng phạm vi. Chỉ cộng giờ bàn giao và giờ thật sự làm thay.']]);}
@@ -112,6 +134,10 @@ function docLedger(rec){const d=rec.d, sr=rec.monthly.flat();const hrs=t=>sum(sr
  const change=edits.docs[d.id]||{};const management=[['Sở hữu nghiệp vụ',e(name(d.owner))],['Soạn chính',e(name(d.writer))],['Người tham gia soạn',e(d.coauthors.map(x=>name(x[0])+' · '+x[2]).join(' / ')||'Không phân thêm trong kịch bản')],['Kiểm độc lập',e(name(d.reviewer))],['Thử nghiệm',e(name(d.tester))],['Quyền phê duyệt',e(authority(d))],['Căn cứ và bản cũ',e(d.original)],['Trạng thái kiểm chứng',e(d.evidence)],['Chu kỳ trong Khung',e(d.cycle)],['Quy cách / điểm bàn giao',e(d.note)],['Tháng triển khai',`Tháng sớm nhất ${rec.scheduled}. ${rec.depends.length?'Sau '+rec.depends.join(', ')+'.':''} Lịch dàn lô xem trong bảng tháng.`]];
  const source=db.danh_muc_tai_lieu.find(x=>x.ma===d.code);const vb=db.danh_muc_van_ban.find(x=>x.ma===d.code);
  const vinfo=vb?detail('Thông tin văn bản trong danh mục quản trị',stack([['Mã và loại',e(vb.ma+' · '+vb.loai)],['Phạm vi',e(vb.pham_vi)],['Tình trạng trong Khung',e(vb.trang_thai_hieu_luc||vb.trang_thai)],['Nội dung đối chiếu',e(plain(vb.dieu_khoan)||plain(vb.kiem_tra_truoc_ban_hanh))],['Căn cứ liên quan',e(plain(vb.van_ban_lien_quan))]])):'';
+ if(d.rawrole){
+   const original=source?'Soạn/xây theo nguồn: '+[].concat(source.xay_dung||[]).join(', ')+' · nắm giữ: '+[].concat(source.nam_giu||[]).join(', '):d.rawrole;
+   management.splice(1,0,['Mã vai trò trong danh mục gốc',e(original)]);
+ }
  const fields=source?.truong;const sample=Array.isArray(fields)&&fields.length?detail('Cấu trúc mẫu và trường thông tin trong Khung',table(['Trường','Kiểu dữ liệu','Bắt buộc','Nguồn'],fields.map(f=>[e(f.ten||f.ten_truong||f.ma_truong),e(f.loai_du_lieu),f.bat_buoc?'Có':'Theo điều kiện',e(f.nguon||'Theo hồ sơ nghiệp vụ')]))):'';
  const stageNames=['Đối chiếu','Soạn','Kiểm','Thử','Trình/ký','Bàn giao'];const rates=stageNames.map((n,i)=>[e(n),nu(d.profile[i]),nu(model.factors[rec.action][i],2),nu(d.profile[i]*model.factors[rec.action][i])]);
  return stack(management)+ (d.parts.length?detail('Danh mục cấu phần',`<ol>${d.parts.map(x=>'<li>'+e(x)+'</li>').join('')}</ol>`):'') +
@@ -140,19 +166,46 @@ function auditPanel(){const r=getRun(),cap=r.cap,c=edits.capacity;const counts={
  detail('Các căn cứ nghiệp vụ cần kiểm lại trước khi trình',table(['Dữ liệu cần xác nhận','Đầu mối','Chứng từ cần có','Cách xử lý'],sign.map(row=>row.map(e))),true)+
  `<p class="fine">Nguồn nội bộ: CSDL Khung cơ cấu Marketing TTH 2027, MTCV 26 vị trí, phân công và KPI, mục 6, 8A, 14–16, 21–23, danh mục tài liệu, danh mục quản trị, phụ lục 26 chức danh và phụ lục cơ sở. Thông số thay đổi trong lần xem chỉ phục vụ tính thử; tải lại trang sẽ trở về phương án nguồn.</p>`;
 }
-const panels={summary,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel};
+/* EMBED_DELIVERABLES */
+const panels={roadmap:roadmapDelivery,summary,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel};
 root.innerHTML=`<style>${document.getElementById('tth-staffing-style').textContent}</style><div class="app"><nav class="nav" aria-label="Nội dung Mục 05">${Object.entries(tabs).map(([k,v])=>`<button type="button" data-panel="${k}" aria-pressed="false">${e(v)}</button>`).join('')}</nav><div class="padded"><div class="sr" aria-live="polite" id="db-feedback"></div><div id="db-main"></div></div></div>`;
 function draw(){root.querySelectorAll('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===u.panel)));root.getElementById('db-main').innerHTML=panels[u.panel]();}
-function go(panel,arg=''){if(!panels[panel])return;u.panel=panel;if(panel==='roles'&&arg&&roleMap[arg])u.role=arg;if(panel==='sites'&&arg&&siteMap[arg])u.site=arg;if(panel==='docs'&&arg){u.docType='all';u.doc=arg;}if(panel==='flows'&&arg)u.flow=arg;draw();if(panel==='docs'&&arg){const exact=[...root.querySelectorAll('[data-doc-key]')].find(q=>q.dataset.docKey.split('~')[0]===arg);if(exact)exact.open=true;}}
-root.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.panel)go(b.dataset.panel);else if(b.dataset.go){go(b.dataset.go,b.dataset.arg);host.scrollIntoView({block:'start'});}else if(b.hasAttribute('data-clear-flow')){u.flow='';draw();}});
-root.addEventListener('change',ev=>{const k=ev.target.dataset.set;if(!k)return;u[k]=k==='period'?Number(ev.target.value):ev.target.value;draw();});
+function go(panel,arg=''){
+ if(panel==='stage'){if(!stages[arg])return;u.phase=arg;panel='roadmap';}
+ if(panel==='deliveryRole'){if(!roleMap[arg])return;u.deliveryRole=arg;u.deliverySlot='all';panel='roadmap';}
+ if(!panels[panel])return;
+ u.panel=panel;
+ if(panel==='roles'&&arg){const rid=arg.split('/')[0];if(roleMap[rid])u.role=rid;}
+ if(panel==='sites'&&arg&&siteMap[arg])u.site=arg;
+ if(panel==='docs'&&arg){u.docType='all';u.doc=arg.split('~')[0];}
+ if(panel==='flows'&&arg)u.flow=arg;
+ draw();
+ if(panel==='roles'&&arg.includes('/')){
+   const all=[...root.querySelectorAll('[data-work-key]')];
+   const hit=all.find(t=>t.dataset.workKey===arg)||all.find(t=>t.dataset.workKey===arg+'@'+u.site)||all.find(t=>t.dataset.workKey.split('@')[0]===arg);
+   if(hit){for(let t=hit;t;t=t.parentElement)if(t.tagName==='DETAILS')t.open=true;return hit;}
+ }
+ if(panel==='docs'&&arg){const exact=[...root.querySelectorAll('[data-doc-key]')].find(q=>arg.includes('~')?q.dataset.docKey===arg:q.dataset.docKey.split('~')[0]===arg);if(exact){exact.open=true;return exact;}}
+ if(panel==='flows'&&/^QT\.\d+$/i.test(arg)){const exact=root.querySelector('[data-flow-index="'+(Number(arg.split('.')[1])-1)+'"]');if(exact){exact.open=true;return exact;}}
+ return host;
+}
+root.addEventListener('click',ev=>{
+ const b=ev.target.closest('button');if(!b)return;
+ if(b.dataset.panel)go(b.dataset.panel);
+ else if(b.dataset.go){const dest=go(b.dataset.go,b.dataset.arg);if(dest)dest.scrollIntoView({block:'start'});}
+ else if(b.hasAttribute('data-clear-flow')){u.flow='';draw();}
+});
+root.addEventListener('change',ev=>{const k=ev.target.dataset.set;if(!k)return;if(k==='deliveryRole')u.deliverySlot='all';u[k]=k==='period'?Number(ev.target.value):ev.target.value;draw();});
 root.addEventListener('input',ev=>{const k=ev.target.dataset.search;if(!k)return;u[k]=ev.target.value;root.querySelector('[data-results="'+k+'"]').innerHTML=k==='doc'?docResults():flowResults();});
 root.addEventListener('toggle',ev=>{const d=ev.target;if(!d.open)return;if(d.dataset.docKey){const target=d.querySelector('.inner');if(!target.hasChildNodes())target.innerHTML=docLedger(getRun().docs.find(k=>k.d.id===d.dataset.docKey));}if(d.dataset.flowIndex!==undefined){const target=d.querySelector('.inner');if(!target.hasChildNodes()){const flow=flowMatches().find(x=>x.i===Number(d.dataset.flowIndex));if(flow)target.innerHTML=flowDetail(flow);}}},true);
 root.addEventListener('submit',ev=>{ev.preventDefault();const form=ev.target,fd=Object.fromEntries(new FormData(form));if(!form.reportValidity())return;let reopen=null;
  if(form.hasAttribute('data-cap')){const candidate=Object.fromEntries(['week','days','leave','share'].map(k=>[k,Number(fd[k])]));try{TTHStaffing.capacity(candidate);}catch(err){form.querySelector('[name=leave]').setCustomValidity(err.message);form.reportValidity();form.querySelector('[name=leave]').setCustomValidity('');return;}edits.capacity=candidate;edits.clinic=asNumber(fd.clinic);}
  else if(form.hasAttribute('data-opt')){edits.eligible=Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]));}
  else if(form.dataset.editSite){const key=form.dataset.editSite;edits.sites[key]={...siteMap[key].inputs,...Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]))};}
- else if(form.dataset.editWork){const id=form.dataset.editWork;edits.work[id]={t:segment.map((_,i)=>Number(fd['t'+i])),...(fd.q!==undefined?{q:Number(fd.q)}:{})};reopen=['work',id];}
+ else if(form.dataset.editWork){const id=form.dataset.editWork;if(fd.driver!==undefined){
+   const [group,type]=getRun().works.find(w=>w.id===id).item.q.split(':');
+   edits.hqVideo[group]={...edits.hqVideo[group],[type]:Number(fd.driver)};
+ }edits.work[id]={t:segment.map((_,i)=>Number(fd['t'+i])),...(fd.q!==undefined?{q:Number(fd.q)}:{})};reopen=['work',id];}
  else if(form.dataset.editDoc){const id=form.dataset.editDoc;edits.docs[id]={action:fd.action,count:Number(fd.count),month:Number(fd.month)};reopen=['doc',id];}
  compute();draw();if(reopen){if(reopen[0]==='doc'){const it=[...root.querySelectorAll('[data-doc-key]')].find(x=>x.dataset.docKey===reopen[1]);if(it)it.open=true;}else{const ff=[...root.querySelectorAll('[data-edit-work]')].find(x=>x.dataset.editWork===reopen[1]);if(ff){for(let p=ff.parentElement;p&&p!==root;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;}}}root.getElementById('db-feedback').textContent='Đã cập nhật các phép tính theo đầu vào của lần xem.';});
 document.addEventListener('click',ev=>{const a=ev.target.closest?.('[data-staff-panel],[data-staff-role]');if(!a)return;ev.preventDefault();document.querySelector('.tab[data-target="staffing"]')?.click();go(a.dataset.staffRole?'roles':a.dataset.staffPanel,a.dataset.staffRole||'');if(location.hash!=='#dinh-bien-2027')location.hash='dinh-bien-2027';else host.scrollIntoView({block:'start'});});
