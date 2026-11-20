@@ -35,6 +35,7 @@ on:
       - 'scripts/slide_web_app_fix_2027.py'
       - 'scripts/slide_tree_after8_2027.py'
       - 'scripts/tth_five_asset_logic_fix_2027.py'
+      - 'scripts/app_all_pages_scroll_2027.py'
       - 'scripts/tth_five_asset_browser_qa_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
       - 'pages-overrides/2027-1911-final/**'
@@ -209,6 +210,8 @@ jobs:
         run: python3 scripts/slide_tree_after8_2027.py _site
       - name: Kiem soat logic lien thong Khung Slide Website App CRM
         run: python3 scripts/tth_five_asset_logic_fix_2027.py _site
+      - name: Mo rong cuon du trang va the ngang cho 102 man hinh App
+        run: python3 scripts/app_all_pages_scroll_2027.py _site
       - name: Kiem tra trinh duyet 5 tai san desktop va mobile
         run: python3 scripts/tth_five_asset_browser_qa_2027.py _site
       - name: Cau hinh GitHub Pages
