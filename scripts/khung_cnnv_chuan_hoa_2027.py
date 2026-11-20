@@ -468,7 +468,7 @@ for item in D["bo_quy_chuan_da_dong_bo"]:
     else:raise RuntimeError("Mã quy chuẩn ngoài bốn phạm vi đã đối chiếu: "+code)
     item["phe_duyet"]=(
       "Người có thẩm quyền theo văn bản phân quyền, ủy quyền còn hiệu lực; "
-      "không mặc nhiên thuộc Trưởng phòng Marketing hoặc Chuyên viên trưởng. "
+      "không mặc nhiên thuộc Trưởng phòng Marketing hoặc người giữ trách nhiệm kiểm chuẩn chuyên môn. "
       "Chưa có ủy quyền hiệu lực thì CHỜ PHÊ DUYỆT."
     )
     item["trang_thai_2027"]="Ma trận đề xuất trách nhiệm xây dựng và kiểm chuẩn; không phải quyết định ban hành."
