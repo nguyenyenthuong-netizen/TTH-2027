@@ -313,6 +313,106 @@ D["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]={
    "quy_tac_chan":"Không có phân công hiệu lực, mã nhân sự hoặc người kiểm độc lập: CHỜ BÀN GIAO/CHỜ NGHIỆM THU"}
  ]
 }
+# 1c.1) Nhánh xử lý xung đột HAI TỔ do cùng một Chuyên viên trưởng quản lý:
+# thuộc QT xung-dot-lich, KHÔNG phát sinh quy trình thứ 61 hoặc cấp duyệt mới.
+# Chỉ là quy tắc định tuyến đề xuất; người được ủy quyền thực thi theo văn bản
+# hiệu lực. Mã CVT vẫn là khóa kỹ thuật, tên hiển thị dùng đúng hai chức danh.
+D["cnnv_nhanh_xung_dot_hai_to_2027"]={
+ "quy_trinh_goc":"xung-dot-lich",
+ "lien_quan":["yeu-cau-gap","hang-muc","hang-muc-toan-he-thong",
+              "quang-cao-tra-phi","phat-thanh-man-hinh","vang-mat",
+              "nhan-viec-moi","chuyen-quyen","su-co-tai-khoan"],
+ "trang_thai":"NHÁNH ĐIỀU PHỐI ĐỀ XUẤT TRONG QT HIỆN CÓ; chưa thay văn bản phân quyền hoặc ban hành quy trình mới",
+ "phai_phan_biet":[
+   {"loai":"Cùng một tổ","nguoi_chot":"Tổ trưởng tổ liên quan",
+    "pham_vi":"Đổi lịch thường lệ trong thời hạn và nguồn lực đã được phê duyệt"},
+   {"loai":"Hai tổ Truyền thông và Thương hiệu – Tăng trưởng số tại Tổng công ty",
+    "nguoi_chot":T,
+    "pham_vi":"Kiểm tải liên tổ, chọn phương án phối hợp trong phạm vi quản lý hai tổ, không ký duyệt phát hành hay chi phí"},
+   {"loai":"Tuyến Nội dung – Sáng tạo/Marketing cơ sở với Truyền thông – Thương hiệu/Tăng trưởng số",
+    "nguoi_chot":"Trưởng phòng Marketing nếu "+N+" và "+T+" không thống nhất hoặc yêu cầu vượt quyền",
+    "pham_vi":"Không giao lại nhân sự của tuyến kia; hai chức danh cung cấp ý kiến kiểm chuẩn và tải theo phạm vi"},
+   {"loai":"Thay mục tiêu, hạn mức, ngân sách, phát hành, phát ngôn, quyền hệ thống",
+    "nguoi_chot":"Người có thẩm quyền theo quyết định, ma trận còn hiệu lực",
+    "pham_vi":"Không suy diễn quyền chỉ vì giữ chức danh hoặc xử lý khẩn"}
+ ],
+ "buoc":[
+  {"so":1,"ten":"Ghi một phiếu xung đột","chu_tri":"Tổ trưởng nơi tiếp nhận xung đột đầu tiên",
+   "dau_vao":"Mã việc, hai lịch tổ, phạm vi nhóm thương hiệu/cơ sở, người làm, hạn và rủi ro",
+   "dau_ra":"Một mã phiếu liên kết hai mã nhánh; đánh dấu người tổng hợp duy nhất",
+   "chuyen_buoc":"Thiếu dữ liệu hoặc trùng lệnh: CHỜ PHÂN TUYẾN, không tự chuyển việc"},
+  {"so":2,"ten":"Đối chiếu tải, phụ thuộc và biện pháp","chu_tri":"Hai Tổ trưởng, một người được xác định làm đầu mối tổng hợp",
+   "dau_vao":"Giờ khả dụng thực đo, mốc phát hành đã duyệt, phụ thuộc sản phẩm/trang đích, năng lực dự phòng",
+   "dau_ra":"Phương án giữ lịch, thay thứ tự hoặc điều chỉnh đầu vào có căn cứ và nhật ký",
+   "chuyen_buoc":"Không tự chuyển quyền nguồn lực ngoài tổ; không dùng giờ quản trị của "+T+" làm giờ tác nghiệp"},
+  {"so":3,"ten":"Xác nhận mục tiêu và điều kiện nghiệp vụ","chu_tri":"Quản lý thương hiệu đúng nhóm/hạng mục",
+   "dau_vao":"Mục tiêu, thông điệp, phân khúc và thời hạn đã được phê duyệt",
+   "dau_ra":"Ý kiến nghiệm thu mục tiêu; trường hợp hai nhóm thì lưu hai phiếu theo mã nhánh",
+   "chuyen_buoc":"Không tự nghiệm thu sản phẩm do chính mình thực hiện; không thay kiểm y khoa/pháp lý"},
+  {"so":4,"ten":"Chốt phương án đúng tuyến","chu_tri":T+" đối với hai tổ trực thuộc; "+N+" đối với tải sản xuất/cơ sở",
+   "dau_vao":"Bảng phương án hai Tổ trưởng, xác nhận mục tiêu và điểm kiểm chuẩn",
+   "dau_ra":"Một phương án ưu tiên và người phân việc đúng tổ; khác tuyến hoặc vượt quyền chuyển Trưởng phòng",
+   "chuyen_buoc":"Hai chức danh không cùng ra lệnh trực tiếp một nhân sự; Trưởng phòng chỉ quyết trong phạm vi được giao"},
+  {"so":5,"ten":"Kiểm quyền quyết định trước thay đổi","chu_tri":"Người có thẩm quyền tương ứng loại quyết định",
+   "dau_vao":"Căn cứ phát hành, chi phí, sửa mục tiêu, quyền hệ thống và ủy quyền còn hiệu lực",
+   "dau_ra":"Quyết định theo từng quyền hoặc trạng thái CHƯA CÓ ỦY QUYỀN HIỆU LỰC",
+   "chuyen_buoc":"Thiếu người kiểm độc lập, xác nhận y khoa/pháp lý hoặc ủy quyền: khóa phát hành/chi; không tự cấp quyền"},
+  {"so":6,"ten":"Thông báo một kết quả và hậu kiểm","chu_tri":"Tổ trưởng đầu mối tổng hợp của phiếu xung đột",
+   "dau_vao":"Quyết định có hiệu lực, lịch cập nhật, hai mã nhánh, nhật ký người làm/người kiểm",
+   "dau_ra":"Một thông báo cho các bên; đối soát thời gian chờ, làm lại và nguyên nhân xung đột",
+   "chuyen_buoc":"Giờ chuyên viên, giờ Tổ trưởng kiêm nhiệm và giờ "+T+" được ghi ba loại riêng; không tự cộng trùng"}
+ ],
+ "quy_tac_ket_thuc":"Chỉ đóng phiếu khi hai tổ đã xác nhận lịch, một người chủ trì mã việc được ghi, quyết định vượt quyền có chứng cứ; không được tự đánh dấu hoàn tất khi chưa có cá nhân và ủy quyền."
+}
+refs={
+ "XT-01":["xung-dot-lich","hang-muc","quang-cao-tra-phi"],
+ "XT-02":["xung-dot-lich","hang-muc-toan-he-thong"],
+ "XT-03":["xung-dot-lich","website-app","quang-cao-tra-phi"],
+ "XT-04":["xung-dot-lich","yeu-cau-gap","hang-muc"],
+ "XT-05":["xung-dot-lich","vang-mat","ngoai-luong"],
+ "XT-06":["bgd-coso-de-nghi","yeu-cau-le","xung-dot-lich"],
+ "XT-07":["hang-muc","mua-sam","quang-cao-tra-phi"],
+ "XT-08":["su-co-tai-khoan","danh-gia","yeu-cau-gap"],
+ "XT-09":["vang-mat","nghi-viec","nhan-viec-moi"]
+}
+available={q["id"] for q in D["quy_trinh"]}
+for case in D["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"]:
+    case["quy_trinh_tham_chieu"]=refs[case["ma"]]
+    if not set(case["quy_trinh_tham_chieu"])<=available:
+        raise RuntimeError("Mã quy trình dẫn chiếu không tồn tại: "+case["ma"])
+for q in D["quy_trinh"]:
+    if q["id"]=="xung-dot-lich":
+        q["nhanh_hai_to_cung_chuyen_vien_truong_2027"]=(
+            "Khi xung đột chỉ giữa Tổ Truyền thông và Thương hiệu và Tổ Tăng trưởng số, "
+            "người xử lý quản trị hai tổ là "+T+"; mã cvt trong bước gốc chỉ mô tả "
+            "trường hợp tải sản xuất/cơ sở, không áp dụng mặc định sang hai tổ này. "
+            "Nếu có tuyến Nội dung – Sáng tạo/cơ sở: "+N+" cùng đối chiếu, "
+            "vượt quyền/bất đồng chuyển Trưởng phòng. "
+            "Không sửa quyền duyệt phát hành hoặc chi phí."
+        )
+        for i,b in enumerate(q["buoc"],1):
+            b["nhanh_hai_to_2027"]={
+                "quy_trinh":"xung-dot-lich",
+                "loai_xung_dot":"hai_to_tt_tts",
+                "nguoi_quan_tri":"cvt-2",
+                "pham_vi":"Hai tổ TCT; một mã việc và hai mã nhánh; không cấp quyền duyệt",
+                "can_xac_nhan":"Phân loại xung đột và nhân sự theo văn bản có hiệu lực"
+            }
+            if i==3:
+                b["phan_tuyen_chu_tri_theo_pham_vi_2027"]={
+                    "hai_to_tct":"cvt-2",
+                    "tai_san_xuat_va_marketing_co_so":"cvt",
+                    "lien_tuyen_vuot_quyen":"tp",
+                    "bat_buoc":"Chọn duy nhất một tuyến theo phạm vi xung đột; khóa nếu chưa rõ"
+                }
+    elif q["id"] in {"yeu-cau-gap","hang-muc","hang-muc-toan-he-thong",
+                     "quang-cao-tra-phi","phat-thanh-man-hinh","vang-mat",
+                     "nhan-viec-moi","chuyen-quyen","su-co-tai-khoan"}:
+        q["lien_ket_nhanh_xung_dot_hai_to_2027"]=(
+            "Nếu cùng cần ưu tiên nguồn lực của hai tổ Truyền thông và Thương hiệu, "
+            "Tăng trưởng số: tham chiếu nhánh 6 bước thuộc QT xung-dot-lich; "
+            "không tự phát sinh quy trình mới hoặc lệnh giao việc cho Marketing cơ sở."
+        )
 # 1d) Tên đơn vị Marketing bệnh viện phải gắn với tên cơ sở, không gọi
 #     "Tổ Marketing chi nhánh" như tên một đơn vị chính thức.
 #     Các tên dưới đây chỉ là nhãn cơ cấu đề án, không tạo thêm suất/đơn vị.
@@ -564,6 +664,38 @@ if 'id="cnnv-2-chief-3-team-2027"' not in s:
     )
     s=s[:marker.end()]+note+s[marker.end():]
 
+# Nhánh sáu bước của QT xung-dot-lich có trình tự, điều kiện chặn
+# và điểm chuyển cấp, không hiển thị như một quy trình thứ 61.
+branch=D["cnnv_nhanh_xung_dot_hai_to_2027"]
+if 'id="cnnv-six-step-conflict-2027"' not in s:
+    marker=re.search(
+      r'(<section class="doc-sec sub" data-title="4\.3\. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
+      r'[\s\S]*?</h3>)',s)
+    if not marker:raise RuntimeError("Không tìm được mục 4.3 để hiển thị nhánh xung đột")
+    rows=''.join(
+      '<tr><td>'+str(z["so"])+'</td><td>'+escape(z["ten"])+'</td>'
+      '<td>'+escape(z["chu_tri"])+'</td><td>'+escape(z["dau_ra"])+'</td>'
+      '<td>'+escape(z["chuyen_buoc"])+'</td></tr>'
+      for z in branch["buoc"]
+    )
+    block=(
+      '<details id="cnnv-six-step-conflict-2027" style="margin:12px 0;'
+      'max-width:100%;min-width:0;overflow-wrap:anywhere;border:1px solid #d7e2ef;'
+      'padding:10px;border-radius:8px">'
+      '<summary style="cursor:pointer;font-weight:700;color:#0837A1">'
+      'Nhánh 6 bước xử lý xung đột hai tổ (thuộc quy trình hiện có)</summary>'
+      '<p>'+escape(branch["trang_thai"])+'</p>'
+      '<p><b>Điều kiện kích hoạt:</b> '+escape(branch["dieu_kien_kich_hoat"])+'</p>'
+      '<div class="tbl" style="max-width:100%;overflow-x:auto">'
+      '<table class="t" style="min-width:940px;table-layout:auto"><thead>'
+      '<tr><th>Bước</th><th>Công việc</th><th>Đầu mối</th><th>Kết quả</th><th>Điều kiện chặn</th></tr>'
+      '</thead><tbody>'+rows+'</tbody></table></div>'
+      '<p>'+escape(branch["quy_tac_ket_thuc"])+'</p>'
+      '<p class="mini">Tuyến xử lý thuộc QT xung-dot-lich; không thêm biên chế, '
+      'không thêm cấp duyệt, không thay quyết định hiện hành.</p></details>'
+    )
+    s=s[:marker.end()]+block+s[marker.end():]
+
 # Tên tổ cơ sở theo từng bệnh viện: chỉ chèn tại phần cơ cấu, không
 # sửa dữ liệu lịch sử hay văn bản đã ban hành.
 if 'id="cnnv-ten-to-marketing-benh-vien-2027"' not in s:
@@ -699,6 +831,13 @@ assert all(x["ten_to"]=="Tổ Marketing "+x["benh_vien"] for x in check["cnnv_te
 assert s.count('id="cnnv-ten-to-marketing-benh-vien-2027"')==1
 assert "/2 hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="dmpk")["bao_cao_cho"]
 assert len(check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])==9
+assert len(check["cnnv_nhanh_xung_dot_hai_to_2027"]["buoc"])==6
+assert check["cnnv_nhanh_xung_dot_hai_to_2027"]["quy_trinh_goc"]=="xung-dot-lich"
+assert len({z["so"] for z in check["cnnv_nhanh_xung_dot_hai_to_2027"]["buoc"]})==6
+assert all(all(z.get(k) for k in ("chu_tri","dau_vao","dau_ra","chuyen_buoc")) for z in check["cnnv_nhanh_xung_dot_hai_to_2027"]["buoc"])
+assert all(x.get("quy_trinh_tham_chieu") for x in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])
+assert s.count('id="cnnv-six-step-conflict-2027"')==1
+assert next(q for q in check["quy_trinh"] if q["id"]=="xung-dot-lich")["buoc"][2]["phan_tuyen_chu_tri_theo_pham_vi_2027"]["hai_to_tct"]=="cvt-2"
 assert len({z["ma"] for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"]})==9
 assert all(all(z.get(k) for k in ("rui_ro","dau_moi","quyet_dinh","quy_tac_chan")) for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])
 assert s.count('id="cnnv-2-chief-3-team-2027"')==1
