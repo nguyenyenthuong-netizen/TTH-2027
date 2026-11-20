@@ -16,7 +16,7 @@ jobs:
         run: |
           set -euo pipefail
           curl -fLsS --retry 3 --connect-timeout 15 --max-time 90 \
-            'https://tth-crm-da-kenh.vercel.app/?verify=crm-font-2027-251' -o /tmp/tth-crm-production.html
+            'https://tth-crm-da-kenh.vercel.app/?verify=crm-his-example-search-264' -o /tmp/tth-crm-production.html
           python3 - <<'PY'
           import re, pathlib, html
           s=pathlib.Path('/tmp/tth-crm-production.html').read_text('utf-8')
@@ -32,6 +32,12 @@ jobs:
           assert rule and 'font-size:17px' in rule.group(1),'Missing enlarged rule font'
           assert flow and 'font-size:16px' in flow.group(1),'Missing enlarged 1900 flow font'
           assert 'id="s7"' in s,'Seventh internal decision slide missing'
+          assert 'id="tth-crm-his-example-style-2027"' in s,'CRM HIS example styling absent on production'
+          assert 'CRM-00125' in s and 'BN-00876' in s and 'BN-00444' in s,'Illustrative HIS patient linkage absent'
+          assert 'id="tth-crm-search-readability-2027"' in s,'Advanced search readability update absent'
+          print('CRM_VERCEL_HIS_EXAMPLE_OK','CRM-00125','BN-00876','BN-00444','unverified remains separate')
+          print('CRM_VERCEL_SEARCH_UI_OK','wider 700px desktop','responsive mobile')
+
           print('CRM_VERCEL_FONT_OK','rule=17px','1900-cards=16px','slides=7')
           print('CRM_VERCEL_LIVE_OK',len(s),'bytes')
           PY
