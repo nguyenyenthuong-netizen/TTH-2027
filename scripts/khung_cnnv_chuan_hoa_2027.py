@@ -449,6 +449,71 @@ if 'id="cnnv-phong-phan-tuyen-2027"' not in s:
     )
     s=s.replace(anchor,panel+anchor,1)
 
+# 7) Chỉnh riêng sơ đồ Bộ máy: hai chức danh quản lý ở hàng trên,
+#    ba tổ ở hàng dưới sử dụng ba cột. Không tái cấu trúc dữ liệu/nhân sự.
+# DOM gốc: org-left > col > (col-h, col-b) và
+# org-right > (mkt-org-cvt-2, org-right-teams > col + col).
+chart_css=r"""
+<style id="cnnv-org-three-team-columns-2027">
+@media (min-width:1151px){
+ #v-org .org-cols{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  grid-template-rows:auto auto!important;
+  grid-auto-flow:row!important;
+  align-items:start!important;
+  column-gap:12px!important;
+  row-gap:14px!important;
+ }
+ #v-org .org-cols>.org-left,#v-org .org-cols>.org-right,
+ #v-org .org-cols>.org-left>.col{display:contents!important}
+ #v-org .org-cols>.org-left>.col>.col-h{
+  grid-column:1 / span 3!important;grid-row:1!important;
+  min-width:0!important;width:100%!important;
+ }
+ #v-org .org-cols>.org-right>.mkt-org-cvt-2{
+  grid-column:4 / span 3!important;grid-row:1!important;
+  min-width:0!important;width:100%!important;
+ }
+ #v-org .org-cols>.org-left>.col>.col-b{
+  grid-column:1 / span 2!important;grid-row:2!important;
+  min-width:0!important;width:100%!important;
+  align-self:start!important;
+ }
+ #v-org .org-cols>.org-right>.org-right-teams{
+  grid-column:3 / span 4!important;grid-row:2!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:auto!important;
+  gap:12px!important;min-width:0!important;width:100%!important;
+  align-items:start!important;
+ }
+ #v-org .org-cols>.org-right>.org-right-teams>.col{
+  grid-column:auto!important;grid-row:1!important;
+  min-width:0!important;width:100%!important;
+ }
+}
+#v-org .org-cols .col-b,#v-org .org-cols .pos,
+#v-org .org-cols .col-h,#v-org .org-cols .org-right-teams{
+ box-sizing:border-box!important;min-width:0!important;
+ max-width:100%!important;overflow-wrap:anywhere!important;
+}
+@media(max-width:1150px){
+ #v-org .org-cols{grid-template-columns:minmax(0,1fr)!important}
+ #v-org .org-cols>.org-left,#v-org .org-cols>.org-right{
+  display:flex!important;flex-direction:column!important
+ }
+ #v-org .org-cols>.org-left>.col{display:block!important}
+ #v-org .org-right-teams{
+  grid-template-columns:minmax(0,1fr)!important
+ }
+}
+</style>
+"""
+if 'id="cnnv-org-three-team-columns-2027"' not in s:
+    if "</head>" not in s:raise RuntimeError("Không có thẻ head của sơ đồ")
+    s=s.replace("</head>",chart_css+"</head>",1)
+
 check=json.loads(re.search(rx,s).group(2))
 assert len(check["vi_tri"])==26 and len(check["quy_trinh"])==60 and len(check["danh_muc_van_ban"])==83
 assert sum(len(q["buoc"]) for q in check["quy_trinh"])==407
@@ -456,6 +521,7 @@ assert all("cnnv_2027" in x for x in check["vi_tri"])
 assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
 assert s.count('id="cvt-2-perf-metrics-2027"')==1
 assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
+assert s.count('id="cnnv-org-three-team-columns-2027"')==1
 assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
 assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
 assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
