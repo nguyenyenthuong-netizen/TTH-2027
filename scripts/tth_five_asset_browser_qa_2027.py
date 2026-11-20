@@ -13,7 +13,7 @@ with sync_playwright() as p:
    errors=[];page.on('pageerror',lambda e,arr=errors:arr.append(str(e)[:200]))
    try:
     path=(root/name/'index.html').resolve()
-    page.goto(path.as_uri(),wait_until='domcontentloaded',timeout=45000)
+    page.goto(path.as_uri()+('?demo=1' if name=='healthcare-app' else ''),wait_until='domcontentloaded',timeout=45000)
     page.wait_for_timeout(800)
     info=page.evaluate('''() => ({title:document.title,body:document.body?.innerText?.length||0,slides:document.querySelectorAll('section.slide').length,buttons:[...document.querySelectorAll('button')].filter(x=>x.getBoundingClientRect().height>0).length,fr:document.querySelectorAll('iframe').length,width:document.documentElement.scrollWidth,viewport:innerWidth})''')
     if name=='trinh-chieu-marketing':
