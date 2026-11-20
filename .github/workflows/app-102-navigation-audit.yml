@@ -1,0 +1,26 @@
+name: Check all 102 Healthcare App screens
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/app_102_navigation_browser_qa_2027.py'
+      - '.github/workflows/app-102-navigation-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  app-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install browser testing library
+        run: python3 -m pip install --user --break-system-packages --disable-pip-version-check playwright==1.55.0
+      - name: Click every catalog screen and check navigation
+        run: python3 scripts/app_102_navigation_browser_qa_2027.py "https://nguyenyenthuong-netizen.github.io/TTH-2027/healthcare-app/?demo=1"
+      - name: Save evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-102-screen-browser-report
+          path: artifacts/app-102-qa.json
+          if-no-files-found: ignore
