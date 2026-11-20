@@ -19,7 +19,7 @@ const normal=x=>String(x??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').re
 const name=k=>{const [r,s]=String(k||'').split('@');return (titles[r]||r)+(s?' · '+(siteMap[s]?.name||s):'')};
 function plain(v){return Array.isArray(v)?v.map(plain).join(' · '):v&&typeof v==='object'?Object.entries(v).map(([k,w])=>plain(w)).join(' · '):String(v??'');}
 function person(v){if(Array.isArray(v))return v.map(person).join(' · ');const a=String(v||'').split('|');return (titles[a[0]]||a[0])+(a[1]?' ('+a.slice(1).join(' ')+')':'');}
-const periodName=p=>p==='m'?'tháng':p==='w'?'tuần':p==='2w'?'2 tuần':p==='q'?'quý':'tháng '+Number(p.slice(1));
+const periodName=p=>p==='m'?'tháng':p==='w'?'tuần':p==='2w'?'2 tuần':p==='q'?'quý':p==='qs'?'đầu quý':'tháng '+Number(p.slice(1));
 const tag=t=>`<span class="tag">${e(t)}</span>`;
 function table(headers,rows,numbers=[],mobile=true){return `<div class="scroll"><table class="tbl ${mobile?'mobile':''}"><thead><tr>${headers.map(x=>`<th scope="col">${e(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map((cell,i)=>`<td data-label="${e(headers[i])}" class="${numbers.includes(i)?'num':''}">${cell??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
 const stack=rows=>'<dl class="stack">'+rows.map(([l,v])=>'<div><dt>'+e(l)+'</dt><dd>'+v+'</dd></div>').join('')+'</dl>';
@@ -90,7 +90,7 @@ function workdetail(w){
  const linkedRows=new Set(z.jd||[]);
  model.crosswalk[z.role].forEach(([target],i)=>{if(target===z.id)linkedRows.add(i+1);});
  const refs=[...linkedRows].filter(i=>model.jd[z.role][i]).sort((a,b)=>a-b);
- const sourceRows=refs.map(i=>{const [output,term,receiver,registry,reason]=model.jd[z.role][i];return ['PL1.'+i,e(output),e(term),e(receiver),e(registry),e(reason)];});
+ const sourceRows=refs.map(i=>['PL1.'+i,...model.jd[z.role][i].map(e)]);
  const links=[...new Set(z.ref.match(/QT\.\d+(?![\d.])/g)||[])].map(code=>btn(code,'flows',code));
  const optionalPeak=z.extra?' · cao điểm cộng riêng '+format(z.extra)+' đơn vị/lần.':'';
  const controls=z.kind==='G'?'<p class="note">Chưa kích hoạt vị trí vùng. Khi có quyết định, phải lập lại lịch và người nhận phần việc bàn giao.</p>':
@@ -105,7 +105,7 @@ function workdetail(w){
    ['Phối hợp, giao nhận theo MTCV',e(personnel.phan_dinh_ban_giao_dau_vao)],['Phạm vi kiểm và duyệt của chức danh',e(personnel.phan_dinh_kiem_duyet)],
    ['Tuyến quản lý',e(personnel.bao_cao_cho)],['Xác minh định mức',e(name(w.rid))+' ghi nhật ký thực hiện. Quản lý đối chiếu số lượng và thời gian với chứng từ.']
  ];
- const source=sourceRows.length?detail('Đầu ra, người nhận và thời hạn trong MTCV',table(['Dòng','Đầu ra nguồn','Kỳ, hạn','Người nhận, duyệt theo nguồn','Nơi ghi nhận','Căn cứ'],sourceRows)):'';
+ const source=sourceRows.length?detail('Chi tiết đầu ra trong MTCV gốc',table(['Dòng',...model.jd[z.role][0]],sourceRows)):'';
  const byMonth=detail('Sản lượng và giờ đủ 12 tháng',table(['Tháng','Số đơn vị','Giờ'],months.map((m,i)=>[String(m),nu(w.qty[i]),nu(w.hours[i])]),[1,2]));
  return detail(e(z.name)+' <small>'+e(w.id)+' · '+format(quant)+' đơn vị · '+format(hours)+' giờ '+(p?'trong tháng '+p:'trong năm')+'</small>',stack(rows)+source+byMonth+controls,false,w.id);
 }

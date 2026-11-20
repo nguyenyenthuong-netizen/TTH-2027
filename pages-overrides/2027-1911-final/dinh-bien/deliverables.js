@@ -163,27 +163,235 @@ function slotDoc(d,z,id,slot){
  return (slot==='b')===hospital;
 }
 function deliveryRoute(w){
- const z=w.item,r=roleMap[z.role],group=['bt-b','md-b','mdcs-b','qlth-bc'].includes(z.role)?'2':'1';
- if(z.id==='cvt/bv')return ['Trưởng nhóm của từng bệnh viện thuộc phạm vi triển khai xác nhận lịch. Trưởng phòng Marketing nhận tổng hợp từ Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở.','Hằng tuần theo lịch giao việc của bệnh viện.'];
- if(z.id==='cvt-2/tai')return ['Tổ trưởng Tổ Truyền thông và Thương hiệu và Tổ trưởng Tổ Tăng trưởng số nhận kết quả rà tải. Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số báo cáo Trưởng phòng Marketing.','Hằng tuần, một phiếu cho mỗi tổ.'];
- if(z.id==='dl-1/kt')return ['Người quản lý đúng tuyến nhận phiếu kiểm. Trưởng phòng Marketing nhận kết quả đối soát qua báo cáo.','Ghi phiếu theo lịch tuần. Chốt số giờ từ sổ theo dõi vào kỳ báo cáo quý của MTCV.'];
- if(z.id==='dl-1/nam')return ['Trưởng phòng Marketing nhận bảng số liệu để lập và trình báo cáo năm.','Tháng 12, trước khi Trưởng phòng trình báo cáo năm.'];
- if(z.id==='dl-1/tuan')return ['Quản lý thương hiệu và Trưởng phòng Marketing nhận báo cáo BM-2.','Hằng tuần theo lịch báo cáo.'];
- if(z.role.startsWith('qlth-')&&z.code==='hangmuc')return ['Trưởng phòng Marketing duyệt kế hoạch theo phân cấp. Giám đốc cơ sở xác nhận phần chi từ ngân sách cơ sở; cấp tài chính duyệt khoản chi theo thẩm quyền.','Theo lịch hạng mục. Kế hoạch tháng trình chậm nhất ngày 18, duyệt chậm nhất ngày 20 theo MTCV.'];
- if(z.role.startsWith('qlth-')&&z.code==='nam')return ['Trưởng phòng Marketing nhận hồ sơ mục tiêu, ngân sách và kết quả năm của nhóm '+group+'.','Tháng 12, theo hạn chốt báo cáo năm.'];
- if(z.role.startsWith('mdcs-')&&['v2','v3'].includes(z.code))return ['Chuyên viên media nhóm '+group+' tại Tổng công ty kiểm kỹ thuật. Quản lý thương hiệu nhóm '+group+' nghiệm thu mục tiêu. Đơn vị chuyên môn xác nhận y khoa nếu có, cấp được phân quyền duyệt phát hành.','Theo lịch quay và phiếu đặt việc, sau khi có mẫu B-7 hợp lệ.'];
- if(z.role.startsWith('bt-')&&z.code==='loi')return ['Biên tập đúng nhóm chủ trì phần lời/thoại. Chuyên viên media nhóm '+group+' nhận lời đã kiểm để lập phân cảnh. Nội dung y khoa do đơn vị chuyên môn xác nhận.','Theo mốc khóa kịch bản trong phiếu yêu cầu.'];
- if(z.role.startsWith('md-')&&z.code==='kiem')return ['Media cơ sở đúng bệnh viện nhận phiếu sửa hoặc kết quả kiểm kỹ thuật. Quản lý thương hiệu nhóm '+group+' nhận bản đủ điều kiện để nghiệm thu mục tiêu.','Khi cơ sở bàn giao bản dựng, trước bước nghiệm thu và phát hành.'];
- const refs=[...new Set([...(z.jd||[]),...model.crosswalk[z.role].flatMap(([key],i)=>key===z.id?[i+1]:[])])];
- const rows=refs.map(i=>model.jd[z.role][i]).filter(Boolean);
- const terms=[...new Set(rows.map(row=>row[1]).filter(t=>t&&!/^[–—-]$/.test(t)))];
- const destinations=[...new Set(rows.map(row=>row[2]).filter(t=>t&&!/^(?:[–—-]|như trên)/i.test(t)))];
- const norm=t=>String(t).replace(/người quản lý trực tiếp đúng tuyến theo quyết định phân công có hiệu lực/gi,r.bao_cao_cho);
- const receiver=destinations.length===1?norm(destinations[0]):norm(r.phan_dinh_kiem_duyet||r.bao_cao_cho);
- return [receiver,terms.length===1?terms[0]:'Theo kỳ '+periodName(z.period)+' và hạn trên phiếu giao việc. Các mốc theo loại hồ sơ có tại MTCV của vị trí.'];
+ const z=w.item,role=z.role,code=z.code;
+ const group=['qlth-bc','cvtt-bc','bt-b','tk-b','md-b','qc-b','tn-b','mdcs-b'].includes(role)?'2':'1';
+ const brand='Quản lý thương hiệu nhóm '+group;
+ const editorial='Chuyên viên biên tập nhóm '+group;
+ const media='Chuyên viên media Tổng công ty nhóm '+group;
+ const channels='Chuyên viên quảng cáo và kênh số nhóm '+group;
+ const comm='Chuyên viên truyền thông nhóm '+group;
+ const creativeLead='Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở';
+ const digitalLead='Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số';
+ const branchLead='Trưởng nhóm Marketing cơ sở tại bệnh viện';
+ const approval='Người có thẩm quyền duyệt phát hành theo phân cấp.';
+ let receiver='';
+ if(code==='du-gb')receiver='Trưởng phòng Marketing chủ trì giao ban. Vị trí tham dự và nhận kết luận theo lịch phòng.';
+ else if(code==='ban-giao')receiver='Người được giao tiếp nhận phần việc và quản lý trực tiếp theo tuyến nhận phiếu bàn giao.';
+ else if(code.startsWith('tt-')){
+   const lead=role==='bt-ac'?creativeLead:digitalLead;
+   receiver=code==='tt-tailieu'?lead+' nhận bảng theo dõi của tổ.':'Các thành viên của tổ nhận phân công hoặc nhắc hạn. '+lead+' nhận nội dung vượt khả năng điều phối.';
+ }else{
+   const routes={
+    tp:{
+     'kh-nam':'Ban Tổng Giám đốc nhận kế hoạch và dự toán năm để xem xét theo thẩm quyền.',
+     ky:'Người trình kế hoạch hoặc chủ hạng mục nhận ý kiến duyệt theo phạm vi được giao.',
+     trinh:'Ban Tổng Giám đốc hoặc cấp có thẩm quyền nhận tờ trình theo loại hồ sơ.',
+     'giao-ban':'Các vị trí được giao việc trong phòng nhận kết luận và thời hạn thực hiện.',
+     'gb-tct':'Ban Tổng Giám đốc nhận báo cáo tại giao ban; các đầu mối liên quan nhận chỉ đạo được chuyển về.',
+     'gb-tgd':'Tổng Giám đốc nhận báo cáo tiến độ và chỉ đạo tại giao ban.',
+     nganh:'Các đầu mối Marketing ngành dọc nhận kết luận, công việc và hạn thực hiện.',
+     'bc-thang':'Ban Tổng Giám đốc nhận báo cáo tháng; Chuyên viên đo lường và đối soát cung cấp số liệu.',
+     kpi:'Nhân sự được đánh giá và Phòng Nhân lực nhận kết quả theo thẩm quyền.',
+     'bc-nam':'Ban Tổng Giám đốc nhận báo cáo tổng kết năm.',
+     'uy-quyen':'Người phụ trách hồ sơ hoặc quyền liên quan nhận kết quả kiểm tra; việc vượt thẩm quyền chuyển Ban Tổng Giám đốc.'
+    },
+    cvt:{
+     'tai-nd':'Tổ trưởng Tổ Nội dung và Sáng tạo nhận lịch cân tải; Trưởng phòng Marketing xử lý nội dung vượt thẩm quyền.',
+     bv:'Trưởng nhóm của từng bệnh viện thuộc phạm vi triển khai xác nhận lịch. Trưởng phòng Marketing nhận tổng hợp từ '+creativeLead+'.',
+     mau:'Tổ trưởng Tổ Nội dung và Sáng tạo nhận kết quả kiểm và phân công khắc phục; Trưởng phòng Marketing nhận báo cáo.',
+     gt:'Trưởng nhóm cơ sở và đầu mối sản xuất liên quan nhận phân công ưu tiên. Trưởng phòng Marketing quyết định nội dung vượt thẩm quyền.',
+     'huan-luyen':'Tổ trưởng và người tham gia huấn luyện nhận kết quả đánh giá; Phòng Nhân lực nhận hồ sơ nhân sự theo phân công.',
+     baocao:'Trưởng phòng Marketing nhận báo cáo sai lệch tải và phương án điều chỉnh.',
+     suco:'Đầu mối nhận việc thay và Trưởng nhóm liên quan nhận biên bản; Trưởng phòng Marketing xử lý nội dung vượt thẩm quyền.'
+    },
+    'cvt-2':{
+     tai:'Tổ trưởng Tổ Truyền thông và Thương hiệu và Tổ trưởng Tổ Tăng trưởng số nhận kết quả rà tải. '+digitalLead+' báo cáo Trưởng phòng Marketing.',
+     ooh:'Tổ trưởng Tổ Truyền thông và Thương hiệu và chuyên viên phụ trách nhận kết quả kiểm để khắc phục.',
+     kenh:'Tổ trưởng Tổ Tăng trưởng số và chuyên viên phụ trách nhận kết quả kiểm để khắc phục.',
+     chuyen:creativeLead+' nhận yêu cầu làm thay đổi lịch hoặc nhân sự cơ sở và chuyển theo tuyến Trưởng nhóm.',
+     'dao-tao':'Tổ trưởng tổ liên quan và người tham gia nhận nội dung, kết quả huấn luyện.',
+     baocao:'Trưởng phòng Marketing nhận báo cáo hiệu suất và phương án cải tiến hai tổ.',
+     'canh-bao':'Tổ trưởng tổ liên quan và người phụ trách đầu ra nhận cảnh báo; Trưởng phòng Marketing xử lý nội dung vượt thẩm quyền.'
+    },
+    brand:{
+     'ke-hoach':'Trưởng phòng Marketing nhận và duyệt kế hoạch theo phân cấp; Giám đốc cơ sở xác nhận chi thuộc ngân sách cơ sở.',
+     hangmuc:'Trưởng phòng Marketing duyệt kế hoạch theo phân cấp. Giám đốc cơ sở xác nhận phần chi từ ngân sách cơ sở; cấp tài chính duyệt khoản chi theo thẩm quyền.',
+     yeucau:'Đầu mối điều phối sản xuất được giao nhận phiếu đủ thông tin và phân việc đúng nhóm thương hiệu.',
+     nghiemthu:'Đầu mối bàn giao sản phẩm và người phụ trách phát hành nhận kết quả nghiệm thu mục tiêu của '+brand+'.',
+     'tien-do':'Trưởng phòng Marketing nhận báo cáo tiến độ; đầu mối liên quan nhận phần việc theo mã hạng mục.',
+     hopdong:'Kế toán và cấp duyệt theo phân cấp nhận hồ sơ chi, hợp đồng và chứng từ đã đối soát.',
+     tongket:'Trưởng phòng Marketing nhận báo cáo kết thúc hạng mục; Chuyên viên đo lường và đối soát cung cấp kết quả đối chiếu.',
+     nam:'Trưởng phòng Marketing nhận hồ sơ mục tiêu, ngân sách và kết quả năm của nhóm '+group+'.',
+     dn:'Đơn vị hoặc đối tác theo hồ sơ yêu cầu nhận bộ thông tin dịch vụ đã được xác nhận và duyệt theo thẩm quyền.',
+     doitac:'Đơn vị hoặc đối tác liên quan và Trưởng phòng Marketing nhận nội dung thống nhất trong phạm vi hạng mục.'
+    },
+    comm:{
+     bao:'Trưởng phòng Marketing hoặc cấp có thẩm quyền duyệt phát ngôn. '+brand+' nghiệm thu mục tiêu trước khi gửi cơ quan báo chí.',
+     ooh:brand+' nhận hồ sơ, nghiệm thu theo hạng mục; Chuyên viên thiết kế ngoại tuyến nhận yêu cầu file thi công.',
+     danhgia:'Trưởng phòng Marketing và chuyên viên phụ trách nhận cảnh báo để xử lý đánh giá nhạy cảm theo phân cấp.',
+     sukien:brand+' và đơn vị tổ chức nhận hồ sơ phối hợp báo chí, đối tác hoặc sự kiện.',
+     lich:branchLead+' hoặc đầu mối truyền thông cơ sở nhận lịch phát đã duyệt; '+brand+' nghiệm thu mục tiêu.',
+     ct:'Trưởng phòng Marketing duyệt mẫu theo phân cấp; Ban Giám đốc cơ sở duyệt áp dụng tại địa phương.',
+     suco:'Trưởng phòng Marketing nhận hồ sơ sự cố và quyết định phát ngôn theo thẩm quyền; '+digitalLead+' kiểm chuẩn nghiệp vụ.',
+     kol:brand+' nhận hồ sơ hợp tác và nghiệm thu mục tiêu; cấp có thẩm quyền duyệt cam kết.',
+     'mo-ooh':brand+' nhận hồ sơ truyền thông ngoại tuyến khai trương và nghiệm thu theo hạng mục.'
+    },
+    editorial:{
+     bai:brand+' nhận bản thảo để nghiệm thu mục tiêu; bác sĩ xác nhận nội dung y khoa, người khác kiểm độc lập. '+approval,
+     dv:brand+' nhận bài dịch vụ để nghiệm thu; đơn vị chuyên môn xác nhận nội dung và thông tin dịch vụ. '+approval,
+     loi:media+' nhận kịch bản lời đã kiểm để lập phân cảnh. '+brand+' nghiệm thu mục tiêu; đơn vị chuyên môn xác nhận y khoa.',
+     web:'Quản lý sản phẩm số nhận nội dung để cập nhật website hoặc App; bác sĩ xác nhận lại thông tin chuyên môn.',
+     kt:'Người soạn nhận phiếu kiểm độc lập để sửa; '+brand+' nhận kết quả nghiệm thu theo hạng mục.',
+     phat:media+' nhận lời phát thanh đã kiểm để sản xuất file âm thanh; '+brand+' nghiệm thu nội dung.',
+     sk:brand+' nhận tin sau sự kiện hoặc bài nội bộ để nghiệm thu. '+approval,
+     cc:'Contact Center nhận thông tin dịch vụ đã được '+brand+' nghiệm thu và cấp có thẩm quyền duyệt theo phân cấp.',
+     sua:'Người yêu cầu sửa và người kiểm độc lập nhận bản cập nhật; '+brand+' nghiệm thu theo hạng mục.',
+     english:'Quản lý sản phẩm số hoặc Contact Center nhận bản tiếng Anh theo mục đích sử dụng; bác sĩ xác nhận nội dung y khoa.',
+     phaply:'Bộ phận pháp chế nhận chứng cứ Marketing để hoàn thiện hồ sơ theo thẩm quyền.',
+     'mo-bai-gt':brand+' nhận bài giới thiệu cơ sở mới để nghiệm thu; đơn vị chuyên môn xác nhận thông tin dịch vụ.',
+     'mo-mc':'Đầu mối tổ chức khai trương nhận kịch bản MC đã kiểm; '+brand+' nghiệm thu mục tiêu.',
+     'mo-bai-kt':brand+' nhận bài truyền thông khai trương để nghiệm thu. '+approval
+    },
+    design:{
+     c1:brand+' hoặc người yêu cầu nhận bản đúng quy cách; người kiểm độc lập kiểm trước phát hành.',
+     c2:brand+' hoặc người yêu cầu nhận file thiết kế để nghiệm thu; người khác kiểm nhận diện.',
+     c3:brand+' hoặc người yêu cầu nhận bộ file nguồn và file xuất; người khác kiểm nhận diện.',
+     c4:brand+' nghiệm thu hình ảnh chủ đạo; cấp có thẩm quyền duyệt nhận diện theo phân cấp.',
+     kiem:'Người làm thiết kế nhận phiếu kiểm nhận diện độc lập và xử lý sai lệch.',
+     sua:'Người yêu cầu nhận phiên bản đã sửa; người khác kiểm lại trước phát hành.',
+     'mo-anpham':brand+' và đầu mối tổ chức khai trương nhận ấn phẩm theo danh mục đã giao.'
+    },
+    'tk-nt':{
+     banve:'Chuyên viên truyền thông đúng nhóm nhận file kỹ thuật để triển khai biển sau khi cấp có thẩm quyền duyệt.',
+     kiem:'Người làm file in nhận phiếu kiểm độc lập để xử lý thông số.',
+     trangtri:'Chuyên viên truyền thông đúng nhóm nhận file triển khai trang trí theo địa điểm.',
+     thu:'Chuyên viên truyền thông và đơn vị phụ trách địa điểm nhận biên bản khảo sát hoặc so mẫu in.'
+    },
+    media:{
+     pc:'Media cơ sở hoặc ê-kíp sản xuất đúng nhóm nhận bảng phân cảnh và danh sách cảnh quay.',
+     kiem:'Media cơ sở đúng bệnh viện nhận phiếu sửa hoặc kết quả kiểm kỹ thuật. '+brand+' nhận bản đủ điều kiện để nghiệm thu mục tiêu.',
+     v3t:brand+' nhận bản V3 vượt mẫu để nghiệm thu mục tiêu; người khác kiểm kỹ thuật. '+approval,
+     v4:brand+' nhận bản V4 chiến dịch để nghiệm thu mục tiêu; người khác kiểm kỹ thuật. '+approval,
+     ghi:'Ê-kíp dựng đúng nhóm nhận tư liệu quay chuyên sâu kèm quyền sử dụng và mã hạng mục.',
+     am:comm+' và đầu mối phát thanh cơ sở nhận file âm thanh đã kiểm mức âm.',
+     kho:'Người quản lý kho tư liệu và đầu mối sử dụng đúng nhóm nhận lô tư liệu kèm quyền sử dụng.',
+     sua:'Người yêu cầu và người kiểm kỹ thuật độc lập nhận phiên bản đã sửa; '+brand+' nghiệm thu mục tiêu.',
+     v2t:brand+' nhận video sản xuất tại Tổng công ty để nghiệm thu mục tiêu; người khác kiểm kỹ thuật. '+approval,
+     'mo-quay':'Ê-kíp dựng đúng nhóm nhận tư liệu quay khai trương theo mã hạng mục.',
+     'mo-dung':brand+' nhận video khai trương để nghiệm thu mục tiêu; người khác kiểm kỹ thuật. '+approval
+    },
+    channels:{
+     fb:brand+' nhận lịch và kết quả kênh để nghiệm thu; Chuyên viên đo lường và đối soát nhận số liệu.',
+     tik:brand+' nhận lịch và kết quả kênh để nghiệm thu; Chuyên viên đo lường và đối soát nhận số liệu.',
+     khac:brand+' nhận lịch và kết quả kênh để nghiệm thu; Chuyên viên đo lường và đối soát nhận số liệu.',
+     ads:brand+' nghiệm thu mục tiêu chiến dịch; Chuyên viên đo lường và đối soát nhận số liệu. Chi phí do cấp có thẩm quyền duyệt.',
+     landing:'Quản lý sản phẩm số nhận trang đích để nghiệm thu; Chuyên viên đo lường và đối soát kiểm mã nguồn và form.',
+     suco:'Tổ trưởng Tổ Tăng trưởng số nhận hồ sơ sự cố; Trưởng phòng Marketing quyết định nội dung vượt quyền.',
+     tin:'Contact Center hoặc nhóm khách đủ điều kiện nhận tin theo kênh được duyệt; Chuyên viên dữ liệu kiểm danh sách và điều kiện sử dụng.',
+     'dia-chi':brand+' nhận kết quả cập nhật; đơn vị sở hữu địa điểm xác nhận thông tin gốc.',
+     'mo-ads':brand+' nhận kết quả chiến dịch khai trương; cấp có thẩm quyền duyệt chi theo phân cấp.'
+    },
+    'dl-1':{
+     tuan:'Quản lý thương hiệu và Trưởng phòng Marketing nhận báo cáo BM-2.',
+     chot:'Trưởng phòng Marketing nhận và duyệt bản chốt kỳ theo phân cấp; số được đối soát độc lập.',
+     bc:'Quản lý thương hiệu nhận bộ số và thuyết minh để lập báo cáo tháng.',
+     hm:'Quản lý thương hiệu phụ trách hạng mục và Trưởng phòng Marketing nhận kết quả đối soát.',
+     kt:'Tổ trưởng Tổ Tăng trưởng số nhận phiếu theo tuyến; Trưởng phòng Marketing nhận số tổng hợp qua báo cáo.',
+     kpi:'Trưởng phòng Marketing nhận bảng điểm và thực hiện đánh giá theo phân cấp.',
+     nam:'Trưởng phòng Marketing nhận bảng số liệu để lập và trình báo cáo năm.',
+     'phan-tich':'Người yêu cầu thuộc Ban Tổng Giám đốc nhận bảng phân tích qua tuyến và mã việc đã giao.'
+    },
+    'dl-2':{
+     ds:'Chuyên viên quảng cáo và kênh số đúng nhóm nhận danh sách đủ điều kiện cho đợt gửi. Bộ phận phụ trách dữ liệu và pháp chế kiểm điều kiện sử dụng.',
+     chatluong:'Trưởng phòng Marketing nhận báo cáo chất lượng CRM; đầu mối dữ liệu liên quan nhận lỗi để xử lý.',
+     'thi-truong':'Quản lý thương hiệu và Trưởng phòng Marketing nhận báo cáo khảo sát, dữ liệu và phân tích.',
+     sai:'Quản lý sản phẩm số nhận phiếu để tổng hợp; Phòng Công nghệ xử lý kỹ thuật, Trưởng phòng Marketing nhận báo cáo theo phân cấp.',
+     'anh-khach':'Trưởng phòng Marketing nhận báo cáo quyền sử dụng hình ảnh; Trưởng nhóm cơ sở và Kênh số xử lý chứng từ hoặc gỡ khi cần.'
+    },
+    qlsps:{
+     yeucau:'Phòng Số hóa hoặc Phòng Công nghệ theo hệ thống nhận yêu cầu nghiệp vụ và tiêu chí nghiệm thu.',
+     uat:'Đơn vị kỹ thuật phụ trách thay đổi nhận biên bản kiểm thử và bằng chứng lỗi hoặc đạt.',
+     seo:'Chuyên viên biên tập đúng nhóm nhận yêu cầu cập nhật nội dung; Quản lý thương hiệu đúng nhóm nhận kết quả.',
+     kenh:'Tổ trưởng và chuyên viên phụ trách kênh nhận phiếu xử lý; '+digitalLead+' kiểm chuẩn nghiệp vụ theo phân công.',
+     suco:'Phòng Công nghệ hoặc đơn vị kỹ thuật phụ trách nhận lỗi; '+digitalLead+' nhận báo cáo nghiệp vụ.',
+     'ben-thu-ba':'Quản lý thương hiệu nhóm 2 nhận biên bản rà vận hành website của đơn vị tương ứng.'
+    },
+    qlml:{
+     vung:creativeLead+' nhận kết quả đánh giá Trưởng nhóm khi có quyết định bàn giao tuyến vùng.',
+     baocao:creativeLead+' nhận báo cáo vùng theo danh sách cơ sở được bàn giao.'
+    },
+    branch:{
+     nhucau:brand+' và đầu mối được phân tuyến tại Tổng công ty nhận phiếu đủ thông tin.',
+     tin:'Ban Giám đốc cơ sở xác nhận nội dung tại chỗ; đầu mối phát hành nhận tin theo phân cấp.',
+     'ke-hoach':brand+' nhận kế hoạch tháng của bệnh viện; Ban Giám đốc cơ sở xác nhận nhu cầu tại chỗ.',
+     hop:'Nhân sự Marketing tại bệnh viện nhận lịch và kết luận giao ban của Trưởng nhóm.',
+     thaydoi:brand+', '+channels+' và '+editorial+' nhận thông tin đã được cơ sở xác nhận theo phạm vi.',
+     sk:'Nhân sự tại hiện trường nhận phân công sự kiện; Ban Giám đốc cơ sở xác nhận phần tại chỗ.',
+     chot:creativeLead+' nhận báo cáo tuần và số liệu từ Trưởng nhóm cơ sở.',
+     'danh-gia':creativeLead+' nhận phiếu nhận xét nhân sự do Trưởng nhóm quản lý.',
+     'nt-le':'Đầu mối Tổng công ty đã giao yêu cầu nhận biên bản điều kiện tại cơ sở; '+brand+' nghiệm thu mục tiêu hạng mục.'
+    },
+    onsite:{
+     haucan:branchLead+' và đơn vị tổ chức nhận hồ sơ hiện trường; Ban Giám đốc cơ sở duyệt phần thuộc thẩm quyền.',
+     congdong:branchLead+' và đơn vị chủ trì hoạt động nhận biên bản; Ban Giám đốc cơ sở duyệt phần tại chỗ.',
+     bien:comm+' và Chuyên viên thiết kế ngoại tuyến nhận phiếu hiện trạng biển kèm ảnh.',
+     phat:comm+' nhận xác nhận lịch phát và ảnh màn hình; cơ sở xác nhận tình trạng thực tế.',
+     dongy:'Chuyên viên dữ liệu khách hàng và thị trường nhận trạng thái đồng ý theo quyền; '+branchLead+' kiểm đủ chứng từ trước bàn giao.',
+     bandi:comm+' và đầu mối Tổng công ty theo mã việc nhận biên bản, ảnh và kết quả hiện trường.',
+     dilai:branchLead+' nhận thông tin hoàn thành chuyến đi theo lệnh đã giao.',
+     hop:branchLead+' chủ trì giao ban tại cơ sở và giao lịch cho nhân sự Marketing.'
+    },
+    localmedia:{
+     v1:branchLead+' nhận clip tin nhanh và tư liệu để chuyển theo tuyến. '+approval,
+     v2:media+' kiểm kỹ thuật bản dựng; '+brand+' nghiệm thu mục tiêu. Đơn vị chuyên môn xác nhận y khoa khi có. '+approval,
+     v3:media+' kiểm kỹ thuật bản dựng; '+brand+' nghiệm thu mục tiêu. Đơn vị chuyên môn xác nhận y khoa khi có. '+approval,
+     anh:'Người yêu cầu theo mã việc và '+branchLead+' nhận bộ ảnh hiện trường kèm quyền sử dụng.',
+     sukien:'Ê-kíp sản xuất đúng nhóm và '+branchLead+' nhận tư liệu sự kiện theo mã việc.',
+     kho:'Người quản lý kho tư liệu và '+branchLead+' nhận lô tư liệu kèm chứng từ quyền sử dụng.',
+     sua:media+' nhận bản dựng đã sửa để kiểm kỹ thuật; '+brand+' nghiệm thu mục tiêu.',
+     di:branchLead+' nhận xác nhận chuyến đi ghi hình theo lệnh.',
+     hop:branchLead+' chủ trì giao ban tại cơ sở và giao lịch cho nhân sự Marketing.'
+    },
+    dmpk:{
+     yc:creativeLead+' tiếp nhận và phân tuyến một mã việc cho Tổng công ty; '+brand+' xác định mục tiêu.',
+     anh:'Đầu mối Marketing Tổng công ty theo mã việc nhận ảnh đã được phòng khám xác nhận; '+channels+' đăng theo phân quyền.',
+     capnhat:'Đầu mối Marketing Tổng công ty và '+channels+' nhận thông tin đã được phòng khám xác nhận.',
+     quyen:'Đầu mối Marketing Tổng công ty và Chuyên viên dữ liệu nhận chứng từ theo quyền truy cập.',
+     sukien:'Người phụ trách phòng khám và đầu mối Marketing theo mã việc nhận xác nhận hỗ trợ hiện trường.',
+     di:'Người phụ trách phòng khám và đầu mối Marketing theo mã việc nhận kết quả bàn giao.',
+     phoi:creativeLead+' tiếp nhận lịch và phân tuyến nhu cầu Marketing của phòng khám.'
+    }
+   };
+   let family=role;
+   if(role.startsWith('qlth-'))family='brand';
+   else if(role.startsWith('cvtt-'))family='comm';
+   else if(role.startsWith('bt-'))family='editorial';
+   else if(role==='tk-a'||role==='tk-b')family='design';
+   else if(role.startsWith('mdcs-'))family='localmedia';
+   else if(role.startsWith('md-'))family='media';
+   else if(role.startsWith('qc-'))family='channels';
+   else if(role.startsWith('tn-'))family=['haucan','congdong','bien','phat','dongy','bandi','dilai'].includes(code)?'onsite':'branch';
+   else if(role==='qhcs')family='onsite';
+   receiver=routes[family]?.[code]||'Người nhận đầu ra cụ thể chờ xác nhận theo phiếu giao việc và tuyến quản lý của vị trí.';
+ }
+ const refs=[...new Set([...(z.jd||[]),...model.crosswalk[role].flatMap(([key],i)=>key===z.id?[i+1]:[])])];
+ const header=model.jd[role][0],idx=header.findIndex(x=>x==='Kỳ, hạn'||x==='Chu kỳ');
+ const terms=[...new Set(refs.map(i=>model.jd[role][i]?.[idx]).filter(t=>t&&!/^[–—-]$/.test(t)))];
+ const special={
+   'cvt/bv':'Hằng tuần theo lịch giao việc của từng bệnh viện.',
+   'cvt-2/tai':'Hằng tuần, một phiếu cho mỗi tổ.',
+   'dl-1/kt':'Ghi phiếu theo lịch tuần. Chốt số giờ từ sổ theo dõi vào kỳ báo cáo quý của MTCV.',
+   'dl-1/nam':'Tháng 12, trước khi Trưởng phòng trình báo cáo năm.',
+   'dl-1/tuan':'Hằng tuần theo lịch báo cáo.',
+   'tp/kpi':'Trong 05 ngày làm việc đầu quý sau. Tháng 1 chốt quý IV/2026 khi có hồ sơ bàn giao.',
+   'dl-1/kpi':'Trong 05 ngày làm việc đầu quý sau. Tháng 1 chốt quý IV/2026 khi có hồ sơ bàn giao.'
+ };
+ const due=special[z.id]|| (terms.length===1?terms[0]:'Theo kỳ '+periodName(z.period)+' và hạn trên phiếu giao việc.');
+ return [receiver,due];
 }
 function assignmentCondition(w,site){
  const z=w.item,notes=[];
+ if(z.id==='tp/kpi'||z.id==='dl-1/kpi')notes.push('Các mốc T1, T4, T7 và T10 là chốt kết quả quý trước. Mốc T1 chỉ thực hiện khi có hồ sơ được bàn giao.');
  if(u.phase==='q1'&&site){
    if(site.group==='clinic')notes.push('Khe Tre nhận việc từ 15/03; chờ số riêng của phòng khám.');
    else{

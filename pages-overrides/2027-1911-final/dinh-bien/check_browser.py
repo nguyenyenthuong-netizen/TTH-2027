@@ -9,6 +9,10 @@ def check(page, width, form, out):
         dims=host.evaluate('h=>{const a=h.shadowRoot.querySelector(".app");return [a.clientWidth,a.scrollWidth,h.getBoundingClientRect().right]}')
         assert dims[1]<=dims[0]+2 and dims[2]<=width+18,(form,which,dims)
     pane('roadmap')
+    consent=host.locator('tr').filter(has_text='Tệp danh sách gửi tin có kiểm điều kiện đồng ý')
+    assert 'Chuyên viên quảng cáo và kênh số đúng nhóm nhận' in consent.inner_text()
+    kpi=host.locator('tr').filter(has_text='Bộ điểm KPI quý và lịch sử đối soát')
+    assert '1 / 0 / 0' in kpi.inner_text() and 'quý trước' in kpi.inner_text()
     host.locator('[data-set="phase"]').select_option('q4')
     host.locator('[data-set="deliveryRole"]').select_option('dl-1')
     assert host.get_by_role('button',name='Bảng số liệu tổng kết năm đã đối chiếu',exact=True).count()==1
@@ -46,6 +50,11 @@ def check(page, width, form, out):
     host.locator('[data-set="scenario"]').select_option('base')
     page.screenshot(path=str(out/('dinh-bien-'+form+'.jpg')),type='jpeg',quality=65,timeout=20000)
     pane('roles')
+    host.locator('[data-set="role"]').select_option('cvt-2')
+    senior=host.locator('[data-work-key="cvt-2/ooh"]')
+    senior.locator('summary').first.click()
+    senior.get_by_text('Chi tiết đầu ra trong MTCV gốc',exact=True).click()
+    assert 'Chu kỳ' in senior.text_content() and 'Điều kiện đầu ra' in senior.text_content()
     rs=host.locator('[data-set="role"] option').evaluate_all('(a)=>a.map(x=>x.value)')
     assert len(rs)==26
     for rid in rs:

@@ -16,6 +16,7 @@ const TTHStaffing = (() => {
   function periods(period,m){
     if(period==='m')return 1;
     if(period==='q')return m%3===0?1:0;
+    if(period==='qs')return m%3===1?1:0;
     if(period.startsWith('y'))return m===Number(period.slice(1))?1:0;
     let count=0;
     // 52 weekly Tuesday closes, 26 fortnightly closes in the model calendar for 2027.
@@ -47,7 +48,7 @@ const TTHStaffing = (() => {
     result.peak=result.periods.reduce((best,next)=>next.excess>best.excess?next:best);
     return result;
   }
-  const periodMap={};['m','w','2w','q','y9','y12'].forEach(p=>{periodMap[p]=months.map(m=>periods(p,m))});
+  const periodMap={};['m','w','2w','q','qs','y9','y12'].forEach(p=>{periodMap[p]=months.map(m=>periods(p,m))});
   function simulate(data,scenario='base',edits={}){
     const cap=capacity(edits.capacity), roles={};const consume=(r,m)=>{if(!roles[r])roles[r]=months.map(empty);return roles[r][m-1]};
     const drivers=(s,m)=>Object.fromEntries(Object.entries(s.inputs).map(([k,v])=>[k,(edits.sites?.[s.id]?.[k]??v)+(scenario==='high'&&peak(m)?(s.group==='clinic'?data.highClinic:data.highSite)[k]||0:0)]));
