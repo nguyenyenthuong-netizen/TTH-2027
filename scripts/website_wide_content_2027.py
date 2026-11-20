@@ -66,7 +66,7 @@ function resize(){
    var parent=el.parentElement,ps=getComputedStyle(parent);
    if(parent.children.length>1 && (ps.display==='flex'||ps.display==='grid'))return;
   }
-  el.dataset.tthWideContent2027='1';
+  el.setAttribute('data-tth-wide-content-2027','1');
   el.dataset.tthWideOuter=outer?'1':'0';
  });
 }
