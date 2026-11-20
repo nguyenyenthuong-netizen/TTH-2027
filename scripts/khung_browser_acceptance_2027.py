@@ -95,6 +95,52 @@ with sync_playwright() as p:
             if details.locator(".ops-output-card").count()<1:
                 issues.append(form+": không có dòng trách nhiệm trong "+flow)
             results.append({"giao_dien":form,"luong":flow,"so_buoc":n,"thao_tac":"Mở bảng đầu ra"})
+        # Nghiệm thu bằng tọa độ DOM: hai chuyên viên trưởng cùng hàng,
+        # ba tổ thực sự dùng ba cột ngang trên desktop, không phải CSS chỉ tồn tại.
+        page.locator('.tab[data-target="org"]').evaluate("(e)=>e.click()")
+        page.wait_for_timeout(300)
+        chart=page.locator("#v-org .org-cols")
+        if not chart.count() or not chart.is_visible():
+            issues.append(form+": không mở được sơ đồ Bộ máy")
+        else:
+            geometry=chart.evaluate("""(r)=>{
+                const sels=[
+                  '.org-left>.col>.col-h',
+                  '.org-right>.mkt-org-cvt-2',
+                  '.org-left>.col>.col-b',
+                  '.org-right>.org-right-teams>.col:nth-child(1)',
+                  '.org-right>.org-right-teams>.col:nth-child(2)'
+                ];
+                const boxes=sels.map(sel=>{
+                  const e=r.querySelector(sel);
+                  if(!e)return null;
+                  const b=e.getBoundingClientRect();
+                  return {x:Math.round(b.left),y:Math.round(b.top),
+                    w:Math.round(b.width),h:Math.round(b.height)};
+                });
+                return {cols:boxes,client:r.clientWidth,scroll:r.scrollWidth,
+                  grid:getComputedStyle(r).gridTemplateColumns};
+            }""")
+            if any(x is None for x in geometry["cols"]):
+                issues.append(form+": thiếu thành phần 2 quản lý/3 tổ: "+str(geometry))
+            elif form=="desktop":
+                chiefs=geometry["cols"][:2]
+                teams=geometry["cols"][2:]
+                if abs(chiefs[0]["y"]-chiefs[1]["y"])>28:
+                    issues.append("desktop: hai chức danh quản lý lệch hàng: "+str(chiefs))
+                if max(x["y"] for x in teams)-min(x["y"] for x in teams)>32:
+                    issues.append("desktop: ba tổ không cùng hàng, nghi grid-row sai: "+str(teams))
+                if not (teams[0]["x"]<teams[1]["x"]<teams[2]["x"]):
+                    issues.append("desktop: vị trí ba cột tổ sai: "+str(teams))
+                if max(x["w"] for x in teams)-min(x["w"] for x in teams)>45:
+                    issues.append("desktop: ba cột không dùng bề ngang cân đối: "+str(teams))
+                if geometry["scroll"]>geometry["client"]+10:
+                    issues.append("desktop: sơ đồ tràn ngang: "+str(geometry))
+            else:
+                if any(x["w"]>geometry["client"]+10 for x in geometry["cols"]):
+                    issues.append("mobile: ô sơ đồ tràn ngang: "+str(geometry))
+            results.append({"giao_dien":form,"luong":"Bộ máy: 2 chức danh và 3 tổ",
+                            "toa_do":geometry})
         # Cân lề trên cả trang: các bảng có cuộn riêng, trang không tràn ngang.
         dims=page.evaluate("""() => ({
             vp: window.innerWidth,
