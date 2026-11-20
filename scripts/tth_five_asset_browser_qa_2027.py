@@ -57,12 +57,18 @@ with sync_playwright() as p:
         if submit.count()==0:failed.append(name+': assistant-only icon submit missing')
         else:
          submit.click(timeout=6000)
-         route='HoTro_TroLy.html' if name=='healthcare-app' else 'Web_TroLy.html'
-         try:page.wait_for_function('(expected)=>decodeURIComponent(location.hash).includes(expected)',arg=route,timeout=6000)
-         except Exception:failed.append(name+': assistant icon did not route to '+route)
-         page.wait_for_timeout(200)
-         prefill=frame.locator('input').evaluate_all('''(els,q)=>els.some(e=>e.value===q)''',test_question)
-         if not prefill:failed.append(name+': assistant did not receive the submitted question')
+         if name=='healthcare-app':
+          route='HoTro_TroLy.html'
+          try:page.wait_for_function('(expected)=>decodeURIComponent(location.hash).includes(expected)',arg=route,timeout=6000)
+          except Exception:failed.append(name+': assistant icon did not route to '+route)
+          page.wait_for_timeout(220)
+          prefill=frame.locator('input').evaluate_all('''(els,q)=>els.some(e=>e.value===q)''',test_question)
+          if not prefill:failed.append(name+': App assistant did not receive the submitted question')
+         else:
+          panel=frame.locator('#tth-web-assistant-panel')
+          if not panel.is_visible():failed.append(name+': assistant panel did not open in place')
+          elif test_question not in panel.inner_text():failed.append(name+': submitted question missing from inline assistant')
+          if page.url!=original_url:failed.append(name+': Website assistant unexpectedly redirected to another page')
          if test_question in page.url:failed.append(name+': sensitive question leaked into URL')
         # Reset the original home screen before standard responsive / catalog QA.
         page.goto(path.as_uri()+('?demo=1' if name=='healthcare-app' else ''),wait_until='domcontentloaded',timeout=45000)
