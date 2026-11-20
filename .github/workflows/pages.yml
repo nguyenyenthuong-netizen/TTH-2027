@@ -44,6 +44,7 @@ on:
       - 'scripts/app_button_routes_audit_2027.py'
       - 'scripts/healthcare_interaction_fix_2027.py'
       - 'scripts/app_known_routes_fix_2027.py'
+      - 'scripts/app_unresolved_action_feedback_2027.py'
       - 'scripts/website_wide_content_2027.py'
       - 'scripts/tth_five_asset_browser_qa_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
@@ -241,6 +242,8 @@ jobs:
         run: python3 scripts/healthcare_interaction_fix_2027.py _site
       - name: Noi cac nut App den dung man hinh nghiep vu da co
         run: python3 scripts/app_known_routes_fix_2027.py _site
+      - name: Hien thi thong bao trung thuc cho lien ket App chua co dich
+        run: python3 scripts/app_unresolved_action_feedback_2027.py _site
       - name: Kiem tra toan bo nut va luong hoi tro ly App Website
         run: python3 scripts/app_button_routes_audit_2027.py _site
       - name: Luu bao cao kiem toan 120 nut va lien ket App
