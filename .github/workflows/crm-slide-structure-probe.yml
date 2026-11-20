@@ -1,0 +1,36 @@
+name: Inspect CRM presentation structure for internal decision slide
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/crm-slide-structure-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect original CRM document and navigation (read-only)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import zipfile,re,html
+          from pathlib import Path
+          with zipfile.ZipFile('TTH_5_Giao_Dien_GitLab_Pages_Free.zip') as z:
+           text=z.read('public/crm-da-kenh/index.html').decode('utf-8')
+          print('CRM_BYTES',len(text))
+          for term in ['class="slide"','id="s1"','id="s2"','id="s3"','id="s4"','id="s5"','id="s6"','id="s7"','id="sideNav"','class="navbtn"','function show','function go','function setSlide','class="roadmap"','class="slideHeader"']:
+           m=re.search(re.escape(term),text,re.I)
+           print('CRM_TOKEN',term,'hits',len(re.findall(re.escape(term),text,re.I)), 'context',repr(text[max(0,m.start()-250):m.start()+1050]) if m else 'NOT_FOUND')
+          print('CRM_SECTIONS')
+          for m in re.finditer(r'<(?:section|div)\b[^>]*(?:id="s\d+"|class="[^"]*slide[^"]*")[^>]*>',text,re.I):
+           print('CRM_SLIDE_ELEMENT',repr(text[m.start():m.start()+850]))
+          print('CRM_NAV_SNIPPET')
+          for term in ['id="sideNav"','class="navbtn"','const slides','let slides','document.querySelectorAll(".slide")','document.querySelectorAll(\'.slide\')','function activate','showSlide(']:
+           m=re.search(re.escape(term),text,re.I)
+           if m:print('CRM_NAV',term,repr(text[max(0,m.start()-300):m.start()+2200]))
+          print('CRM_END_MAIN',repr(text[text.rfind('</main>')-1000:text.rfind('</main>')+160]))
+          print('CRM_END_BODY',repr(text[-5200:]))
+          PY
