@@ -39,6 +39,25 @@ with sync_playwright() as p:
       frame=page.frame_locator('iframe')
       inner=frame.locator('body').inner_text(timeout=7000)
       info['frame_chars']=len(inner.strip())
+      if name=='healthcare-app':
+       app_catalog=page.evaluate('''() => {
+        const pages=JSON.parse(document.getElementById('pageData').textContent);
+        return {count:Object.keys(pages).length,allScroll:Object.values(pages).every(d=>d.includes('tth-app-all-pages-scroll-2027')),allSwipe:Object.values(pages).every(d=>d.includes('tth-app-all-pages-scroll-script-2027')),counter:document.getElementById('catalog')?.textContent||'',shell:!!document.getElementById('tth-app-catalog-full-2027')};
+       }''')
+       if app_catalog['count']<102:failed.append(name+': app screen count unexpectedly decreased '+str(app_catalog))
+       if not app_catalog['allScroll'] or not app_catalog['allSwipe']:failed.append(name+': some app screens lack complete long-scroll / swipe behavior '+str(app_catalog))
+       if str(app_catalog['count']) not in app_catalog['counter'] or not app_catalog['shell']:failed.append(name+': full app catalog and count unavailable '+str(app_catalog))
+       info['app_carousel_toolbars_main']=frame.locator('.tth-app-hscroll-tools').count()
+       page.locator('#catalog').click(timeout=5000)
+       if page.locator('#drawer[hidden]').count()>0:failed.append(name+': app screen catalog did not open')
+       page.locator('#find').fill('Tim_NhuCau')
+       if page.locator('#pages button').count()!=1:failed.append(name+': Tim_NhuCau page not found in complete catalog')
+       else:
+        page.locator('#pages button').first.click(timeout=5000)
+        page.wait_for_timeout(220)
+        if 'Tim_NhuCau.html' not in page.url:failed.append(name+': app screen chooser did not navigate')
+        if frame.locator('#tth-app-all-pages-scroll-2027').count()==0:failed.append(name+': need-based screen scrolling repair missing')
+       print('APP_CATALOG_QA',str(size),str(app_catalog),'main-carousel-bars',info['app_carousel_toolbars_main'])
       if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
