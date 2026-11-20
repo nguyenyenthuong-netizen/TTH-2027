@@ -141,6 +141,25 @@ with sync_playwright() as p:
                     issues.append("mobile: ô sơ đồ tràn ngang: "+str(geometry))
             results.append({"giao_dien":form,"luong":"Bộ máy: 2 chức danh và 3 tổ",
                             "toa_do":geometry})
+        # Kiểm tra đúng NHÃN HIỂN THỊ trong 5 ô bệnh viện trên sơ đồ.
+        # Không chỉ kiểm bảng phụ lục hoặc dữ liệu JSON nhúng.
+        expected_units=[
+            ("Bệnh viện Đa khoa TTH Vinh","03"),
+            ("Bệnh viện Đa khoa TTH Hà Tĩnh","03"),
+            ("Bệnh viện Đa khoa TTH Quảng Bình","03"),
+            ("Bệnh viện Y học cổ truyền Nguyên Phúc","02"),
+            ("Bệnh viện Răng hàm mặt và Phẫu thuật tạo hình thẩm mỹ Thái Thượng Hoàng","02"),
+        ]
+        unit_headings=page.locator("#v-org .mkt-org-local-row .hosp .hosp-h").all_inner_texts()
+        wanted=["Tổ Marketing "+name+" ("+count+")" for name,count in expected_units]
+        unit_headings=[" ".join(x.split()) for x in unit_headings]
+        if unit_headings!=wanted:
+            issues.append(form+": sơ đồ Bộ máy chưa đổi tên 5 Tổ Marketing bệnh viện: "+
+                          str({"dang_co":unit_headings,"can_co":wanted}))
+        if page.locator("#v-org .mkt-org-local-heading strong").inner_text()!="Tổ Marketing tại các bệnh viện và đầu mối phòng khám":
+            issues.append(form+": tiêu đề khối Marketing cơ sở chưa nhất quán")
+        if page.locator('#v-org .mkt-org-local-row summary').first.inner_text().split("(")[0].strip()!="Các Tổ Marketing tại bệnh viện":
+            issues.append(form+": tiêu đề nhóm 13 suất bệnh viện chưa chuẩn")
         # Cân lề trên cả trang: các bảng có cuộn riêng, trang không tràn ngang.
         dims=page.evaluate("""() => ({
             vp: window.innerWidth,
