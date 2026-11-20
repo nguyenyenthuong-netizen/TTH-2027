@@ -3,7 +3,7 @@
 """Đối soát cấu trúc và ngữ nghĩa hai Chuyên viên trưởng trên bản HTML xuất bản.
 Không coi kiểm thử tĩnh là xác nhận nhân sự/đo hiệu suất thực tế.
 """
-import json,re,sys
+import csv,json,re,sys
 from collections import Counter
 from pathlib import Path
 
@@ -200,10 +200,111 @@ if stats["buoc_chu_tri_trung_ma_phoi_hop"]:
  warnings.append({"ma":"CHUA_XAC_NHAN_NGUOI_KIEM_DOC_LAP",
                   "so_buoc":stats["buoc_chu_tri_trung_ma_phoi_hop"],
                   "yeu_cau":"Đối chiếu hai mã nhân sự thực tế, không dựa vào mã chức danh"})
+# Từ cảnh báo số lượng sang DANH MỤC HỒ SƠ CẦN BỔ SUNG có mã
+# định danh duy nhất. Chỉ ghi phiếu trắng; dữ liệu nhân sự/ủy quyền/giờ
+# thực đo lưu trong hệ thống nội bộ có phân quyền, không xuất công khai.
+process_names={q["id"]:q["ten"] for q in D["quy_trinh"]}
+evidence_cases=[]
+for qid,i,b in all_steps:
+ flags=[]
+ if b.get("ma_vi_tri_nhom_1_2027") and b.get("ma_vi_tri_nhom_2_2027"):
+  flags.append("PHAN_TUYEN_NHOM")
+ if b.get("chan_trung_nguoi_2027"):
+  flags.append("NGUOI_KIEM_DOC_LAP")
+ if b.get("chu_tri_thuc_te_theo_tuyen_cvt_2027"):
+  flags.append("CHOT_TUYEN_CVT")
+ if not flags:continue
+ cand=b.get("chu_tri_thuc_te_theo_tuyen_cvt_2027",{})
+ evidence_cases.append({
+  "ma_buoc":qid+"-"+str(i).zfill(2),
+  "quy_trinh":qid,
+  "ten_quy_trinh":process_names[qid],
+  "buoc":i,
+  "phan_loai":"; ".join(flags),
+  "chu_tri_mau":str(b.get("chu_tri_chinh","")),
+  "ma_vi_tri_nhom_1":str(b.get("ma_vi_tri_nhom_1_2027","")),
+  "ma_vi_tri_nhom_2":str(b.get("ma_vi_tri_nhom_2_2027","")),
+  "tuyen_noi_dung":str(cand.get("nhan_su_noi_dung_sang_tao_hoac_marketing_co_so","")),
+  "tuyen_truyen_thong_so":str(cand.get("nhan_su_truyen_thong_thuong_hieu_hoac_tang_truong_so","")),
+  "can_bo_sung":"mã vị trí/nhóm/cơ sở và quyết định phân công hiệu lực" if "PHAN_TUYEN_NHOM" in flags
+                  else "người kiểm độc lập có mã nhân sự khác người thực hiện" if "NGUOI_KIEM_DOC_LAP" in flags
+                  else "chức danh, tuyến quản lý và quyết định tiếp nhận/bàn giao có hiệu lực",
+  "trang_thai":"CHƯA ĐỦ CHỨNG CỨ – KHÔNG ĐƯỢC COI LÀ ĐÃ GIAO VIỆC/DUYỆT"
+ })
+count_by_flag=Counter(
+ flag for c in evidence_cases for flag in c["phan_loai"].split("; ")
+)
+assert count_by_flag["PHAN_TUYEN_NHOM"]==stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]
+assert count_by_flag["NGUOI_KIEM_DOC_LAP"]==stats["buoc_kiem_tra_nguoi_doc_lap"]
+assert count_by_flag["CHOT_TUYEN_CVT"]==stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]
+assert len({c["ma_buoc"] for c in evidence_cases})==len(evidence_cases)
+assert len(evidence_cases)<=sum(count_by_flag.values())
+
+dir_=root/"khung-marketing"
+case_csv=dir_/"danh-muc-xac-minh-phan-vai-kiem-doc-lap-2027.csv"
+columns=("ma_buoc","quy_trinh","ten_quy_trinh","buoc","phan_loai",
+         "chu_tri_mau","ma_vi_tri_nhom_1","ma_vi_tri_nhom_2",
+         "tuyen_noi_dung","tuyen_truyen_thong_so","can_bo_sung","trang_thai")
+with case_csv.open("w",encoding="utf-8-sig",newline="") as h:
+ writer=csv.DictWriter(h,fieldnames=columns)
+ writer.writeheader()
+ writer.writerows({k:v.get(k,"") for k in columns} for v in evidence_cases)
+case_json=dir_/"danh-muc-xac-minh-phan-vai-kiem-doc-lap-2027.json"
+case_json.write_text(json.dumps({
+ "nguon":"60 quy trình/407 bước sau kiểm toán chức năng",
+ "chua_du_chung_cu":True,
+ "tong_buoc_khac_nhau":len(evidence_cases),
+ "so_luot_rui_ro":dict(count_by_flag),
+ "ghi_chu":"Số bước không cộng trùng. Có thể dùng một bộ hồ sơ phân công hiệu lực cho nhiều bước cùng vị trí/nhóm; từng bước vẫn lưu tham chiếu.",
+ "bao_mat":"Không công khai mã nhân sự cá nhân, nhật ký giờ hoặc văn bản ủy quyền chưa được phép chia sẻ; xác minh trong hệ thống có phân quyền.",
+ "danh_muc":evidence_cases
+},ensure_ascii=False,indent=2),"utf-8")
+
+# Mẫu duy nhất cho nhật ký giờ quản trị: dữ liệu gốc phải nằm trong
+# hệ thống nhân sự/Marketing nội bộ; CSV xuất bản chỉ có tiêu đề.
+timesheet_csv=dir_/"mau-nhat-ky-gio-quan-tri-hai-cvt-2027.csv"
+time_cols=("ma_yeu_cau","ma_nhan_su_noi_bo","ma_vi_tri","nhom_to_co_so",
+ "loai_gio","ngay","so_luot","so_phut_thuc_do","so_phut_dinh_muc_da_duyet",
+ "can_cu_dinh_muc","nguon_gio","ma_ghi_nhan_trung_can_loai","tham_chieu_ho_so",
+ "nguoi_xac_nhan_noi_bo")
+with timesheet_csv.open("w",encoding="utf-8-sig",newline="") as h:
+ writer=csv.writer(h);writer.writerow(time_cols)
+
+# Người dùng chỉ tải mẫu công khai, không tải thông tin riêng của nhân sự.
+# Không thêm quy trình hoặc chữ ký phê duyệt.
+panel_anchor='<section class="doc-sec sub" data-title="4.3. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
+if panel_anchor not in s:errors.append({"ma":"THIEU_NOI_DUNG_DE_HIEN_BANG_XAC_MINH"})
+elif 'id="cnnv-danh-muc-chung-cu-2027"' not in s:
+ panel=(
+  '<div id="cnnv-danh-muc-chung-cu-2027" style="margin:12px 0;padding:12px;'
+  'max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;'
+  'border:1px solid #d7e2ef;border-radius:8px">'
+  '<strong style="display:block;color:#0837A1">Danh mục chứng cứ cần xác minh trước khi giao việc và nghiệm thu</strong>'
+  '<p>Rà soát '+str(len(evidence_cases))+' bước khác nhau có điều kiện xác minh; gồm '+
+    str(count_by_flag["PHAN_TUYEN_NHOM"])+' bước cần chọn nhóm/nhân sự, '+
+    str(count_by_flag["NGUOI_KIEM_DOC_LAP"])+' bước cần xác nhận người kiểm độc lập và '+
+    str(count_by_flag["CHOT_TUYEN_CVT"])+' bước cần chốt tuyến quản lý khi tiếp nhận, bàn giao. '
+    'Các nhóm điều kiện có thể giao nhau; không cộng số lượng thành tổng lỗi.</p>'
+  '<p>Phân vai chức danh theo mẫu không thay thế quyết định phân công; '
+  'thiếu mã nhân sự, người kiểm hoặc ủy quyền hiệu lực thì giữ trạng thái chờ. '
+  'Không kết luận đủ tải trước khi có giờ thực đo.</p>'
+  '<p><a href="./danh-muc-xac-minh-phan-vai-kiem-doc-lap-2027.csv" download>'
+  'Danh mục từng bước cần xác minh (CSV)</a> · '
+  '<a href="./mau-nhat-ky-gio-quan-tri-hai-cvt-2027.csv" download>'
+  'Mẫu nhật ký giờ quản trị (CSV trắng)</a></p>'
+  '<p class="mini">Các biểu mẫu tải công khai là mẫu trống hoặc danh mục không có dữ liệu cá nhân. '
+  'Thông tin nhân sự, ủy quyền và giờ thực tế phải lưu trong hệ thống nội bộ được phân quyền.</p>'
+  '</div>'
+ )
+ s=s.replace(panel_anchor,panel+panel_anchor,1)
+assert s.count('id="cnnv-danh-muc-chung-cu-2027"')==1
+p.write_text(s,"utf-8")
+
 report={
  "nguon":"HTML xuất bản từ main, dùng dữ liệu 26 chức danh, 60 quy trình, 407 bước và 568 đầu ra mẫu",
  "trang_thai":"LỖI CẦN SỬA" if errors else "ĐẠT KIỂM TRA CẤU TRÚC; CHỜ XÁC MINH HỒ SƠ THỰC TẾ",
  "thong_ke":dict(stats),
+ "danh_muc_chung_cu":{"tong_buoc_khong_trung":len(evidence_cases),"so_luot_phan_loai":dict(count_by_flag),"ten_file_csv":case_csv.name,"mau_gio_csv":timesheet_csv.name},
  "doi_soat_26_ma_chuc_danh":role_coverage,
  "loi":errors,
  "can_xac_minh":warnings,
