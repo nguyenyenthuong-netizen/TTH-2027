@@ -23,6 +23,7 @@ expected_order=[
 ]
 found_order=re.findall(r'<a class="tile" href="([^"]+)"',html)
 assert found_order==expected_order,f"Wrong catalog card order: {found_order}"
+assert "<strong>Phương án vận hành Marketing toàn hệ thống TTH Group 2027</strong>" in html,"Incorrect official presentation title"
 assert 'grid-template-columns:repeat(6,minmax(0,1fr))' in html
 assert (root/"trinh-chieu-marketing"/"assets"/"tth-logo.png").stat().st_size>1000,"Original TTH Group logo asset unavailable"
 from urllib.parse import urlparse
