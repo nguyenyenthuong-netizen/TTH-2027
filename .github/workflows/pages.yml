@@ -221,9 +221,9 @@ jobs:
         run: python3 scripts/slide_tree_after8_2027.py _site
       - name: Kiem soat logic lien thong Khung Slide Website App CRM
         run: python3 scripts/tth_five_asset_logic_fix_2027.py _site
-      - name: CRM lo trinh giai doan 1 CRM Call Center HIS va giai doan 2 chi da kenh
+      - name: CRM 02 giai doan theo trao doi nha cung cap va slide noi bo
         run: python3 scripts/crm_roadmap_phases_2027.py _site
-      - name: Khoa dung 3 giai doan CRM Call Center HIS da kenh do luong AI
+      - name: Khoa 02 giai doan CRM Call Center HIS va AI, 07 slide, 06 dich vu can chot
         run: python3 scripts/crm_phase_roadmap_gate_2027.py _site
       - name: Mo rong cuon du trang va the ngang cho 102 man hinh App
         run: python3 scripts/app_all_pages_scroll_2027.py _site
