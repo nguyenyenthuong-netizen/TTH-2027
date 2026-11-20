@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 site=(Path(sys.argv[1] if len(sys.argv)>1 else '_site')/'healthcare-website'/'index.html').resolve()
 with sync_playwright() as p:
  browser=p.chromium.launch(channel='chrome',headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
- for w,h in [(1440,900),(390,844)]:
+ for w,h in [(2048,1000),(1440,900),(390,844)]:
   page=browser.new_page(viewport={'width':w,'height':h},locale='vi-VN')
   errors=[];page.on('pageerror',lambda e:errors.append(str(e)[:240]))
   page.goto(site.as_uri(),wait_until='domcontentloaded',timeout=45000)
@@ -46,8 +46,14 @@ with sync_playwright() as p:
    header=frame.locator('#app header.gh > div:first-child').first
    edges=header.evaluate('''e=>({left:e.getBoundingClientRect().left,right:innerWidth-e.getBoundingClientRect().right})''')
    assert abs(edges['left']-edges['right'])<=7,(w,'Header gutters are not symmetrical',edges)
-   gap=header.evaluate('''e=>e.firstElementChild?parseFloat(getComputedStyle(e.firstElementChild).marginRight):0''')
-   assert gap>=16,(w,'Insufficient logo-to-menu clearance',gap)
+   visual=header.evaluate('''e=>{
+    const elems=[...e.children].filter(x=>getComputedStyle(x).display!=='none'&&x.getBoundingClientRect().width>0);
+    const logo=elems[0],last=elems[elems.length-1],nav=e.querySelector('nav.mnav');
+    return {left:logo.getBoundingClientRect().left,right:innerWidth-last.getBoundingClientRect().right,
+            gap:nav.getBoundingClientRect().left-logo.getBoundingClientRect().right};
+   }''')
+   assert visual['gap']>=18,(w,'Logo too close to menu',visual)
+   assert abs(visual['left']-visual['right'])<=14,(w,'Visible header margins are unequal',visual)
   cards=frame.locator('#app main article.card')
   if cards.count():
    sizes=cards.evaluate_all('''xs=>xs.filter(e=>e.getBoundingClientRect().width>0).map(e=>Math.round(e.getBoundingClientRect().width))''')
