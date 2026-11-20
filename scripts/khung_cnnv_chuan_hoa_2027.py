@@ -313,6 +313,29 @@ D["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]={
    "quy_tac_chan":"Không có phân công hiệu lực, mã nhân sự hoặc người kiểm độc lập: CHỜ BÀN GIAO/CHỜ NGHIỆM THU"}
  ]
 }
+# 1d) Tên đơn vị Marketing bệnh viện phải gắn với tên cơ sở, không gọi
+#     "Tổ Marketing chi nhánh" như tên một đơn vị chính thức.
+#     Các tên dưới đây chỉ là nhãn cơ cấu đề án, không tạo thêm suất/đơn vị.
+D["cnnv_ten_to_marketing_benh_vien_2027"]={
+ "quy_tac":"Tổ Marketing + tên đầy đủ của bệnh viện; chỉ dùng cho bệnh viện có tổ Marketing trong cơ cấu được duyệt. Không dùng cho đầu mối kiêm nhiệm phòng khám, không tự thành lập tổ tại cơ sở dự kiến.",
+ "danh_muc_dang_hoat_dong":[
+  {"benh_vien":"Bệnh viện Đa khoa TTH Vinh","ten_to":"Tổ Marketing Bệnh viện Đa khoa TTH Vinh","nhom":"nhom_1"},
+  {"benh_vien":"Bệnh viện Đa khoa TTH Hà Tĩnh","ten_to":"Tổ Marketing Bệnh viện Đa khoa TTH Hà Tĩnh","nhom":"nhom_1"},
+  {"benh_vien":"Bệnh viện Đa khoa TTH Quảng Bình","ten_to":"Tổ Marketing Bệnh viện Đa khoa TTH Quảng Bình","nhom":"nhom_1"},
+  {"benh_vien":"Bệnh viện Y học cổ truyền Nguyên Phúc","ten_to":"Tổ Marketing Bệnh viện Y học cổ truyền Nguyên Phúc","nhom":"nhom_2"},
+  {"benh_vien":"Bệnh viện Răng hàm mặt và Phẫu thuật tạo hình thẩm mỹ Thái Thượng Hoàng","ten_to":"Tổ Marketing Bệnh viện Răng hàm mặt và Phẫu thuật tạo hình thẩm mỹ Thái Thượng Hoàng","nhom":"nhom_2"}
+ ],
+ "luu_y":"Tên tổ là nhãn chuẩn hóa theo bệnh viện, không khẳng định đã có quyết định thành lập tổ riêng tại mọi cơ sở. Quyền, định biên, người giữ chức danh phải đối chiếu văn bản nhân sự hiệu lực.",
+ "quan_he":"Trưởng nhóm Marketing tại từng bệnh viện nhận một tuyến quản lý Marketing từ "+N+"; Ban Giám đốc bệnh viện phối hợp hai chiều về kế hoạch, nguồn dữ liệu, điều kiện thực địa và quản lý hành chính; "+T+" hướng dẫn nghiệp vụ truyền thông/số qua tuyến, không giao việc trực tiếp cho nhân viên."
+}
+for v in D["vi_tri"]:
+    if v["id"] in ("tn-a","tn-b","qhcs"):
+        v["ten_to_marketing_benh_vien_2027"]="Tên tổ theo danh mục bệnh viện cụ thể; không gọi chung 'Tổ Marketing chi nhánh'."
+    if v["id"]=="dmpk":
+        v["bao_cao_cho"]=v.get("bao_cao_cho","").replace(
+          "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở/2",
+          "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở và Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số theo từng phạm vi hướng dẫn nghiệp vụ; không tạo tuyến chỉ huy thứ hai"
+        )
 # 2) Tạo cùng một mẫu CNNV cho 26 mã chức danh, trích từ các trường MTCV đang có,
 #    nhưng không suy diễn thêm một quyền phê duyệt chưa được giao.
 for v in D["vi_tri"]:
@@ -541,6 +564,34 @@ if 'id="cnnv-2-chief-3-team-2027"' not in s:
     )
     s=s[:marker.end()]+note+s[marker.end():]
 
+# Tên tổ cơ sở theo từng bệnh viện: chỉ chèn tại phần cơ cấu, không
+# sửa dữ liệu lịch sử hay văn bản đã ban hành.
+if 'id="cnnv-ten-to-marketing-benh-vien-2027"' not in s:
+    marker=re.search(
+      r'(<section class="doc-sec sub" data-title="4\.3\. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
+      r'[\s\S]*?</h3>)',s
+    )
+    if not marker:raise RuntimeError("Thiếu mục 4.3 cho bảng tên Tổ Marketing bệnh viện")
+    naming=D["cnnv_ten_to_marketing_benh_vien_2027"]
+    rows=''.join(
+      '<tr><td>'+escape(x["benh_vien"])+'</td><td><strong>'+escape(x["ten_to"])+
+      '</strong></td></tr>'
+      for x in naming["danh_muc_dang_hoat_dong"]
+    )
+    box=(
+      '<div id="cnnv-ten-to-marketing-benh-vien-2027" style="max-width:100%;'
+      'min-width:0;margin:12px 0;overflow-wrap:anywhere">'
+      '<h4 style="color:#0837A1">Tên gọi Tổ Marketing tại từng bệnh viện</h4>'
+      '<p>'+escape(naming["quy_tac"])+'</p>'
+      '<div class="tbl" style="max-width:100%;overflow-x:auto">'
+      '<table class="t" style="min-width:650px;table-layout:auto">'
+      '<thead><tr><th>Bệnh viện</th><th>Tên tổ Marketing theo cơ sở</th></tr></thead>'
+      '<tbody>'+rows+'</tbody></table></div>'
+      '<p class="mini">'+escape(naming["luu_y"])+'</p>'
+      '<p>'+escape(naming["quan_he"])+'</p></div>'
+    )
+    s=s[:marker.end()]+box+s[marker.end():]
+
 # 6b) Đồng bộ văn bản sơ đồ HTML tĩnh với dữ liệu MTCV/cơ chế phân việc:
 #     thông tin JSON đúng nhưng popup/tóm tắt cũ cũng phải cùng một tuyến.
 for rid in ("bt-ac","bt-b","tk-b","md-b","tk-nt","dmpk"):
@@ -643,6 +694,10 @@ assert s.count('id="cnnv-org-three-team-columns-2027"')==1
 assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
 assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
 assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
+assert len(check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])==5
+assert all(x["ten_to"]=="Tổ Marketing "+x["benh_vien"] for x in check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])
+assert s.count('id="cnnv-ten-to-marketing-benh-vien-2027"')==1
+assert "/2 hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="dmpk")["bao_cao_cho"]
 assert len(check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])==9
 assert len({z["ma"] for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"]})==9
 assert all(all(z.get(k) for k in ("rui_ro","dau_moi","quyet_dinh","quy_tac_chan")) for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])
