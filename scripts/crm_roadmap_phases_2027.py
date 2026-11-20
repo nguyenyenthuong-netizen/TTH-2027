@@ -28,12 +28,12 @@ phase1=phase1.replace("CRM lõi","CRM",1)
 phase1=phase1.replace("Cuộc gọi","Call Center + HIS",1)
 # Keep realistic scope: a planned integration, not an assertion that live HIS is connected.
 before1="Hồ sơ, nhu cầu, ticket, người phụ trách; 1900/hotline được kết nối phù hợp."
-after1="Hồ sơ, nhu cầu, ticket, người phụ trách; triển khai Call Center/1900 và liên thông HIS theo phạm vi, phân quyền được phê duyệt."
+after1="CRM quản lý thông tin liên hệ, nhu cầu và ticket; Call Center tiếp nhận, lưu vết cuộc gọi 1900; HIS xác nhận lịch khám và nghiệp vụ theo phân quyền. Không chuyển toàn bộ bệnh án vào CRM."
 if before1 in phase1: phase1=phase1.replace(before1,after1,1)
 else:print("CRM_ROADMAP_WARN stage1_description_not_exact")
 # Preserve line breaks/title styling while eliminating misleading second-stage HIS.
 before2="Zalo, Fanpage, Email, Form, App/Website; liên kết mã bệnh nhân và lịch được HIS xác nhận."
-after2="Zalo, Fanpage, Email, Form, App/Website; hợp nhất tương tác và phối hợp xử lý trên nền CRM đã tích hợp."
+after2="Kết nối Zalo, Fanpage, Email, Form, Website và App vào CRM; hợp nhất lịch sử tương tác, nguồn khách và tuyến xử lý trên nền tảng Giai đoạn 1."
 if before2 in phase2:phase2=phase2.replace(before2,after2,1)
 else:print("CRM_ROADMAP_WARN stage2_description_not_exact")
 # The original stage-2 title is written with a line break then "+ HIS".
@@ -46,6 +46,12 @@ if not suffix:
  raise SystemExit("CRM_ROADMAP: Cannot locate + HIS in stage 2 title. Source unchanged.")
 phase2=phase2[:title_pos+suffix.start()]+phase2[title_pos+suffix.end():]
 out="".join([parts[0],phase1,phase2,parts[3]])
+old_subtitle="Đi từ nền tảng dữ liệu đến liên thông HIS và tự động hóa; không đầu tư dàn trải."
+new_subtitle="Giai đoạn 1 xây CRM + Call Center + HIS; Giai đoạn 2 mở rộng đa kênh; Giai đoạn 3 đo lường và AI theo nghiệm thu."
+if old_subtitle in out:
+ out=out.replace(old_subtitle,new_subtitle,1)
+else:
+ print("CRM_ROADMAP_WARN subtitle_not_exact")
 if out==src:raise SystemExit("CRM_ROADMAP: Nothing changed.")
 if "Call Center + HIS" not in phase1:raise SystemExit("CRM_ROADMAP: Stage1 update absent")
 if re.search(r'Đa kênh.{0,120}\+\s*HIS',phase2,re.I|re.S):raise SystemExit("CRM_ROADMAP: Stage2 still includes HIS")
