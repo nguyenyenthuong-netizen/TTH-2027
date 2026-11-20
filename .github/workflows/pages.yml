@@ -43,6 +43,8 @@ on:
       - 'scripts/website_wide_content_2027.py'
       - 'scripts/tth_five_asset_browser_qa_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
+      - 'pages-overrides/catalog/**'
+      - 'scripts/catalog_fit_qa_2027.py'
       - 'pages-overrides/2027-1911-final/**'
   workflow_dispatch:
 permissions:
@@ -229,6 +231,20 @@ jobs:
         run: python3 scripts/app_button_routes_audit_2027.py _site
       - name: Kiem tra trinh duyet 5 tai san desktop va mobile
         run: python3 scripts/tth_five_asset_browser_qa_2027.py _site
+      - name: Thay trang danh muc cu bang danh muc TTH Group fit 1 man hinh
+        run: |
+          set -euo pipefail
+          cp pages-overrides/catalog/index.html _site/index.html
+          test -s _site/trinh-chieu-marketing/assets/tth-logo.png
+      - name: Kiem tra logo goc, 7 lien ket Vercel va fit desktop/mobile
+        run: python3 scripts/catalog_fit_qa_2027.py _site
+      - name: Luu anh nghiem thu trang danh muc
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-tth-group-${{ github.run_number }}
+          path: artifacts/tth-catalog/
+          if-no-files-found: ignore
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
