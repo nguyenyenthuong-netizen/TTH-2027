@@ -1001,6 +1001,22 @@ summary=("Tổ trưởng kiêm nhiệm chỉ điều phối nhóm 1 trong phạm
 s,n=org_title.subn(lambda m:m.group(1)+escape(summary)+m.group(3),s,count=1)
 if n!=1:raise RuntimeError("Không tìm được mô tả Tổ Nội dung và Sáng tạo trong sơ đồ")
 
+# 6c) Nhãn người thay trong sơ đồ là văn bản cho người đọc, không phải
+# khóa mã vai trò. Ký tự '|' là dấu tách dữ liệu kỹ thuật: giữ nguyên
+# CSDL để các bộ kiểm thử và bảng tra cứu vẫn phân giải đúng mã.
+# Chỉ sửa phần chữ trong nhãn tĩnh, không sửa nội dung nghiệp vụ.
+substitute_label_rx=re.compile(r'(<i>Người thay chính: </i>)([^<]*)(</span>)')
+def readable_substitute_label(match):
+    raw=match.group(2)
+    if '|' not in raw:return match.group(0)
+    parts=raw.split('|',1)
+    if not parts[0].strip() or not parts[1].strip():
+        raise RuntimeError('Nhãn người thay thiếu phần mô tả: '+raw)
+    return match.group(1)+parts[0].strip()+' — '+parts[1].strip()+match.group(3)
+s,substitute_count=substitute_label_rx.subn(readable_substitute_label,s)
+assert substitute_count>=20, 'Không đủ nhãn người thay để kiểm tra sơ đồ'
+assert not re.search(r'<i>Người thay chính: </i>[^<]*\\|',s), 'Còn mã phân tách thô trong nhãn người thay'
+
 # 7) Chỉnh riêng sơ đồ Bộ máy: hai chức danh quản lý ở hàng trên,
 #    ba tổ ở hàng dưới sử dụng ba cột. Không tái cấu trúc dữ liệu/nhân sự.
 # DOM gốc: org-left > col > (col-h, col-b) và
