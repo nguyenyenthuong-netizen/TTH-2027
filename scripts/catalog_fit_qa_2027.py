@@ -12,7 +12,8 @@ html=pagefile.read_text("utf-8")
 assert "TTH Group <span>· Marketing toàn hệ thống</span>" in html,"Wrong Group title"
 assert "TTH Healthcare · Marketing toàn hệ thống" not in html,"Outdated brand header"
 assert "Tìm tên giao diện" not in html and 'type="search"' not in html,"Obsolete search bar"
-assert "tth-marketing-2027-slide.vercel.app" not in html,"Duplicate presentation link is forbidden"\nassert "Phần mềm quản trị Marketing</strong>" not in html and "tth-quan-tri-marketing-16112026" not in html and 'href="quan-tri-marketing/"' not in html,"Marketing software must not appear in GitHub catalog"
+assert "tth-marketing-2027-slide.vercel.app" not in html,"Duplicate presentation link is forbidden"
+assert "Phần mềm quản trị Marketing</strong>" not in html and "tth-quan-tri-marketing-16112026" not in html and 'href="quan-tri-marketing/"' not in html,"Marketing software must not appear in GitHub catalog"
 assert (root/"trinh-chieu-marketing"/"assets"/"tth-logo.png").stat().st_size>1000,"Original TTH Group logo asset unavailable"
 from urllib.parse import urlparse
 with sync_playwright() as p:
