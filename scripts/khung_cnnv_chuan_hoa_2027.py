@@ -1015,7 +1015,7 @@ def readable_substitute_label(match):
     return match.group(1)+parts[0].strip()+' — '+parts[1].strip()+match.group(3)
 s,substitute_count=substitute_label_rx.subn(readable_substitute_label,s)
 assert substitute_count>=20, 'Không đủ nhãn người thay để kiểm tra sơ đồ'
-assert not re.search(r'<i>Người thay chính: </i>[^<]*\\|',s), 'Còn mã phân tách thô trong nhãn người thay'
+assert not re.search(r'<i>Người thay chính: </i>[^<]*\|',s), 'Còn mã phân tách thô trong nhãn người thay'
 
 # 7) Chỉnh riêng sơ đồ Bộ máy: hai chức danh quản lý ở hàng trên,
 #    ba tổ ở hàng dưới sử dụng ba cột. Không tái cấu trúc dữ liệu/nhân sự.
