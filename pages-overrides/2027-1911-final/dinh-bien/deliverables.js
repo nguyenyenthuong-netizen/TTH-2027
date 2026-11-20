@@ -88,26 +88,42 @@ function decisions(r,all){
  detail('Bố trí từng chức danh ở Tổng công ty',table(hr,positionRows(all.filter(x=>!x.site)),[2,3]),true);
 }
 function phaseSite(s){return fLabel('Đơn vị', '<select data-set="deliverySite">'+opt(Object.fromEntries(s.map(v=>[v.id,v.name])),u.deliverySite)+'</select>');}
+// For every quantity, the system and hospital shares are disjoint and cover the original row.
 const splitSeats={
- 'bt-ac':{labels:['Biên tập kiêm Tổ trưởng – lịch, kịch bản và kiểm','Biên tập bài, trang dịch vụ và nội dung chuyên đề'],first:['loi','kt','phat','cc','tt-lich','tt-kiemto','tt-tailieu','phaply','mo-mc','ban-giao']},
- 'md-ac':{labels:['Media phân cảnh, kiểm kỹ thuật và âm thanh','Media quay, dựng phim và bàn giao bản gốc'],first:['pc','kiem','am','kho','ban-giao']},
- 'tk-a':{labels:['Thiết kế nhận diện, bản phức tạp và kiểm chuẩn','Thiết kế ấn phẩm theo mẫu và các phiên bản'],first:['c3','c4','kiem','ban-giao']},
- 'qc-a':{labels:['Quảng cáo trả phí và đo hiệu quả','Vận hành kênh, lịch đăng và phản hồi'],first:['ads','landing','suco','mo-ads']}
+ 'bt-ac':{bai:6,dv:4,web:6,kt:9,phat:1,sk:4,cc:1,sua:2,english:2,phaply:1},
+ 'tk-a':{c1:26,c2:14,c3:3,c4:1,kiem:6,sua:3},
+ 'md-ac':{ghi:2,am:1,kho:3,sua:1},
+ 'qc-a':{fb:3,tik:1,khac:4,ads:2,landing:1,suco:1,tin:2,'dia-chi':0}
 };
-function slotShare(code,rec,slot,qty){
- if(slot==='all'||qty==null)return qty;
- if(code==='du-gb')return qty/2;
- return (slot==='a')===rec.first.includes(code)?qty:0;
+function slotShare(w,slot,qty,month,r){
+ if(slot==='all')return qty;
+ const z=w.item;
+ if(qty==null){
+   if(slot==='a'&&typeof z.q==='string'&&z.q.endsWith(':review'))return 0;
+   if(slot==='a'&&typeof z.q==='string'&&z.q.endsWith(':script')){const group=z.q.split(':')[0];return sum(r.works.filter(i=>[group+':short',group+':complex',group+':film'].includes(i.item.q)).map(i=>i.qty[month-1]));}
+   return null;
+ }
+ let system;
+ if(z.kind==='T')system=u.chiefSeat==='a'?qty:0;
+ else if(z.code==='du-gb')system=qty/2;
+ else if(typeof z.q==='string'&&z.q.endsWith(':review'))system=0;
+ else if(typeof z.q==='string'&&z.q.endsWith(':script')){
+   const group=z.q.split(':')[0];
+   const direct=r.works.filter(i=>[group+':short',group+':complex',group+':film'].includes(i.item.q));
+   system=Math.min(qty,sum(direct.map(i=>i.qty[month-1])));
+ }else if(typeof z.q==='string')system=qty;
+ else if(Object.hasOwn(splitSeats[z.role],z.code)){
+   const cycles=z.period==='w'?r.works.find(i=>i.id===z.role+'/du-gb').qty[month-1]/2:z.period==='2w'?1:z.period==='q'?Number(month%3===0):1;
+   const planned=edits.splits?.[z.id]??splitSeats[z.role][z.code];
+   system=Math.min(qty,planned*cycles);
+ }else system=qty; // Newly activated HQ campaign/stand-in starts with system scope until an item is assigned.
+ return slot==='a'?system:qty-system;
 }
 function slotDoc(d,z,id,slot){
  if(slot==='all'||!splitSeats[id])return true;
- let first;
- if(z.stage.includes('Kiểm chuẩn'))first=true;
- else if(id==='qc-a')first=/quảng cáo|chi phí|chiến dịch/i.test(d.name);
- else if(id==='md-ac')first=/phân cảnh|phát thanh|quy chuẩn|B-7/i.test(d.code+' '+d.name);
- else if(id==='bt-ac')first=/kịch bản|quy chuẩn|lịch|quy trình/i.test(d.kind+' '+d.name);
- else first=/nhận diện|quy chuẩn|bộ mẫu|thi công/i.test(d.name);
- return (slot==='a')===first;
+ // The master file has system scope; the hospital counterpart tests it when that role is assigned the pilot.
+ const hospital=z.stage==='Thử áp dụng'||/bệnh viện|hiện trường/i.test(d.scope);
+ return (slot==='b')===hospital;
 }
 function deadline(w){
  const idx=model.crosswalk[w.item.role].findIndex(([target])=>target===w.item.id);
@@ -119,7 +135,8 @@ function receipt(w){
  const refs=model.crosswalk[w.item.role].flatMap(([target],i)=>target===w.item.id?[i+1]:[]);
  const rows=[...new Set([...(w.item.jd||[]),...refs])].map(i=>model.jd[w.item.role][i]).filter(Boolean);
  const to=rows.map(x=>x[2]).find(x=>x&&!/^(?:[–—-]|như trên)/i.test(x));
- return to||r.phan_dinh_kiem_duyet||r.bao_cao_cho;
+ const value=to||r.phan_dinh_kiem_duyet||r.bao_cao_cho;
+ return String(value).replace(/người quản lý trực tiếp đúng tuyến theo quyết định phân công có hiệu lực/gi,r.bao_cao_cho);
 }
 function assignmentCondition(w,site){
  const z=w.item,notes=[];
@@ -149,11 +166,11 @@ function roadmapDelivery(){
  const phaseSelect=fLabel('Giai đoạn', '<select data-set="phase">'+opt(Object.fromEntries(Object.entries(stages).map(([k,v])=>[k,v.title])),u.phase)+'</select>');
  const roleSelect=fLabel('Người / chức danh cần giao việc', '<select data-set="deliveryRole">'+opt(Object.fromEntries(db.vi_tri.map(v=>[v.id,v.ten])),rid)+'</select>');
  const division=splitSeats[rid],slot=division?u.deliverySlot:'all';
- const slotSelect=division?fLabel('Phân công trong '+model.seats[rid]+' suất','<select data-set="deliverySlot">'+opt({all:'Cả hai suất',a:division.labels[0],b:division.labels[1]},slot)+'</select>'):'';
+ const slotSelect=division?fLabel('Phân công trong '+model.seats[rid]+' suất','<select data-set="deliverySlot">'+opt({all:'Cả hai suất',a:'Người phụ trách hệ thống',b:'Người phụ trách bệnh viện'},slot)+'</select>'):'';
  const choices='<div class="control">'+phaseSelect+roleSelect+(local?phaseSite(possible):'')+slotSelect+selCase()+'</div>';
  const phaseTable=table(['Giai đoạn','Phạm vi giao việc','Điều kiện chuyển bước'],Object.entries(stages).map(([k,v])=>[btn(v.title,'stage',k),e(v.scope),e(v.gate)]));
  const heading='<h3>Ai làm việc gì, vào giai đoạn nào?</h3><p>Phương án bố trí 22 suất ở Tổng công ty, 13 suất tại 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm. Chọn chức danh để xem từng sản phẩm phải giao.</p>'+choices+
-   (division?'<p class="fine">Hai suất cùng chức danh được chia đầu ra theo chuyên môn trong phương án tính thử. Chọn từng suất để xem phần được giao. Việc kiêm Tổ trưởng chỉ tính cho người giữ vai trò. Khâu kiểm độc lập do người khác người lập thực hiện. Danh tính và phân công chính thức chờ hồ sơ nhân sự.</p>':'');
+   (division?'<p class="fine">Hai người cùng MTCV, phân công cố định theo Mục 2 và Mục 3: một người phụ trách hệ thống, một người phụ trách bệnh viện. Nơi đặt hàng quyết định người nhận từng sản phẩm. Các số phân bổ chưa có phiếu giao là giả định tính thử. Người kiểm độc lập phải khác người lập.</p>':'');
  const gate='<p class="note"><b>'+e(st.title)+'.</b> '+e(st.scope)+'</p>';
  const roleIndex=detail('Danh sách phân công theo đủ 26 chức danh',table(['Chức danh','Suất theo cơ cấu','Phạm vi làm việc'],db.vi_tri.map(v=>[btn(v.ten,'deliveryRole',v.id),v.id==='dmpk'?'1 kiêm nhiệm':v.id==='dl-2'?'Kiêm cùng Đo lường':v.id==='qlml'?'Chờ phân vùng':String(model.seats[v.id]),e(v.phan_dinh_chu_tri_dau_ra||v.muc_dich)]),[1]));
  const keyMilestones=detail('Đầu ra cần chốt để chuyển giai đoạn',table(['Chủ trì phần việc','Đầu ra','Người nhận hoặc điều kiện hoàn thành'],phaseJobs[u.phase].map(([id,job,goal])=>[cellRole(id),e(job),e(goal)]))+'<p>'+e(st.gate)+'</p>',true);
@@ -184,8 +201,8 @@ function roadmapDelivery(){
  }
  const ready=!(inTrial&&local&&(clinic||!chosen||chosen!==site.id));
  let operationHours=0,pending=0;
- const rows=works.filter(w=>slot==='all'||w.item.code==='du-gb'||((slot==='a')===division.first.includes(w.item.code))).map(w=>{
-   const count=monthsHere.map(m=>slotShare(w.item.code,division,slot,phasedQty(w,m))),incomplete=count.some(v=>v===null);
+ const rows=works.map(w=>{
+   const count=monthsHere.map(m=>slotShare(w,slot,phasedQty(w,m),m,r)),incomplete=count.some(v=>v===null);
    const qty=incomplete?null:sum(count),hours=incomplete?null:sum(monthsHere.map((m,i)=>{
      const initial=w.qty[m-1];
      return initial?w.hours[m-1]*count[i]/initial:count[i]*sum(w.t)/60;
@@ -196,6 +213,11 @@ function roadmapDelivery(){
    return [btn(w.item.name,'roles',w.id)+assignmentCondition(w,site)+(rid==='dl-1'&&w.item.role==='dl-2'?'<small>Phần dữ liệu kiêm nhiệm</small>':''),quantity,nu(qty),nu(sum(w.t)),nu(hours),e(receipt(w))+'<small>Hạn: '+e(deadline(w))+'</small>'];
  }).filter(Boolean);
  const inScope=z=>keys.has(z.r);
+ const splitControls=division?detail('Căn cứ phân sản phẩm giữa hệ thống và bệnh viện',(
+   rid==='bt-ac'?fLabel('Suất kiêm Tổ trưởng trong kịch bản','<select data-set="chiefSeat">'+opt({a:'Người phụ trách hệ thống',b:'Người phụ trách bệnh viện'},u.chiefSeat)+'</select>'):'')+
+   '<p>Số dưới đây là sản lượng của người phụ trách hệ thống trong một kỳ chuẩn. Phần còn lại thuộc người phụ trách bệnh viện. Thay số theo phiếu của bên đặt hàng. Hai người cùng giữ nghiệp vụ của chức danh.</p><form class="form" data-split-role="'+e(rid)+'">'+
+   works.filter(w=>Object.hasOwn(division,w.item.code)).map(w=>fLabel(w.item.name+' / '+periodName(w.item.period),input(w.item.code,edits.splits?.[w.item.id]??division[w.item.code],0,w.item.q))).join('')+apply+'</form>'+
+   '<p>Media kiểm bản do bệnh viện nộp tính cho người phụ trách bệnh viện. Phần phân cảnh hoặc kịch bản lời được tách theo nguồn video. Cùng một buổi giao ban, mỗi người ghi thời gian tham dự của mình. Trong hồ sơ tài liệu gốc, phần thử tại bệnh viện chỉ tính cho người được giao thử. Số đo và nhân sự thực có chờ đối chiếu.</p>'):'';
  const stageDocs=r.docs.flatMap(rec=>{
   const matching=monthsHere.flatMap(m=>rec.monthly[m-1].filter(z=>z.type!=='next'&&inScope(z)&&slotDoc(rec.d,z,rid,slot)).map(z=>({...z,m})));
   if(!matching.length)return [];
@@ -207,7 +229,7 @@ function roadmapDelivery(){
  const docsHours=sum(stageDocs.map(z=>z.h));
  const caption='Sản lượng T'+monthsHere.join(' / T');
  const advisory='<p class="fine">Định mức là phút của người làm một đơn vị đầu ra. Giờ theo quý gồm thời gian trực tiếp, phối hợp, kiểm, sửa và di chuyển của vị trí. Mỗi người ghi giờ cho công đoạn mình làm. Thời gian chờ duyệt nằm ngoài phép tính.</p>';
- return heading+gate+trialSelection+'<h4>'+e(name(rid))+(site?' · '+e(site.name):'')+'</h4><p>'+e(scope)+'</p>'+
+ return heading+gate+trialSelection+splitControls+'<h4>'+e(name(rid))+(site?' · '+e(site.name):'')+'</h4><p>'+e(scope)+'</p>'+
  '<p class="receipt"><b>'+(pending&&operationHours===0?'Chờ xác nhận giờ đầu ra vận hành':format(operationHours)+' giờ đầu ra vận hành')+'</b> và <b>'+format(docsHours)+' giờ công việc tài liệu</b> trong quý theo phần đã định lượng.'+(pending?' Còn '+pending+' dòng chờ xác nhận phạm vi.':'')+(!ready?' Số giờ tại cơ sở đang dùng làm tham chiếu, chờ giao cho vai trò mới.':'')+'</p>'+
  (rows.length?table(['Sản phẩm bàn giao',caption,'Tổng sản lượng quý','Phút/đơn vị','Giờ trong quý','Người nhận, kiểm và hạn'],rows,[2,3,4]):'<p>Chưa giao sản phẩm trong giai đoạn đã chọn. Vị trí vùng chỉ nhận việc sau quyết định phân vùng và bàn giao quản lý.</p>')+advisory+
  '<h4>Quy trình, mẫu và báo cáo do vị trí tham gia trong quý</h4>'+(stageDocs.length?table(['Hồ sơ','Phạm vi','Tháng','Phần việc của vị trí','Sản lượng theo lịch','Giờ trong quý','Người kiểm chuẩn'],stageDocs.map(d=>d.cells),[5]):'<p>Chưa phân công hồ sơ tài liệu cho vị trí này trong lịch quý.</p>')+

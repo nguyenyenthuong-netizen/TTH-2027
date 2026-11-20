@@ -9,8 +9,8 @@ const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việ
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
 const titles={...model.external,...Object.fromEntries(db.don_vi.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vai_tro.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vi_tri.map(x=>[x.id,x.ten]))};
-const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},docs:{},work:{}});
-let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0};
+const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},splits:{},docs:{},work:{}});
+let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',chiefSeat:'a',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0};
 function compute(){runs=Object.fromEntries(Object.keys(cases).map(c=>[c,simulate(model,c,edits)]));}compute();
 const e=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const format=(x,n=1)=>x==null?'Chờ xác nhận':Number(x).toLocaleString('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:n});
@@ -201,6 +201,9 @@ root.addEventListener('toggle',ev=>{const d=ev.target;if(!d.open)return;if(d.dat
 root.addEventListener('submit',ev=>{ev.preventDefault();const form=ev.target,fd=Object.fromEntries(new FormData(form));if(!form.reportValidity())return;let reopen=null;
  if(form.hasAttribute('data-cap')){const candidate=Object.fromEntries(['week','days','leave','share'].map(k=>[k,Number(fd[k])]));try{TTHStaffing.capacity(candidate);}catch(err){form.querySelector('[name=leave]').setCustomValidity(err.message);form.reportValidity();form.querySelector('[name=leave]').setCustomValidity('');return;}edits.capacity=candidate;edits.clinic=asNumber(fd.clinic);}
  else if(form.hasAttribute('data-opt')){edits.eligible=Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]));}
+ else if(form.hasAttribute('data-split-role')){
+   const rid=form.dataset.splitRole;for(const [code,value] of Object.entries(fd))edits.splits[rid+'/'+code]=Number(value);
+ }
  else if(form.dataset.editSite){const key=form.dataset.editSite;edits.sites[key]={...siteMap[key].inputs,...Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]))};}
  else if(form.dataset.editWork){const id=form.dataset.editWork;if(fd.driver!==undefined){
    const [group,type]=getRun().works.find(w=>w.id===id).item.q.split(':');

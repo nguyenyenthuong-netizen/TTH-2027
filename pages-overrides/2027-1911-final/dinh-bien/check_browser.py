@@ -16,6 +16,8 @@ def check(page, width, form, out):
     host.locator('[data-set="deliveryRole"]').select_option('md-ac')
     host.locator('[data-set="pilot1"]').select_option('vinh')
     host.locator('[data-set="deliverySlot"]').select_option('b')
+    assert host.get_by_role('button',name='Phiếu kiểm bản dựng V2/V3 do cơ sở bàn giao',exact=True).count()==1
+    host.locator('[data-set="deliverySlot"]').select_option('a')
     assert host.get_by_role('button',name='Video ngắn sản xuất riêng tại Tổng công ty',exact=True).count()==1
     pane('summary')
     base=host.locator('.metric b').nth(0).inner_text()

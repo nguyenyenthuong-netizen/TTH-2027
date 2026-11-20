@@ -33,7 +33,7 @@ for i,d in enumerate(docs):
     for a in [d['owner'],d['writer'],d['reviewer'],d['tester'],*[x[0] for x in d['coauthors']]]: assert a.split('@')[0] in set(roles)|set(EXTERNAL),(a,d['id'])
     assert d['writer']!=d['reviewer'],d['id']
 raw=json.loads((ROOT/'doi-chieu-quy-trinh/doi-chieu-60-luong.json').read_text('utf-8'))
-data=dict(version='2027.05.2',roles=roles,work=W,docs=docs,jd=jd,crosswalk=reconcile(jd,W,docs,roles),seats=SEATS,drivers=DRIVERS,external=EXTERNAL,factors=FACTORS,actions=ACTIONS,highSite=HIGH_SITE,highClinic=HIGH_CLINIC,sites=[dict(id=id,name=name,group=g,historic=hc,inputs=dict(zip(DRIVERS,amount))) for id,name,g,hc,amount in SITES],old=raw['danh_muc_van_ban_cu'])
+data=dict(version='2027.05.3',roles=roles,work=W,docs=docs,jd=jd,crosswalk=reconcile(jd,W,docs,roles),seats=SEATS,drivers=DRIVERS,external=EXTERNAL,factors=FACTORS,actions=ACTIONS,highSite=HIGH_SITE,highClinic=HIGH_CLINIC,sites=[dict(id=id,name=name,group=g,historic=hc,inputs=dict(zip(DRIVERS,amount))) for id,name,g,hc,amount in SITES],old=raw['danh_muc_van_ban_cu'])
 assert len(D['quy_trinh'])==60 and sum(len(f['buoc']) for f in D['quy_trinh'])==407
 contracts=[c['ma_dau_ra'] for f in D['quy_trinh'] for b in f['buoc'] for c in b['doi_soat_tung_dau_ra_2027']];assert len(contracts)==len(set(contracts))==568
 D['dinh_bien_theo_dau_ra_2027']=data
@@ -45,7 +45,7 @@ link='<a href="#'+anchor+'" data-staff-panel="summary">Xem bảng giờ và so s
 # Clean the entry point rather than stacking extra external-link banners above the view title.
 start=s.index('<section class="view" data-view="staffing" id="v-staffing">')
 end=s.index('<div class="card" id="tth-dinh-bien-corrected-1911"',start)
-main='''<section class="view" data-view="staffing" id="v-staffing"><div class="view-h"><div><div class="eyebrow">PHẦN 05 / ĐỊNH BIÊN</div><h2 class="vt">Định biên theo khối lượng công việc</h2><p class="lede">Phương án 2027 gồm 22 suất tại Tổng công ty, 13 suất chuyên trách ở bệnh viện và một đầu mối TTH Clinic kiêm nhiệm. Sản lượng và thời gian tính thử có thể đối chiếu ngay bên dưới.</p></div></div><div id="dinh-bien-2027" data-version="2027.05.2"><noscript>Vui lòng bật JavaScript để sử dụng bảng tính và các danh mục chi tiết.</noscript></div>'''
+main='''<section class="view" data-view="staffing" id="v-staffing"><div class="view-h"><div><div class="eyebrow">PHẦN 05 / ĐỊNH BIÊN</div><h2 class="vt">Định biên theo khối lượng công việc</h2><p class="lede">Phương án 2027 gồm 22 suất tại Tổng công ty, 13 suất chuyên trách ở bệnh viện và một đầu mối TTH Clinic kiêm nhiệm. Sản lượng và thời gian tính thử có thể đối chiếu ngay bên dưới.</p></div></div><div id="dinh-bien-2027" data-version="2027.05.3"><noscript>Vui lòng bật JavaScript để sử dụng bảng tính và các danh mục chi tiết.</noscript></div>'''
 s=s[:start]+main+s[end:]
 # The older numbers remain identifiable as dated comparisons, outside the active calculation.
 a=s.index('id="m-5-2"');b=s.index('</section>',a)
@@ -83,6 +83,9 @@ part=part.replace('Theo ngưỡng (khi đủ 10 bệnh viện, 02 phòng khám: 
 part=part.replace('Đủ 10 bệnh viện, 02 phòng khám: 56, gồm', 'Phương án mở rộng cũ, cần tính lại khi đủ điều kiện. Số 56 từng bao gồm')
 part=part.replace('Bệnh viện Đa khoa Quốc tế TTH Huế 40;', 'Mốc tham chiếu của phương án mở rộng cũ, cần tính lại trước khi sử dụng. Bệnh viện Đa khoa Quốc tế TTH Huế 40;')
 s=s[:a]+part+s[end:]
+s=s.replace('22 TCT và 14 bệnh viện','22 suất Tổng công ty, 13 suất bệnh viện và 01 đầu mối Clinic kiêm nhiệm')
+s=s.replace('Thiết kế giảm khoảng 150 giờ/tháng (01 người)','Ước tính lịch sử 150 giờ/tháng. Kịch bản hiện hành chỉ ghi nhận thời gian tiết kiệm trên số bản đổi cỡ có bằng chứng trước và sau.')
+s=s.replace('<p>Quy tắc định biên theo phương pháp WISN ở mục 6: số người theo từng nhóm và vị trí = làm tròn lên [(giờ việc chính/tháng, chưa gồm kiêm nhiệm Tổ trưởng ÷ 142) + (giờ kiêm nhiệm Tổ trưởng/tháng ÷ 189)]. Không cộng trùng giờ Tổ trưởng vào phần việc chính.', '<p>Tính giờ của người kiêm Tổ trưởng trên cùng quỹ với giờ chuyên môn của người đó. Xem công thức quỹ kế hoạch, quỹ hữu ích và phần vượt theo tháng trong Mục 05.')
 css=(HERE/'staffing.css').read_text();js=(HERE/'calculate.js').read_text()+'\n'+(HERE/'view.js').read_text().replace('/* EMBED_DELIVERABLES */',(HERE/'deliverables.js').read_text());s=s.replace('</head>','<script type="text/plain" id="tth-staffing-style">'+css+'</script><style>#dinh-bien-2027{scroll-margin-top:140px;min-width:0}.db-jump{margin:10px 15px;font-size:15px}.db-jump a{color:#0837a1;font-weight:650}</style></head>',1).replace('</body>','<script id="tth-staffing-app">\n'+js+'\n</script></body>',1)
 assert len(re.findall(r'<button class="tab"',s))==12 and s.count('id="dinh-bien-2027"')==1
 path.write_text(s,'utf-8')
