@@ -43,6 +43,10 @@ with sync_playwright() as p:
    page.set_content(fixture,wait_until='domcontentloaded')
    shade=page.locator('#shade');panel=page.locator('#popup')
    assert shade.is_visible() and panel.is_visible(),(w,mode,'modal initially hidden')
+   page.wait_for_function("getComputedStyle(document.querySelector('#shade')).backgroundColor === 'rgba(0, 0, 0, 0)' || getComputedStyle(document.querySelector('#shade')).backgroundColor === 'rgb(0, 0, 0)'",timeout=4000)
+   assert page.locator('#site-content').is_visible(),(w,mode,'Website content not present when Hotline open')
+   assert page.evaluate("getComputedStyle(document.querySelector('#shade')).pointerEvents")=='none',(w,mode,'Hotline shade still blocks page')
+
    page.locator('#dismiss').click()
    assert not shade.is_visible() and not panel.is_visible(),(w,mode,'× left panel or gray backdrop visible')
    assert page.locator('#site-content').is_visible(),(w,mode,'Website content hidden')
