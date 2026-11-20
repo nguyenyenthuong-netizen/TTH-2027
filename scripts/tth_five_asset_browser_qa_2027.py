@@ -142,6 +142,28 @@ with sync_playwright() as p:
      if nav.count()!=7:failed.append(name+': CRM seventh slide missing from sidebar '+str(nav.count()))
      elif page.locator('#s7').count()!=1:failed.append(name+': CRM internal agreement screen absent')
      else:
+      shortcut=page.locator('#tth-crm-his-shortcut')
+      if shortcut.count()!=1:failed.append(name+': direct CRM/HIS linkage shortcut missing from sidebar')
+      else:
+       shortcut.evaluate('(e)=>e.click()')
+       page.wait_for_timeout(240)
+       if page.locator('#s3.active').count()!=1:
+        failed.append(name+': CRM/HIS shortcut did not open workflow slide 03')
+       if page.locator('#flowTabs .flowbtn.active').count()!=1 or \
+          'Định danh' not in page.locator('#flowTabs .flowbtn.active').inner_text():
+        failed.append(name+': CRM/HIS shortcut did not select identification flow 02')
+       example=page.locator('#crmFlowMetaPanel .tth-his-example')
+       if not example.is_visible():
+        failed.append(name+': CRM/HIS shortcut did not open accessible patient ID example')
+       else:
+        content=example.inner_text()
+        if 'CRM-00125' not in content or 'BN-00876' not in content:
+         failed.append(name+': direct shortcut mapping content missing')
+       if page.locator('#sideNav button').count()!=7:
+        failed.append(name+': direct CRM/HIS shortcut accidentally changed seven-slide navigation')
+       print('CRM_HIS_DIRECT_SHORTCUT_QA',str(size),json.dumps(
+        {'shortcut':shortcut.count(),'activeSlide':page.locator('#s3.active').count(),
+         'exampleShown':example.is_visible()},ensure_ascii=False))
       nav.nth(2).evaluate('(el)=>el.click()')
       page.wait_for_timeout(120)
       tabs=page.locator('#flowTabs .flowbtn')
