@@ -9,17 +9,20 @@ m=re.search(r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',s,
 if not m:raise SystemExit('Website pagesData missing')
 pages=json.loads(m.group(2))
 patch=r'''<style id="tth-hotline-close-style-2027">
-[data-tth-hotline-dismissed="1"]{display:none!important}
+/* Never hide the Website root or its content: only a diagnosed Hotline layer. */
+[data-tth-hotline-dismissed="1"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
 </style>
 <script id="tth-hotline-close-handler-2027">
 (function(){
  "use strict";
  if(window.__TTH_HOTLINE_CLOSE_HANDLER_2027__)return;
  window.__TTH_HOTLINE_CLOSE_HANDLER_2027__=true;
- let dismissed=null;
+ let dismissed=[];
  const visible=el=>{if(!el||!el.isConnected)return false;
   const r=el.getBoundingClientRect(),s=getComputedStyle(el);
   return r.width>8&&r.height>8&&s.display!=="none"&&s.visibility!=="hidden"&&s.opacity!=="0";};
+ const protectedRoot=el=>!el||el.matches?.('html,body,main,header,footer,nav,#app,#root,[id="site-content"]')||
+  Boolean(el.querySelector?.('header.gh'));
  function findHeading(){
   for(const selector of ['h1,h2,h3,h4,h5,strong,b,[role="heading"]','div,span']){
    for(const el of document.querySelectorAll(selector)){
@@ -45,21 +48,50 @@ patch=r'''<style id="tth-hotline-close-style-2027">
     }
    }
   }
-  if(!panel)return null;
-  let backdrop=null;
+  if(!panel||protectedRoot(panel))return null;
+  const layers=new Set([panel]);let mask=null;
+  // Ancestor fullscreen layer: the dialog and shade belong to one overlay.
   for(let a=panel.parentElement;a&&a!==document.body;a=a.parentElement){
    const r=a.getBoundingClientRect(),st=getComputedStyle(a);
-   if((st.position==="fixed"||st.position==="absolute")&&r.width>=vw*.75&&r.height>=vh*.68){
-    backdrop=a;break;
+   if(protectedRoot(a))break;
+   const fullscreen=r.width>=vw*.74&&r.height>=vh*.65;
+   if(fullscreen&&(st.position==="fixed"||st.position==="absolute"||
+      /modal|backdrop|overlay|shade|scrim|mask/i.test(String(a.className||"")))){
+    layers.add(a);mask=a;break;
    }
   }
-  return {panel,root:backdrop||panel,backdrop};
+  // Important: the original modal may render its gray backdrop as a SEPARATE
+  // sibling of the white dialog; hiding only panel leaves a gray blank screen.
+  const ancestors=new Set();for(let a=panel;a&&a!==document.body;a=a.parentElement)ancestors.add(a);
+  document.querySelectorAll('body *').forEach(function(el){
+   if(el===panel||el.contains(panel)||panel.contains(el)||protectedRoot(el)||!visible(el))return;
+   const r=el.getBoundingClientRect(),st=getComputedStyle(el);
+   if(r.width<vw*.74||r.height<vh*.65)return;
+   const cls=String(el.className||"")+" "+String(el.id||"");
+   const named=/modal|backdrop|overlay|shade|scrim|mask|dim-layer/i.test(cls);
+   const positioned=st.position==="fixed"||st.position==="absolute";
+   if(!positioned&&!named)return;
+   const bg=st.backgroundColor||"";
+   const alpha=/rgba?\([^)]*,\s*(0?\.\d+|1)\)/.exec(bg);
+   const translucent=Boolean(alpha&&parseFloat(alpha[1])>0&&parseFloat(alpha[1])<1);
+   const darkSolid=/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)/.exec(bg);
+   const grayMask=Boolean(darkSolid&&[1,2,3].every(i=>Number(darkSolid[i])<205)&&
+    (el.innerText||"").trim().length<80);
+   const near=[el.parentElement,el.parentElement?.parentElement].some(x=>ancestors.has(x));
+   if((named||translucent||grayMask)&&(positioned||near)){
+    layers.add(el);if(!mask)mask=el;
+   }
+  });
+  return {panel,layers:Array.from(layers),mask};
  }
  function close(m){
-  dismissed=m.root;
-  if(dismissed.tagName==="DIALOG"&&dismissed.open){try{dismissed.close()}catch(_){}}
-  dismissed.setAttribute("data-tth-hotline-dismissed","1");
-  dismissed.setAttribute("aria-hidden","true");
+  dismissed=m.layers.filter(el=>el&&el.isConnected&&!protectedRoot(el));
+  dismissed.forEach(function(el){
+   if(el.tagName==="DIALOG"&&el.open){try{el.close()}catch(_){}}
+   el.setAttribute("data-tth-hotline-dismissed","1");
+   el.setAttribute("aria-hidden","true");
+  });
+  // Re-enable the Website behind the modal; do NOT alter page content.
   document.documentElement.style.removeProperty("overflow");
   document.body.style.removeProperty("overflow");
   document.body.classList.remove("modal-open");
@@ -79,11 +111,12 @@ patch=r'''<style id="tth-hotline-close-style-2027">
   if(!btn||btn.getAttribute("href")?.startsWith("tel:"))return false;
   const meta=[btn.getAttribute("title"),btn.getAttribute("aria-label"),btn.getAttribute("onclick"),btn.getAttribute("data-action"),btn.className,btn.textContent].join(" ");
   if(/hotline|tổng đài|tong dai|điện thoại|phone|openHotline/i.test(meta))return true;
-  if(btn.closest(".tth-cta-fixed")&&btn.matches("a,button")){
-   const bg=getComputedStyle(btn).backgroundColor;
-   if(/rgb\((?:0, 1[0-7]\d|[0-5]\d), (?:1[1-9]\d|2[0-2]\d), (?:[0-9]\d|1[0-5]\d)\)/.test(bg))return true;
-  }
   return false;
+ }
+ function restore(){
+  dismissed.forEach(function(el){if(!el.isConnected)return;
+   el.removeAttribute("data-tth-hotline-dismissed");el.removeAttribute("aria-hidden");});
+  dismissed=[];
  }
  document.addEventListener("click",function(e){
   const t=e.target;
@@ -93,13 +126,11 @@ patch=r'''<style id="tth-hotline-close-style-2027">
   if(m&&btn&&closeButton(btn,m)){
    e.preventDefault();e.stopImmediatePropagation();close(m);return;
   }
-  if(m&&m.backdrop&&!m.panel.contains(t)&&m.backdrop.contains(t)){
+  if(m&&!m.panel.contains(t)){
    e.preventDefault();e.stopImmediatePropagation();close(m);return;
   }
-  if(dismissed&&btn&&opener(btn)){
-   dismissed.removeAttribute("data-tth-hotline-dismissed");
-   dismissed.removeAttribute("aria-hidden");
-   dismissed=null;
+  if(dismissed.length&&btn&&opener(btn)){
+   e.preventDefault();e.stopImmediatePropagation();restore();return;
   }
  },true);
  document.addEventListener("keydown",function(e){
