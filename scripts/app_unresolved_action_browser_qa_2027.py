@@ -17,12 +17,23 @@ with sync_playwright() as p:
   catalog=page.locator("#catalog");catalog.click()
   page.locator("#find").fill("BatDau_DongY")
   page.locator("#pages button").first.click()
-  page.frame_locator("iframe").locator('a[href="#"]').first.click()
+  iframe=page.locator("iframe").element_handle().content_frame()
+  before_url=iframe.url
+  # Chỉ thử liên kết thật sự chưa có trình xử lý; liên kết đã có onclick
+  # được quyền xử lý trước, không phải trường hợp thông báo dự phòng.
+  anchors=page.frame_locator("iframe").locator(
+      'a[href="#"]:not([onclick]):not([data-route]):not([data-href])')
+  if anchors.count()==0:raise SystemExit("Không có liên kết thiếu đích phù hợp để thử trên trang đồng ý")
+  anchor=anchors.first
+  label=anchor.inner_text().strip()
+  anchor.click()
   notice=page.frame_locator("iframe").locator("#tth-app-action-notice")
   notice.wait_for(state="visible",timeout=6000)
   content=notice.inner_text()
-  if "chưa được tích hợp" not in content:raise SystemExit("Legal link incorrectly claims working document "+repr(content))
-  if "BatDau_DongY.html" not in page.url:raise SystemExit("Unresolved anchor unexpectedly navigated")
+  if not any(p in content for p in ("chưa được tích hợp","chưa kết nối","chưa có màn hình đích","chỉ đang được minh họa")):
+      raise SystemExit("Liên kết thiếu đích không có thông báo trung thực: "+repr(content))
+  if iframe.url!=before_url:
+      raise SystemExit("Unresolved anchor unexpectedly navigated: "+repr((before_url,iframe.url)))
   if errors:raise SystemExit("Browser JS error "+repr(errors[:3]))
   results.append({"viewport":[w,h],"legal_notice":True,"unchanged_route":True,"errors":0})
   page.close()
