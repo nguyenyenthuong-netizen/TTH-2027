@@ -93,6 +93,45 @@ assert len(records)==60
 count_related=sum(bool(x["ung_vien_cu"]) for x in records)
 count_no=60-count_related
 
+# Khắc phục mâu thuẫn: trong CSDL cũ 60/60 QT ghi "Ban hành mới"
+# dù trạng thái xác minh đang là chưa đối chiếu văn bản gốc.
+# 23 văn bản còn lại cũng mới là PHƯƠNG ÁN xử lý, không phải quyết định hiệu lực.
+# Tách riêng mô tả phương án, tình trạng xác minh và quyền ký ban hành.
+for item in data["danh_muc_van_ban"]:
+    item["phuong_an_xu_ly_du_kien_truoc_doi_chieu"] = item.get("trang_thai", "")
+    item["cap_duyet_du_kien_truoc_doi_chieu"] = item.get("nguoi_duyet", "")
+    is_sample = bool(re.fullmatch(r"QT\\.\\d+", str(item.get("ma", ""))))
+    if is_sample:
+        item["trang_thai"] = "LUỒNG MẪU ĐỀ ÁN – CHƯA ĐỐI CHIẾU QUY TRÌNH CŨ"
+    else:
+        item["trang_thai"] = "VĂN BẢN THAM CHIẾU – CHƯA KIỂM TRA PHIÊN BẢN, HIỆU LỰC"
+    item["nguoi_duyet"] = (
+       "Cấp/người được phân quyền ban hành theo văn bản còn hiệu lực "
+       "(chưa xác minh cá nhân và phạm vi quyền)"
+    )
+    item["ghi_chu_hieu_luc_2027"] = (
+        "Không suy diễn việc đã ban hành, ban hành mới, sửa, thay thế, thu hồi, "
+        "hay thẩm quyền ký từ nội dung đề án 2027."
+    )
+assert sum(bool(re.fullmatch(r"QT\\.\\d+",str(x["ma"]))) for x in data["danh_muc_van_ban"]) == 60
+assert sum(x["trang_thai"].startswith("LUỒNG MẪU") for x in data["danh_muc_van_ban"]) == 60
+
+# Cùng một bộ dữ liệu ở khung chính và phụ lục; không cập nhật thủ công hai nơi.
+data["doi_chieu_quy_trinh_cu_2027"]={
+    "nguon":"5.QTQĐ.pdf – Phụ lục 03, danh mục liệt kê (chưa phải tập toàn văn)",
+    "trang_thai":"ĐỐI CHIẾU SƠ BỘ THEO TÊN/PHẠM VI – CHƯA XÁC NHẬN HIỆU LỰC",
+    "tong_luong":60,
+    "co_van_ban_co_the_lien_quan":count_related,
+    "chua_tim_thay_trong_danh_muc":count_no,
+    "danh_sach":records,
+    "quy_tac":"Văn bản liên quan không đồng nghĩa quy trình kế thừa; chỉ có hồ sơ gốc, phiên bản hiệu lực và đối chiếu từng điều khoản mới cho phép kết luận."
+}
+original_json = match.group(1)
+revised_json = json.dumps(data,ensure_ascii=False,separators=(",",":"))
+assert len(data["danh_muc_van_ban"])==83 and len(data["quy_trinh"])==60
+html = html.replace(original_json,revised_json,1)
+assert html.count('<script id="csdl" type="application/json">')==1
+
 def e(x):return escape(str(x),quote=True)
 def display_old(arr):
     if not arr:return '<span class="warn">Chưa tìm thấy mục tương ứng trong danh mục đã có</span>'
