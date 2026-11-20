@@ -48,6 +48,11 @@ with sync_playwright() as p:
        if not app_catalog['allScroll'] or not app_catalog['allSwipe']:failed.append(name+': some app screens lack complete long-scroll / swipe behavior '+str(app_catalog))
        if str(app_catalog['count']) not in app_catalog['counter'] or not app_catalog['shell']:failed.append(name+': full app catalog and count unavailable '+str(app_catalog))
        info['app_carousel_toolbars_main']=frame.locator('.tth-app-hscroll-tools').count()
+       info['app_native_hscroll_main']=frame.locator('.tth-app-hscroll-track').count()
+       if info['app_carousel_toolbars_main']!=0:
+        failed.append(name+': internal horizontal-scroll instruction buttons still visible')
+       if info['app_native_hscroll_main']<1:
+        failed.append(name+': horizontal cards lost native swipe/drag scrolling')
        page.locator('#catalog').click(timeout=5000)
        if page.locator('#drawer[hidden]').count()>0:failed.append(name+': app screen catalog did not open')
        page.locator('#find').fill('Tim_NhuCau')
@@ -57,7 +62,7 @@ with sync_playwright() as p:
         page.wait_for_timeout(220)
         if 'Tim_NhuCau.html' not in page.url:failed.append(name+': app screen chooser did not navigate')
         if frame.locator('#tth-app-all-pages-scroll-2027').count()==0:failed.append(name+': need-based screen scrolling repair missing')
-       print('APP_CATALOG_QA',str(size),str(app_catalog),'main-carousel-bars',info['app_carousel_toolbars_main'])
+       print('APP_CATALOG_QA',str(size),str(app_catalog),'native-scroll-tracks',info['app_native_hscroll_main'],'internal-buttons',info['app_carousel_toolbars_main'])
       if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
