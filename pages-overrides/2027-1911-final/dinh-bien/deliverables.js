@@ -23,11 +23,39 @@ function periodRoleKeys(r,id,site){
  if(model.roles[id].to==='coso')return scopeKeys(r,id,site);
  return roleKeys(r,id,id==='dl-1');
 }
+function seatMonths(r,id,slot){
+ const rows=r.monthly([id]).map(row=>Object.fromEntries(Object.keys(row).map(k=>[k,0])));
+ const segmentKeys=['direct','coord','check','fix','travel'];
+ for(const w of r.works.filter(item=>item.rid===id)){
+   w.qty.forEach((qty,i)=>{
+     if(!qty)return;
+     const selected=slotShare(w,slot,qty,i+1,r);
+     const factor=selected/qty,parts=w.segments[i];
+     const hours=w.hours[i]*factor;
+     rows[i][w.item.kind==='U'?'incident':'regular']+=hours;
+     if(w.item.kind==='T')rows[i].lead+=hours;
+     segmentKeys.forEach((key,j)=>rows[i][key]+=parts[j]*factor);
+   });
+ }
+ for(const rec of r.docs){
+   rec.monthly.forEach((records,i)=>{
+     records.filter(item=>item.r===id&&slotDoc(rec.d,item,id,slot)).forEach(item=>rows[i][item.type]+=item.h);
+   });
+ }
+ return rows;
+}
 function poolReviews(r){
  const list=[];
  for(const id of Object.keys(model.roles)){
    if(id==='dl-2')continue;
    const local=model.roles[id].to==='coso';
+   if(splitSeats[id]){
+     for(const slot of ['a','b']){
+       const monthly=seatMonths(r,id,slot),personRun={...r,monthly:()=>monthly};
+       list.push({id,site:null,keys:[id],seats:1,slot,review:TTHStaffing.reviewPosition(personRun,[id],1,null)});
+     }
+     continue;
+   }
    const entries=local?model.sites.filter(s=>r.siteRoles(s).includes(id)).map(s=>s.id):[null];
    for(const site of entries){
      const keys=periodRoleKeys(r,id,site),seats=local?1:model.seats[id];
@@ -36,6 +64,11 @@ function poolReviews(r){
    }
  }
  return list;
+}
+function slotLabel(slot){return slot==='a'?'phụ trách hệ thống':'phụ trách bệnh viện';}
+function positionLink(item){
+ if(item.slot)return btn(name(item.id)+' · '+slotLabel(item.slot),'deliveryRole',item.id+'/'+item.slot);
+ return cellRole(item.id);
 }
 function capacityBadge(x){
  const v=x.review;
@@ -48,10 +81,14 @@ function capacityBadge(x){
 function periodProducts(x){
  const rr=getRun(),keys=new Set(x.keys),periods=x.review.periods.filter(m=>m.excess>0);
  return periods.map(m=>{
-   const goods=rr.works.filter(w=>keys.has(w.rid)&&w.hours[m.m-1]>0).sort((a,b)=>b.hours[m.m-1]-a.hours[m.m-1]).slice(0,3)
-     .map(w=>btn(w.item.name,'roles',w.id)+' · '+format(w.qty[m.m-1])+' × '+format(sum(w.t))+' phút = '+format(w.hours[m.m-1])+' giờ');
-   const docs=rr.docs.map(rec=>({rec,h:sum(rec.monthly[m.m-1].filter(z=>keys.has(z.r)&&z.type==='setup').map(z=>z.h))})).filter(d=>d.h>0).sort((a,b)=>b.h-a.h).slice(0,2)
-     .map(d=>btn(d.rec.d.code+' · '+d.rec.d.name,'docs',d.rec.d.id)+' · '+format(d.h)+' giờ');
+   const goods=rr.works.filter(w=>keys.has(w.rid)&&w.hours[m.m-1]>0).map(w=>{
+     const total=w.qty[m.m-1],qty=x.slot?slotShare(w,x.slot,total,m.m,rr):total;
+     return {w,qty,h:total?w.hours[m.m-1]*qty/total:0};
+   }).filter(item=>item.h>0).sort((a,b)=>b.h-a.h).map(({w,qty,h})=>
+     (x.slot?btn(w.item.name,'deliveryRole',x.id+'/'+x.slot):btn(w.item.name,'roles',w.id))+' · '+format(qty)+' × '+format(sum(w.t))+' phút = '+format(h)+' giờ');
+   const docs=rr.docs.map(rec=>({rec,h:sum(rec.monthly[m.m-1].filter(z=>keys.has(z.r)&&z.type==='setup'&&(!x.slot||slotDoc(rec.d,z,x.id,x.slot))).map(z=>z.h))}))
+     .filter(item=>item.h>0).sort((a,b)=>b.h-a.h)
+     .map(item=>btn(item.rec.d.code+' · '+item.rec.d.name,'docs',item.rec.d.id)+' · '+format(item.h)+' giờ');
    return ['Tháng '+m.m,nu(m.excess),nu(m.ongoing),nu(m.setup),[...goods,...docs].join('<br>')];
  });
 }
@@ -61,7 +98,7 @@ function positionRows(all){
    const office=x.site?btn(siteTitle(x.site),'sites',x.site):'Tổng công ty';
    const short=x.id==='dmpk'?'01 đầu mối kiêm nhiệm':String(x.seats);
    const top=v.peak&&v.peak.excess>0?'Tháng '+v.peak.m+' vượt '+format(v.peak.excess)+' giờ':'';
-   return [cellRole(x.id)+(x.id==='dl-1'?'<small>Gồm công việc dữ liệu khách hàng kiêm nhiệm.</small>':''),office,short,nu(v.avgHours),e(capacityBadge(x))+(top?'<small>'+e(top)+'</small>':'')];
+   return [positionLink(x)+(x.id==='dl-1'?'<small>Gồm công việc dữ liệu khách hàng kiêm nhiệm.</small>':''),office,short,nu(v.avgHours),e(capacityBadge(x))+(top?'<small>'+e(top)+'</small>':'')];
  });
 }
 function decisions(r,all){
@@ -70,21 +107,21 @@ function decisions(r,all){
  const peaks=active.filter(x=>x.review.annualExcess===0&&x.review.peak.excess>0);
  const cluster=[...yearly,...peaks];
  const clinic=all.find(x=>x.id==='dmpk');
- const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.site?' tại '+siteTitle(x.site):'')).join(', ')+'.':'Giữ phương án 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm làm mốc bố trí.';
+ const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.slot?' · '+slotLabel(x.slot):'')+(x.site?' tại '+siteTitle(x.site):'')).join(', ')+'.':'Giữ phương án 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm làm mốc bố trí.';
  const evidence='Số người thực có năm 2027 và lịch trực tại từng cơ sở chờ Phòng Nhân lực và đơn vị xác nhận. Số giờ trong bảng là ước tính theo sản phẩm.';
  const hr=['Chức danh','Địa điểm','Bố trí theo cơ cấu','Giờ việc đã tính/tháng (bình quân)','So với quỹ giờ của cơ cấu'];
- const peaksTable=cluster.length?table(['Vị trí cần xem','Tháng vượt quỹ','Tháng cần hỗ trợ nhiều nhất','Việc có thể quyết'],cluster.map(x=>{
+ const peaksTable=cluster.length?table(['Người hoặc vị trí cần xem','Tháng vượt quỹ','Tháng cần hỗ trợ nhiều nhất','Việc có thể quyết'],cluster.map(x=>{
   const m=x.review.peak;const periods=x.review.periods.filter(v=>v.excess>0);
   const action=x.review.annualExcess>0?'Đo lại tải thường xuyên và kiểm khả năng phân công trước khi trình bổ sung người.':m.ongoing===0?'Dàn lại lịch làm tài liệu hoặc bố trí người thử, kiểm đúng chuyên môn.':'Xếp người hỗ trợ việc chuẩn bị hoặc đối soát theo lịch. Giữ người chịu trách nhiệm và thẩm quyền duyệt.';
-  return [cellRole(x.id)+(x.site?'<small>'+e(siteTitle(x.site))+'</small>':''),periods.map(t=>'T'+t.m).join(', '),'T'+m.m+' · '+format(m.excess)+' giờ',e(action)];
+  return [positionLink(x)+(x.site?'<small>'+e(siteTitle(x.site))+'</small>':''),periods.map(t=>'T'+t.m).join(', '),'T'+m.m+' · '+format(m.excess)+' giờ',e(action)];
  }),[2]):'<p>Trong kịch bản này, các vị trí đã có quỹ giờ đều nằm trong quỹ ở cả 12 tháng.</p>';
  return '<h4>Quyết định nhân sự theo kịch bản '+e(cases[u.scenario])+'</h4>'+stack([
- ['Bố trí dài hạn',e(first)+' <b>'+yearly.length+' vị trí/địa điểm có khối lượng đã tính vượt quỹ bình quân năm.</b>'],
- ['Bố trí theo tháng','<b>'+peaks.length+' vị trí/địa điểm chỉ vượt quỹ ở một số tháng.</b> Bảng dưới ghi tháng và số giờ cần thu xếp.'],
+ ['Bố trí dài hạn',e(first)+' <b>'+yearly.length+' người hoặc vị trí có khối lượng đã tính vượt quỹ bình quân năm.</b>'],
+ ['Bố trí theo tháng','<b>'+peaks.length+' người hoặc vị trí chỉ vượt quỹ ở một số tháng.</b> Bảng dưới ghi tháng và số giờ cần thu xếp.'],
  ['Đầu mối Clinic','Khối lượng tham chiếu '+format(clinic.review.avgHours)+' giờ/tháng trong mô hình đủ phạm vi. Chốt số giờ kiêm nhiệm, ngày bàn giao và người thay với đơn vị.']
  ])+'<p class="note">'+e(evidence)+'</p>'+peaksTable+
- (cluster.length?detail('Sản phẩm nào chiếm giờ ở từng tháng vượt quỹ',cluster.map(x=>detail(e(name(x.id))+(x.site?' · '+e(siteTitle(x.site)):''),table(['Tháng','Giờ vượt','Từ vận hành','Từ thiết lập','Đầu ra chiếm nhiều giờ trong tháng'],periodProducts(x),[1,2,3]))).join('')):'')+
- '<h4>Bố trí tại từng bệnh viện và phòng khám</h4><p>Mỗi dòng dưới đây thuộc một địa điểm. Các giờ làm ở Vinh, Hà Tĩnh và Quảng Bình được đối chiếu với người bố trí ở chính bệnh viện đó.</p>'+table(hr,positionRows(all.filter(x=>x.site).sort((a,b)=>model.sites.findIndex(s=>s.id===a.site)-model.sites.findIndex(s=>s.id===b.site))),[2,3])+
+ (cluster.length?detail('Xem toàn bộ đầu ra trong các tháng vượt quỹ',cluster.map(x=>detail(e(name(x.id))+(x.slot?' · '+e(slotLabel(x.slot)):'')+(x.site?' · '+e(siteTitle(x.site)):''),table(['Tháng','Giờ vượt','Từ vận hành','Từ thiết lập','Đầu ra và công việc tài liệu trong tháng'],periodProducts(x),[1,2,3]))).join('')):'')+
+ '<h4>Bố trí tại từng bệnh viện và phòng khám</h4><p>Ở Tổng công ty, các chức danh có hai người được đối chiếu riêng theo phần việc hệ thống và bệnh viện. Điều chỉnh sản lượng phân công trong Lộ trình và đầu ra sẽ cập nhật bảng này. Mỗi dòng dưới đây thuộc một địa điểm. Các giờ làm ở Vinh, Hà Tĩnh và Quảng Bình được đối chiếu với người bố trí ở chính bệnh viện đó.</p>'+table(hr,positionRows(all.filter(x=>x.site).sort((a,b)=>model.sites.findIndex(s=>s.id===a.site)-model.sites.findIndex(s=>s.id===b.site))),[2,3])+
  detail('Bố trí từng chức danh ở Tổng công ty',table(hr,positionRows(all.filter(x=>!x.site)),[2,3]),true);
 }
 function phaseSite(s){return fLabel('Đơn vị', '<select data-set="deliverySite">'+opt(Object.fromEntries(s.map(v=>[v.id,v.name])),u.deliverySite)+'</select>');}

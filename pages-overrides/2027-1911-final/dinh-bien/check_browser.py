@@ -24,6 +24,23 @@ def check(page, width, form, out):
     assert host.get_by_role('button',name='Video ngắn sản xuất riêng tại Tổng công ty',exact=True).count()==1
     pane('summary')
     base=host.locator('.metric b').nth(0).inner_text()
+    hospital=host.locator('tr').filter(has_text='Chuyên viên quảng cáo và kênh số nhóm 1 · phụ trách bệnh viện').filter(has_text='Tổng công ty')
+    system=host.locator('tr').filter(has_text='Chuyên viên quảng cáo và kênh số nhóm 1 · phụ trách hệ thống').filter(has_text='Tổng công ty')
+    assert hospital.count()==1 and system.count()==1
+    assert 'Vượt quỹ bình quân năm' in hospital.inner_text()
+    pane('roadmap')
+    host.locator('[data-set="deliveryRole"]').select_option('qc-a')
+    host.get_by_text('Căn cứ phân sản phẩm giữa hệ thống và bệnh viện',exact=True).click()
+    host.locator('[data-split-role="qc-a"] [name="ads"]').fill('5')
+    host.locator('[data-split-role="qc-a"] button').click()
+    pane('summary')
+    assert 'Vượt quỹ bình quân năm' not in hospital.inner_text()
+    pane('roadmap')
+    host.locator('[data-set="deliveryRole"]').select_option('qc-a')
+    host.get_by_text('Căn cứ phân sản phẩm giữa hệ thống và bệnh viện',exact=True).click()
+    host.locator('[data-split-role="qc-a"] [name="ads"]').fill('2')
+    host.locator('[data-split-role="qc-a"] button').click()
+    pane('summary')
     host.locator('[data-set="scenario"]').select_option('high')
     assert host.locator('.metric b').nth(0).inner_text()!=base
     host.locator('[data-set="scenario"]').select_option('base')
