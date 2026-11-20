@@ -45,7 +45,9 @@ permissions:
   id-token: write
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Keep active browser QA and deployment running when unrelated Khung commits arrive.
+  # GitHub still coalesces pending runs to the latest main commit.
+  cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest
