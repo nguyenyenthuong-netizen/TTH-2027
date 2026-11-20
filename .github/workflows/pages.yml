@@ -45,6 +45,7 @@ on:
       - 'scripts/healthcare_interaction_fix_2027.py'
       - 'scripts/app_known_routes_fix_2027.py'
       - 'scripts/app_unresolved_action_feedback_2027.py'
+      - 'scripts/app_unresolved_action_browser_qa_2027.py'
       - 'scripts/website_wide_content_2027.py'
       - 'scripts/tth_five_asset_browser_qa_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
@@ -255,6 +256,8 @@ jobs:
           if-no-files-found: ignore
       - name: Kiem tra trinh duyet 5 tai san desktop va mobile
         run: python3 scripts/tth_five_asset_browser_qa_2027.py _site
+      - name: Kiem thu App lien ket chua co dich tren desktop va mobile
+        run: python3 scripts/app_unresolved_action_browser_qa_2027.py _site
       - name: Thay trang danh muc cu bang danh muc TTH Group fit 1 man hinh
         run: |
           set -euo pipefail
