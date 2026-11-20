@@ -142,6 +142,24 @@ with sync_playwright() as p:
      if nav.count()!=7:failed.append(name+': CRM seventh slide missing from sidebar '+str(nav.count()))
      elif page.locator('#s7').count()!=1:failed.append(name+': CRM internal agreement screen absent')
      else:
+      nav.nth(3).evaluate('(el)=>el.click()')
+      page.wait_for_timeout(140)
+      cm=page.locator('#s4').evaluate('''root=>{
+        const read=sel=>{const el=root.querySelector(sel);if(!el)return {exists:false};
+          const r=el.getBoundingClientRect();return {exists:true,px:parseFloat(getComputedStyle(el).fontSize),
+          visible:r.width>0&&r.height>0,sw:el.scrollWidth,cw:el.clientWidth,sh:el.scrollHeight,ch:el.clientHeight}};
+        return {active:root.classList.contains('active'),
+          rule:read('.role-rule>strong'),flow:read('.tier-example-flow>span'),
+          label:read('.tier-example-label'),except:read('.tier-example>p'),
+          horizontal:root.scrollWidth-root.clientWidth};
+      }''')
+      if not cm['active']:failed.append(name+': slide 04 did not open before font QA')
+      for part,minimum in [('rule',16),('flow',15),('label',14),('except',14)]:
+       obj=cm[part]
+       if not obj.get('exists') or not obj.get('visible') or obj.get('px',0)<minimum:
+        failed.append(name+' '+str(size)+': CRM slide04 text still too small '+part+' '+str(obj))
+      if cm['horizontal']>35:failed.append(name+' '+str(size)+': slide04 width overflow after font growth '+str(cm))
+      print('CRM_S4_FONTS_QA',str(size),json.dumps(cm,ensure_ascii=False))
       nav.nth(6).evaluate('(el)=>el.click()')
       page.wait_for_timeout(160)
       if page.locator('#s7.active').count()!=1:failed.append(name+': CRM sidebar could not open seventh slide')
