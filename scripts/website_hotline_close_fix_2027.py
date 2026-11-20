@@ -140,16 +140,19 @@ patch=r'''<style id="tth-hotline-close-style-2027">
   const m=modal();if(!m)return;
   m.layers.forEach(function(el){
    if(el===m.panel)return;
-   el.style.setProperty("background-color","transparent","important");
-   el.style.setProperty("backdrop-filter","none","important");
-   el.style.setProperty("-webkit-backdrop-filter","none","important");
-   el.style.setProperty("box-shadow","none","important");
-   el.style.setProperty("pointer-events","none","important");
+   [["background-color","transparent"],["backdrop-filter","none"],
+    ["-webkit-backdrop-filter","none"],["box-shadow","none"],
+    ["pointer-events","none"]].forEach(function(pair){
+     if(el.style.getPropertyValue(pair[0])!==pair[1]||el.style.getPropertyPriority(pair[0])!=="important")
+      el.style.setProperty(pair[0],pair[1],"important");
+    });
   });
-  m.panel.style.setProperty("pointer-events","auto","important");
+  if(m.panel.style.getPropertyValue("pointer-events")!=="auto"||
+     m.panel.style.getPropertyPriority("pointer-events")!=="important")
+   m.panel.style.setProperty("pointer-events","auto","important");
   document.body.classList.remove("modal-open");
-  document.body.style.removeProperty("overflow");
-  document.documentElement.style.removeProperty("overflow");
+  if(document.body.style.getPropertyValue("overflow"))document.body.style.removeProperty("overflow");
+  if(document.documentElement.style.getPropertyValue("overflow"))document.documentElement.style.removeProperty("overflow");
  }
  let scheduled=false;
  function scheduleUndim(){
