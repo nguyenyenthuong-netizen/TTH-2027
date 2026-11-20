@@ -39,7 +39,7 @@ jobs:
            matches=[m.start() for m in re.finditer(re.escape(styleterm),text,re.I)][:12]
            print('CRM_FONT_STYLE',styleterm,[(p,text[max(0,p-90):p+220]) for p in matches])
           import json
-          flows_match=re.search(r'const flows\\s*=\\s*(\\[.*?\\]);',text,re.S)
+          flows_match=re.search(r'const flows\s*=\s*(\[.*?\]);',text,re.S)
           if flows_match:
            flows=json.loads(flows_match.group(1))
            for i,flow in enumerate(flows):
