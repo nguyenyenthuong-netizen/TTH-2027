@@ -27,8 +27,8 @@ jobs:
           print('CRM_VERCEL_LIVE_PHASES',titles)
           assert titles==['CRM + Call Center + HIS','AI'],f'Incorrect Vercel CRM roadmap: {titles}'
           assert 'id="tth-crm-s4-readability-2027"' in s,'Missing slide 04 typography override on Vercel'
-          rule=re.search(r'#s4 \\.role-rule>strong\\s*\\{([^}]+)\\}',s,re.S)
-          flow=re.search(r'#s4 \\.tier-example-flow>span\\s*\\{([^}]+)\\}',s,re.S)
+          rule=re.search(r'#s4 \.role-rule>strong\s*\{([^}]+)\}',s,re.S)
+          flow=re.search(r'#s4 \.tier-example-flow>span\s*\{([^}]+)\}',s,re.S)
           assert rule and 'font-size:17px' in rule.group(1),'Missing enlarged rule font'
           assert flow and 'font-size:16px' in flow.group(1),'Missing enlarged 1900 flow font'
           assert 'id="s7"' in s,'Seventh internal decision slide missing'
