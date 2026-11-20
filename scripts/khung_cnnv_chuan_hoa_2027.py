@@ -449,6 +449,32 @@ if 'id="cnnv-phong-phan-tuyen-2027"' not in s:
     )
     s=s.replace(anchor,panel+anchor,1)
 
+# 6b) Đồng bộ văn bản sơ đồ HTML tĩnh với dữ liệu MTCV/cơ chế phân việc:
+#     thông tin JSON đúng nhưng popup/tóm tắt cũ cũng phải cùng một tuyến.
+for rid in ("bt-ac","bt-b","tk-b","md-b","tk-nt","dmpk"):
+    label=escape(V[rid]["bao_cao_cho"])
+    patt=re.compile(
+        r'(<button\b[^>]*\bdata-jd="'+re.escape(rid)+r'"[^>]*>'
+        r'(?:(?!</button>)[\s\S])*?<i>Báo cáo cho: </i>)([^<]*)(</span>)'
+    )
+    s,n=patt.subn(lambda m:m.group(1)+label+m.group(3),s,count=1)
+    if n!=1:raise RuntimeError("Không đồng bộ được nhãn Báo cáo cho ở Bộ máy: "+rid)
+legacy_load=("≈ 90–96 giờ/tháng có phần mềm (ước tính; gồm ≈ 13 giờ điều phối "
+             "người nhóm 2, Chuyên viên thiết kế ngoại tuyến của Tổ Nội dung và Sáng tạo)")
+new_load=("Tải quản trị: CHƯA ĐỦ GIỜ THỰC ĐO; không sử dụng ước tính 90–96 "
+          "giờ/tháng hoặc 13 giờ điều phối nhóm 2/ngoại tuyến của phương án cũ "
+          "để kết luận đủ tải.")
+if legacy_load in s:s=s.replace(legacy_load,escape(new_load),1)
+else:print("CNNV NOTE: tải ước tính tĩnh ở sơ đồ đã được thay trước đó")
+org_title=re.compile(
+ r'(<summary>Tổ Nội dung và Sáng tạo \(10\)<small>)([\s\S]*?)(</small></summary>)'
+)
+summary=("Tổ trưởng kiêm nhiệm chỉ điều phối nhóm 1 trong phạm vi được giao; "
+         "nhóm 2 và Thiết kế ngoại tuyến qua đầu mối điều phối có phân công hiệu lực; "
+         +N+" quản lý nghiệp vụ, không phân lịch thường lệ.")
+s,n=org_title.subn(lambda m:m.group(1)+escape(summary)+m.group(3),s,count=1)
+if n!=1:raise RuntimeError("Không tìm được mô tả Tổ Nội dung và Sáng tạo trong sơ đồ")
+
 # 7) Chỉnh riêng sơ đồ Bộ máy: hai chức danh quản lý ở hàng trên,
 #    ba tổ ở hàng dưới sử dụng ba cột. Không tái cấu trúc dữ liệu/nhân sự.
 # DOM gốc: org-left > col > (col-h, col-b) và
