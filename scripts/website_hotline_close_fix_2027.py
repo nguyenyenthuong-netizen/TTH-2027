@@ -133,6 +133,36 @@ patch=r'''<style id="tth-hotline-close-style-2027">
    e.preventDefault();e.stopImmediatePropagation();restore();return;
   }
  },true);
+
+ // The Hotline is a NON-MODAL floating information panel. Preserve the
+ // underlying home page visually on open as well as after close.
+ function undim(){
+  const m=modal();if(!m)return;
+  m.layers.forEach(function(el){
+   if(el===m.panel)return;
+   el.style.setProperty("background-color","transparent","important");
+   el.style.setProperty("backdrop-filter","none","important");
+   el.style.setProperty("-webkit-backdrop-filter","none","important");
+   el.style.setProperty("box-shadow","none","important");
+   el.style.setProperty("pointer-events","none","important");
+  });
+  m.panel.style.setProperty("pointer-events","auto","important");
+  document.body.classList.remove("modal-open");
+  document.body.style.removeProperty("overflow");
+  document.documentElement.style.removeProperty("overflow");
+ }
+ let scheduled=false;
+ function scheduleUndim(){
+  if(scheduled)return;scheduled=true;
+  requestAnimationFrame(function(){scheduled=false;undim();});
+ }
+ if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",scheduleUndim,{once:true});
+ }else scheduleUndim();
+ const watch=new MutationObserver(scheduleUndim);
+ watch.observe(document.documentElement,{subtree:true,childList:true,attributes:true,
+  attributeFilter:["class","style","hidden","aria-hidden"]});
+
  document.addEventListener("keydown",function(e){
   if(e.key!=="Escape")return;
   const m=modal();if(!m)return;
