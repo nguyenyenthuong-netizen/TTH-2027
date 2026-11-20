@@ -80,7 +80,11 @@ for qid,i,b in all_steps:
   if z.get("trang_thai_nghiem_thu_2027")!="CHƯA NGHIỆM THU HỒ SƠ THỰC TẾ":
    errors.append({"ma":"TU_NHAN_NGHIEM_THU","id":z.get("ma_dau_ra")})
 assert stats["dau_ra"]==568
-assert stats["buoc_chu_tri_trung_ma_phoi_hop"]==14
+# 14 là dữ liệu hiện trạng, không phải tiêu chí "đạt": luôn đối chiếu từng bước.
+assert stats["buoc_chu_tri_trung_ma_phoi_hop"]==sum(
+ code(b.get("chu_tri_chinh","")) in [code(x) for x in b.get("phoi_hop",[])]
+ for _,_,b in all_steps
+)
 assert stats["buoc_chu_tri_cvt"]>=1 and stats["buoc_chu_tri_cvt-2"]>=1
 assert stats["buoc_co_ca_hai_cvt"]<=407
 # Một Trưởng nhóm chỉ có một người quản lý trực tiếp trong danh sách, theo thời điểm bàn giao.
@@ -144,20 +148,63 @@ assert cross.get("can_chot_nguoi")==7
 semantic=D.get("kiem_toan_568_dau_ra_chuyen_biet_2027",{})
 assert semantic.get("tong")==568 and semantic.get("can_xac_nhan")==512
 assert s.count('id="tth-cvt-cross-25-review-2027"')==1
-assert stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]==95
+# 95 là dữ liệu hiện trạng cần phân vai, không phải một ngưỡng nghiệm thu.
+assert stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"]==sum(
+ bool(b.get("ma_vi_tri_nhom_1_2027") and b.get("ma_vi_tri_nhom_2_2027"))
+ for _,_,b in all_steps
+)
 assert stats["buoc_phan_tuyen_cvt_khi_nhan_viec"]==7
-warnings.append({"ma":"PHAN_VAI_TRO_THEO_NHOM","so_buoc":95,
+warnings.append({"ma":"PHAN_VAI_TRO_THEO_NHOM","so_buoc":stats["buoc_vai_tro_theo_nhom_chua_chon_ca_nhan"],
   "ghi_chu":"Chọn nhóm, cơ sở, chức danh và mã nhân sự thật trước khi giao"})
-warnings.append({"ma":"CHOT_CHUYEN_VIEN_TRUONG_THEO_NGUOI_NHAN_VIEC_VA_BAN_GIAO","so_buoc":7,
+warnings.append({"ma":"CHOT_CHUYEN_VIEN_TRUONG_THEO_NGUOI_NHAN_VIEC_VA_BAN_GIAO","so_buoc":stats["buoc_phan_tuyen_cvt_khi_nhan_viec"],
   "ghi_chu":"Năm bước tiếp nhận nhân sự và hai bước vắng mặt/nghỉ việc phải chọn đúng tuyến theo mã nhân sự, không mặc định Nội dung"})
 if stats["buoc_kiem_tra_nguoi_doc_lap"]:
  warnings.append({"ma":"CHUA_XAC_NHAN_HAI_NGUOI_KHAC_NHAU","so_buoc":stats["buoc_kiem_tra_nguoi_doc_lap"]})
 if stats["dau_ra_cho_ho_so"]:
  warnings.append({"ma":"CHUA_NGHIEM_THU_THUC_TE","so_dau_ra":stats["dau_ra_cho_ho_so"]})
+# Kiểm tra độ phủ theo chức danh thực, không đồng nhất 26 mã với 26 người.
+role_coverage={rid:{"ten":v["ten"],"chu_tri":0,"thuc_hien":0,"phoi_hop":0,
+ "chuc_nang":bool(v.get("muc_dich")),"dau_ra":bool(v.get("phan_dinh_chu_tri_dau_ra")),
+ "quyen_han":bool(v.get("phan_dinh_kiem_duyet")),"bao_cao":bool(v.get("bao_cao_cho")),
+ "cnnv":bool(v.get("cnnv_2027")),"du_kien":rid=="qlml"} for rid,v in R.items()}
+for qid,i,b in all_steps:
+ owner=code(b.get("chu_tri_chinh",""))
+ if owner in role_coverage:role_coverage[owner]["chu_tri"]+=1
+ for x in b.get("thuc_hien",[]):
+  c=code(x)
+  if c in role_coverage:role_coverage[c]["thuc_hien"]+=1
+ for x in b.get("phoi_hop",[]):
+  c=code(x)
+  if c in role_coverage:role_coverage[c]["phoi_hop"]+=1
+for rid,z in role_coverage.items():
+ missing=[k for k in ("chuc_nang","dau_ra","quyen_han","bao_cao","cnnv") if not z[k]]
+ if missing:errors.append({"ma":"MTCV_CHUA_DU_CNNV","vi_tri":rid,"truong_thieu":missing})
+ if not z["chu_tri"] and not z["thuc_hien"]:
+  warnings.append({"ma":"CHUA_CO_BUOC_CHU_TRI_HOAC_THUC_HIEN","vi_tri":rid,
+    "tinh_trang":"Cần đối chiếu dự kiến/kiêm nhiệm và hồ sơ giao việc, không tự cấp quyền"})
+assert len(role_coverage)==26
+gate=D.get("cnnv_dieu_phoi_ngoai_tuyen_2027",{})
+load=D.get("cnnv_tai_hai_chuc_danh_2027",{})
+if "CHỜ PHÂN TUYẾN" not in gate.get("khoa",""):
+ errors.append({"ma":"THIEU_CHAN_DIEU_PHOI_NGOAI_TUYEN"})
+if "CHƯA ĐỦ DỮ LIỆU" not in load.get("khoa_ket_luan",""):
+ errors.append({"ma":"THIEU_CHAN_KET_LUAN_TAI_CVT"})
+if len(D.get("cnnv_kiem_soat_luong_va_tham_quyen_2027",[]))!=6:
+ errors.append({"ma":"THIEU_SAU_LOAI_LUONG_VA_QUYEN"})
+for rid in ("bt-b","tk-b","md-b","tk-nt"):
+ if "đầu mối điều phối" not in R[rid].get("bao_cao_cho",""):
+  errors.append({"ma":"NHOM_2_CHUA_CO_CO_CHE_DIEU_PHOI", "vi_tri":rid})
+if "/2 hướng dẫn" in R["dmpk"].get("bao_cao_cho",""):
+ errors.append({"ma":"PHONG_KHAM_SAI_TUYEN_HUONG_DAN"})
+if stats["buoc_chu_tri_trung_ma_phoi_hop"]:
+ warnings.append({"ma":"CHUA_XAC_NHAN_NGUOI_KIEM_DOC_LAP",
+                  "so_buoc":stats["buoc_chu_tri_trung_ma_phoi_hop"],
+                  "yeu_cau":"Đối chiếu hai mã nhân sự thực tế, không dựa vào mã chức danh"})
 report={
  "nguon":"HTML xuất bản từ main, dùng dữ liệu 26 chức danh, 60 quy trình, 407 bước và 568 đầu ra mẫu",
  "trang_thai":"LỖI CẦN SỬA" if errors else "ĐẠT KIỂM TRA CẤU TRÚC; CHỜ XÁC MINH HỒ SƠ THỰC TẾ",
  "thong_ke":dict(stats),
+ "doi_soat_26_ma_chuc_danh":role_coverage,
  "loi":errors,
  "can_xac_minh":warnings,
  "buoc_co_ca_hai_cvt":suspicious_both,
