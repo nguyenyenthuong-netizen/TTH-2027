@@ -323,6 +323,7 @@ D["cnnv_nhanh_xung_dot_hai_to_2027"]={
               "quang-cao-tra-phi","phat-thanh-man-hinh","vang-mat",
               "nhan-viec-moi","chuyen-quyen","su-co-tai-khoan"],
  "trang_thai":"NHÁNH ĐIỀU PHỐI ĐỀ XUẤT TRONG QT HIỆN CÓ; chưa thay văn bản phân quyền hoặc ban hành quy trình mới",
+ "dieu_kien_kich_hoat":"Hai tổ Truyền thông và Thương hiệu – Tăng trưởng số cùng cần thay đổi ưu tiên, lịch hoặc phụ thuộc đầu ra; phải xác định phạm vi và nhân sự trước khi thực thi",
  "phai_phan_biet":[
    {"loai":"Cùng một tổ","nguoi_chot":"Tổ trưởng tổ liên quan",
     "pham_vi":"Đổi lịch thường lệ trong thời hạn và nguồn lực đã được phê duyệt"},
