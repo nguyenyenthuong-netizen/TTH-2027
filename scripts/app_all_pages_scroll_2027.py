@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Expose existing TTH App pages and preserve all long content/hor. card rails.
+"""Expose existing TTH App pages and preserve long content and native horizontal card scrolling.
 Never adds sample medical records or changes page content, copy, logos, or routes.
 Runs after other post-assembly App rewrites, before browser QA.
 """
@@ -23,23 +23,10 @@ body{height:auto!important;min-height:100%;overflow-y:auto!important;overscroll-
   overflow-y:auto!important;overscroll-behavior-y:contain!important;-webkit-overflow-scrolling:touch;
   scrollbar-width:thin
 }
-.tth-app-hscroll-tools{display:flex;justify-content:flex-end;align-items:center;gap:8px;
- margin:7px 0 6px;min-height:36px;clear:both}
-.tth-app-hscroll-tools[hidden]{display:none!important}
-.tth-app-hscroll-tools span{font:600 13px/1.3 Arial,"Segoe UI",sans-serif;color:#0837A1;margin-right:auto}
-.tth-app-hscroll-tools button{position:static!important;display:grid!important;place-items:center!important;
- width:37px!important;height:35px!important;min-height:35px!important;min-width:37px!important;
- margin:0!important;padding:0!important;border:1px solid #a9c0e2!important;
- border-radius:8px!important;background:#fff!important;color:#0837A1!important;
- font:700 22px/1 Arial,"Segoe UI",sans-serif!important;box-shadow:none!important;cursor:pointer}
-.tth-app-hscroll-tools button:disabled{opacity:.38!important;cursor:default}
 .tth-app-hscroll-track{overflow-x:auto!important;overscroll-behavior-x:contain!important;
  scroll-behavior:smooth!important;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
 .tth-app-hscroll-track>*{flex-shrink:0}
-@media(max-width:480px){
- .tth-app-hscroll-tools span{font-size:12px}
- .tth-app-hscroll-tools button{width:42px!important;height:38px!important;min-height:38px!important}
-}
+
 </style>"""
 logic=r"""<script id="tth-app-all-pages-scroll-script-2027">
 (function(){
@@ -59,7 +46,7 @@ function horizontal(){
  var n=0;
  all.forEach(function(el){
   if(n>=12||el.dataset.tthHscrollDone||!el.parentNode||el.children.length<2)return;
-  if(el.closest('.tth-app-hscroll-tools,header,footer,nav,aside,[role="dialog"]'))return;
+  if(el.closest('header,footer,nav,aside,[role="dialog"]'))return;
   var st=getComputedStyle(el), width=el.clientWidth;
   if(st.display==='none'||width<130||el.scrollWidth<=width+28)return;
   var cls=String(el.className||'')+' '+String(el.id||'');
@@ -69,21 +56,7 @@ function horizontal(){
   if(!named&&!(row&&el.children.length>=3))return;
   if(el.parentElement&&el.parentElement.classList.contains('tth-app-hscroll-track'))return;
   el.dataset.tthHscrollDone='1';el.classList.add('tth-app-hscroll-track');
-  var bar=document.createElement('div');bar.className='tth-app-hscroll-tools';
-  bar.setAttribute('role','group');bar.setAttribute('aria-label','Điều hướng ngang nội dung');
-  var label=document.createElement('span');label.textContent='Trượt ngang';
-  var back=document.createElement('button'),forward=document.createElement('button');
-  back.type='button';forward.type='button';back.textContent='‹';forward.textContent='›';
-  back.setAttribute('aria-label','Xem thẻ bên trái');forward.setAttribute('aria-label','Xem thẻ bên phải');
-  bar.append(label,back,forward);el.parentNode.insertBefore(bar,el);
-  function update(){
-   var mx=Math.max(0,el.scrollWidth-el.clientWidth);
-   bar.hidden=mx<10;
-   back.disabled=el.scrollLeft<3;forward.disabled=el.scrollLeft>=mx-3;
-  }
-  back.addEventListener('click',function(){el.scrollBy({left:-Math.max(180,el.clientWidth*.75),behavior:'smooth'})});
-  forward.addEventListener('click',function(){el.scrollBy({left:Math.max(180,el.clientWidth*.75),behavior:'smooth'})});
-  el.addEventListener('scroll',update,{passive:true});
+  // Native touch scroll and unobtrusive mouse drag only; no internal instruction buttons.
   var start=null;
   el.addEventListener('pointerdown',function(ev){
    if(ev.pointerType!=='mouse'||ev.button!==0||ev.target.closest('a,button,input,select,textarea'))return;
@@ -96,7 +69,7 @@ function horizontal(){
   ['pointerup','pointercancel','pointerleave'].forEach(function(type){
     el.addEventListener(type,function(){start=null});
   });
-  update();n++;
+  n++;
  });
 }
 function run(){longScroll();horizontal()}
@@ -152,5 +125,5 @@ report={'page_count':len(pages),'pages_with_long_scroll_and_swipe':len(revised),
         'routes':list(pages.keys()),
         'notes':'All original page documents kept; content scroll and eligible horizontal carousels unlocked; no medical data added'}
 (root/'app-page-coverage-2027.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),'utf-8')
-print('APP-ALL-PAGES-2027','pages',len(pages),'scroll+carousel',len(revised),
+print('APP-ALL-PAGES-2027','pages',len(pages),'scroll+native-swipe',len(revised),
       'shortest',report['shortest_existing_pages'][:4])
