@@ -56,30 +56,26 @@ for directory,script_id in (("healthcare-app","pageData"),("healthcare-website",
   for key,ex in excerpts[:18]:print("  TERM",key,ex[:850])
  print("MAIN_FORM_ELEMENTS",directory,forms[:25])
  if directory=="healthcare-app":
-  # Report action coverage separately from page navigation. A button is not
-  # considered functional merely because the containing screen opens.
-  groups=collections.Counter();items=[]
+  # Static inventory: do not equate an accessible screen with a working button.
+  groups=collections.Counter();items=[];placeholders=[]
   for pname,pdoc in pages.items():
-   for mm in re.finditer(r'<button\\b[^>]*>[\\s\\S]*?<\\/button>',pdoc,re.I):
+   for mm in re.finditer(r'<button\b[^>]*>[\s\S]*?</button>',pdoc,re.I):
     frag=mm.group(0);tag=frag.split('>',1)[0]
     label=html.unescape(' '.join(re.sub(r'<[^>]*>',' ',frag).split()))[:100]
-    if re.search(r'onclick\\s*=|data-(?:href|route)\\s*=',tag,re.I):kind="explicit_handler"
-    elif re.search(r'type\\s*=\\s*["\\']submit["\\']',tag,re.I):kind="form_submit_requires_browser_test"
-    elif re.search(r'\\b(disabled|aria-disabled)\\b',tag,re.I):kind="disabled"
-    elif re.search(r'\\b(filter|loc|ngày|giờ|chọn|bật|tắt|đổi|xem thêm|tiếp tục)\\b',label,re.I):kind="local_state_candidate_unverified"
+    if re.search(r'onclick\s*=|data-(?:href|route)\s*=',tag,re.I):kind="explicit_handler_unverified"
+    elif re.search(r'type\s*=\s*["\x27]submit',tag,re.I):kind="form_submit_unverified"
+    elif re.search(r'\b(disabled|aria-disabled)\b',tag,re.I):kind="disabled"
+    elif re.search(r'filter|lọc|ngày|giờ|chọn|bật|tắt|đổi|xem thêm|tiếp tục',label,re.I):kind="local_state_candidate_unverified"
     else:kind="unverified_no_inline_handler"
     groups[kind]+=1;items.append({"page":pname,"label":label,"class":kind})
-  placeholders=[]
-  for pname,pdoc in pages.items():
-   for mm in re.finditer(r'<a\\b[^>]*\\bhref=["\\']#["\\'][^>]*>[\\s\\S]*?<\\/a>',pdoc,re.I):
+   for mm in re.finditer(r'<a\b[^>]*\bhref=["\x27]#["\x27][^>]*>[\s\S]*?</a>',pdoc,re.I):
     frag=mm.group(0);label=html.unescape(' '.join(re.sub(r'<[^>]*>',' ',frag).split()))[:100]
-    placeholders.append({"page":pname,"label":label,"class":"unresolved_not_a_valid_navigation"})
+    placeholders.append({"page":pname,"label":label,"class":"unresolved_not_valid_navigation"})
   report={"screens":len(pages),"buttons":len(items),"button_classifications":dict(groups),
           "placeholders":len(placeholders),"button_inventory":items,"placeholder_inventory":placeholders,
-          "interpretation":"Static inventory only: no claim of button interaction or HIS/CRM integration"}
+          "interpretation":"Static inventory only; no button interaction or HIS/CRM integration asserted"}
   dest=root.parent/"artifacts"/"app-action-inventory.json"
   dest.parent.mkdir(parents=True,exist_ok=True)
   dest.write_text(json.dumps(report,ensure_ascii=False,indent=2),"utf-8")
   print("APP_ACTION_COVERAGE",json.dumps({"screens":len(pages),"buttons":len(items),
    "button_classes":dict(groups),"unresolved_links":len(placeholders),"artifact":str(dest)},ensure_ascii=False))
-
