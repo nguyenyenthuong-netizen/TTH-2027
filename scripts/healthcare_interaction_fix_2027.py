@@ -25,6 +25,18 @@ shared_style=r"""<style id="tth-question-input-ui-2027">
  padding-left:9px!important;min-width:0!important}
 #app header.gh .gsrch .askai.tth-ask-icon-only{display:inline-flex!important;flex:0 0 38px!important}
 form[role="search"] .tth-hidden-extra-submit{display:none!important}
+.tth-web-assistant-panel{position:fixed;right:90px;bottom:22px;z-index:2147483000;
+ width:min(380px,calc(100vw - 24px));max-height:min(76dvh,640px);overflow:auto;
+ padding:14px;border:1px solid #B7CAE8;border-top:3px solid #ED3237;border-radius:16px;
+ background:#fff;box-shadow:0 12px 34px #0837A12B;color:#16345B;font:500 14px/1.5 Arial,sans-serif}
+.tth-web-assistant-panel .tth-web-assistant-head{display:flex;align-items:center;justify-content:space-between;
+ gap:8px;margin:0 0 11px;color:#0837A1;font-weight:800;font-size:16px}
+.tth-web-assistant-panel .tth-web-assistant-close{border:1px solid #C5D5ED;border-radius:8px;
+ background:#F2F6FC;color:#0837A1;width:34px;height:34px;font-size:21px;cursor:pointer}
+.tth-web-assistant-panel .tth-question-bubble{margin:0 0 10px;padding:11px;
+ background:#EAF1FF;border-radius:12px;overflow-wrap:anywhere}
+@media(max-width:640px){.tth-web-assistant-panel{right:8px;left:8px;bottom:72px;
+ width:auto;max-height:65dvh}}
 .tth-ai-offline-note{border:1px solid #B9CAE6;border-radius:12px;background:#F0F5FD;
  color:#123A77;padding:10px;margin:8px 0;font:500 13px/1.45 Arial,sans-serif;overflow-wrap:anywhere}
 @media(max-width:740px){
@@ -125,10 +137,33 @@ function send(sender){
  if(!value){inp.focus();return;}
  if(value.length>1200){inp.setCustomValidity("Câu hỏi tối đa 1.200 ký tự");inp.reportValidity();return;}
  inp.setCustomValidity("");
- // No navigation on focus/click; only explicit Enter or assistant-icon submission.
- window.parent.postMessage({type:navigateEvent,target:assistantPage},"*");
- // Keep potentially sensitive medical text out of URL, query strings and browser history.
- window.parent.postMessage({type:"TTH_ASSISTANT_PROMPT",question:value},"*");
+ // No navigation on focus/click; submit only when the user explicitly clicks or presses Enter.
+ if(isApp){
+  window.parent.postMessage({type:navigateEvent,target:assistantPage},"*");
+  window.parent.postMessage({type:"TTH_ASSISTANT_PROMPT",question:value},"*");
+ }else{
+  // Website has an inline assistant, not a separate Web_TroLy.html route.
+  let panel=document.getElementById("tth-web-assistant-panel");
+  if(!panel){
+   panel=document.createElement("section");panel.id="tth-web-assistant-panel";
+   panel.className="tth-web-assistant-panel";panel.setAttribute("role","dialog");
+   panel.setAttribute("aria-label","Trợ lý TTH");
+   const head=document.createElement("div");head.className="tth-web-assistant-head";
+   const title=document.createElement("strong");title.textContent="Trợ lý TTH";
+   const close=document.createElement("button");close.type="button";
+   close.className="tth-web-assistant-close";close.textContent="×";
+   close.setAttribute("aria-label","Đóng Trợ lý");
+   close.addEventListener("click",()=>panel.remove());
+   head.append(title,close);panel.append(head);
+   const question=document.createElement("div");question.className="tth-question-bubble";
+   question.setAttribute("aria-live","polite");panel.append(question);
+   const notice=document.createElement("p");notice.className="tth-ai-offline-note";
+   notice.textContent="Bản mô phỏng chưa kết nối dịch vụ AI hoặc dữ liệu khám thực tế. Câu hỏi đã được ghi nhận trên giao diện, chưa gửi đến hệ thống.";
+   panel.append(notice);document.body.append(panel);
+  }
+  panel.querySelector(".tth-question-bubble").textContent=value;
+  panel.hidden=false;
+ }
 }
 function configure(){
  configureApp();configureWebsite();
