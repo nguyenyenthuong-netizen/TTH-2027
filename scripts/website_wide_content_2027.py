@@ -26,6 +26,14 @@ css=r"""<style id="tth-website-content-wide-2027">
   margin-right:auto!important
  }
 }
+/* The header has its own symmetric gutters; CTA clearance applies to page content,
+   not to the navigation bar. Keep logo and first navigation item separated. */
+@media(min-width:1180px){
+ #app header.gh > div:first-child{column-gap:clamp(10px,1vw,19px)!important}
+ #app header.gh > div:first-child > :first-child{
+  margin-right:clamp(16px,1.3vw,27px)!important;flex-shrink:0!important
+ }
+}
 @media(max-width:980px){
  #app main{max-width:100%!important}
 }
@@ -48,8 +56,14 @@ function isVisible(el){
  return true;
 }
 function resize(){
- if(window.innerWidth<981)return;
  var app=document.getElementById('app');if(!app)return;
+ if(window.innerWidth<981){
+  ['main','header.gh > div:first-child','footer > div:first-child'].forEach(function(sel){
+   var el=app.querySelector(sel);if(!el)return;
+   ['width','max-width','margin-left','margin-right','gap'].forEach(function(prop){el.style.removeProperty(prop)});
+  });
+  return;
+ }
  var cta=app.querySelector('.fab.tth-cta-fixed');
  var left=Math.min(38,Math.max(22,window.innerWidth*.02));
  var right=104;
@@ -76,7 +90,18 @@ function resize(){
   el.style.setProperty('box-sizing','border-box','important');
  }
  widen(app.querySelector('main'));
- widen(app.querySelector('header.gh > div:first-child'));
+ // Header navigation must have equal free space on both sides, independent
+ // of the floating CTA's expanded/collapsed state.
+ var head=app.querySelector('header.gh > div:first-child');
+ if(head){
+  var edge=Math.min(64,Math.max(24,window.innerWidth*.028));
+  var headWidth=Math.min(1920,window.innerWidth-2*edge);
+  head.style.setProperty('width',headWidth+'px','important');
+  head.style.setProperty('max-width',headWidth+'px','important');
+  head.style.setProperty('margin-left','auto','important');
+  head.style.setProperty('margin-right','auto','important');
+  head.style.setProperty('box-sizing','border-box','important');
+ }
  widen(app.querySelector('footer > div:first-child'));
 }
 function schedule(){clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,35)}
