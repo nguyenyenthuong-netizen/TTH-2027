@@ -49,7 +49,7 @@ for directory,script_id in (("healthcare-app","pageData"),("healthcare-website",
     label=html.unescape(' '.join(re.sub(r'<[^>]*>',' ',m2.group(0)).split()))[:72]
     placeholder_links.append((pname,label))
   print('APP_BUTTON_MAP',all_button_samples[:120])
-  print('APP_PLACEHOLDER_LINKS',len(placeholder_links),placeholder_links[:35])
+  print('APP_PLACEHOLDER_LINKS',len(placeholder_links),placeholder_links)
  print("AUDIT",directory,"COUNTS",dict(counts),"BROKEN_LINKS",missing.most_common(18))
  for name,length,bcount,excerpts in suspicious:
   print("APP_SURFACE",directory,name,"len",length,"buttons",bcount)
