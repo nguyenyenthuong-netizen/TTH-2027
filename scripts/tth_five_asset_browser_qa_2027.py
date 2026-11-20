@@ -99,6 +99,22 @@ with sync_playwright() as p:
         if frame.locator('#tth-app-all-pages-scroll-2027').count()==0:failed.append(name+': need-based screen scrolling repair missing')
        print('APP_CATALOG_QA',str(size),str(app_catalog),'native-scroll-tracks',info['app_native_hscroll_main'],'internal-buttons',info['app_carousel_toolbars_main'])
       if name=='healthcare-website':
+       stats=frame.locator('article.card > span[style*="Google Sans Flex"]').evaluate_all('''els => els.map(el=>{
+         const t=el.querySelector('.thu')||el,s=getComputedStyle(t),r=el.getBoundingClientRect();
+         return {font:parseFloat(s.fontSize),line:parseFloat(s.lineHeight),
+           decoration:s.textDecorationLine,letterSpace:s.letterSpacing,
+           sw:el.scrollWidth,cw:el.clientWidth,label:el.textContent.trim().slice(0,80),
+           rendered:r.width>0&&r.height>0};
+       })''')
+       if len(stats)<4:failed.append(name+': statistics cards missing, got '+str(len(stats)))
+       for stat in stats:
+        if stat['font']<16 or stat['line']<22:
+         failed.append(name+' '+str(size)+': statistic text too small or cramped '+str(stat))
+        if stat['decoration']!='none':
+         failed.append(name+' '+str(size)+': sample-data stat retains unwanted underline '+str(stat))
+        if stat['sw']>stat['cw']+3:
+         failed.append(name+' '+str(size)+': statistic text clipped '+str(stat))
+       print('WEBSITE_STAT_FONT_QA',str(size),json.dumps(stats,ensure_ascii=False))
        layout=frame.locator('body').evaluate('''() => {
         const main=document.querySelector('#app main'),fab=document.querySelector('.fab.tth-cta-fixed');
         const rect=el=>{if(!el)return null;const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width),maxWidth:s.maxWidth,tag:el.tagName,cls:String(el.className).slice(0,80)}};
