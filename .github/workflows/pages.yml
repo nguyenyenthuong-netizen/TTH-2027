@@ -299,7 +299,7 @@ jobs:
         run: python3 scripts/tth_five_asset_browser_qa_2027.py _site
       - name: Kiem thu dong mo Hotline Website desktop mobile
         run: python3 scripts/website_hotline_close_browser_qa_2027.py _site
-      - name: Kiem thu Website that: Hotline giu nen, anh va the can doi
+      - name: 'Kiem thu Website that: Hotline giu nen, anh va the can doi'
         run: python3 scripts/website_hotline_content_and_cards_browser_qa_2027.py _site
       - name: Kiem thu App lien ket chua co dich tren desktop va mobile
         run: python3 scripts/app_unresolved_action_browser_qa_2027.py _site
