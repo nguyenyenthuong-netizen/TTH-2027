@@ -44,7 +44,7 @@ css='''<style id="tth-crm-s4-readability-2027">
   min-height:77px!important;height:auto!important;max-height:none!important;
   padding:12px 13px!important;box-sizing:border-box!important;
   white-space:normal!important;overflow-wrap:break-word!important;
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
+  display:block!important;align-content:center!important;
 }
 #s4 .tier-example-flow>span>b{
   font:800 16px/1.38 Arial,"Segoe UI",sans-serif!important;
