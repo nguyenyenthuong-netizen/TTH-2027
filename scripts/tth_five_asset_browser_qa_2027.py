@@ -36,10 +36,10 @@ with sync_playwright() as p:
        failed.append(name+': horizontal scrubber did not navigate')
     if name in ('healthcare-website','healthcare-app'):
      try:
-      inner=page.frame_locator('iframe').locator('body').inner_text(timeout=7000)
+      frame=page.frame_locator('iframe')
+      inner=frame.locator('body').inner_text(timeout=7000)
       info['frame_chars']=len(inner.strip())
       if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
-      frame=page.frame_locator('iframe')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
       info['frame_broken_images']=frame.locator('img').evaluate_all('''imgs => imgs.filter(i => i.complete && i.naturalWidth === 0 && i.getAttribute('src')).map(i => i.getAttribute('src')).slice(0,10)''')
