@@ -60,6 +60,25 @@ jobs:
            anchors=re.findall(r'<a\\b[^>]*href=["\\x27]#["\\x27][^>]*>.*?</a>',doc,re.S|re.I)
            print('APP_UNRESOLVED_TEST_PAGE',len(doc),'links',len(anchors))
            for i,a in enumerate(anchors[:15]):print('APP_ANCHOR',i,repr(a[:900]))
+          print('CRM_STAFF_METRIC_SCAN')
+          for word in ['chất lượng nhân viên','đánh giá nhân viên','chất lượng phục vụ','đo lường','chất lượng cuộc gọi','chấm điểm','CSAT','FCR','SLA','giám sát','ghi âm','năng suất','thời gian xử lý','BÁO CÁO','KPI']:
+           matches=[m.start() for m in re.finditer(re.escape(word),text,re.I)]
+           print('CRM_STAFF_TERM',word,'count',len(matches))
+           for idx in matches[:2]:
+            print('CRM_STAFF_CONTEXT',word,repr(text[max(0,idx-180):idx+450]))
+          with zipfile.ZipFile('TTH_5_Giao_Dien_GitLab_Pages_Free.zip') as webzip:
+           webtxt=webzip.read('public/healthcare-website/index.html').decode('utf-8')
+          mt=re.search(r'<script[^>]*id="pagesData"[^>]*>(.*?)</script>',webtxt,re.S)
+          print('WEB_PAGES_SCRIPT',bool(mt),'size',len(webtxt))
+          if mt:
+           pages=json.loads(mt.group(1))
+           print('WEB_PAGE_COUNT',len(pages))
+           for name,doc in pages.items():
+            if '120 bác sĩ' in doc or '3,8/5' in doc or '45 bác sĩ' in doc:
+             print('WEB_STAT_PAGE',name,'len',len(doc))
+             for term in ['120 bác sĩ','3,8/5','Chụp CT','3 bệnh viện','font-family','text-decoration']:
+              q=doc.find(term)
+              if q>=0:print('WEB_STAT',term,repr(doc[max(0,q-650):q+760]))
           print('CRM_END_MAIN',repr(text[text.rfind('</main>')-1000:text.rfind('</main>')+160]))
           print('CRM_END_BODY',repr(text[-5200:]))
           PY
