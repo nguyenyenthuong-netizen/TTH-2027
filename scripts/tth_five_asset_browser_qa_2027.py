@@ -163,6 +163,37 @@ with sync_playwright() as p:
         if layout['width']>layout['client']+24:failed.append(name+': CRM/HIS example horizontally clipped '+str(layout))
         print('CRM_HIS_EXAMPLE_QA',str(size),json.dumps(layout,ensure_ascii=False))
        page.locator('#crmFlowMetaToggle').evaluate('(el)=>el.click()')
+      launcher=page.locator('#ux-search-launch')
+      if launcher.count()==0:failed.append(name+': CRM advanced search launcher missing')
+      else:
+       launcher.evaluate('(el)=>el.click()')
+       page.wait_for_timeout(120)
+       dialog=page.locator('#ux-search-panel')
+       if not dialog.is_visible():failed.append(name+': advanced search did not open')
+       else:
+        search_metrics=dialog.evaluate('''e=>{
+          const q=(s)=>e.querySelector(s);
+          const font=(s)=>q(s)?parseFloat(getComputedStyle(q(s)).fontSize):null;
+          return {width:Math.round(e.getBoundingClientRect().width),
+            maxWidth:Math.round(innerWidth-16),
+            overflow:e.scrollWidth-e.clientWidth,
+            heading:font('.ux-hd strong'),
+            title:font('.ux-res .ux-title')};
+        }''')
+        if search_metrics['width']>search_metrics['maxWidth']+2:failed.append(name+': advanced search extends beyond viewport')
+        if search_metrics['overflow']>20:failed.append(name+': advanced search clips content horizontally')
+        if search_metrics['heading'] is None or search_metrics['heading']<16:failed.append(name+': advanced search header font too small')
+        query=dialog.locator('.ux-fields input:not([type="checkbox"])').first
+        if query.count():
+         query.fill('liên kết hồ sơ')
+         page.wait_for_timeout(260)
+         results=dialog.locator('.ux-res button')
+         if results.count()==0:failed.append(name+': search query returned no results for HIS linkage text')
+         else:
+          title_font=results.first.locator('.ux-title').evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)')
+          if title_font<15:failed.append(name+': result titles still too small')
+        print('CRM_ADVANCED_SEARCH_QA',str(size),json.dumps(search_metrics,ensure_ascii=False))
+        dialog.locator('.ux-exit').first.evaluate('(el)=>el.click()')
       nav.nth(3).evaluate('(el)=>el.click()')
       page.wait_for_timeout(140)
       cm=page.locator('#s4').evaluate('''root=>{
