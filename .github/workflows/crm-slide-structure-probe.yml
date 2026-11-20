@@ -49,6 +49,17 @@ jobs:
           for mark in ['function renderFlow','const renderFlow','function selectFlow','flowTabs','ux-search-launch','ux-search-panel','search-modal','search-result']:
            m=re.search(re.escape(mark),text,re.I)
            print('CRM_UI_PROBE',mark,repr(text[max(0,m.start()-850):m.start()+3000]) if m else 'NOT_FOUND')
+          apptxt=z.read('public/healthcare-app/index.html').decode('utf-8') if False else ''
+          with zipfile.ZipFile('TTH_5_Giao_Dien_GitLab_Pages_Free.zip') as appzip:
+           apptxt=appzip.read('public/healthcare-app/index.html').decode('utf-8')
+          import json
+          catalog=re.search(r'<script\\s+id="pageData"[^>]*>(.*?)</script>',apptxt,re.S)
+          if catalog:
+           pages=json.loads(catalog.group(1))
+           doc=pages.get('BatDau_DongY.html','')
+           anchors=re.findall(r'<a\\b[^>]*href=["\\x27]#["\\x27][^>]*>.*?</a>',doc,re.S|re.I)
+           print('APP_UNRESOLVED_TEST_PAGE',len(doc),'links',len(anchors))
+           for i,a in enumerate(anchors[:15]):print('APP_ANCHOR',i,repr(a[:900]))
           print('CRM_END_MAIN',repr(text[text.rfind('</main>')-1000:text.rfind('</main>')+160]))
           print('CRM_END_BODY',repr(text[-5200:]))
           PY
