@@ -429,6 +429,55 @@ D["cnnv_ten_to_marketing_benh_vien_2027"]={
  "luu_y":"Tên tổ là nhãn chuẩn hóa theo bệnh viện, không khẳng định đã có quyết định thành lập tổ riêng tại mọi cơ sở. Quyền, định biên, người giữ chức danh phải đối chiếu văn bản nhân sự hiệu lực.",
  "quan_he":"Trưởng nhóm Marketing tại từng bệnh viện nhận một tuyến quản lý Marketing từ "+N+"; Ban Giám đốc bệnh viện phối hợp hai chiều về kế hoạch, nguồn dữ liệu, điều kiện thực địa và quản lý hành chính; "+T+" hướng dẫn nghiệp vụ truyền thông/số qua tuyến, không giao việc trực tiếp cho nhân viên."
 }
+# Tên đơn vị dùng chung cho JSON, sơ đồ, phụ lục và các trường tìm kiếm.
+# Mã chức danh cơ sở (tn-a/tn-b...) là tên CHỨC DANH dùng tại nhiều bệnh viện,
+# không ép thay bằng tên một đơn vị cụ thể.
+canonical=D["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"]
+unit_names={x["ten_to"].casefold():x for x in canonical}
+hospital_counts=[3,3,3,2,2]
+assert len(canonical)==5 and sum(hospital_counts)==13
+D["cnnv_ten_to_marketing_benh_vien_2027"]["tong_so_suat_to_benh_vien"]=13
+D["cnnv_ten_to_marketing_benh_vien_2027"]["suat_dau_moi_phong_kham"]=1
+D["cnnv_ten_to_marketing_benh_vien_2027"]["tong_suat_marketing_co_so"]=14
+D["cnnv_ten_to_marketing_benh_vien_2027"]["phan_biet"]="13 suất thuộc 05 Tổ Marketing bệnh viện; 01 suất đầu mối kiêm nhiệm phòng khám. Đây là suất cơ cấu đề xuất, không đồng nghĩa người thực có hoặc quyết định lập tổ đã có hiệu lực."
+for x,n in zip(canonical,hospital_counts):
+    x["suat_co_cau_de_xuat"]=n
+    x["trang_thai_ten"]="Tên chuẩn hóa theo đề án, hiệu lực thành lập tổ theo văn bản riêng"
+actual_units=[x for x in D["don_vi"] if x.get("loai")=="to_marketing_benh_vien"]
+assert len(actual_units)==5
+for unit in actual_units:
+    key=unit["ten"].strip().casefold()
+    if key not in unit_names:raise RuntimeError("Tên Tổ Marketing không khớp danh mục: "+unit["ten"])
+    standard=unit_names[key]
+    unit["ten"]=standard["ten_to"]
+    unit["ten_chuan_de_an_2027"]=standard["ten_to"]
+    unit["suat_co_cau_de_xuat"]=standard["suat_co_cau_de_xuat"]
+    unit["trang_thai_ten"]=standard["trang_thai_ten"]
+# 04 hướng dẫn đang dùng từ "Chuyên viên trưởng" chung. Việc kiểm chuẩn
+# thuộc đúng tuyến; cấp phê duyệt/ban hành không được suy từ tên chức danh.
+for item in D["bo_quy_chuan_da_dong_bo"]:
+    code=item["ma"]
+    if code=="Content":
+        item["kiem"]=N+" kiểm chuẩn hệ thống nội dung; Biên tập khác người soạn kiểm độc lập; bác sĩ xác nhận mệnh đề y khoa."
+    elif code=="QC-4":
+        item["kiem"]=N+" kiểm chuẩn kỹ thuật sản xuất; Media khác người làm kiểm độc lập; bác sĩ/pháp lý xác nhận khi có yêu cầu."
+    elif code=="Xuat-ban-nen-tang":
+        item["kiem"]=T+" kiểm chuẩn nghiệp vụ kênh số, Quản lý sản phẩm số kiểm thông số triển khai; người làm không tự kiểm độc lập."
+    elif code=="DS-3":
+        item["kiem"]=T+" kiểm chuẩn tuân thủ và phiên bản; Quản lý sản phẩm số quản lý danh mục, cần người khác kiểm khi chính mình thực hiện."
+    else:raise RuntimeError("Mã quy chuẩn ngoài bốn phạm vi đã đối chiếu: "+code)
+    item["phe_duyet"]=(
+      "Người có thẩm quyền theo văn bản phân quyền, ủy quyền còn hiệu lực; "
+      "không mặc nhiên thuộc Trưởng phòng Marketing hoặc Chuyên viên trưởng. "
+      "Chưa có ủy quyền hiệu lực thì CHỜ PHÊ DUYỆT."
+    )
+    item["trang_thai_2027"]="Ma trận đề xuất trách nhiệm xây dựng và kiểm chuẩn; không phải quyết định ban hành."
+for rid in ("mdcs-a","mdcs-b","qhcs"):
+    role=V[rid]
+    role["bao_cao_cho"]=role["bao_cao_cho"].replace(
+      "Tổ trưởng Marketing tại bệnh viện trực tiếp",
+      "Trưởng nhóm Marketing cơ sở tại bệnh viện trực tiếp"
+    )
 for v in D["vi_tri"]:
     if v["id"] in ("tn-a","tn-b","qhcs"):
         v["ten_to_marketing_benh_vien_2027"]="Tên tổ theo danh mục bệnh viện cụ thể; không gọi chung 'Tổ Marketing chi nhánh'."
@@ -906,6 +955,26 @@ new_summary='<summary>Các Tổ Marketing tại bệnh viện <b>(13)</b>'
 if s.count(old_summary)!=1:raise RuntimeError("Không tìm thấy duy nhất tiêu đề nhóm 13 suất bệnh viện")
 s=s.replace(old_summary,new_summary,1)
 
+# 6a.1) Đối chiếu biểu mẫu các phần 4/8 với sơ đồ, ma trận đơn vị,
+# tránh 14 suất bệnh viện trong khi sơ đồ có 13 và 01 đầu mối phòng khám.
+s=s.replace(
+    "Bộ máy Marketing toàn TTH Group: 36 suất (22 TCT + 14 bệnh viện)",
+    "Bộ máy Marketing toàn TTH Group: 36 suất (22 Tổng công ty + 14 cơ sở)"
+)
+s=s.replace(
+    "<span>Tổ Marketing tại 5 bệnh viện</span>",
+    "<span>13 suất tại 5 Tổ Marketing bệnh viện và 01 đầu mối phòng khám</span>"
+)
+note=re.compile(r'(<section class="doc-sec" data-title="8\. Marketing cơ sở" id="m-8">[\s\S]*?)(<p class="acceptance-note"><strong>Các tổ theo đơn vị:</strong>[\s\S]*?</p>)')
+def fix_section8(m):
+    cnv=D["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"]
+    labels=", ".join(escape(v["ten_to"])+" ("+str(v["suat_co_cau_de_xuat"]).zfill(2)+")" for v in cnv)
+    return m.group(1)+'<p class="acceptance-note"><strong>Tổ Marketing theo tên bệnh viện:</strong> '+labels+'. <strong>Định biên mục tiêu: 13 suất tại 05 tổ bệnh viện + 01 suất đầu mối kiêm nhiệm phòng khám = 14 suất Marketing cơ sở.</strong> Phòng khám thuộc nhóm 1, không mặc nhiên có Tổ Marketing riêng; tên đơn vị và nhân sự thực tế theo quyết định có hiệu lực.</p>'
+s,num_section8=note.subn(fix_section8,s,count=1)
+if num_section8!=1:raise RuntimeError("Không thể sửa phần 8 về 13 tổ bệnh viện + 1 phòng khám")
+duplicate=N+" Nội dung – Sáng tạo và Marketing cơ sở"
+if duplicate in s:s=s.replace(duplicate,N)
+if duplicate in s:raise RuntimeError("Còn tên chuyên viên trưởng lặp sau chuẩn hóa")
 # 6b) Đồng bộ văn bản sơ đồ HTML tĩnh với dữ liệu MTCV/cơ chế phân việc:
 #     thông tin JSON đúng nhưng popup/tóm tắt cũ cũng phải cùng một tuyến.
 for rid in ("bt-ac","bt-b","tk-b","md-b","tk-nt","dmpk"):
@@ -1018,6 +1087,16 @@ assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
 assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
 assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
 assert len(check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])==5
+assert check["cnnv_ten_to_marketing_benh_vien_2027"]["tong_suat_marketing_co_so"]==14
+assert check["cnnv_ten_to_marketing_benh_vien_2027"]["tong_so_suat_to_benh_vien"]==13
+assert len([x for x in check["don_vi"] if x.get("loai")=="to_marketing_benh_vien"])==5
+assert {x["ten"] for x in check["don_vi"] if x.get("loai")=="to_marketing_benh_vien"}=={x["ten_to"] for x in check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"]}
+assert all("Chuyên viên trưởng" not in x["phe_duyet"].split("Chưa có")[0] or "không mặc nhiên" in x["phe_duyet"] for x in check["bo_quy_chuan_da_dong_bo"])
+assert all((N in x["kiem"] or T in x["kiem"]) for x in check["bo_quy_chuan_da_dong_bo"])
+assert "22 Tổng công ty + 14 cơ sở" in s
+assert "13 suất tại 05 tổ bệnh viện + 01 suất đầu mối kiêm nhiệm phòng khám" in s
+assert duplicate not in s
+
 assert all(x["ten_to"]=="Tổ Marketing "+x["benh_vien"] for x in check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])
 assert s.count('id="cnnv-ten-to-marketing-benh-vien-2027"')==1
 assert s.count('<strong>Tổ Marketing tại các bệnh viện và đầu mối phòng khám</strong>')==1
