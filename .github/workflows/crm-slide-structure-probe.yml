@@ -31,6 +31,13 @@ jobs:
           for term in ['id="sideNav"','class="navbtn"','const slides','let slides','document.querySelectorAll(".slide")','document.querySelectorAll(\'.slide\')','function activate','showSlide(']:
            m=re.search(re.escape(term),text,re.I)
            if m:print('CRM_NAV',term,repr(text[max(0,m.start()-300):m.start()+2200]))
+          for phrase in ['QUY TẮC KHÔNG NGOẠI LỆ','Quy tắc không ngoại lệ','VÍ DỤ VẬN HÀNH','1900 → LỊCH KHÁM','Chủ ticket phản hồi']:
+           m=re.search(re.escape(phrase),text,re.I)
+           if m:print('CRM_FONT_TARGET',phrase,repr(text[max(0,m.start()-1600):m.start()+4700]))
+           else:print('CRM_FONT_TARGET_MISSING',phrase)
+          for styleterm in ['.rule', '.example', '.handoff','.tier-flow','.flow-example']:
+           matches=[m.start() for m in re.finditer(re.escape(styleterm),text,re.I)][:12]
+           print('CRM_FONT_STYLE',styleterm,[(p,text[max(0,p-90):p+220]) for p in matches])
           print('CRM_END_MAIN',repr(text[text.rfind('</main>')-1000:text.rfind('</main>')+160]))
           print('CRM_END_BODY',repr(text[-5200:]))
           PY
