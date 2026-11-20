@@ -188,6 +188,75 @@ V["bt-ac"]["phan_dinh_ban_giao_dau_vao"]=(
  "xử lý chéo nội dung của hai nhóm."
 )
 
+# 1b) Khép kín tuyến điều phối ngoại tuyến và mối quan hệ phòng khám.
+# Đây là CƠ CHẾ ĐỀ XUẤT, không tự tạo vị trí, người phụ trách hay quyền mới.
+# Người điều phối thường lệ phải được chỉ định từ nhân sự hiện hữu, có hiệu lực.
+V["bt-ac"]["bao_cao_cho"]=(
+ N+" quản lý trực tiếp nghiệp vụ. Trong vai trò kiêm Tổ trưởng Nội dung và Sáng tạo, "
+ "chỉ điều phối người/việc trong phạm vi văn bản phân công (chủ yếu nhóm 1); "
+ "không báo cáo cho chính vai trò Tổ trưởng do mình đảm nhiệm; Trưởng phòng xử lý vượt quyền."
+)
+for role in ("bt-b","tk-b","md-b","tk-nt"):
+ v=V[role]
+ v["bao_cao_cho"]=(
+  N+" quản lý nghiệp vụ thuộc Tổ Nội dung và Sáng tạo. Việc nhận và phân lịch hằng ngày "
+  "cho nhóm 2 hoặc thiết kế ngoại tuyến do đầu mối điều phối là nhân sự hiện hữu được "
+  "Trưởng phòng chỉ định rõ mã việc, phạm vi, thời hạn và người dự phòng; "
+  "không mặc định Tổ trưởng nhóm 1 được điều động chéo nhóm, cũng không để "+N+
+  " trực tiếp phân việc thường lệ. Khi thiếu chỉ định có hiệu lực: giữ tại hàng chờ "
+  "phân tuyến, Trưởng phòng xác lập đầu mối; không tự phát lệnh thứ hai."
+ )
+ v["dieu_phoi_theo_phan_cong_2027"]=(
+  "Nhận một mã yêu cầu từ cổng chung; kiểm nhóm thương hiệu và tải; "
+  "chỉ nhận lịch từ đầu mối được chỉ định có hiệu lực; việc đổi nhóm hoặc đổi người "
+  "phải ghi nguồn, người quyết định và thời điểm, không tự cấp quyền."
+ )
+V["tk-nt"]["muc_dich"]=re.sub(
+ r"tuyến điều phối việc của vị trí này thuộc (?:Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở|Chuyên viên trưởng)\.",
+ "tuyến quản lý nghiệp vụ thuộc "+N+"; phân lịch thường lệ qua đầu mối được chỉ định có hiệu lực.",
+ V["tk-nt"]["muc_dich"]
+)
+V["dmpk"]["bao_cao_cho"]=(
+ "Người phụ trách phòng khám TTH Clinic quản lý công việc chính và hành chính tại chỗ. "
+ "Quản lý thương hiệu nhóm 1 xác định mục tiêu; "+N+
+ " tiếp nhận và phân tuyến yêu cầu Marketing theo đầu mối TCT; "+T+
+ " hướng dẫn và kiểm chuẩn nghiệp vụ truyền thông/kênh số qua cùng mã việc và qua tuyến "
+ +N+". Không tạo hai người giao việc hoặc chuyển phòng khám sang nhóm thương hiệu 2."
+)
+V["dmpk"]["phan_dinh_ban_giao_dau_vao"]=(
+ "Đầu mối kiêm nhiệm gửi một hồ sơ thông tin/ảnh đã được phòng khám xác nhận cho đầu mối "
+ "Marketing TCT có mã việc; không gửi hai lệnh trùng nhau. Nếu thiếu người nhận hoặc thiếu "
+ "quyền phát hành, trả về trạng thái CHỜ PHÂN TUYẾN/CHƯA CÓ ỦY QUYỀN HIỆU LỰC."
+)
+D["cnnv_dieu_phoi_ngoai_tuyen_2027"]={
+ "trang_thai":"Cơ chế đề xuất trong Khung 2027; chỉ kích hoạt phân công cá nhân khi có văn bản có hiệu lực",
+ "pham_vi":"Biên tập/Thiết kế/Media nhóm 2 và Thiết kế ngoại tuyến, không bổ sung suất định biên",
+ "chu_quan_nghiep_vu":N,
+ "xac_lap_dau_moi":"Trưởng phòng Marketing ghi rõ nhân sự hiện hữu, việc/nhóm, thời hạn, người dự phòng và phạm vi điều phối; Tổ trưởng nhóm 1 không mặc nhiên điều phối nhóm 2",
+ "thuc_hien":"Người nhận mã việc kiểm căn cứ chỉ định; đầu mối được chỉ định phân lịch và giao chuyên viên; chuyên viên sản xuất và bàn giao chứng cứ",
+ "giai_quyet_xung_dot":"Xung đột nhóm, năng lực hay lịch do đầu mối báo "+N+" tổng hợp tải và trình Trưởng phòng quyết định ưu tiên vượt thẩm quyền; không phát sinh hai lệnh",
+ "khoa":"Thiếu chỉ định hiệu lực hoặc nhân sự nhận việc: CHỜ PHÂN TUYẾN; không tự lấy "+N+" làm Tổ trưởng thường trực",
+ "phan_biet":"Quản lý thương hiệu nghiệm thu mục tiêu; người kiểm độc lập kiểm chuyên môn; quyền phát hành và chi phí là hai quyết định khác nhau."
+}
+D["cnnv_kiem_soat_luong_va_tham_quyen_2027"]=[
+ {"truong_hop":"Yêu cầu nội dung/video cơ sở","mot_dau_moi":"Trưởng nhóm Marketing cơ sở giao nhân viên; "+N+" quản lý tuyến Trưởng nhóm","kiem_chuan":T+" kiểm nghiệp vụ truyền thông theo điểm rủi ro; yêu cầu sửa chuyển qua đầu mối","phe_duyet":"Xác nhận y khoa/pháp lý và người có quyền phát hành, chi phí tách biệt"},
+ {"truong_hop":"Việc nhóm 2 và Thiết kế ngoại tuyến","mot_dau_moi":"Đầu mối điều phối hiện hữu được Trưởng phòng chỉ định và ghi mã việc","kiem_chuan":N+" kiểm tải và rủi ro chất lượng, không phân lịch thường lệ","phe_duyet":"Chờ chỉ định hiệu lực thì khóa giao; người làm không tự nghiệm thu"},
+ {"truong_hop":"OOH, phát thanh, màn hình cơ sở","mot_dau_moi":"Truyền thông TCT giữ lịch/mẫu; Trưởng nhóm cơ sở giao người vận hành","kiem_chuan":T+" kiểm chuẩn nghiệp vụ; Ban Giám đốc cơ sở xác nhận thực địa","phe_duyet":"Nội dung phát, quyền công bố, hợp đồng và chi phí theo cấp riêng"},
+ {"truong_hop":"PR, báo chí, phát ngôn","mot_dau_moi":"Tổ trưởng Truyền thông và Thương hiệu giao Chuyên viên truyền thông","kiem_chuan":T+" giám sát rủi ro; Quản lý thương hiệu xác nhận mục tiêu","phe_duyet":"Người được ủy quyền phát ngôn/phát hành; không cấp mặc nhiên"},
+ {"truong_hop":"Quảng cáo, kênh số và dữ liệu","mot_dau_moi":"Tổ trưởng Tăng trưởng số điều phối chuyên viên; Phòng Số hóa phụ trách kỹ thuật hệ thống","kiem_chuan":T+" giám sát chuẩn và tải; chủ dữ liệu xác nhận nguồn","phe_duyet":"Quyền tài khoản, phát hành, chi phí, thay đổi kỹ thuật phải có căn cứ riêng"},
+ {"truong_hop":"Kiêm Tổ trưởng đồng thời sản xuất","mot_dau_moi":"Tổ trưởng phân lịch với nhật ký tải riêng, không tự duyệt việc mình làm","kiem_chuan":"Người khác đủ năng lực kiểm độc lập, lưu hai mã nhân sự","phe_duyet":"Nếu chưa có người kiểm hoặc ủy quyền hiệu lực thì khóa nghiệm thu/phát hành"}
+]
+D["cnnv_tai_hai_chuc_danh_2027"]={
+ "trang_thai":"CHƯA ĐỦ GIỜ THỰC ĐO; không kết luận đủ tải hoặc thiếu tải từ định biên mục tiêu",
+ "don_vi":"giờ quản trị/tháng, theo mã việc duy nhất; không cộng giờ sản xuất và giờ kiêm Tổ trưởng",
+ "cong_thuc":"T = tổng (số lượt kiểm chuẩn hoặc quản trị theo loại việc × phút chuẩn/lượt × tần suất)/60 + giờ họp/báo cáo/đào tạo/ngoại lệ và quản lý tuyến thực đo - giờ trùng đã ghi; so sánh với giờ thực khả dụng đã xác minh",
+ "phan_loai_nguon":"(1) Định mức có căn cứ bằng nhật ký chuẩn đã duyệt; (2) giả định kế hoạch chưa xác minh; (3) giờ thực đo bằng mã việc, ngày, người làm và chứng từ",
+ "noi_dung":{"chuc_danh":N,"bien_so":"Số tổ và nhóm sản xuất trực thuộc, số Trưởng nhóm cơ sở hai nhóm thực quản lý, số yêu cầu đổi tải, lượt kiểm chuẩn, báo cáo, đào tạo, xung đột và phát sinh","khong_cong":"Giờ Biên tập/Thiết kế/Media, giờ Tổ trưởng kiêm nhiệm, phần vận hành thực địa của cơ sở","kpi":"Tỷ lệ giao đúng tuyến; thời gian giải quyết xung đột; lỗi tái diễn; chất lượng và độ chính xác dự báo tải; kết quả đào tạo"},
+ "truyen_thong":{"chuc_danh":T,"bien_so":"Hai tổ TCT, lượt kiểm chuẩn PR/OOH/màn hình/phát thanh/quảng cáo/kênh số, báo cáo liên tổ, đào tạo, rủi ro và cải tiến","khong_cong":"Giờ PR/quảng cáo/sản phẩm số trực tiếp, giờ Tổ trưởng Truyền thông và Tăng trưởng số, công việc cơ sở do Trưởng nhóm giao","kpi":"Lỗi lặp, thời gian chờ duyệt, cải thiện trước–sau, tỷ lệ tuân thủ chuẩn và tỷ lệ khắc phục đúng hạn"},
+ "nguong_canh_bao_de_xuat":"Sau khi có nhật ký đủ kỳ và giờ khả dụng được duyệt: tải dự báo từ 80% giờ khả dụng thì cảnh báo; từ 90% xem xét phân bổ lại hoặc giảm vòng kiểm không cần thiết; đây là ngưỡng quản trị tham khảo chưa được ban hành, không phải phê duyệt tăng biên chế",
+ "khoa_ket_luan":"Thiếu phút chuẩn/lượt, tần suất và giờ thực đo thì hiển thị CHƯA ĐỦ DỮ LIỆU, không tuyên bố đủ tải."
+}
+
 # 2) Tạo cùng một mẫu CNNV cho 26 mã chức danh, trích từ các trường MTCV đang có,
 #    nhưng không suy diễn thêm một quyền phê duyệt chưa được giao.
 for v in D["vi_tri"]:
@@ -202,6 +271,8 @@ for v in D["vi_tri"]:
       "toi_uu_hieu_suat":v.get("toi_uu_hieu_suat",""),
       "chu_trinh_cai_tien":v.get("chu_trinh_cai_tien",""),
       "ranh_gioi_kpi":v.get("ranh_gioi_kpi",""),
+      "dieu_phoi_theo_phan_cong":v.get("dieu_phoi_theo_phan_cong_2027",""),
+      "tai_quan_tri_theo_nguon":D["cnnv_tai_hai_chuc_danh_2027"] if v["id"] in ("cvt","cvt-2") else {},
       "nguon":"Mô tả vị trí trong Khung cơ cấu Marketing 2027; phê duyệt chính thức theo QyĐ.02.MKT/Phòng Nhân lực",
       "trang_thai":"Nội dung chuẩn hóa trong đề án; không thay văn bản nhân sự/phân quyền đang có hiệu lực"
     }
@@ -352,6 +423,26 @@ if 'id="cnnv-phong-phan-tuyen-2027"' not in s:
       '<p class="mini">Cơ cấu CNNV trong đề án; thẩm quyền ban hành và nhân sự kiêm nhiệm phải đối chiếu văn bản có hiệu lực.</p>'
       '</div>'
     )
+    # Nêu rõ trạng thái đề xuất và các điểm khóa; không biến đề án thành quyết định ủy quyền.
+    gate=D["cnnv_dieu_phoi_ngoai_tuyen_2027"]
+    load=D["cnnv_tai_hai_chuc_danh_2027"]
+    panel+=(
+      '<details id="cnnv-dieu-phoi-ngoai-tuyen-2027" style="border:1px solid #d7e2ef;'
+      'padding:10px;border-radius:8px;margin:10px 0;max-width:100%;overflow-wrap:anywhere">'
+      '<summary style="cursor:pointer;font-weight:700">Điều phối nhóm 2 và Thiết kế ngoại tuyến – điều kiện có hiệu lực</summary>'
+      '<p>'+escape(gate["trang_thai"])+'</p>'
+      '<p><b>Xác lập đầu mối:</b> '+escape(gate["xac_lap_dau_moi"])+'</p>'
+      '<p><b>Quy tắc chặn:</b> '+escape(gate["khoa"])+'</p>'
+      '<p><b>Xử lý xung đột:</b> '+escape(gate["giai_quyet_xung_dot"])+'</p>'
+      '</details>'
+      '<details id="cnnv-tai-hai-chuc-danh-2027" style="border:1px solid #d7e2ef;'
+      'padding:10px;border-radius:8px;margin:10px 0;max-width:100%;overflow-wrap:anywhere">'
+      '<summary style="cursor:pointer;font-weight:700">Tải và KPI quản trị hai chức danh – chưa kết luận đủ tải</summary>'
+      '<p>'+escape(load["trang_thai"])+'</p><p><b>Công thức:</b> '+escape(load["cong_thuc"])+'</p>'
+      '<p><b>Phân loại dữ liệu:</b> '+escape(load["phan_loai_nguon"])+'</p>'
+      '<p><b>Ngưỡng cảnh báo đề xuất:</b> '+escape(load["nguong_canh_bao_de_xuat"])+'</p>'
+      '</details>'
+    )
     s=s.replace(anchor,panel+anchor,1)
 
 check=json.loads(re.search(rx,s).group(2))
@@ -361,6 +452,9 @@ assert all("cnnv_2027" in x for x in check["vi_tri"])
 assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
 assert s.count('id="cvt-2-perf-metrics-2027"')==1
 assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
+assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
+assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
+assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "trực tiếp quản lý" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "không tự chuyển sang Quản lý mạng lưới theo vùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
