@@ -100,7 +100,7 @@ count_no=60-count_related
 for item in data["danh_muc_van_ban"]:
     item["phuong_an_xu_ly_du_kien_truoc_doi_chieu"] = item.get("trang_thai", "")
     item["cap_duyet_du_kien_truoc_doi_chieu"] = item.get("nguoi_duyet", "")
-    is_sample = bool(re.fullmatch(r"QT\\.\\d+", str(item.get("ma", ""))))
+    is_sample = bool(re.fullmatch(r"QT\.\d+", str(item.get("ma", ""))))
     if is_sample:
         item["trang_thai"] = "LUỒNG MẪU ĐỀ ÁN – CHƯA ĐỐI CHIẾU QUY TRÌNH CŨ"
     else:
@@ -113,7 +113,7 @@ for item in data["danh_muc_van_ban"]:
         "Không suy diễn việc đã ban hành, ban hành mới, sửa, thay thế, thu hồi, "
         "hay thẩm quyền ký từ nội dung đề án 2027."
     )
-assert sum(bool(re.fullmatch(r"QT\\.\\d+",str(x["ma"]))) for x in data["danh_muc_van_ban"]) == 60
+assert sum(bool(re.fullmatch(r"QT\.\d+",str(x["ma"]))) for x in data["danh_muc_van_ban"]) == 60
 assert sum(x["trang_thai"].startswith("LUỒNG MẪU") for x in data["danh_muc_van_ban"]) == 60
 
 # Cùng một bộ dữ liệu ở khung chính và phụ lục; không cập nhật thủ công hai nơi.
