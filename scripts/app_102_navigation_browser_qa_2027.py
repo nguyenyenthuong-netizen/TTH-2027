@@ -9,7 +9,7 @@ url=sys.argv[1] if len(sys.argv)>1 else "https://nguyenyenthuong-netizen.github.
 output=Path("artifacts/app-102-qa.json")
 output.parent.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
- browser=p.chromium.launch(headless=True,args=["--no-sandbox","--disable-dev-shm-usage"])
+ browser=p.chromium.launch(channel='chrome',headless=True,args=["--no-sandbox","--disable-dev-shm-usage"])
  page=browser.new_page(viewport={"width":390,"height":844},locale="vi-VN")
  page.set_default_timeout(180000)
  errors=[]
