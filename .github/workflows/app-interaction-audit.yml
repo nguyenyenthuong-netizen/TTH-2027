@@ -1,0 +1,24 @@
+name: Audit App and Website interactive routes
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/app_button_routes_audit_2027.py'
+      - '.github/workflows/app-interaction-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract source interfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _input _site
+          unzip -q TTH_5_Giao_Dien_GitLab_Pages_Free.zip -d _input
+          cp -a _input/public/. _site/
+      - name: Inspect all source App and Website controls
+        run: python3 scripts/app_button_routes_audit_2027.py _site
