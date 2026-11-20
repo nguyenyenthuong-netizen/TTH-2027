@@ -332,6 +332,9 @@ with sync_playwright() as p:
                 issues.append(form+": phần "+vname+" tràn khỏi lề trang "+str(dimensions))
             if page.evaluate("()=>document.documentElement.scrollWidth")>width+18:
                 issues.append(form+": phần "+vname+" làm tràn ngang toàn trang")
+        import runpy
+        staffing_test=Path(__file__).resolve().parents[1]/'pages-overrides/2027-1911-final/dinh-bien/check_browser.py'
+        runpy.run_path(str(staffing_test))['check'](page,width,form,out)
         # Tài liệu quản trị danh mục phải có đúng trách nhiệm và 7 bước.
         governance=page.locator("#cnnv-quan-tri-danh-muc-quy-trinh-2027")
         if governance.count()!=1:

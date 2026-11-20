@@ -337,3 +337,8 @@ if 'id="tth-role-time-standard-link"' in live and "Kịch bản sản lượng M
 source.write_text(live,encoding="utf-8")
 print("PASS BRANCH SCENARIO: 5 hospitals + 1 shared clinic, total positions=14, scenario rows="+str(len(model_rows)))
 for z in site_aggregates:print("CASE",z)
+
+# Publish the interactive model from its versioned source after the historical appendices.
+import subprocess
+staffing_builder = Path(__file__).resolve().parents[1] / 'pages-overrides/2027-1911-final/dinh-bien/build.py'
+subprocess.run([sys.executable, str(staffing_builder), str(root)], check=True)
