@@ -34,7 +34,7 @@ script=r'''<script id="tth-app-unresolved-actions-2027">
  }
  document.addEventListener("click",function(ev){
   const a=ev.target.closest?.('a[href="#"]');
-  if(!a||ev.defaultPrevented)return;
+  if(!a)return;
   if(a.hasAttribute("onclick")||a.hasAttribute("data-route")||a.hasAttribute("data-href"))return;
   // Do not invent a destination or trigger a real backend action.
   ev.preventDefault();
@@ -46,7 +46,7 @@ script=r'''<script id="tth-app-unresolved-actions-2027">
     :sensitive
     ?"Chức năng này chỉ đang được minh họa; chưa kết nối dữ liệu hoặc dịch vụ thực tế. Không có giao dịch, lịch hẹn hay tệp nào được tạo."
     :"Mục này chưa có màn hình đích hoặc thao tác được xác minh trong bản mô phỏng. Không có thay đổi dữ liệu.");
- },false);
+ },true);
 })();
 </script>'''
 changed=0
