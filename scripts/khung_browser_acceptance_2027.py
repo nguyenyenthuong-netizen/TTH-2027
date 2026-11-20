@@ -307,6 +307,41 @@ with sync_playwright() as p:
         latest_dims=page.evaluate("() => document.documentElement.scrollWidth")
         if latest_dims>width+18:
             issues.append(form+": tràn trang sau khi mở 14 ví dụ: "+str(latest_dims))
+        # Khóa lỗi trên cả 12 phần, không chỉ nhánh vận hành/sơ đồ Bộ máy.
+        all_views=("overview","org","jd","assign","staffing","relations",
+                   "coord","ops","roadmap","pay","software","decisions")
+        for vname in all_views:
+            tab=page.locator('.tab[data-target="'+vname+'"]')
+            pane=page.locator("#v-"+vname)
+            if tab.count()!=1 or pane.count()!=1:
+                issues.append(form+": thiếu tab hoặc phần nội dung "+vname)
+                continue
+            tab.evaluate("(e)=>e.click()")
+            page.wait_for_timeout(110)
+            if not pane.is_visible():
+                issues.append(form+": tab "+vname+" nhấn không mở nội dung")
+                continue
+            dimensions=pane.evaluate("""(e)=>({
+                client:e.clientWidth,
+                scroll:e.scrollWidth,
+                left:e.getBoundingClientRect().left,
+                right:e.getBoundingClientRect().right
+            })""")
+            # Cuộn riêng bảng dài được phép, nhưng không được đẩy cả trang.
+            if dimensions["right"]>width+18 or dimensions["left"]< -18:
+                issues.append(form+": phần "+vname+" tràn khỏi lề trang "+str(dimensions))
+            if page.evaluate("()=>document.documentElement.scrollWidth")>width+18:
+                issues.append(form+": phần "+vname+" làm tràn ngang toàn trang")
+        # Tài liệu quản trị danh mục phải có đúng trách nhiệm và 7 bước.
+        governance=page.locator("#cnnv-quan-tri-danh-muc-quy-trinh-2027")
+        if governance.count()!=1:
+            issues.append(form+": không tìm thấy quản trị danh mục quy trình tại mục 4.1")
+        else:
+            rows=governance.locator("table")
+            if rows.count()!=2:
+                issues.append(form+": quản trị quy trình thiếu hai bảng trách nhiệm/chu trình")
+            elif rows.nth(0).locator("tbody tr").count()!=8 or rows.nth(1).locator("tbody tr").count()!=7:
+                issues.append(form+": quản trị quy trình thiếu 8 vai trò hoặc 7 bước")
         page.goto(url+"#vh-qt-hang-muc",wait_until="domcontentloaded",timeout=30000)
         page.wait_for_timeout(700)
         shot_details=page.locator("#vh-qt-hang-muc .ops-output-audit").nth(5)
