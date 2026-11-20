@@ -38,6 +38,17 @@ jobs:
           for styleterm in ['.rule', '.example', '.handoff','.tier-flow','.flow-example']:
            matches=[m.start() for m in re.finditer(re.escape(styleterm),text,re.I)][:12]
            print('CRM_FONT_STYLE',styleterm,[(p,text[max(0,p-90):p+220]) for p in matches])
+          import json
+          flows_match=re.search(r'const flows\\s*=\\s*(\\[.*?\\]);',text,re.S)
+          if flows_match:
+           flows=json.loads(flows_match.group(1))
+           for i,flow in enumerate(flows):
+            print('CRM_FLOW_NAME',i,repr(flow.get('name')),len(flow.get('nodes',[])))
+            if str(flow.get('name','')).startswith('02'):
+             print('CRM_FLOW02',json.dumps(flow,ensure_ascii=False)[:16000])
+          for mark in ['function renderFlow','const renderFlow','function selectFlow','flowTabs','ux-search-launch','ux-search-panel','search-modal','search-result']:
+           m=re.search(re.escape(mark),text,re.I)
+           print('CRM_UI_PROBE',mark,repr(text[max(0,m.start()-850):m.start()+3000]) if m else 'NOT_FOUND')
           print('CRM_END_MAIN',repr(text[text.rfind('</main>')-1000:text.rfind('</main>')+160]))
           print('CRM_END_BODY',repr(text[-5200:]))
           PY
