@@ -16,10 +16,29 @@ with sync_playwright() as p:
     page.goto(path.as_uri(),wait_until='domcontentloaded',timeout=45000)
     page.wait_for_timeout(800)
     info=page.evaluate('''() => ({title:document.title,body:document.body?.innerText?.length||0,slides:document.querySelectorAll('section.slide').length,buttons:[...document.querySelectorAll('button')].filter(x=>x.getBoundingClientRect().height>0).length,fr:document.querySelectorAll('iframe').length,width:document.documentElement.scrollWidth,viewport:innerWidth})''')
+    if name=='trinh-chieu-marketing':
+     nav=page.evaluate('''() => {
+      const c=document.getElementById('controls'),v=document.getElementById('viewport');
+      const cr=c?.getBoundingClientRect(),vr=v?.getBoundingClientRect();
+      const visible=id=>{const el=document.getElementById(id);if(!el)return false;const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden'&&getComputedStyle(el).display!=='none'};
+      return {barVisible:visible('controls'),overview:visible('overview'),fullscreen:visible('fullscreen'),scrubber:visible('slideScrubber'),separate:!!(cr&&vr&&vr.bottom<=cr.top+2),max:document.getElementById('slideScrubber')?.max};
+     }''')
+     for key in ('barVisible','overview','fullscreen','scrubber','separate'):
+      if not nav.get(key):failed.append(name+' '+str(size)+': slide navigation regression '+key+' '+str(nav))
+     if str(nav['max'])!=str(info['slides']):failed.append(name+': scrubber range does not cover all slides '+str(nav))
+     if nav['overview'] and nav['scrubber']:
+      page.locator('#overview').click(timeout=5000)
+      if not page.locator('#index.open').is_visible():failed.append(name+': slide index did not open')
+      page.locator('#closeIndex').click(timeout=5000)
+      page.locator('#slideScrubber').evaluate('''el => {el.value="3";el.dispatchEvent(new Event("input",{bubbles:true}));}''')
+      page.wait_for_timeout(70)
+      if not page.locator('#counter').inner_text().strip().startswith('3 /'):
+       failed.append(name+': horizontal scrubber did not navigate')
     if name in ('healthcare-website','healthcare-app'):
      try:
       inner=page.frame_locator('iframe').locator('body').inner_text(timeout=7000)
       info['frame_chars']=len(inner.strip())
+      if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
       frame=page.frame_locator('iframe')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
