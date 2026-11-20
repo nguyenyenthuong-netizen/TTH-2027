@@ -153,6 +153,10 @@ with sync_playwright() as p:
     elif info['body']<50:failed.append(name+' '+str(size)+': empty body')
     if name=='trinh-chieu-marketing' and info['slides']<20:failed.append(name+': slide deck unexpectedly short; got '+str(info['slides']))
     if name=='crm-da-kenh':
+     if re.search(r'(?<![\w])CNTT(?![\w])',page.content(),flags=re.U):
+      failed.append(name+': outdated CNTT label remains in CRM source')
+     if 'Phòng Công nghệ' not in page.content():
+      failed.append(name+': approved Phòng Công nghệ designation absent')
      if info['slides']!=7:failed.append(name+': CRM must have exactly 7 slides, got '+str(info['slides']))
      nav=page.locator('#sideNav button')
      if nav.count()!=7:failed.append(name+': CRM seventh slide missing from sidebar '+str(nav.count()))
