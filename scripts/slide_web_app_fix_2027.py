@@ -56,13 +56,9 @@ if marker not in s:
           if(Number.isFinite(px))el.dataset.tthBaseFont=String(px);
         }
       });
-      for(var step=0;step<6&&overflowing(box);step++){
-        var factor=1-(step+1)*.055;
-        nodes.forEach(function(el){
-          var base=parseFloat(el.dataset.tthBaseFont);
-          if(base)el.style.setProperty('font-size',Math.max(12.5,base*factor).toFixed(2)+'px','important');
-        });
-      }
+      // Keep larger presentation text legible. If content exceeds the box,
+      // allow internal scrolling instead of silently shrinking it to 12.5px.
+      // The scrollable class is activated by the overflow measurement below.
       if(overflowing(box))box.dataset.tthOverflow='1';
       else delete box.dataset.tthOverflow;
     });
