@@ -63,6 +63,19 @@ with sync_playwright() as p:
         if 'Tim_NhuCau.html' not in page.url:failed.append(name+': app screen chooser did not navigate')
         if frame.locator('#tth-app-all-pages-scroll-2027').count()==0:failed.append(name+': need-based screen scrolling repair missing')
        print('APP_CATALOG_QA',str(size),str(app_catalog),'native-scroll-tracks',info['app_native_hscroll_main'],'internal-buttons',info['app_carousel_toolbars_main'])
+      if name=='healthcare-website':
+       layout=frame.locator('body').evaluate('''() => {
+        const main=document.querySelector('#app main'),fab=document.querySelector('.fab.tth-cta-fixed');
+        const rect=el=>{if(!el)return null;const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width),maxWidth:s.maxWidth,tag:el.tagName,cls:String(el.className).slice(0,80)}};
+        const items=main?[main,...main.children,...[...main.children].flatMap(el=>[...el.children])].filter(el=>el.getBoundingClientRect().width>Math.min(innerWidth*.45,350)).slice(0,8).map(rect):[];
+        const changed=[...document.querySelectorAll('[data-tth-wide-content-2027="1"]')].map(rect);
+        const ctaRect=rect(fab);
+        return {hasMain:!!main,main:rect(main),cta:ctaRect,expanded:fab?.dataset.collapsed!=='true',widened:changed.length,candidates:items,selected:changed.slice(0,5)};
+       }''')
+       print('WEBSITE_WIDE_LAYOUT_AUDIT',str(size),json.dumps(layout,ensure_ascii=False))
+       if size[0]>=981:
+        for box in layout['selected']:
+         if box['right']>size[0]-55:failed.append(name+': widened content reaches too close to CTA / viewport '+str(box))
       if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
