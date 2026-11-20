@@ -157,6 +157,8 @@ with sync_playwright() as p:
       failed.append(name+': outdated CNTT label remains in CRM source')
      if 'Phòng Công nghệ' not in page.content():
       failed.append(name+': approved Phòng Công nghệ designation absent')
+     if 'Phòng Phòng Công nghệ' in page.content():
+      failed.append(name+': duplicated Phòng Công nghệ department prefix')
      if info['slides']!=7:failed.append(name+': CRM must have exactly 7 slides, got '+str(info['slides']))
      nav=page.locator('#sideNav button')
      if nav.count()!=7:failed.append(name+': CRM seventh slide missing from sidebar '+str(nav.count()))
