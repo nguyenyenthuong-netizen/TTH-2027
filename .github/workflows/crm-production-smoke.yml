@@ -38,7 +38,7 @@ jobs:
           print('CRM_VERCEL_HIS_EXAMPLE_OK','CRM-00125','BN-00876','BN-00444','unverified remains separate')
           print('CRM_VERCEL_SEARCH_UI_OK','wider 700px desktop','responsive mobile')
           assert 'Phòng Công nghệ' in s,'Approved Technology Department name absent on Vercel'
-          assert not re.search(r'(?<![\\w])CNTT(?![\\w])',s),'Outdated CNTT label remains on Vercel'
+          assert not re.search(r'(?<![\w])CNTT(?![\w])',s),'Outdated CNTT label remains on Vercel'
           assert 'Phòng Phòng Công nghệ' not in s,'Duplicated Phòng prefix in Technology Department label'
           print('CRM_VERCEL_DEPARTMENT_OK','Phòng Công nghệ','no CNTT','no duplicate prefix')
 
