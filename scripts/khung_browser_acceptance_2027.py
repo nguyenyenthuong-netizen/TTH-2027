@@ -182,6 +182,36 @@ with sync_playwright() as p:
                 )
                 if dims_case["outer"]>width+18:
                     issues.append(form+": bảng xung đột vượt khung viewport "+str(dims_case))
+        # Nhánh xung đột hai tổ: mở được bằng chuột, đủ sáu điểm chặn,
+        # một tuyến xử lý, không tự phát sinh quy trình thứ 61.
+        branch=page.locator("#cnnv-six-step-conflict-2027")
+        if branch.count()!=1 or not branch.is_visible():
+            issues.append(form+": không thấy nhánh xung đột hai tổ trong mục 4.3")
+        else:
+            branch.locator("summary").click(timeout=8000)
+            if not branch.evaluate("(e)=>e.open"):
+                issues.append(form+": không mở được nhánh xung đột sáu bước")
+            num=branch.locator("tbody tr").count()
+            if num!=6:
+                issues.append(form+": nhánh xung đột có "+str(num)+"/6 bước")
+            content=branch.inner_text()
+            if "Tổ Truyền thông và Thương hiệu" not in content or "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số" not in content:
+                issues.append(form+": không ghi đúng tuyến chủ trì xung đột hai tổ")
+            db=page.evaluate("""()=>{
+                const el=document.querySelector('#csdl');
+                if(!el)return {missing:true};
+                const d=JSON.parse(el.textContent);
+                const p=d.cnnv_nhanh_xung_dot_hai_to_2027;
+                const q=d.quy_trinh.find(z=>z.id==='xung-dot-lich');
+                return {
+                  steps:p?.buoc?.length,
+                  processes:d.quy_trinh.length,
+                  role:q?.buoc?.[2]?.phan_tuyen_chu_tri_theo_pham_vi_2027?.hai_to_tct,
+                  conflictCases:d.cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027?.tinh_huong?.length
+                };
+            }""")
+            if db.get("steps")!=6 or db.get("processes")!=60 or db.get("role")!="cvt-2" or db.get("conflictCases")!=9:
+                issues.append(form+": nhánh xung đột không đồng bộ CSDL: "+str(db))
         panel=page.locator("#tth-output-contracts-2027")
         if panel.count()!=1:issues.append(form+": thiếu bảng tổng hợp 568 hợp đồng đầu ra")
         elif not panel.is_visible():
