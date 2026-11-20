@@ -97,7 +97,7 @@ function positionRows(all){
    const v=x.review;
    const office=x.site?btn(siteTitle(x.site),'sites',x.site):'Tổng công ty';
    const short=x.id==='dmpk'?'01 đầu mối kiêm nhiệm':String(x.seats);
-   const top=v.peak&&v.peak.excess>0?'Tháng '+v.peak.m+' vượt '+format(v.peak.excess)+' giờ':'';
+   const top=[v.annualExcess>0?'Năm vượt '+format(v.annualExcess)+' giờ':'',v.peak&&v.peak.excess>0?'Tháng '+v.peak.m+' vượt '+format(v.peak.excess)+' giờ':''].filter(Boolean).join(' · ');
    return [positionLink(x)+(x.id==='dl-1'?'<small>Gồm công việc dữ liệu khách hàng kiêm nhiệm.</small>':''),office,short,nu(v.avgHours),e(capacityBadge(x))+(top?'<small>'+e(top)+'</small>':'')];
  });
 }
@@ -107,12 +107,12 @@ function decisions(r,all){
  const peaks=active.filter(x=>x.review.annualExcess===0&&x.review.peak.excess>0);
  const cluster=[...yearly,...peaks];
  const clinic=all.find(x=>x.id==='dmpk');
- const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.slot?' · '+slotLabel(x.slot):'')+(x.site?' tại '+siteTitle(x.site):'')).join(', ')+'.':'Giữ phương án 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm làm mốc bố trí.';
+ const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.slot?' · '+slotLabel(x.slot):'')+(x.site?' tại '+siteTitle(x.site):'')+' (vượt '+format(x.review.annualExcess)+' giờ/năm)').join(', ')+'.':'Giữ phương án 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm làm mốc bố trí.';
  const evidence='Số người thực có năm 2027 và lịch trực tại từng cơ sở chờ Phòng Nhân lực và đơn vị xác nhận. Số giờ trong bảng là ước tính theo sản phẩm.';
  const hr=['Chức danh','Địa điểm','Bố trí theo cơ cấu','Giờ việc đã tính/tháng (bình quân)','So với quỹ giờ của cơ cấu'];
  const peaksTable=cluster.length?table(['Người hoặc vị trí cần xem','Tháng vượt quỹ','Tháng cần hỗ trợ nhiều nhất','Việc có thể quyết'],cluster.map(x=>{
   const m=x.review.peak;const periods=x.review.periods.filter(v=>v.excess>0);
-  const action=x.review.annualExcess>0?'Đo lại tải thường xuyên và kiểm khả năng phân công trước khi trình bổ sung người.':m.ongoing===0?'Dàn lại lịch làm tài liệu hoặc bố trí người thử, kiểm đúng chuyên môn.':'Xếp người hỗ trợ việc chuẩn bị hoặc đối soát theo lịch. Giữ người chịu trách nhiệm và thẩm quyền duyệt.';
+  const action=x.review.annualExcess>0?'Năm vượt '+format(x.review.annualExcess)+' giờ kế hoạch. Đo lại tải và kiểm khả năng phân công trước khi trình bổ sung người.':m.ongoing===0?'Dàn lại lịch làm tài liệu hoặc bố trí người thử, kiểm đúng chuyên môn.':'Xếp người hỗ trợ việc chuẩn bị hoặc đối soát theo lịch. Giữ người chịu trách nhiệm và thẩm quyền duyệt.';
   return [positionLink(x)+(x.site?'<small>'+e(siteTitle(x.site))+'</small>':''),periods.map(t=>'T'+t.m).join(', '),'T'+m.m+' · '+format(m.excess)+' giờ',e(action)];
  }),[2]):'<p>Trong kịch bản này, các vị trí đã có quỹ giờ đều nằm trong quỹ ở cả 12 tháng.</p>';
  return '<h4>Quyết định nhân sự theo kịch bản '+e(cases[u.scenario])+'</h4>'+stack([
