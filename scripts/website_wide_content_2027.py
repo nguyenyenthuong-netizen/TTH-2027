@@ -64,6 +64,20 @@ function resize(){
  }
  root.style.setProperty('--tth-website-left-gap',left+'px');
  root.style.setProperty('--tth-website-cta-gap',right+'px');
+ // The source design has a literal 1320px cap on main. Some pages also apply
+ // it inline after their head stylesheet; set the actual layout element itself.
+ var width=Math.min(1810,window.innerWidth-left-right);
+ function widen(el){
+  if(!el)return;
+  el.style.setProperty('width',width+'px','important');
+  el.style.setProperty('max-width',width+'px','important');
+  el.style.setProperty('margin-left',left+'px','important');
+  el.style.setProperty('margin-right','auto','important');
+  el.style.setProperty('box-sizing','border-box','important');
+ }
+ widen(app.querySelector('main'));
+ widen(app.querySelector('header.gh > div:first-child'));
+ widen(app.querySelector('footer > div:first-child'));
 }
 function schedule(){clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,35)}
 window.addEventListener('resize',schedule,{passive:true});
