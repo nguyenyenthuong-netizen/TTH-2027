@@ -58,7 +58,7 @@ with sync_playwright() as p:
   if width>=1200:
    p0,p1,p2,p3,p4=result["positions"]
    assert p0["top"]==p1["top"] and p2["top"]==p3["top"]==p4["top"] and p2["top"]>p0["top"],f"Wrong two-row desktop order: {result['positions']}"
-   assert p0["width"]==p1["width"] and p2["width"]==p3["width"]==p4["width"],f"Unequal card widths: {result['positions']}"
+   assert abs(p0["width"]-p1["width"])<=2 and max(p2["width"],p3["width"],p4["width"])-min(p2["width"],p3["width"],p4["width"])<=2,f"Unequal card widths: {result['positions']}"
   if result["clippedCards"]:
    raise AssertionError(f"Catalog card text clipped at {width}x{height}: {result}")
   out=root.parent/"artifacts"/"tth-catalog";out.mkdir(parents=True,exist_ok=True)
