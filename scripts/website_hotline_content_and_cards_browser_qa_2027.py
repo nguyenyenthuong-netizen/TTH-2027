@@ -38,7 +38,7 @@ with sync_playwright() as p:
   page.keyboard.press('Escape');page.wait_for_timeout(100)
   assert not popup.is_visible(),(w,'Escape did not close')
   # Check rendered dimensions, not only the presence of the equal-height CSS.
-  stats=frame.locator('#app main article.card:has(span.thu)')
+  stats=frame.locator('#app main article.card').filter(has_text='Đội ngũ chuyên gia').first.locator('xpath=..').locator(':scope > article.card')
   assert stats.count()==4,(w,'Expected four home statistic cards',stats.count())
   heights=stats.evaluate_all('''xs=>xs.map(e=>Math.round(e.getBoundingClientRect().height))''')
   assert all(v>100 for v in heights) and max(heights)-min(heights)<=2,(w,'Statistic cards have unequal heights',heights)
