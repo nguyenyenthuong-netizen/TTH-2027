@@ -13,6 +13,7 @@ on:
       - 'scripts/crm_sidebar_cleanup.py'
       - 'scripts/crm_roadmap_phases_2027.py'
       - 'scripts/crm_phase_roadmap_gate_2027.py'
+      - 'scripts/crm_his_linkage_example_2027.py'
       - 'scripts/crm_s4_font_readability_2027.py'
       - 'scripts/site_consistency_audit.py'
       - 'scripts/khung_dinh_bien_chi_so_audit.py'
@@ -236,6 +237,8 @@ jobs:
         run: python3 scripts/crm_roadmap_phases_2027.py _site
       - name: Khoa 02 giai doan CRM Call Center HIS va AI, 07 slide, 06 dich vu can chot
         run: python3 scripts/crm_phase_roadmap_gate_2027.py _site
+      - name: CRM vi du dinh danh ho so CRM lien ket ma benh nhan HIS
+        run: python3 scripts/crm_his_linkage_example_2027.py _site
       - name: Tang co chu slide 04 CRM va tranh tran khung luong 1900
         run: python3 scripts/crm_s4_font_readability_2027.py _site
       - name: Mo rong cuon du trang va the ngang cho 102 man hinh App
