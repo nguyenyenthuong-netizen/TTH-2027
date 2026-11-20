@@ -1,0 +1,30 @@
+name: Smoke test CRM Vercel production phases
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/crm-production-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  crm-vercel-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read CRM Vercel production and verify phases
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fLsS --retry 3 --connect-timeout 15 --max-time 90 \
+            'https://tth-crm-da-kenh.vercel.app/?verify=fef506da' -o /tmp/tth-crm-production.html
+          python3 - <<'PY'
+          import re, pathlib, html
+          s=pathlib.Path('/tmp/tth-crm-production.html').read_text('utf-8')
+          m=re.search(r'<div class="roadmap">(.*?)</div>\s*<div class="decisionGrid">',s,re.I|re.S)
+          assert m,'Live Vercel CRM roadmap not found'
+          titles=[html.unescape(re.sub(r'<br\s*/?>',' + ',x)) for x in re.findall(r'<div class="phase">.*?<b>(.*?)</b>',m.group(1),re.I|re.S)]
+          titles=[' '.join(x.replace(' + + ',' + ').split()) for x in titles]
+          print('CRM_VERCEL_LIVE_PHASES',titles)
+          assert titles==['CRM + Call Center + HIS','Đa kênh','Đo lường + AI'],f'Incorrect Vercel CRM roadmap: {titles}'
+          print('CRM_VERCEL_LIVE_OK',len(s),'bytes')
+          PY
