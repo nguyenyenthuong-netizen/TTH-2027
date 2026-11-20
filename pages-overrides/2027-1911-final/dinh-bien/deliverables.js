@@ -125,18 +125,25 @@ function slotDoc(d,z,id,slot){
  const hospital=z.stage==='Thử áp dụng'||/bệnh viện|hiện trường/i.test(d.scope);
  return (slot==='b')===hospital;
 }
-function deadline(w){
- const idx=model.crosswalk[w.item.role].findIndex(([target])=>target===w.item.id);
- const row=model.jd[w.item.role][idx>=0?idx+1:(w.item.jd||[])[0]];
- return row&&row[1]&&!/^[–—-]$/.test(row[1])?row[1]:'Theo lịch giao '+periodName(w.item.period);
-}
-function receipt(w){
- const r=roleMap[w.item.role];
- const refs=model.crosswalk[w.item.role].flatMap(([target],i)=>target===w.item.id?[i+1]:[]);
- const rows=[...new Set([...(w.item.jd||[]),...refs])].map(i=>model.jd[w.item.role][i]).filter(Boolean);
- const to=rows.map(x=>x[2]).find(x=>x&&!/^(?:[–—-]|như trên)/i.test(x));
- const value=to||r.phan_dinh_kiem_duyet||r.bao_cao_cho;
- return String(value).replace(/người quản lý trực tiếp đúng tuyến theo quyết định phân công có hiệu lực/gi,r.bao_cao_cho);
+function deliveryRoute(w){
+ const z=w.item,r=roleMap[z.role],group=['bt-b','md-b','mdcs-b','qlth-bc'].includes(z.role)?'2':'1';
+ if(z.id==='cvt/bv')return ['Trưởng nhóm của từng bệnh viện thuộc phạm vi triển khai xác nhận lịch. Trưởng phòng Marketing nhận tổng hợp từ Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở.','Hằng tuần theo lịch giao việc của bệnh viện.'];
+ if(z.id==='cvt-2/tai')return ['Tổ trưởng Tổ Truyền thông và Thương hiệu và Tổ trưởng Tổ Tăng trưởng số nhận kết quả rà tải. Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số báo cáo Trưởng phòng Marketing.','Hằng tuần, một phiếu cho mỗi tổ.'];
+ if(z.id==='dl-1/kt')return ['Người quản lý đúng tuyến nhận phiếu kiểm. Trưởng phòng Marketing nhận kết quả đối soát qua báo cáo.','Ghi phiếu theo lịch tuần. Chốt số giờ từ sổ theo dõi vào kỳ báo cáo quý của MTCV.'];
+ if(z.id==='dl-1/nam')return ['Trưởng phòng Marketing nhận bảng số liệu để lập và trình báo cáo năm.','Tháng 12, trước khi Trưởng phòng trình báo cáo năm.'];
+ if(z.id==='dl-1/tuan')return ['Quản lý thương hiệu và Trưởng phòng Marketing nhận báo cáo BM-2.','Hằng tuần theo lịch báo cáo.'];
+ if(z.role.startsWith('qlth-')&&z.code==='hangmuc')return ['Trưởng phòng Marketing duyệt kế hoạch theo phân cấp. Giám đốc cơ sở xác nhận phần chi từ ngân sách cơ sở; cấp tài chính duyệt khoản chi theo thẩm quyền.','Theo lịch hạng mục. Kế hoạch tháng trình chậm nhất ngày 18, duyệt chậm nhất ngày 20 theo MTCV.'];
+ if(z.role.startsWith('qlth-')&&z.code==='nam')return ['Trưởng phòng Marketing nhận hồ sơ mục tiêu, ngân sách và kết quả năm của nhóm '+group+'.','Tháng 12, theo hạn chốt báo cáo năm.'];
+ if(z.role.startsWith('mdcs-')&&['v2','v3'].includes(z.code))return ['Chuyên viên media nhóm '+group+' tại Tổng công ty kiểm kỹ thuật. Quản lý thương hiệu nhóm '+group+' nghiệm thu mục tiêu. Đơn vị chuyên môn xác nhận y khoa nếu có, cấp được phân quyền duyệt phát hành.','Theo lịch quay và phiếu đặt việc, sau khi có mẫu B-7 hợp lệ.'];
+ if(z.role.startsWith('bt-')&&z.code==='loi')return ['Biên tập đúng nhóm chủ trì phần lời/thoại. Chuyên viên media nhóm '+group+' nhận lời đã kiểm để lập phân cảnh. Nội dung y khoa do đơn vị chuyên môn xác nhận.','Theo mốc khóa kịch bản trong phiếu yêu cầu.'];
+ if(z.role.startsWith('md-')&&z.code==='kiem')return ['Media cơ sở đúng bệnh viện nhận phiếu sửa hoặc kết quả kiểm kỹ thuật. Quản lý thương hiệu nhóm '+group+' nhận bản đủ điều kiện để nghiệm thu mục tiêu.','Khi cơ sở bàn giao bản dựng, trước bước nghiệm thu và phát hành.'];
+ const refs=[...new Set([...(z.jd||[]),...model.crosswalk[z.role].flatMap(([key],i)=>key===z.id?[i+1]:[])])];
+ const rows=refs.map(i=>model.jd[z.role][i]).filter(Boolean);
+ const terms=[...new Set(rows.map(row=>row[1]).filter(t=>t&&!/^[–—-]$/.test(t)))];
+ const destinations=[...new Set(rows.map(row=>row[2]).filter(t=>t&&!/^(?:[–—-]|như trên)/i.test(t)))];
+ const norm=t=>String(t).replace(/người quản lý trực tiếp đúng tuyến theo quyết định phân công có hiệu lực/gi,r.bao_cao_cho);
+ const receiver=destinations.length===1?norm(destinations[0]):norm(r.phan_dinh_kiem_duyet||r.bao_cao_cho);
+ return [receiver,terms.length===1?terms[0]:'Theo kỳ '+periodName(z.period)+' và hạn trên phiếu giao việc. Các mốc theo loại hồ sơ có tại MTCV của vị trí.'];
 }
 function assignmentCondition(w,site){
  const z=w.item,notes=[];
@@ -209,8 +216,9 @@ function roadmapDelivery(){
    }));
    if(hours!=null)operationHours+=hours;else pending++;
    if(qty===0)return null;
+   const [recipient,due]=deliveryRoute(w);
    const quantity=incomplete?'Chờ phạm vi':count.map(v=>format(v)).join(' / ');
-   return [btn(w.item.name,'roles',w.id)+assignmentCondition(w,site)+(rid==='dl-1'&&w.item.role==='dl-2'?'<small>Phần dữ liệu kiêm nhiệm</small>':''),quantity,nu(qty),nu(sum(w.t)),nu(hours),e(receipt(w))+'<small>Hạn: '+e(deadline(w))+'</small>'];
+   return [btn(w.item.name,'roles',w.id)+assignmentCondition(w,site)+(rid==='dl-1'&&w.item.role==='dl-2'?'<small>Phần dữ liệu kiêm nhiệm</small>':''),quantity,nu(qty),nu(sum(w.t)),nu(hours),e(recipient)+'<small>Hạn: '+e(due)+'</small>'];
  }).filter(Boolean);
  const inScope=z=>keys.has(z.r);
  const splitControls=division?detail('Căn cứ phân sản phẩm giữa hệ thống và bệnh viện',(

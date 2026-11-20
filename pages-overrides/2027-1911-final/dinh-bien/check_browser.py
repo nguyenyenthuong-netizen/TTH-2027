@@ -13,6 +13,9 @@ def check(page, width, form, out):
     host.locator('[data-set="deliveryRole"]').select_option('dl-1')
     assert host.get_by_role('button',name='Bảng số liệu tổng kết năm đã đối chiếu',exact=True).count()==1
     host.locator('[data-set="phase"]').select_option('q1')
+    host.locator('[data-set="deliveryRole"]').select_option('cvt')
+    schedule=host.locator('tr').filter(has_text='Phiếu rà soát lịch tải của Trưởng nhóm bệnh viện')
+    assert '8 / 8 / 10' in schedule.inner_text() and 'từng bệnh viện' in schedule.inner_text()
     host.locator('[data-set="deliveryRole"]').select_option('md-ac')
     host.locator('[data-set="pilot1"]').select_option('vinh')
     host.locator('[data-set="deliverySlot"]').select_option('b')
