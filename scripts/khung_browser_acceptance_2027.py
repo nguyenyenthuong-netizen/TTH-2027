@@ -258,5 +258,5 @@ report={"test":"Trình duyệt Chromium thực tế","screenshot_files":[x.name 
         "flows":results,"problems":issues}
 (out/"ket_qua_kiem_thu.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),"utf-8")
 assert not issues,"E2E FAIL: "+json.dumps(issues,ensure_ascii=False)
-assert len(results)==len(flows)*2
+assert len(results)==(len(flows)+1)*2  # 8 luồng vận hành + sơ đồ Bộ máy ở mỗi viewport
 print("PASS BROWSER E2E: 8 luồng x desktop/mobile; bảng 3 đầu ra; CNNV; không có lỗi JavaScript/tràn trang")
