@@ -155,6 +155,33 @@ with sync_playwright() as p:
         # Điều hướng đến phần CNNV, mở được chứ không rơi vào tab ẩn.
         page.goto(url+"#m-4-3",wait_until="domcontentloaded",timeout=30000)
         page.wait_for_timeout(650)
+        # Mục 4.3: kiểm thật việc giải thích "ba tổ - hai chức danh quản lý",
+        # mở ma trận xung đột 9 tình huống và bảo vệ tràn lề ở mobile.
+        c23=page.locator("#cnnv-2-chief-3-team-2027")
+        if c23.count()!=1 or not c23.is_visible():
+            issues.append(form+": mục 4.3 thiếu giải thích hai chức danh quản lý ba tổ")
+        else:
+            txt=c23.inner_text()
+            for name in ("Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở",
+                         "Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số",
+                         "Tổ Tăng trưởng số"):
+                if name not in txt:
+                    issues.append(form+": mục 4.3 thiếu tên/tuyến "+name)
+            matrix=c23.locator("details")
+            if matrix.count()!=1:
+                issues.append(form+": mục 4.3 thiếu ma trận xung đột")
+            else:
+                matrix.locator("summary").click(timeout=8000)
+                if not matrix.evaluate("(e)=>e.open"):
+                    issues.append(form+": ma trận xung đột không mở được")
+                nrows=matrix.locator("tbody tr").count()
+                if nrows!=9:
+                    issues.append(form+": ma trận xung đột thiếu tình huống "+str(nrows)+"/9")
+                dims_case=matrix.locator(".tbl").evaluate(
+                    "(e)=>({client:e.clientWidth,scroll:e.scrollWidth,outer:e.getBoundingClientRect().width})"
+                )
+                if dims_case["outer"]>width+18:
+                    issues.append(form+": bảng xung đột vượt khung viewport "+str(dims_case))
         panel=page.locator("#tth-output-contracts-2027")
         if panel.count()!=1:issues.append(form+": thiếu bảng tổng hợp 568 hợp đồng đầu ra")
         elif not panel.is_visible():
