@@ -325,16 +325,20 @@ D["cnnv_luong_lien_to_2027"]=[
   "dau_ra":"KPI cá nhân/tổ/quản lý không ghi trùng, hồ sơ lỗi và hành động khắc phục"}
 ]
 
-# 5) Những quy tắc CNNV sai thời cơ cấu: sửa mô tả nguồn đề án chờ phê duyệt,
-#    không sửa sự thật của quyết định nhân sự đã có hiệu lực.
+# 5) Quyết định có hiệu lực là văn bản gốc, không được sửa câu chữ của
+#    quyết định chưa được Phòng Nhân lực/cấp thẩm quyền ban hành bản thay thế.
 for doc in D["danh_muc_van_ban"]:
     if doc.get("ma")=="QyĐ.02.MKT" and isinstance(doc.get("dieu_khoan"),list):
-        doc["dieu_khoan"]=[
+        proposal=[
           x.replace("Tổ Truyền thông và Thương hiệu không đặt Tổ trưởng",
-            "Tổ Truyền thông và Thương hiệu có Tổ trưởng kiêm nhiệm là Quản lý thương hiệu nhóm 2, chỉ điều phối việc và không có quyền duyệt mặc định")
+            "ĐỀ XUẤT 2027: Tổ Truyền thông và Thương hiệu có Tổ trưởng kiêm nhiệm là Quản lý thương hiệu nhóm 2, chỉ điều phối việc và không có quyền duyệt mặc định")
           for x in doc["dieu_khoan"]
         ]
-        doc["cnnv_yeu_cau_dong_bo"]="Cần Phòng Nhân lực/Phòng Quản lý chất lượng đối chiếu CNNV và quyết định có hiệu lực trước khi ban hành bản sửa."
+        if proposal != doc["dieu_khoan"]:
+            doc["cnnv_dieu_khoan_de_xuat_2027"]=proposal
+        doc["cnnv_van_ban_goc_giu_nguyen_2027"]=True
+        doc["cnnv_trang_thai_de_xuat_2027"]="CHƯA BAN HÀNH; không thay đổi quyết định hiện hành hoặc tự kích hoạt quyền kiêm nhiệm"
+        doc["cnnv_yeu_cau_dong_bo"]="Phòng Nhân lực và cấp có thẩm quyền đối chiếu CNNV, quyết định có hiệu lực trước khi ban hành bản sửa."
 D["cnnv_nguyen_tac_2027"]={
  "khong_phat_sinh_quyen":"Chức năng quản lý, kiểm soát và duyệt là ba loại quyền khác nhau. Chưa có ủy quyền hiệu lực thì không có quyền thay.",
  "to_truong_noi_dung":"Phải chốt đầu mối điều phối thường lệ cho nhóm 2 và Thiết kế ngoại tuyến bằng phân công cụ thể. Không tự động nâng quyền chéo nhóm của Tổ trưởng nhóm 1 hoặc giao thường trực lên Chuyên viên trưởng.",
@@ -455,6 +459,7 @@ assert s.count('id="cnnv-phong-phan-tuyen-2027"')==1
 assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
 assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
 assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
+assert all(x.get("cnnv_van_ban_goc_giu_nguyen_2027") for x in check["danh_muc_van_ban"] if x.get("ma")=="QyĐ.02.MKT")
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "trực tiếp quản lý" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
 assert "không tự chuyển sang Quản lý mạng lưới theo vùng" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
