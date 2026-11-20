@@ -142,6 +142,27 @@ with sync_playwright() as p:
      if nav.count()!=7:failed.append(name+': CRM seventh slide missing from sidebar '+str(nav.count()))
      elif page.locator('#s7').count()!=1:failed.append(name+': CRM internal agreement screen absent')
      else:
+      nav.nth(2).evaluate('(el)=>el.click()')
+      page.wait_for_timeout(120)
+      tabs=page.locator('#flowTabs .flowbtn')
+      if tabs.count()<2:failed.append(name+': missing second HIS identification workflow tab')
+      else:
+       tabs.nth(1).evaluate('(el)=>el.click()')
+       page.wait_for_timeout(150)
+       title=page.locator('#crmFlowMetaToggle').inner_text()
+       if 'CRM' not in title or 'HIS' not in title:failed.append(name+': HIS example help label missing')
+       page.locator('#crmFlowMetaToggle').evaluate('(el)=>el.click()')
+       page.wait_for_timeout(120)
+       sample=page.locator('#s3 .tth-his-example')
+       if not sample.is_visible():failed.append(name+': fictional CRM to HIS patient-ID example not visible')
+       else:
+        sample_text=sample.inner_text()
+        for expected in ('CRM-00125','BN-00876','BN-00444','Chờ xác minh','không tự gộp'):
+         if expected not in sample_text:failed.append(name+': missing HIS linkage example: '+expected)
+        layout=sample.evaluate('''e=>({width:e.scrollWidth,client:e.clientWidth,height:e.scrollHeight,visible:e.getBoundingClientRect().height})''')
+        if layout['width']>layout['client']+24:failed.append(name+': CRM/HIS example horizontally clipped '+str(layout))
+        print('CRM_HIS_EXAMPLE_QA',str(size),json.dumps(layout,ensure_ascii=False))
+       page.locator('#crmFlowMetaToggle').evaluate('(el)=>el.click()')
       nav.nth(3).evaluate('(el)=>el.click()')
       page.wait_for_timeout(140)
       cm=page.locator('#s4').evaluate('''root=>{
