@@ -882,6 +882,30 @@ if 'id="cnnv-ten-to-marketing-benh-vien-2027"' not in s:
     )
     s=s[:marker.end()]+box+s[marker.end():]
 
+# 6a) Đồng bộ TÊN HIỂN THỊ trực tiếp trong sơ đồ Bộ máy: bảng tên chuẩn
+# trước đây chỉ bổ sung phụ lục, trong khi 05 nhãn ô bệnh viện chưa đổi.
+# Thay đúng tên đơn vị, giữ nguyên số suất 03/03/03/02/02, mọi nút nhân sự,
+# dữ liệu gốc và đầu mối phòng khám (không mặc định lập Tổ phòng khám).
+name_catalog=D["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"]
+assert len(name_catalog)==5 and sum((3,3,3,2,2))==13
+for unit in name_catalog:
+    old=unit["benh_vien"]
+    new=unit["ten_to"]
+    assert new=="Tổ Marketing "+old
+    pat=r'(<div class="hosp-h">)'+re.escape(old)+r'(\s*<b>\(\d+\)</b></div>)'
+    s,count=re.subn(pat,lambda m:m.group(1)+escape(new)+m.group(2),s,count=1)
+    if count!=1:raise RuntimeError("Không tìm thấy tiêu đề ô bệnh viện cần đổi: "+old)
+    # Thẻ là nhãn đơn vị, không thay tên chức danh tại các nút bấm.
+assert len(re.findall(r'<div class="hosp-h">Tổ Marketing Bệnh viện [^<]+<b>\(\d+\)</b></div>',s))==5
+old_group='<strong>Marketing cơ sở và đầu mối phòng khám</strong>'
+new_group='<strong>Tổ Marketing tại các bệnh viện và đầu mối phòng khám</strong>'
+if s.count(old_group)!=1:raise RuntimeError("Không tìm thấy duy nhất tiêu đề khu vực Marketing cơ sở")
+s=s.replace(old_group,new_group,1)
+old_summary='<summary>Marketing cơ sở <b>(13)</b>'
+new_summary='<summary>Các Tổ Marketing tại bệnh viện <b>(13)</b>'
+if s.count(old_summary)!=1:raise RuntimeError("Không tìm thấy duy nhất tiêu đề nhóm 13 suất bệnh viện")
+s=s.replace(old_summary,new_summary,1)
+
 # 6b) Đồng bộ văn bản sơ đồ HTML tĩnh với dữ liệu MTCV/cơ chế phân việc:
 #     thông tin JSON đúng nhưng popup/tóm tắt cũ cũng phải cùng một tuyến.
 for rid in ("bt-ac","bt-b","tk-b","md-b","tk-nt","dmpk"):
@@ -996,6 +1020,14 @@ assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
 assert len(check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])==5
 assert all(x["ten_to"]=="Tổ Marketing "+x["benh_vien"] for x in check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"])
 assert s.count('id="cnnv-ten-to-marketing-benh-vien-2027"')==1
+assert s.count('<strong>Tổ Marketing tại các bệnh viện và đầu mối phòng khám</strong>')==1
+assert s.count('<summary>Các Tổ Marketing tại bệnh viện <b>(13)</b>')==1
+assert all(
+ s.count('<div class="hosp-h">'+escape(x["ten_to"]))==1
+ for x in check["cnnv_ten_to_marketing_benh_vien_2027"]["danh_muc_dang_hoat_dong"]
+)
+assert len(re.findall(r'<div class="hosp-h">Tổ Marketing Bệnh viện [^<]+<b>\(\d+\)</b></div>',s))==5
+
 assert "/2 hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="dmpk")["bao_cao_cho"]
 assert len(check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])==9
 assert len(check["cnnv_nhanh_xung_dot_hai_to_2027"]["buoc"])==6
