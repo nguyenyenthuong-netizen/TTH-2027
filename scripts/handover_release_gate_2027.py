@@ -33,7 +33,7 @@ assert len(handover_urls)==len(expected) and set(handover_urls)==expected,"Hando
 assert "bo-ho-so/" in cl,"Catalog must expose stakeholder handover"
 assert all("quan-tri-marketing" not in u for u in cl+hl),"GitHub catalog/handover may not list Marketing software"
 assert all("tth-marketing-2027-slide.vercel.app" not in u for u in cl+hl),"Duplicate presentation must not be listed"
-assert "KHUNG CƠ CẤU VÀ VẬN HÀNH MARKETING TOÀN HỆ THỐNG TTH GROUP 2027" in handover.read_text("utf-8")
+assert "Phương án vận hành Marketing toàn hệ thống TTH Group 2027" in handover.read_text("utf-8"),"Official presentation title does not match catalog"
 assert "../" in hl,"Handover must link back to catalog"
 assert (root/"khung-marketing"/"nghiem-thu"/"index.html").is_file(),"Missing pre-issuance matrix"
 assert (root/"khung-marketing"/"doi-chieu-quy-trinh"/"index.html").is_file(),"Missing process crosswalk"
