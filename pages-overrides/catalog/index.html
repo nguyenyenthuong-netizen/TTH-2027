@@ -25,7 +25,7 @@ main{min-height:0;display:flex;flex-direction:column}
 .headline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 clamp(9px,1.6vh,17px)}
 h2{color:var(--ink);font-size:clamp(15px,1.42vw,20px);line-height:1.2;font-weight:800;margin:0}
 .count{font-weight:700;color:var(--blue);font-size:clamp(11px,.95vw,13px);background:#E5EFFD;border-radius:20px;padding:7px 12px;white-space:nowrap}
-.cards{min-height:0;flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(9px,1.25vw,17px)}
+.cards{min-height:0;flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(9px,1.25vw,17px)}
 .tile{min-width:0;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:clamp(8px,1.7vh,18px);border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(8,55,161,.05);padding:clamp(13px,1.7vw,25px);text-decoration:none;color:var(--ink);transition:transform .16s,box-shadow .16s,border-color .16s}
 .tile:nth-child(4),.tile:nth-child(7){border-top-color:var(--red)}
 .tile:hover{transform:translateY(-2px);border-color:#8CAAE0;box-shadow:0 10px 26px rgba(8,55,161,.14)}
@@ -47,7 +47,7 @@ h1{font-size:clamp(17px,5vw,24px)}h1 span{display:block}
 .sub{font-size:11px;margin-top:3px}
 .headline{margin-bottom:8px}
 h2{font-size:15px}.count{padding:5px 9px;font-size:11px}
-.cards{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:8px}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:8px}
 .tile{gap:7px;padding:10px 11px;border-top-width:3px;border-radius:11px}
 .tile strong{font-size:14px;line-height:1.18}
 .tile .desc{font-size:10.5px;line-height:1.23}
@@ -82,15 +82,14 @@ footer{padding-top:4px}
 <div class="titles"><p class="eyebrow">Danh mục trực tuyến · Năm 2027</p><h1>TTH Group <span>· Marketing toàn hệ thống</span></h1><p class="sub">Các hệ thống, tài liệu và giao diện trực tuyến của TTH Group</p></div>
 </header>
 <main>
-<div class="headline"><h2>Danh mục hệ thống</h2><span class="count">07 giao diện</span></div>
+<div class="headline"><h2>Danh mục hệ thống</h2><span class="count">06 giao diện</span></div>
 <nav class="cards" aria-label="Mở các hệ thống TTH Group từ danh mục GitHub">
 <a class="tile" href="https://tth-khung-marketing-14112026.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở Khung cơ cấu Marketing 2027 trên Vercel"><span class="num">01</span><span class="arr" aria-hidden="true">↗</span><strong>Khung cơ cấu Marketing 2027</strong><span class="desc">Cơ cấu tổ chức · chức năng · vận hành</span></a>
 <a class="tile" href="https://tth-marketing-2027-slide.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở Slide Marketing 2027 trên Vercel"><span class="num">02</span><span class="arr" aria-hidden="true">↗</span><strong>Slide Marketing 2027</strong><span class="desc">Nội dung thuyết trình chính thức</span></a>
 <a class="tile" href="https://tth-marketing-2027-trinh-chieu.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở Trình chiếu Marketing trên Vercel"><span class="num">03</span><span class="arr" aria-hidden="true">↗</span><strong>Trình chiếu Marketing</strong><span class="desc">Xem và điều khiển trình chiếu</span></a>
-<a class="tile" href="quan-tri-marketing/" aria-label="Mở Phần mềm quản trị Marketing qua trang GitHub"><span class="num">04</span><span class="arr" aria-hidden="true">↗</span><strong>Phần mềm quản trị Marketing</strong><span class="desc">Mở từ GitHub · ứng dụng gốc trên Vercel</span></a>
-<a class="tile" href="https://tth-crm-da-kenh.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở CRM đa kênh trên Vercel"><span class="num">05</span><span class="arr" aria-hidden="true">↗</span><strong>CRM đa kênh</strong><span class="desc">Tiếp nhận · phối hợp · chăm sóc</span></a>
-<a class="tile" href="https://tth-healthcare-website.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở Website TTH Healthcare trên Vercel"><span class="num">06</span><span class="arr" aria-hidden="true">↗</span><strong>Website TTH Healthcare</strong><span class="desc">Bệnh viện · phòng khám · dịch vụ</span></a>
-<a class="tile" href="https://tth-healthcare-app.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở App TTH Healthcare trên Vercel"><span class="num">07</span><span class="arr" aria-hidden="true">↗</span><strong>App TTH Healthcare</strong><span class="desc">Mô hình ứng dụng · 102 màn hình</span></a>
+<a class="tile" href="https://tth-crm-da-kenh.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở CRM đa kênh trên Vercel"><span class="num">04</span><span class="arr" aria-hidden="true">↗</span><strong>CRM đa kênh</strong><span class="desc">Tiếp nhận · phối hợp · chăm sóc</span></a>
+<a class="tile" href="https://tth-healthcare-website.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở Website TTH Healthcare trên Vercel"><span class="num">05</span><span class="arr" aria-hidden="true">↗</span><strong>Website TTH Healthcare</strong><span class="desc">Bệnh viện · phòng khám · dịch vụ</span></a>
+<a class="tile" href="https://tth-healthcare-app.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Mở App TTH Healthcare trên Vercel"><span class="num">06</span><span class="arr" aria-hidden="true">↗</span><strong>App TTH Healthcare</strong><span class="desc">Mô hình ứng dụng · 102 màn hình</span></a>
 </nav>
 </main>
 <footer><span><b>TTH GROUP</b> · Marketing toàn hệ thống</span><a href="bo-ho-so/" aria-label="Mở hồ sơ phối hợp và đối soát để gửi các đơn vị">Hồ sơ phối hợp ↗</a></footer>
