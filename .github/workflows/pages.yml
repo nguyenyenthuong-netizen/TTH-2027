@@ -235,6 +235,13 @@ jobs:
         run: python3 scripts/app_known_routes_fix_2027.py _site
       - name: Kiem tra toan bo nut va luong hoi tro ly App Website
         run: python3 scripts/app_button_routes_audit_2027.py _site
+      - name: Luu bao cao kiem toan 120 nut va lien ket App
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-action-inventory-${{ github.run_number }}
+          path: artifacts/app-action-inventory.json
+          if-no-files-found: ignore
       - name: Kiem tra trinh duyet 5 tai san desktop va mobile
         run: python3 scripts/tth_five_asset_browser_qa_2027.py _site
       - name: Thay trang danh muc cu bang danh muc TTH Group fit 1 man hinh
