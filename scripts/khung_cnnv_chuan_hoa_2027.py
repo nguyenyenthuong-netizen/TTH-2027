@@ -437,6 +437,116 @@ for v in D["vi_tri"]:
           "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở/2",
           "Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở và Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số theo từng phạm vi hướng dẫn nghiệp vụ; không tạo tuyến chỉ huy thứ hai"
         )
+# 1e) Danh mục quy trình là hệ thống quản trị, KHÔNG phải việc một người
+# soạn tất cả hoặc một cấp quản lý tự ký ban hành. Nguồn phân cấp:
+# chức năng nhiệm vụ phòng (4.1), QyĐ.02.MKT/MTVC còn hiệu lực;
+# tình trạng của 60 luồng trong đề án không đồng nghĩa 60 văn bản ban hành.
+D["cnnv_quan_tri_danh_muc_quy_trinh_2027"]={
+ "nguon_phan_cap":"Mục 4.1 và QyĐ.02.MKT/MTVC đang có hiệu lực; phân cấp khác phải có văn bản riêng",
+ "trang_thai":"Quy tắc quản trị đề xuất trong Khung Marketing 2027; chưa tự thay thế thủ tục ban hành hiện hành",
+ "danh_muc_luong_tham_chieu":[{"ma":q["id"],"ten":q["ten"],
+   "trang_thai":"LUỒNG MÔ TẢ TRONG ĐỀ ÁN – CHƯA ĐỐI CHIẾU HIỆU LỰC VĂN BẢN"}
+   for q in D["quy_trinh"]],
+ "phan_cong":[
+  {"vai_tro":"Quản lý thương hiệu theo nhóm","trach_nhiem":
+   "Chỉ ra nhu cầu chuẩn hóa mục tiêu, thông điệp, kiến trúc thương hiệu và nghiệm thu hạng mục; đề xuất/sở hữu yêu cầu nghiệp vụ, góp ý dự thảo đúng thương hiệu",
+   "khong_lam":"Không tự phê duyệt ban hành tất cả quy trình hoặc thay kiểm pháp lý"},
+  {"vai_tro":"Tổ trưởng và Trưởng nhóm Marketing bệnh viện","trach_nhiem":
+   "Tập hợp khó khăn, sáng kiến từ chuyên viên và cơ sở; cung cấp luồng thực tế, người làm, thời gian, đầu ra; tổ chức soạn/thử nghiệm theo phân công trong phạm vi mình",
+   "khong_lam":"Không tự mở quyền điều động chéo nhóm, thay đổi quy trình có hiệu lực hay cấp quyền phát hành"},
+  {"vai_tro":"Chuyên viên chuyên môn và đầu mối kiêm nhiệm","trach_nhiem":
+   "Phát hiện công việc chưa có hướng dẫn hoặc quy trình không khả thi; đề xuất có ví dụ/chứng cứ; trực tiếp soạn nội dung kỹ thuật đúng nghiệp vụ khi được giao",
+   "khong_lam":"Không tự quyết định chuẩn áp dụng toàn hệ thống hoặc tự kiểm độc lập tài liệu do mình soạn"},
+  {"vai_tro":N,"trach_nhiem":
+   "Lập, ưu tiên và quản trị danh mục quy trình Nội dung – Sáng tạo, sản xuất và Marketing cơ sở hai nhóm; kiểm chuẩn ranh giới giao việc, chất lượng, tải, biểu mẫu, điểm bàn giao",
+   "khong_lam":"Không viết thay chuyên viên, không phân lịch hằng ngày cho nhóm 2/ngoại tuyến khi chưa được phân công, không tự ký ban hành"},
+  {"vai_tro":T,"trach_nhiem":
+   "Lập, ưu tiên và quản trị danh mục quy trình của Tổ Truyền thông và Thương hiệu và Tổ Tăng trưởng số; kiểm chuẩn PR, thương hiệu, OOH, quảng cáo, kênh số, đo lường và phối hợp hai tổ",
+   "khong_lam":"Không tự làm thay chuyên viên, không giao việc trực tiếp Marketing cơ sở, không mặc nhiên phê duyệt phát hành/chi"},
+  {"vai_tro":"Trưởng phòng Marketing","trach_nhiem":
+   "Hợp nhất một danh mục của phòng, xác định mức ưu tiên, thời hạn, nguồn lực và MỘT đầu mối chủ trì mỗi quy trình liên tổ; chốt kế hoạch nội bộ trong thẩm quyền, trình cấp có quyền khi vượt quyền",
+   "khong_lam":"Không được lấy việc chốt kế hoạch hoặc chủ trì xây dựng làm quyền ký ban hành ngoài phân cấp"},
+  {"vai_tro":"Phòng Quản lý chất lượng và bộ phận có chức năng liên quan","trach_nhiem":
+   "Tham gia chuẩn hóa thể thức, mã hiệu, quản lý phiên bản và kiểm soát hệ thống văn bản trong phạm vi được giao; Phòng Nhân lực đối chiếu MTCV/quyền và nhân sự khi thay đổi",
+   "khong_lam":"Không tự nhận mọi quy trình Marketing là quy trình đã ban hành chỉ vì được đưa vào danh mục"},
+  {"vai_tro":"Người/cấp có thẩm quyền ban hành","trach_nhiem":
+   "Phê duyệt, ký ban hành hoặc cho áp dụng sau khi hồ sơ thẩm định đầy đủ, đúng quyết định phân quyền hiệu lực; quyền chi phí và phát hành sản phẩm được xét riêng",
+   "khong_lam":"Không suy ra người ký từ tên vị trí hoặc từ quyền kiểm chuẩn"},
+ ],
+ "chu_trinh":[
+  {"buoc":1,"ten":"Tiếp nhận đề xuất","dau_moi":"Đúng chức danh chuyên môn/Tổ trưởng/Trưởng nhóm cơ sở",
+   "dau_ra":"Mã đề xuất, vấn đề, bằng chứng lỗi/thiếu, quy trình liên quan, người gửi"},
+  {"buoc":2,"ten":"Đối chiếu quy trình hiện hữu","dau_moi":N+" hoặc "+T+" theo phạm vi",
+   "dau_ra":"Phân loại xây mới, sửa, gộp, bãi bỏ; tra 60 luồng mẫu và danh mục văn bản có hiệu lực; không tạo trùng"},
+  {"buoc":3,"ten":"Lập danh mục và ưu tiên","dau_moi":N+" hoặc "+T+" theo phạm vi; Trưởng phòng hợp nhất",
+   "dau_ra":"Một danh mục cấp phòng với mức rủi ro, người chủ trì duy nhất, hạn và kế hoạch nội bộ được xác nhận đúng quyền"},
+  {"buoc":4,"ten":"Soạn dự thảo nghiệp vụ","dau_moi":"Người sở hữu nghiệp vụ/chuyên viên được giao; Tổ trưởng điều phối trong phạm vi",
+   "dau_ra":"Sơ đồ bước, đầu vào/đầu ra, kiểm độc lập, biểu mẫu, điểm chặn, ngoại lệ và hồ sơ phiên bản"},
+  {"buoc":5,"ten":"Kiểm chuẩn, đối chiếu pháp lý và thử nghiệm","dau_moi":N+" hoặc "+T+" theo phạm vi; liên tổ Trưởng phòng chỉ định một người tổng hợp",
+   "dau_ra":"Biên bản kiểm chuẩn, ý kiến Quản lý thương hiệu, y khoa/pháp lý nếu áp dụng, thử nghiệm và xử lý phản biện"},
+  {"buoc":6,"ten":"Trình duyệt và ban hành","dau_moi":"Trưởng phòng tổ chức trình; người có thẩm quyền quyết định theo văn bản còn hiệu lực",
+   "dau_ra":"Mã văn bản, người ký, ngày hiệu lực, phạm vi áp dụng, phiên bản; thiếu ủy quyền thì CHỜ PHÊ DUYỆT"},
+  {"buoc":7,"ten":"Triển khai, đo và rà soát","dau_moi":"Tổ trưởng/Trưởng nhóm triển khai; "+N+" hoặc "+T+" kiểm chuẩn theo phạm vi",
+   "dau_ra":"Biên bản phổ biến, nhật ký tuân thủ, KPI, đề xuất phiên bản mới, lịch rà soát"}
+ ],
+ "truong_danh_muc":[
+  "Mã quy trình","Tên quy trình","Nhóm thương hiệu/cơ sở áp dụng",
+  "Loại xây mới/sửa/gộp/bãi bỏ","Sự cố hoặc nhu cầu và chứng cứ",
+  "Chủ sở hữu nghiệp vụ","Một người chủ trì xây dựng","Người trực tiếp soạn",
+  "Người phối hợp và kiểm độc lập","Người kiểm chuẩn theo tuyến",
+  "Bộ phận y khoa/pháp lý phải xác nhận nếu áp dụng",
+  "Người có quyền ban hành theo căn cứ","Thẩm quyền/ủy quyền hiệu lực",
+  "Mức ưu tiên và rủi ro","Hạn hoàn thành và nguồn lực",
+  "Biểu mẫu liên quan","Phiên bản và ngày hiệu lực",
+  "Trạng thái bản thảo/đang kiểm/chờ duyệt/có hiệu lực/bãi bỏ",
+  "Mã thay thế/quan hệ với quy trình khác","Kỳ rà soát và bằng chứng áp dụng"
+ ],
+ "quy_tac_chong_xung_dot":"Một quy trình liên tổ chỉ có một chủ trì xây dựng do Trưởng phòng chỉ định; hai chức danh quản lý kiểm chuẩn theo phạm vi. Việc thay đổi tải và ưu tiên qua tuyến được giao, không sinh hai lệnh hoặc hai phiếu kiểm cùng nội dung.",
+ "dieu_kien_chan":"Thiếu người chủ trì, người kiểm độc lập khi phải kiểm, căn cứ pháp lý/y khoa, văn bản ủy quyền hoặc người ký có thẩm quyền: CHỜ BỔ SUNG/CHỜ PHÊ DUYỆT; không áp dụng bản dự thảo như quy trình hiệu lực.",
+ "chu_ky":"Nhận đề xuất liên tục; rà soát danh mục tại giao ban tháng và đánh giá nhu cầu sửa đổi theo quý hoặc khi xảy ra sự cố/đổi pháp luật; đây là chu kỳ kế hoạch đề xuất, chưa phải chỉ đạo đã ban hành.",
+ "phan_biet":"60 luồng/407 bước trong Khung 2027 là dữ liệu đề án; số quy trình đã ban hành phải đối chiếu 83 văn bản và quyết định có hiệu lực, không mặc nhiên bằng 60."
+}
+# Quyền tham gia của 26 mã chức danh: được báo cáo thiếu chuẩn; chủ trì soạn
+# chỉ khi có chỉ định. Nhóm chuyên môn là lĩnh vực phát hiện nhu cầu, KHÔNG
+# là giấy phép ký ban hành hoặc mở một tuyến giao việc thứ hai.
+process_domains={
+ "tp":"Danh mục và kế hoạch toàn Phòng Marketing",
+ "cvt":"Nội dung – Sáng tạo, Media/Thiết kế và Marketing cơ sở hai nhóm",
+ "cvt-2":"Truyền thông – Thương hiệu và Tăng trưởng số hai tổ tại Tổng công ty",
+ "qlth-a":"Mục tiêu, định vị, thông điệp và nghiệm thu thương hiệu nhóm 1",
+ "qlth-bc":"Mục tiêu, định vị, thông điệp và nghiệm thu thương hiệu nhóm 2; điều phối Tổ Truyền thông và Thương hiệu khi được phân công",
+ "cvtt-a":"Báo chí, PR, OOH, phát thanh, màn hình và thông tin nhóm 1",
+ "cvtt-bc":"Báo chí, PR, OOH, phát thanh, màn hình và thông tin nhóm 2",
+ "bt-ac":"Biên tập, kịch bản, chuẩn nguồn và quy tắc kiểm nội dung nhóm 1; điều phối Tổ Nội dung và Sáng tạo theo phạm vi kiêm nhiệm",
+ "bt-b":"Biên tập, kịch bản và chuẩn nguồn nhóm 2",
+ "tk-a":"Thiết kế và quy chuẩn ứng dụng nhận diện nhóm 1",
+ "tk-b":"Thiết kế và quy chuẩn ứng dụng nhận diện nhóm 2",
+ "tk-nt":"File in, OOH và kỹ thuật thiết kế ngoại tuyến",
+ "md-ac":"Quay, chụp, hậu kỳ, lưu trữ tư liệu media nhóm 1",
+ "md-b":"Quay, chụp, hậu kỳ, lưu trữ tư liệu media nhóm 2",
+ "qc-a":"Quảng cáo và vận hành kênh số nhóm 1",
+ "qc-b":"Quảng cáo và vận hành kênh số nhóm 2",
+ "dl-1":"Đo lường, đối soát, nguồn số liệu và KPI",
+ "dl-2":"Dữ liệu khách hàng, thị trường, bảo vệ dữ liệu thuộc phạm vi phụ trách",
+ "qlsps":"Nghiệp vụ sản phẩm số, trang đích, bàn giao kỹ thuật và điều phối Tổ Tăng trưởng số khi được phân công",
+ "qlml":"Mạng lưới Marketing theo vùng – vị trí dự kiến, không tự có quyền quản lý hoặc xây dựng quy trình",
+ "tn-a":"Luồng phối hợp, báo cáo và tác nghiệp Tổ Marketing bệnh viện nhóm 1",
+ "tn-b":"Luồng phối hợp, báo cáo và tác nghiệp Tổ Marketing bệnh viện nhóm 2",
+ "mdcs-a":"Quay, chụp, dựng tại bệnh viện nhóm 1 và bàn giao Media Tổng công ty",
+ "mdcs-b":"Quay, chụp, dựng tại bệnh viện nhóm 2 và bàn giao Media Tổng công ty",
+ "qhcs":"Truyền thông, OOH, phát thanh, màn hình, quan hệ đối tác tại bệnh viện",
+ "dmpk":"Yêu cầu kiêm nhiệm tại phòng khám, phối hợp theo tuyến Marketing được chỉ định"
+}
+assert set(process_domains)==set(V)
+for v in D["vi_tri"]:
+    rid=v["id"]
+    v["cnnv_quan_tri_quy_trinh_2027"]={
+      "pham_vi_phat_hien_de_xuat":process_domains[rid],
+      "quyen_de_xuat":"Ghi nhận khoảng trống và đề xuất sửa/xây/gộp/bãi bỏ kèm ví dụ, chứng cứ trong phạm vi chuyên môn",
+      "dieu_kien_chu_tri_soan":"Chỉ khi được giao một mã quy trình, phạm vi và thời hạn; chịu trách nhiệm bản thảo chuyên môn đúng lĩnh vực",
+      "kiem_chuan_va_ban_hanh":"Theo hai tuyến quản lý tại mục 4.1; người quản trị kiểm chuẩn không tự mặc nhiên có quyền ký ban hành",
+      "hieu_luc":"MTCV 2027 đang đề xuất; nhiệm vụ và quyền nhân sự chính thức theo quyết định còn hiệu lực"
+    }
 # 2) Tạo cùng một mẫu CNNV cho 26 mã chức danh, trích từ các trường MTCV đang có,
 #    nhưng không suy diễn thêm một quyền phê duyệt chưa được giao.
 for v in D["vi_tri"]:
@@ -452,6 +562,7 @@ for v in D["vi_tri"]:
       "chu_trinh_cai_tien":v.get("chu_trinh_cai_tien",""),
       "ranh_gioi_kpi":v.get("ranh_gioi_kpi",""),
       "dieu_phoi_theo_phan_cong":v.get("dieu_phoi_theo_phan_cong_2027",""),
+      "quan_tri_danh_muc_quy_trinh":v["cnnv_quan_tri_quy_trinh_2027"],
       "tai_quan_tri_theo_nguon":D["cnnv_tai_hai_chuc_danh_2027"] if v["id"] in ("cvt","cvt-2") else {},
       "nguon":"Mô tả vị trí trong Khung cơ cấu Marketing 2027; phê duyệt chính thức theo QyĐ.02.MKT/Phòng Nhân lực",
       "trang_thai":"Nội dung chuẩn hóa trong đề án; không thay văn bản nhân sự/phân quyền đang có hiệu lực"
@@ -564,6 +675,9 @@ for role in key_roles:
       '<p><b>Đầu ra chịu trách nhiệm:</b> '+escape(x["phan_dinh_chu_tri_dau_ra"])+'</p>'
       '<p><b>Bàn giao và phối hợp:</b> '+escape(x["phan_dinh_ban_giao_dau_vao"])+'</p>'
       '<p><b>Thẩm quyền:</b> '+escape(x["phan_dinh_kiem_duyet"])+'</p>'
+      '<p><b>Đề xuất và xây dựng quy trình:</b> '+escape(x["cnnv_quan_tri_quy_trinh_2027"]["pham_vi_phat_hien_de_xuat"])+
+      '; '+escape(x["cnnv_quan_tri_quy_trinh_2027"]["dieu_kien_chu_tri_soan"])+
+      '; '+escape(x["cnnv_quan_tri_quy_trinh_2027"]["kiem_chuan_va_ban_hanh"])+"</p>"
       +('<p><b>Tối ưu hiệu suất hai tổ:</b> '+escape(x["toi_uu_hieu_suat"])+'</p>'
       '<p><b>Chu trình cải tiến và trách nhiệm:</b> '+escape(x["chu_trinh_cai_tien"])+'</p>'
       '<p><b>Ranh giới trách nhiệm và KPI:</b> '+escape(x["ranh_gioi_kpi"])+'</p>'
@@ -584,6 +698,49 @@ if old in s:
     s=s.replace(old,"phần điều phối nhóm 2 và việc chung của "+N+" chưa đủ giờ thực đo, không sử dụng số 13 giờ/tháng của phương án cũ để kết luận tải của cơ cấu mới",1)
 else:
     print("CNNV NOTE: mục 4.3 có thể đã được hiệu chỉnh ở bước trước")
+
+# Mục 4.1 là căn cứ chức năng nhiệm vụ của Phòng, hiển thị danh mục
+# quy trình và trách nhiệm, tránh đặt một thủ tục mới bên ngoài cơ cấu.
+govern=D["cnnv_quan_tri_danh_muc_quy_trinh_2027"]
+if 'id="cnnv-quan-tri-danh-muc-quy-trinh-2027"' not in s:
+    mark=re.search(
+      r'(<section class="doc-sec sub" data-title="4\.1\. Chức năng, nhiệm vụ, quyền hạn của Phòng Marketing" id="m-4-1">[\s\S]*?</h3>)',
+      s
+    )
+    if not mark:raise RuntimeError("Không tìm thấy mục 4.1 để chèn quản trị danh mục quy trình")
+    rows=''.join('<tr><td>'+escape(z["vai_tro"])+'</td><td>'+
+                 escape(z["trach_nhiem"])+'</td><td>'+escape(z["khong_lam"])+
+                 '</td></tr>' for z in govern["phan_cong"])
+    gates=''.join('<tr><td>'+str(z["buoc"])+'</td><td>'+
+                  escape(z["ten"])+'</td><td>'+escape(z["dau_moi"])+
+                  '</td><td>'+escape(z["dau_ra"])+'</td></tr>'
+                  for z in govern["chu_trinh"])
+    cols=''.join('<li>'+escape(z)+'</li>' for z in govern["truong_danh_muc"])
+    panel=(
+      '<details id="cnnv-quan-tri-danh-muc-quy-trinh-2027" '
+      'style="max-width:100%;min-width:0;margin:12px 0;padding:12px;'
+      'box-sizing:border-box;border:1px solid #d7e2ef;border-radius:8px;overflow-wrap:anywhere">'
+      '<summary style="cursor:pointer;font-weight:700;color:#0837A1">'
+      'Quản trị danh mục quy trình: đề xuất – soạn thảo – kiểm chuẩn – ban hành</summary>'
+      '<p>'+escape(govern["nguon_phan_cap"])+'</p>'
+      '<p><b>Nguyên tắc:</b> '+escape(govern["phan_biet"])+'</p>'
+      '<div class="tbl" style="max-width:100%;overflow-x:auto">'
+      '<table class="t" style="min-width:960px;table-layout:auto">'
+      '<thead><tr><th>Vị trí/đơn vị</th><th>Trách nhiệm</th><th>Không thuộc quyền mặc định</th></tr></thead>'
+      '<tbody>'+rows+'</tbody></table></div>'
+      '<p><b>Trình tự quản lý danh mục:</b></p>'
+      '<div class="tbl" style="max-width:100%;overflow-x:auto">'
+      '<table class="t" style="min-width:960px;table-layout:auto">'
+      '<thead><tr><th>Bước</th><th>Công việc</th><th>Chủ trì</th><th>Đầu ra</th></tr></thead>'
+      '<tbody>'+gates+'</tbody></table></div>'
+      '<details style="max-width:100%;min-width:0"><summary style="cursor:pointer">'
+      'Các trường bắt buộc của danh mục quy trình</summary><ul style="padding-left:20px">'+cols+'</ul></details>'
+      '<p><b>Chống xung đột:</b> '+escape(govern["quy_tac_chong_xung_dot"])+'</p>'
+      '<p><b>Điều kiện chặn:</b> '+escape(govern["dieu_kien_chan"])+'</p>'
+      '<p><b>Chu kỳ rà soát:</b> '+escape(govern["chu_ky"])+'</p>'
+      '<p class="mini">'+escape(govern["trang_thai"])+'</p></details>'
+    )
+    s=s[:mark.end()]+panel+s[mark.end():]
 
 # Chèn bảng quy chuẩn vào đúng mục chức năng nhiệm vụ Phòng, không mở thêm menu.
 anchor='<section class="doc-sec sub" data-title="4.3. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
@@ -818,6 +975,15 @@ if 'id="cnnv-org-three-team-columns-2027"' not in s:
 
 check=json.loads(re.search(rx,s).group(2))
 assert len(check["vi_tri"])==26 and len(check["quy_trinh"])==60 and len(check["danh_muc_van_ban"])==83
+assert len(check["cnnv_quan_tri_danh_muc_quy_trinh_2027"]["phan_cong"])==8
+assert len(check["cnnv_quan_tri_danh_muc_quy_trinh_2027"]["chu_trinh"])==7
+assert len(check["cnnv_quan_tri_danh_muc_quy_trinh_2027"]["truong_danh_muc"])>=18
+assert len(check["cnnv_quan_tri_danh_muc_quy_trinh_2027"]["danh_muc_luong_tham_chieu"])==60
+assert all("cnnv_quan_tri_quy_trinh_2027" in v and
+           v["cnnv_2027"]["quan_tri_danh_muc_quy_trinh"]==v["cnnv_quan_tri_quy_trinh_2027"]
+           for v in check["vi_tri"])
+assert s.count('id="cnnv-quan-tri-danh-muc-quy-trinh-2027"')==1
+
 assert sum(len(q["buoc"]) for q in check["quy_trinh"])==407
 assert all("cnnv_2027" in x for x in check["vi_tri"])
 assert all(s.count('id="cnnv-vt-'+role+'"')==1 for role in key_roles)
