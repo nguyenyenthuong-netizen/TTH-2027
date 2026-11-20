@@ -257,6 +257,62 @@ D["cnnv_tai_hai_chuc_danh_2027"]={
  "khoa_ket_luan":"Thiếu phút chuẩn/lượt, tần suất và giờ thực đo thì hiển thị CHƯA ĐỦ DỮ LIỆU, không tuyên bố đủ tải."
 }
 
+# 1c) Ba tổ không đồng nghĩa ba cấp quản lý. Một chức danh quản lý hai tổ
+#     có quyền xử lý xung đột ưu tiên theo phạm vi, nhưng KHÔNG duyệt thay
+#     quyết định phát hành/chi phí, không tự làm Tổ trưởng hai tổ.
+D["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]={
+ "mo_hinh":"Ba tổ nghiệp vụ; hai chức danh quản lý dưới Trưởng phòng Marketing. Tổ Nội dung và Sáng tạo thuộc "+N+
+ "; Tổ Truyền thông và Thương hiệu cùng Tổ Tăng trưởng số thuộc "+T+".",
+ "phan_biet":"Hai Tổ trưởng Truyền thông và Thương hiệu, Tăng trưởng số điều phối nhân sự, lịch, đầu ra thường ngày trong từng tổ; "+T+
+ " quản trị chuẩn chung, tải liên tổ, điểm nghẽn và rủi ro. Không tính sản lượng của chuyên viên thành KPI hay giờ làm của chức danh quản lý.",
+ "giao_dien_hang_muc":"Quản lý thương hiệu sở hữu mục tiêu/thông điệp/hạng mục; Biên tập–Thiết kế–Media sản xuất qua tuyến "+N+
+ "; Truyền thông và Tăng trưởng số phân phối, vận hành, đo lường qua tuyến "+T+
+ ". Một mã hạng mục có các mã nhánh có chủ việc riêng; một đường tiếp nhận, không có hai lệnh đồng thời.",
+ "tranh_chap_hai_to":"Hai Tổ trưởng xử lý sai lệch trong lịch đã duyệt; nếu không thống nhất về nguồn lực hoặc ưu tiên liên hai tổ, "+T+
+ " đối chiếu mục tiêu được Quản lý thương hiệu nghiệm thu, năng lực tải và rủi ro để chốt phương án trong phạm vi được giao. Thay đổi mục tiêu, chi phí, phát hành hoặc hạn mức phải trình đúng người có quyền.",
+ "tranh_chap_lien_tuyen":"Nguồn lực sản xuất/cơ sở thuộc "+N+"; nếu xung đột với hai tổ thuộc "+T+
+ ", hai bên đối soát một phiếu xung đột. Không thống nhất hoặc vượt quyền thì Trưởng phòng chốt mức ưu tiên, không cấp thêm tuyến chỉ huy nhân sự.",
+ "chuoi_kiem_soat":"Người thực hiện → người kiểm độc lập → xác nhận y khoa/pháp lý khi áp dụng → Quản lý thương hiệu nghiệm thu mục tiêu → quyền phê duyệt phát hành/chi phí theo văn bản riêng. Chức danh quản lý không tự động trở thành cửa duyệt mỗi sản phẩm.",
+ "nguon":"Phương án cơ cấu 2027; việc giao nhân sự kiêm nhiệm, sửa quy trình hoặc quyền duyệt chỉ có hiệu lực khi được ban hành theo đúng cấp.",
+ "tinh_huong":[
+  {"ma":"XT-01","rui_ro":"Hai tổ Truyền thông và Thương hiệu – Tăng trưởng số cùng cần lịch chiến dịch",
+   "dau_moi":"Tổ trưởng từng tổ lập lịch và cam kết đầu ra theo một mã hạng mục",
+   "quyet_dinh":T+" quyết định điều phối ưu tiên liên hai tổ theo phạm vi quyền; Trưởng phòng xử lý phần vượt quyền",
+   "quy_tac_chan":"Thiếu đầu vào đã nghiệm thu, lịch chung hoặc căn cứ đổi hạn thì CHỜ ĐIỀU PHỐI; không phát hành sớm"},
+  {"ma":"XT-02","rui_ro":"Quản lý thương hiệu nhóm 2 kiêm Tổ trưởng Truyền thông và Thương hiệu có lợi ích ưu tiên nhóm mình",
+   "dau_moi":"Quản lý thương hiệu từng nhóm ghi mục tiêu và thứ tự ưu tiên; Tổ trưởng chỉ xếp lịch cho cả tổ",
+   "quyet_dinh":T+" kiểm cân đối tải, giải quyết ưu tiên liên nhóm trong phạm vi được giao; Trưởng phòng chốt thay đổi mục tiêu hoặc ưu tiên cấp phòng",
+   "quy_tac_chan":"Không dùng vai trò Tổ trưởng để tự nghiệm thu hoặc tự duyệt hạng mục của mình"},
+  {"ma":"XT-03","rui_ro":"Quản lý sản phẩm số kiêm Tổ trưởng Tăng trưởng số tự kiểm, dành tải cho việc mình",
+   "dau_moi":"Tổ trưởng Tăng trưởng số lập lịch chung; chuyên viên quảng cáo và Đo lường giữ nhật ký tải riêng",
+   "quyet_dinh":T+" giải quyết ưu tiên và kiểm định hiệu suất; Phòng Số hóa thực hiện/kiểm kỹ thuật đúng trách nhiệm",
+   "quy_tac_chan":"Người phát triển không tự kiểm độc lập hoặc tự phát hành thay đổi hệ thống; thiếu người kiểm thì CHỜ NGHIỆM THU"},
+  {"ma":"XT-04","rui_ro":"Sản phẩm Nội dung – Thiết kế – Media trễ nhưng Truyền thông/quảng cáo đã lên lịch",
+   "dau_moi":"Tổ trưởng đầu mối sản xuất đúng nhóm và hai Tổ trưởng tiếp nhận một mã việc, mã nhánh bàn giao rõ",
+   "quyet_dinh":N+" xác nhận khả năng sản xuất; "+T+" xác nhận tải hai tổ; Trưởng phòng quyết định khi đổi ưu tiên liên tuyến không thống nhất",
+   "quy_tac_chan":"Chưa nghiệm thu sản phẩm/nguồn y khoa/pháp lý thì không được lấy lịch quảng cáo làm quyền phát hành"},
+  {"ma":"XT-05","rui_ro":"Nhóm 2 và Thiết kế ngoại tuyến không có người phân lịch thường lệ",
+   "dau_moi":"Nhân sự hiện hữu được Trưởng phòng phân công rõ nhóm, việc, thời hạn và người dự phòng",
+   "quyet_dinh":N+" quản trị tải và chuyển việc vượt thẩm quyền lên Trưởng phòng; không làm Tổ trưởng mặc định",
+   "quy_tac_chan":"Chưa có phân công hiệu lực thì CHỜ PHÂN TUYẾN, không tự chuyển việc sang Tổ trưởng nhóm 1"},
+  {"ma":"XT-06","rui_ro":"Cơ sở nhận chỉ đạo kép từ TCT, hoặc bất đồng với Ban Giám đốc cơ sở",
+   "dau_moi":"Trưởng nhóm cơ sở giao nhân viên, nhận một mã yêu cầu; Ban Giám đốc cơ sở xác nhận dữ liệu và quản lý hành chính",
+   "quyet_dinh":N+" quản lý tuyến Trưởng nhóm; "+T+" gửi kiểm chuẩn truyền thông/số qua tuyến, không ra lệnh nhân sự cơ sở",
+   "quy_tac_chan":"Thiếu xác nhận dữ liệu hoặc chỉ định người giao việc hợp lệ thì CHỜ BỔ SUNG/CHỜ PHÂN TUYẾN"},
+  {"ma":"XT-07","rui_ro":"Kiểm pháp lý/y khoa, nghiệm thu mục tiêu và duyệt phát hành/chi phí bị nhập làm một",
+   "dau_moi":"Người làm ghi nguồn và phiên bản; người kiểm độc lập kiểm chuyên môn; Quản lý thương hiệu nghiệm thu mục tiêu",
+   "quyet_dinh":"Người có quyền phát hành và người có quyền chi phí được đối chiếu riêng theo quyết định đang hiệu lực",
+   "quy_tac_chan":"CHƯA CÓ ỦY QUYỀN HIỆU LỰC hoặc cùng người tự kiểm thì khóa phát hành/chi, không suy diễn quyền theo chức danh"},
+  {"ma":"XT-08","rui_ro":"Khủng hoảng truyền thông, sự cố tài khoản hoặc yêu cầu gấp làm hai tổ bỏ quy trình",
+   "dau_moi":"Tổ trưởng đúng tổ ghi nhận sự cố, trạng thái, hành động an toàn thuộc quyền hiện có",
+   "quyet_dinh":T+" điều phối khắc phục rủi ro truyền thông/số; "+N+" cân tải sản xuất/cơ sở; Trưởng phòng xử lý vượt quyền",
+   "quy_tac_chan":"Không tự phát ngôn, phát hành, chi phí hoặc cấp quyền truy cập để xử lý nhanh khi chưa có căn cứ"},
+  {"ma":"XT-09","rui_ro":"Vắng mặt, tuyển thay, chuyển nhóm làm thiếu một chủ trì và sai người kiểm",
+   "dau_moi":"Tổ trưởng bàn giao mã việc; người quản lý trực tiếp theo tuyến xác nhận, Phòng Nhân lực đối chiếu hồ sơ",
+   "quyet_dinh":"Mỗi thay thế phải có người, phạm vi, thời hạn, tuyến quản lý, người kiểm khác người làm và cấp phê duyệt riêng",
+   "quy_tac_chan":"Không có phân công hiệu lực, mã nhân sự hoặc người kiểm độc lập: CHỜ BÀN GIAO/CHỜ NGHIỆM THU"}
+ ]
+}
 # 2) Tạo cùng một mẫu CNNV cho 26 mã chức danh, trích từ các trường MTCV đang có,
 #    nhưng không suy diễn thêm một quyền phê duyệt chưa được giao.
 for v in D["vi_tri"]:
@@ -449,6 +505,42 @@ if 'id="cnnv-phong-phan-tuyen-2027"' not in s:
     )
     s=s.replace(anchor,panel+anchor,1)
 
+# Chèn giải thích cơ cấu hai tuyến trong đúng mục 4.3, không thêm màn hình.
+# Bảng "Vì sao tách" so sánh mô hình tổ, chưa đủ chứng minh hiệu quả của
+# một người quản lý hai tổ: bổ sung cơ chế điều phối và xử lý ngoại lệ.
+model=D["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]
+if 'id="cnnv-2-chief-3-team-2027"' not in s:
+    marker=re.search(
+      r'(<section class="doc-sec sub" data-title="4\.3\. Vì sao chia ba tổ như hiện nay" id="m-4-3">'
+      r'[\s\S]*?</h3>)',s
+    )
+    if not marker:raise RuntimeError("Không tìm thấy đúng phần 4.3 để giải thích hai tuyến quản lý")
+    rows=''.join(
+      '<tr><td>'+escape(z["rui_ro"])+'</td><td>'+escape(z["dau_moi"])+'</td>'
+      '<td>'+escape(z["quyet_dinh"])+'</td><td>'+escape(z["quy_tac_chan"])+'</td></tr>'
+      for z in model["tinh_huong"]
+    )
+    note=(
+      '<div id="cnnv-2-chief-3-team-2027" style="max-width:100%;min-width:0;'
+      'margin:12px 0;padding:12px;border-left:4px solid #0837A1;'
+      'background:#f5f8fc;border-radius:6px;box-sizing:border-box;overflow-wrap:anywhere">'
+      '<strong style="display:block;color:#0837A1">Ba tổ chuyên môn, hai chức danh quản lý – không phải ba cấp duyệt</strong>'
+      '<p>'+escape(model["mo_hinh"])+'</p>'
+      '<p><b>Phân công và cải tiến hiệu suất:</b> '+escape(model["phan_biet"])+'</p>'
+      '<p><b>Luồng hạng mục:</b> '+escape(model["giao_dien_hang_muc"])+'</p>'
+      '<p><b>Giải quyết xung đột hai tổ:</b> '+escape(model["tranh_chap_hai_to"])+'</p>'
+      '<p><b>Giải quyết xung đột liên tuyến:</b> '+escape(model["tranh_chap_lien_tuyen"])+'</p>'
+      '<p><b>Kiểm, nghiệm thu và duyệt:</b> '+escape(model["chuoi_kiem_soat"])+'</p>'
+      '<details style="max-width:100%;min-width:0">'
+      '<summary style="font-weight:700;color:#0837A1;cursor:pointer">Ma trận 9 tình huống xung đột và quy tắc chặn</summary>'
+      '<div class="tbl" style="max-width:100%;overflow-x:auto;margin-top:10px">'
+      '<table class="t" style="min-width:960px;table-layout:auto">'
+      '<thead><tr><th>Xung đột</th><th>Đầu mối thường lệ</th><th>Người giải quyết</th><th>Quy tắc chặn</th></tr></thead>'
+      '<tbody>'+rows+'</tbody></table></div></details>'
+      '<p class="mini">'+escape(model["nguon"])+'</p></div>'
+    )
+    s=s[:marker.end()]+note+s[marker.end():]
+
 # 6b) Đồng bộ văn bản sơ đồ HTML tĩnh với dữ liệu MTCV/cơ chế phân việc:
 #     thông tin JSON đúng nhưng popup/tóm tắt cũ cũng phải cùng một tuyến.
 for rid in ("bt-ac","bt-b","tk-b","md-b","tk-nt","dmpk"):
@@ -551,6 +643,10 @@ assert s.count('id="cnnv-org-three-team-columns-2027"')==1
 assert s.count('id="cnnv-dieu-phoi-ngoai-tuyen-2027"')==1
 assert s.count('id="cnnv-tai-hai-chuc-danh-2027"')==1
 assert len(check["cnnv_kiem_soat_luong_va_tham_quyen_2027"])==6
+assert len(check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])==9
+assert len({z["ma"] for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"]})==9
+assert all(all(z.get(k) for k in ("rui_ro","dau_moi","quyet_dinh","quy_tac_chan")) for z in check["cnnv_quan_tri_2_chuyen_vien_truong_3_to_2027"]["tinh_huong"])
+assert s.count('id="cnnv-2-chief-3-team-2027"')==1
 assert all(x.get("cnnv_van_ban_goc_giu_nguyen_2027") for x in check["danh_muc_van_ban"] if x.get("ma")=="QyĐ.02.MKT")
 assert "ban hành/hướng dẫn" not in next(x for x in check["vi_tri"] if x["id"]=="cvt-2")["muc_dich"]
 assert "trực tiếp quản lý" in next(x for x in check["vi_tri"] if x["id"]=="cvt")["phan_dinh_chu_tri_dau_ra"]
