@@ -41,6 +41,7 @@ on:
       - 'scripts/khung_cvt_semantic_crosscheck_2027.py'
       - 'scripts/khung_legacy_process_reconcile_2027.py'
       - 'scripts/khung_truong_nhom_badge_2027.py'
+      - 'scripts/khung_preissuance_review_2027.py'
       - 'scripts/khung_cvt_25_boundary_lock_2027.py'
       - 'scripts/slide_web_app_fix_2027.py'
       - 'scripts/slide_tree_after8_2027.py'
@@ -222,6 +223,8 @@ jobs:
         run: python3 scripts/khung_integrity_runtime_guard_2027.py _site
       - name: To do chu trang nhan Truong nhom tren 05 o so do benh vien
         run: python3 scripts/khung_truong_nhom_badge_2027.py _site
+      - name: Nghiem thu tai lieu truoc ban hanh theo TB 156
+        run: python3 scripts/khung_preissuance_review_2027.py _site
       - name: Cai thu vien kiem tra giao dien bang Chrome
         run: python3 -m pip install --user --break-system-packages --disable-pip-version-check playwright==1.55.0 Pillow
       - name: Thu 8 luong thuc te tren desktop va mobile
