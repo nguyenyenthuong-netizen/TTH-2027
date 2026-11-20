@@ -14,7 +14,6 @@ expected={
  "https://tth-khung-marketing-14112026.vercel.app/",
  "https://tth-marketing-2027-slide.vercel.app/",
  "https://tth-marketing-2027-trinh-chieu.vercel.app/",
- "https://tth-quan-tri-marketing-16112026.vercel.app/",
  "https://tth-crm-da-kenh.vercel.app/",
  "https://tth-healthcare-website.vercel.app/",
  "https://tth-healthcare-app.vercel.app/",
@@ -29,9 +28,11 @@ def links(p):
 cl=links(catalog);hl=links(handover)
 catalog_urls=[u for u in cl if u.startswith("https://")]
 handover_urls=[u for u in hl if u.startswith("https://")]
+assert len(expected)==6
 assert len(catalog_urls)==len(expected) and set(catalog_urls)==expected,"Catalog destinations mismatch"
 assert len(handover_urls)==len(expected) and set(handover_urls)==expected,"Handover destinations mismatch"
 assert "bo-ho-so/" in cl,"Catalog must expose stakeholder handover"
+assert all("quan-tri-marketing" not in u for u in cl+hl),"GitHub catalog/handover may not list Marketing software"
 assert "../" in hl,"Handover must link back to catalog"
 assert (root/"khung-marketing"/"nghiem-thu"/"index.html").is_file(),"Missing pre-issuance matrix"
 assert (root/"khung-marketing"/"doi-chieu-quy-trinh"/"index.html").is_file(),"Missing process crosswalk"
