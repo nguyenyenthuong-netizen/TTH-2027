@@ -291,7 +291,7 @@ th,td{padding:9px 11px;border:1px solid #d7e0ec;vertical-align:top;text-align:le
 summary{cursor:pointer;color:#0837A1;font-weight:700}ul{padding-left:22px}
 @media print{body{background:white;font:14pt "Times New Roman",serif}section,details{break-inside:avoid}table{font-size:10pt}}
 """
-scenario_page="""<!doctype html><html lang="vi"><head><meta charset="utf-8">
+scenario_page=("""<!doctype html><html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kịch bản sản lượng, giờ công Marketing cơ sở – 2027</title><style>"""+scenario_css+"""</style></head><body>
 <header><a href="../">← Phụ lục 26 vị trí</a><h1>Kịch bản sản lượng và giờ công Marketing cơ sở</h1>
@@ -309,7 +309,7 @@ scenario_page="""<!doctype html><html lang="vi"><head><meta charset="utf-8">
 <li>Chuyên viên trưởng đúng tuyến đối chiếu giờ trực tiếp và thời gian sửa/kiểm, tách giờ thực địa khỏi giờ hậu kỳ Tổng công ty.</li>
 <li>Đối soát giờ thực đo trong kỳ thí điểm và giờ người làm thực tế; tách phần ủy quyền, kiêm nhiệm và dự phòng.</li>
 <li>Marketing Tổng công ty cùng Phòng Nhân lực chốt phương pháp và giờ khả dụng theo chế độ lao động; trình cấp có thẩm quyền phê duyệt.</li>
-</ol></section></main></body></html>"""
+</ol></section></main></body></html>""")
 branch_folder=folder/"co-so"
 branch_folder.mkdir(parents=True,exist_ok=True)
 (branch_folder/"index.html").write_text(scenario_page,encoding="utf-8")
