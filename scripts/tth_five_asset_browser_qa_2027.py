@@ -74,8 +74,23 @@ with sync_playwright() as p:
        }''')
        print('WEBSITE_WIDE_LAYOUT_AUDIT',str(size),json.dumps(layout,ensure_ascii=False))
        if size[0]>=981:
+        if layout['hasMain'] and layout['main']['left']>48:
+         failed.append(name+': excessive Website left margin after widening '+str(layout['main']))
+        if layout['cta'] and layout['main'] and layout['main']['right']>layout['cta']['left']-8:
+         failed.append(name+': main content overlaps right CTA '+str(layout))
         for box in layout['selected']:
          if box['right']>size[0]-55:failed.append(name+': widened content reaches too close to CTA / viewport '+str(box))
+        # Regression for the previously fixed 1320px cap on wide monitors.
+        page.set_viewport_size({'width':1920,'height':1080})
+        page.wait_for_timeout(180)
+        wide=frame.locator('#app main').evaluate('''el => {const r=el.getBoundingClientRect(),cta=document.querySelector('.fab.tth-cta-fixed')?.getBoundingClientRect();return {width:Math.round(r.width),left:Math.round(r.left),right:Math.round(r.right),ctaLeft:cta?Math.round(cta.left):null}}''')
+        print('WEBSITE_WIDE_1920_QA',json.dumps(wide,ensure_ascii=False))
+        if wide['width']<1500 or wide['left']>52:
+         failed.append(name+': Website content still constrained to narrow center column at 1920 '+str(wide))
+        if wide['ctaLeft'] is not None and wide['right']>wide['ctaLeft']-8:
+         failed.append(name+': Website content overlaps CTA at 1920 '+str(wide))
+        page.set_viewport_size({'width':size[0],'height':size[1]})
+        page.wait_for_timeout(110)
       if frame.locator('#tth-embedded-vietnamese-font-2027').count()==0:failed.append(name+' '+str(size)+': Vietnamese font stylesheet missing inside embedded document')
       frame_metrics=frame.locator('body').evaluate('''el => ({scrollWidth:document.documentElement.scrollWidth, viewport:document.documentElement.clientWidth, scrollHeight:document.documentElement.scrollHeight, height:document.documentElement.clientHeight})''')
       info['frame_overflow']=frame_metrics['scrollWidth']-frame_metrics['viewport']
