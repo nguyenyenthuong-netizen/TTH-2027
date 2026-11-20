@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Gate for the stakeholder handover hub: seven links, route integrity, honest statuses.
+"""Gate for the stakeholder handover hub: five links, route integrity, honest statuses.
 This checks a shareable review package, not live HIS/CRM/API functionality.
 """
 import json,os,re,sys
@@ -12,7 +12,6 @@ catalog=root/"index.html"
 handover=root/"bo-ho-so"/"index.html"
 expected={
  "https://tth-khung-marketing-14112026.vercel.app/",
- "https://tth-marketing-2027-slide.vercel.app/",
  "https://tth-marketing-2027-trinh-chieu.vercel.app/",
  "https://tth-crm-da-kenh.vercel.app/",
  "https://tth-healthcare-website.vercel.app/",
@@ -32,7 +31,9 @@ assert len(expected)==5
 assert len(catalog_urls)==len(expected) and set(catalog_urls)==expected,"Catalog destinations mismatch"
 assert len(handover_urls)==len(expected) and set(handover_urls)==expected,"Handover destinations mismatch"
 assert "bo-ho-so/" in cl,"Catalog must expose stakeholder handover"
-assert all("quan-tri-marketing" not in u for u in cl+hl),"GitHub catalog/handover may not list Marketing software"\nassert all("tth-marketing-2027-slide.vercel.app" not in u for u in cl+hl),"Duplicate presentation must not be listed"\nassert "KHUNG CƠ CẤU VÀ VẬN HÀNH MARKETING TOÀN HỆ THỐNG TTH GROUP 2027" in handover.read_text("utf-8")
+assert all("quan-tri-marketing" not in u for u in cl+hl),"GitHub catalog/handover may not list Marketing software"
+assert all("tth-marketing-2027-slide.vercel.app" not in u for u in cl+hl),"Duplicate presentation must not be listed"
+assert "KHUNG CƠ CẤU VÀ VẬN HÀNH MARKETING TOÀN HỆ THỐNG TTH GROUP 2027" in handover.read_text("utf-8")
 assert "../" in hl,"Handover must link back to catalog"
 assert (root/"khung-marketing"/"nghiem-thu"/"index.html").is_file(),"Missing pre-issuance matrix"
 assert (root/"khung-marketing"/"doi-chieu-quy-trinh"/"index.html").is_file(),"Missing process crosswalk"
