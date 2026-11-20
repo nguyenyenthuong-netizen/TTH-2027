@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regression gate for the TTH Group one-screen Vercel link directory.
-Checks exact original logo, branding, no old search strip, 7 Vercel links and viewport fit.
+Checks original logo, branding, no old search strip, six Vercel links and viewport fit.
 """
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -12,6 +12,7 @@ html=pagefile.read_text("utf-8")
 assert "TTH Group <span>· Marketing toàn hệ thống</span>" in html,"Wrong Group title"
 assert "TTH Healthcare · Marketing toàn hệ thống" not in html,"Outdated brand header"
 assert "Tìm tên giao diện" not in html and 'type="search"' not in html,"Obsolete search bar"
+assert "Phần mềm quản trị Marketing</strong>" not in html and "tth-quan-tri-marketing-16112026" not in html and 'href="quan-tri-marketing/"' not in html,"Marketing software must not appear in GitHub catalog"
 assert (root/"trinh-chieu-marketing"/"assets"/"tth-logo.png").stat().st_size>1000,"Original TTH Group logo asset unavailable"
 from urllib.parse import urlparse
 with sync_playwright() as p:
@@ -38,8 +39,8 @@ with sync_playwright() as p:
   }""")
   if errs or not result["logoLoaded"] or not result["logoInside"]:
    raise AssertionError(f"Catalog image/JS error at {width}x{height}: {result} {errs}")
-  if result["cards"]!=7 or not result["validUrls"]:
-   raise AssertionError(f"Incorrect seven Vercel destinations: {result}")
+  if result["cards"]!=6 or not result["validUrls"]:
+   raise AssertionError(f"Incorrect six Vercel destinations: {result}")
   if result["scrollHeight"]>height+1 or result["scrollWidth"]>width+1 or result["bottom"]>height+1:
    raise AssertionError(f"Catalog not contained in one viewport at {width}x{height}: {result}")
   if result["clippedCards"]:
@@ -50,4 +51,4 @@ with sync_playwright() as p:
   checks.append(result)
   page.close()
  browser.close()
-print("TTH_CATALOG_OK",len(checks),"viewport sizes; original Group logo; Vercel links; no scroll")
+print("TTH_CATALOG_OK",len(checks),"viewport sizes; original Group logo; six Vercel links; no scroll")
