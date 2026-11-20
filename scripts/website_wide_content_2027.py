@@ -34,6 +34,12 @@ css=r"""<style id="tth-website-content-wide-2027">
   margin-right:clamp(16px,1.3vw,27px)!important;flex-shrink:0!important
  }
 }
+/* At intermediate laptop widths, keep the search field compact instead of
+   letting the booking button protrude past the balanced right gutter. */
+@media(min-width:1180px) and (max-width:1550px){
+ #app header.gh .gsrch{width:clamp(200px,16vw,240px)!important;
+  max-width:240px!important;min-width:200px!important;flex:0 1 auto!important}
+}
 @media(max-width:980px){
  #app main{max-width:100%!important}
 }
