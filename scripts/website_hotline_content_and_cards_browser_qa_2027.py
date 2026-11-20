@@ -37,6 +37,17 @@ with sync_playwright() as p:
   assert popup.is_visible(),(w,'Hotline did not reopen')
   page.keyboard.press('Escape');page.wait_for_timeout(100)
   assert not popup.is_visible(),(w,'Escape did not close')
+  # Check rendered dimensions, not only the presence of the equal-height CSS.
+  stats=frame.locator('#app main article.card:has(span.thu)')
+  assert stats.count()==4,(w,'Expected four home statistic cards',stats.count())
+  heights=stats.evaluate_all('''xs=>xs.map(e=>Math.round(e.getBoundingClientRect().height))''')
+  assert all(v>100 for v in heights) and max(heights)-min(heights)<=2,(w,'Statistic cards have unequal heights',heights)
+  if w>1000:
+   header=frame.locator('#app header.gh > div:first-child').first
+   edges=header.evaluate('''e=>({left:e.getBoundingClientRect().left,right:innerWidth-e.getBoundingClientRect().right})''')
+   assert abs(edges['left']-edges['right'])<=7,(w,'Header gutters are not symmetrical',edges)
+   gap=header.evaluate('''e=>e.firstElementChild?parseFloat(getComputedStyle(e.firstElementChild).marginRight):0''')
+   assert gap>=16,(w,'Insufficient logo-to-menu clearance',gap)
   cards=frame.locator('#app main article.card')
   if cards.count():
    sizes=cards.evaluate_all('''xs=>xs.filter(e=>e.getBoundingClientRect().width>0).map(e=>Math.round(e.getBoundingClientRect().width))''')
@@ -45,6 +56,6 @@ with sync_playwright() as p:
    ims=frame.locator('#app main article.card img[alt*="16:9"]').evaluate_all('''xs=>xs.map(e=>({fit:getComputedStyle(e).objectFit,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))''')
    assert all(x['fit']=='cover' and x['height']>0 for x in ims),(w,'Images stretched',ims[:4])
   assert not errors,(w,'Uncaught JavaScript',errors[:3])
-  print('REAL_WEBSITE_HOTLINE_LAYOUT_QA',json.dumps({'size':[w,h],'home_length':len(text),'popup_no_route':True,'background_unchanged':True,'close_reopen_escape':True,'card_count':cards.count()},ensure_ascii=False))
+  print('REAL_WEBSITE_HOTLINE_LAYOUT_QA',json.dumps({'size':[w,h],'home_length':len(text),'popup_no_route':True,'background_unchanged':True,'close_reopen_escape':True,'card_count':cards.count(),'home_card_heights':heights},ensure_ascii=False))
   page.close()
  browser.close()
