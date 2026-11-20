@@ -38,6 +38,7 @@ on:
       - 'scripts/tth_five_asset_logic_fix_2027.py'
       - 'scripts/app_all_pages_scroll_2027.py'
       - 'scripts/app_button_routes_audit_2027.py'
+      - 'scripts/healthcare_interaction_fix_2027.py'
       - 'scripts/website_wide_content_2027.py'
       - 'scripts/tth_five_asset_browser_qa_2027.py'
       - 'pages-overrides/trinh-chieu-marketing/**'
@@ -219,6 +220,8 @@ jobs:
         run: python3 scripts/app_all_pages_scroll_2027.py _site
       - name: Mo rong bo cuc Website va can le tranh CTA
         run: python3 scripts/website_wide_content_2027.py _site
+      - name: Sua nut hoi tro ly va o tim kiem khong tu chuyen trang
+        run: python3 scripts/healthcare_interaction_fix_2027.py _site
       - name: Kiem tra toan bo nut va luong hoi tro ly App Website
         run: python3 scripts/app_button_routes_audit_2027.py _site
       - name: Kiem tra trinh duyet 5 tai san desktop va mobile
