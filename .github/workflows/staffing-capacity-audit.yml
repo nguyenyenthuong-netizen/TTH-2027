@@ -23,4 +23,6 @@ jobs:
       - name: Build authentic model and report every overloaded person/month
         run: python3 scripts/staffing_capacity_snapshot_2027.py
       - name: Build complete 12-section framework and Chrome desktop/mobile QA
-        run: python3 scripts/staffing_preview_browser_2027.py
+        run: |
+          rm -rf _site _input
+          python3 scripts/staffing_preview_browser_2027.py
