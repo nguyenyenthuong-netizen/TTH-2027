@@ -193,7 +193,7 @@ def build(site: Path):
     assert len(ids)==len(set(ids))
     assert sum(x["hourType"]=="MKT" for x in ops)==528
     assert sum(x["hourType"]=="CHUA_XAC_MINH" for x in ops)==132
-    appendix=dict(schemaVersion="2027-11-21.1",revisionNote="Phụ lục dự thảo đối chiếu; KHÔNG tự tăng số giờ/định biên",source="Phu_luc_chot_CTDA_Marketing_TTH_2027.xlsx",programs=programs,launchFacilities=launches,outputs=outputs,operations=ops,workloadPolicy={
+    appendix={"schemaVersion":"2027-11-21.1","revisionNote":"Phụ lục dự thảo đối chiếu; KHÔNG tự tăng số giờ/định biên","source":"Phu_luc_chot_CTDA_Marketing_TTH_2027.xlsx","programs":programs,"launchFacilities":launches,"outputs":outputs,"operations":ops,"workloadPolicy":{
         "existingPrograms":6,"existingProjects":24,"newAddendumPrograms":13,"newAddendumOutputs":132,
         "bookingStatus":"CHUA_CHO_PHEP_CONG_TAI","normalWorkingHourBase":"Mục 05 – sổ giờ MTCV gốc",
         "overlapRule":"Mã sản phẩm và bước đối chiếu 6 CT/24 DA hiện có trước khi hạch toán. Không cộng hai lần.",
@@ -207,7 +207,7 @@ def build(site: Path):
             "Chốt định mức từng công đoạn, số vòng sửa và người duyệt",
             "Đối soát theo từng người/tháng: thường xuyên + trọng điểm + phát sinh",
             "Phê duyệt ngân sách, KPI, nguồn dữ liệu, ngày khai trương",
-            "Nghiệm thu luồng giao việc, báo cáo, bàn giao và chống trùng"]})
+            "Nghiệm thu luồng giao việc, báo cáo, bàn giao và chống trùng"]}
     assert "ctdaAddendum" not in d or d["ctdaAddendum"].get("schemaVersion")==appendix["schemaVersion"]
     d["ctdaAddendum"]=appendix
     after=(len(d["portfolio"]["programs"]),len(d["portfolio"]["projects"]),len(d["portfolio"]["tasks"]),len(d["roles"]),len(d["monthlyActions"]))
