@@ -21,7 +21,9 @@ OLD_LINK = re.compile(r'<p id="tth-plan-2027-link"[^>]*>.*?</p>', re.S)
 def integrate(site: Path):
     parent = Path(__file__).resolve().parents[1]
     source = parent / "pages-overrides/catalog"
-    d = json.loads((source / "ke-hoach-mkt-2027-data.json").read_text("utf-8"))
+    d = json.loads((site / "ke-hoach-mkt-2027/data.json").read_text("utf-8"))
+    assert len(d["portfolio"]["programs"])==6 and len(d["portfolio"]["projects"])==23
+    assert len(d["portfolio"]["tasks"])==276 and len(d["issuance"]["catalog"])==325
     assert len(d["roles"]) == 26, "Required roles absent"
     assert len(d["monthlyActions"]) >= 624, "Missing monthly assignments"
     assert {x["month"] for x in d["monthlyActions"]} == set(range(1, 13))
@@ -59,14 +61,14 @@ def integrate(site: Path):
         '<details open style="margin:0">\n'
         '<summary style="background:#0837A1;color:#fff;padding:16px 20px;'
         'font-weight:750;font-size:17px;cursor:pointer;line-height:1.5">'
-        'KẾ HOẠCH HÀNH ĐỘNG NĂM VÀ 12 THÁNG · 26 CHỨC DANH · BỘ MẪU · PHƯƠNG ÁN DỰ PHÒNG'
+        'KẾ HOẠCH 2027: 6 CHƯƠNG TRÌNH · 23 DỰ ÁN · 12 THÁNG · 26 CHỨC DANH · BÁO CÁO BAN HÀNH'
         '<span style="display:block;font-size:12px;font-weight:450;color:#e6efff">'
         'Nằm trong Mục 05 – Định biên; nhấn để thu gọn/mở rộng nội dung'
         '</span></summary>\n'
         '<div style="padding:10px;background:#f4f7fd">'
         '<div style="padding:8px 10px 12px;color:#244466;font-size:13px;line-height:1.6">'
         '<strong>Đang đối soát, chưa ban hành:</strong> kế hoạch tháng, 146 mốc năm, '
-        '157 loại mẫu, 74 hồ sơ chuẩn, 496 đầu ra MTCV, 119 cụm cần rà trùng. '
+        '325 mã mẫu/tài liệu/quy trình cần đối chiếu; 23 KPI, 496 đầu ra MTCV. '
         'Người thực nhận, quỹ giờ và quyền phê duyệt phải xác nhận trước khi giao chính thức.'
         '</div>'
         '<iframe id="tth-mkt-2027-workframe" title="Toàn bộ kế hoạch hành động Marketing 2027 trong Khung" '
