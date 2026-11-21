@@ -366,7 +366,7 @@ function drawTimeline(){
  $("panel").innerHTML='<div class="panel-header"><h2>Lộ trình cả năm và khung hạch toán giờ</h2></div>'+s;
 }
 
-var addonFocus="all", addonShowAll=false;
+var addonFocus="TD27-01", addonShowAll=false;
 function drawAddendum(){
  var A=D.ctdaAddendum;
  if(!A){$("panel").innerHTML='<div class="empty">Chưa nạp dữ liệu phụ lục trọng điểm, chưa thể xác nhận đã tích hợp.</div>';return;}
@@ -384,15 +384,16 @@ function drawAddendum(){
  s+='<div class="stats"><div class="stat"><b>13</b><small>Hạng mục đối chiếu</small></div><div class="stat"><b>7</b><small>Cơ sở dự kiến ra mắt</small></div><div class="stat"><b>132</b><small>Mã đầu ra nguồn</small></div><div class="stat"><b>660</b><small>Mã bước</small></div><div class="stat"><b>0 giờ</b><small>Giờ được phép cộng thêm trước đối chiếu</small></div></div>';
  s+='<div class="call"><b>Kiểm tải chưa đạt điều kiện:</b> 528 công đoạn Marketing chưa có giờ chuẩn và 132 bước phê duyệt chưa xác minh thuộc nhân sự Marketing hay ngoài Marketing. Dự phòng phát sinh 25% không thay thế việc tính tải từng người/tháng.</div>';
  s+='<h3>I. Danh mục chương trình/dự án và mục tiêu nghiệm thu</h3>';
- s+=tbl(["Mã","Cấp","Dự án/chương trình","Chủ kết quả","KPI đích / nghiệm thu","Giai đoạn tham chiếu","Kế thừa / chống trùng"],programs.map(function(x){return[x.code,x.level,x.name,x.owner,x.kpi,x.roadmap,x.crosswalk]}));
+ s+='<div class="summary-grid">'+programs.map(function(x){return '<article class="sectioncard"><div class="tag">'+esc(x.code)+' · '+esc(x.level)+'</div><h3 style="margin:7px 0 11px;font-size:19px">'+esc(x.name)+'</h3><p><b>Chủ kết quả:</b> '+esc(x.owner)+'</p><p><b>KPI/đích nghiệm thu:</b> '+esc(x.kpi)+'</p><p><b>Giai đoạn:</b> '+esc(x.roadmap)+'</p><p><b>Đối chiếu:</b> '+esc(x.crosswalk)+'</p></article>'}).join("")+'</div>';
  s+='<h3>II. Ra mắt cơ sở: mốc tương đối, không tự ấn định ngày</h3>';
  s+=tbl(["Mã cơ sở","Tên cơ sở","Thương hiệu","Bố trí đầu mối","Tiến độ bắt buộc","Trạng thái"],A.launchFacilities.filter(function(x){return !query||JSON.stringify(x).toLocaleLowerCase("vi").includes(query)}).map(function(x){return[x.code,x.name,x.brand,x.lead,"T-120 · T-90 · T-60 · T-30 · T0 · T+30 · T+90",x.approval]}));
  s+='<h3>III. Đầu ra theo một mã gốc</h3>';
  s+='<label for="addonFocus">Lọc mã dự án trong phụ lục</label><select id="addonFocus" style="max-width:550px;margin-bottom:12px"><option value="all">Toàn bộ 132 đầu ra</option>'+A.programs.filter(function(x){return x.code!=="TD27-08"}).map(function(x){return '<option value="'+esc(x.code)+'"'+(addonFocus===x.code?' selected':'')+'>'+esc(x.code+" · "+x.name)+'</option>'}).join("")+'</select>';
  s+=tbl(["Mã sản phẩm","Hạng mục","Sản phẩm bàn giao","Mốc","Chủ trì","Kiểm soát giờ","Trạng thái"],outs.map(function(x){return[x.code,x.programId,x.title,x.relativeMilestone||"Theo giai đoạn đã duyệt",x.owner,x.workloadBooking,x.status]}));
- s+='<h3>IV. Công đoạn và phạm vi trách nhiệm</h3><p class="note">Hiển thị '+Math.min(ops.length,addonShowAll?ops.length:60)+' / '+ops.length+' dòng. Mỗi mã có đúng 5 bước; bước phê duyệt phải xác minh người và loại giờ trước khi phân tải.</p>';
+ s+='<details class="sectioncard" '+(addonShowAll?'open':'')+'><summary style="cursor:pointer;font-size:19px;font-weight:750;color:#0837A1;padding:10px 0">IV. Công đoạn và phạm vi trách nhiệm – nhấn để xem chi tiết</summary><p class="note">Hiển thị '+Math.min(ops.length,addonShowAll?ops.length:60)+' / '+ops.length+' dòng. Mỗi mã có đúng 5 bước; bước phê duyệt phải xác minh người và loại giờ trước khi phân tải.</p>';
  s+=tbl(["Mã công đoạn","Mã đầu ra","Công đoạn","Người thực hiện","Loại giờ","Giờ chuẩn","Hạch toán"],ops.slice(0,addonShowAll?ops.length:60).map(function(x){return[x.code,x.outputId,x.step,x.owner,x.hourType,"Chưa có",x.bookingRule]}));
  if(ops.length>60&&!addonShowAll)s+='<button type="button" class="btn" id="addonShowAll">Xem toàn bộ công đoạn đang lọc</button>';
+ s+='</details>';
  s+='<h3>V. Cổng kiểm soát trước khi khóa Mục 05</h3><div class="sectioncard"><ol>'+A.nextApprovalGates.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol></div>';
  s+='<p class="note">Hai chuyên viên trưởng duy trì đúng tuyến: CVT Nội dung – Sáng tạo và Marketing cơ sở quản lý nhân sự tuyến cơ sở; CVT Truyền thông – Thương hiệu và Tăng trưởng số kiểm chuẩn chuyên môn theo phân cấp, không tạo tuyến giao việc thứ hai. Chủ kết quả khác người có thẩm quyền duyệt.</p>';
  s+='<p><a class="btn" href="../ke-hoach-mkt-2027/phu-luc-trong-diem-2027.csv" download>Tải danh mục đầu ra</a> <a class="btn" href="../ke-hoach-mkt-2027/phu-luc-cong-doan-2027.csv" download>Tải công đoạn</a></p>';
