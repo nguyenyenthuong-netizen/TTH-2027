@@ -42,6 +42,21 @@ function seatMonths(r,id,slot){
      records.filter(item=>item.r===id&&slotDoc(rec.d,item,id,slot)).forEach(item=>rows[i][item.type]+=item.h);
    });
  }
+ // CMS is already part of the position-wide total; allocate it once between
+ // the two real seats when checking each person's monthly capacity.
+ // Until the named assignment is confirmed, unit CMS tasks are provisionally
+ // attributed to the hospital-facing seat, never omitted from both seats.
+ for(const t of r.cms.tasks){
+   if(!t.internal||t.role!==id||!(t.h>0))continue;
+   const toHospital=!!t.unit;
+   if((slot==='b')!==toHospital)continue;
+   const x=rows[t.m-1];
+   if(t.kind==='initial'){x.setup+=t.h;x.cmsInitial+=t.h;}
+   else{x.maint+=t.h;x.cmsMaintain+=t.h;}
+   if(/Biên tập|Chuẩn bị|Nhập|Công bố/.test(t.stage))x.direct+=t.h;
+   else if(/Kiểm|Đối chiếu/.test(t.stage))x.check+=t.h;
+   else x.coord+=t.h;
+ }
  return rows;
 }
 function poolReviews(r){

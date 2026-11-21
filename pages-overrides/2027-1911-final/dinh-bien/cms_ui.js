@@ -95,22 +95,127 @@ function detailedPanel(){
  detail('V. Toàn bộ dòng MTCV gốc và đối chiếu phần thiếu',origOutputs(id))+
  '<p><strong>Điều kiện ra quyết định:</strong> phải chốt các trường chưa lượng hóa, người thực có, phút chuẩn và giờ khả dụng; không dùng số 0 cho dữ liệu thiếu, không xếp người vào việc ngoài MTCV.</p>';
 }
+/* Cảnh báo chuỗi tải: chỉ xét công đoạn nằm trên cùng tuyến phục vụ.
+ * Không suy diễn thành sự cố đã xảy ra; dùng để chặn cam kết trước khi xác nhận.
+ */
+function cascadeExposurePanel(run,positions){
+ const bottleneck=(role,month)=>positions.filter(x=>x.id===role&&x.review.periods?.some(p=>p.m===month&&p.excess>0));
+ const chains=[
+  {name:'Nhóm thương hiệu 1 – TTH',parts:[
+    ['Định hướng/đặt hàng','qlth-a'],
+    ['Biên tập nội dung','bt-ac'],
+    ['Thiết kế','tk-a'],
+    ['Media','md-ac'],
+    ['Phát hành/kênh số','qc-a'],
+    ['Đo lường','dl-1'],
+    ['CMS website/App','qlsps']
+  ]},
+  {name:'Nhóm thương hiệu 2 – chuyên khoa và các thương hiệu còn lại',parts:[
+    ['Định hướng/đặt hàng','qlth-bc'],
+    ['Biên tập nội dung','bt-b'],
+    ['Thiết kế','tk-b'],
+    ['Media','md-b'],
+    ['Phát hành/kênh số','qc-b'],
+    ['Đo lường','dl-1'],
+    ['CMS website/App','qlsps']
+  ]}
+ ];
+ const rows=[];
+ for(const month of months){
+  const monthOver=positions.flatMap(x=>x.review.periods?.filter(p=>p.m===month&&p.excess>0).map(p=>({x,p}))||[]);
+  const grossOver=monthOver.filter(({x,p})=>x.review.totalLimit!=null&&p.all>x.review.totalLimit+1e-7);
+  const impacted=chains.map(chain=>{
+   const parts=chain.parts.filter(([,id])=>bottleneck(id,month).length);
+   return {chain,parts};
+  }).filter(z=>z.parts.length);
+  const downstream=impacted.filter(z=>z.parts.length>=2);
+  const status=grossOver.length?'Ưu tiên xử lý ngay – vượt quỹ giờ tổng tham chiếu':
+    downstream.length?'Nguy cơ dây chuyền – nhiều công đoạn cùng vượt quỹ kế hoạch':
+    impacted.length?'Cảnh báo điểm nghẽn – cần điều phối trước khi nhận thêm việc':
+    'Chưa phát hiện vượt trên phần đã lượng hóa';
+  const causes=monthOver.sort((a,b)=>b.p.excess-a.p.excess).slice(0,4).map(({x,p})=>
+    name(x.id)+(x.slot?' ('+slotLabel(x.slot)+')':x.site?' ('+siteTitle(x.site)+')':'')+
+    ': +'+format(p.excess)+' giờ').join('; ');
+  const chainLabel=impacted.map(z=>z.chain.name+': '+z.parts.map(([stage])=>stage).join(' + ')).join(' | ');
+  rows.push(['T'+month,e(status),nu(monthOver.length),e(chainLabel||'Chưa xác định, vẫn thiếu kiểm kê tài sản/CMS'),
+    e(causes||'Không có số vượt trong các khoản đã tính'),
+    e(grossOver.length?'Tạm dừng cam kết việc bổ sung không khẩn cấp; với sự cố liên quan người bệnh hoặc truyền thông khẩn, kích hoạt người thay, nguồn lực dự phòng và phê duyệt ngoại lệ theo quyền.':
+      downstream.length?'Ưu tiên giải phóng nút nghẽn theo công đoạn, kiểm lịch chéo và giờ người thay trước khi khóa mốc.':
+      impacted.length?'Kiểm tuần cao điểm, người thay và quyền duyệt trước khi nhận thêm yêu cầu.':
+      'Giữ dự phòng; chưa kết luận ổn định do số CMS/kênh/tài sản chưa chốt.')]);
+ }
+ return '<h4>3. Bản đồ nguy cơ ảnh hưởng dây chuyền theo tháng và nhóm thương hiệu</h4>'+
+ '<p class="note">Khi nhiều công đoạn của cùng một luồng cùng vượt 141,4 giờ kế hoạch/người/tháng, cảnh báo <b>nguy cơ chậm dây chuyền</b>. Nếu bất kỳ vị trí nào vượt quỹ giờ tổng tham chiếu (188,6 giờ/người/tháng), ưu tiên giải quyết ngay. Các ngưỡng là giả định của mô hình và phải đối chiếu quy định giờ làm, lịch trực thực tế; không phải xác nhận đã có sự cố.</p>'+
+ table(['Tháng','Cấp cảnh báo','Số suất vượt','Nhóm/thao tác có nguy cơ','Điểm nghẽn theo vị trí','Điều kiện điều phối'],rows,[2])+
+ '<h4>4. Quy tắc chặn để tránh lan truyền chậm tiến độ</h4>'+
+ table(['Cửa kiểm soát','Điều kiện cho phép đi tiếp','Khi chưa đạt'],[
+ ['Nhận thêm việc, chiến dịch hoặc mở cơ sở','Phải có chỗ trong quỹ giờ của đúng vai, đúng tháng; đầu ra thường xuyên bắt buộc đã được bảo toàn và người thay có năng lực.','Không tự giao thêm bằng cách dùng dự phòng 25% như giờ thường xuyên; Trưởng phòng chủ trì điều chỉnh ưu tiên, thay người hoặc nguồn lực đúng thẩm quyền. Việc khẩn cấp phải xử lý theo tuyến sự cố, không trì hoãn vì chặn kế hoạch.'],
+ ['Giao hạn sản xuất và chuyển công đoạn','Phiếu nhận có nguồn đầu vào, người nhận, thời gian làm/kiểm/sửa, mốc chốt; đầu ra của bước trước đạt chuẩn.','Không được phát hành thiếu hồ sơ; chuyển tín hiệu nghẽn về quản lý thương hiệu và chuyên viên trưởng đúng tuyến.'],
+ ['Phát hành và công bố CMS','Nguồn y khoa/giá/giấy phép được xác nhận, kiểm độc lập, quyền công bố và kiểm website/App đã hoàn tất.','Dừng phát hành nội dung chưa đủ điều kiện; không đưa việc bị chặn thành sản lượng hoàn tất.'],
+ ['Bàn giao nền tảng quý I','Tài liệu bắt buộc có phiên bản hợp lệ, đã thử, duyệt, hướng dẫn và nhận bàn giao; tải tháng 1–3 xử lý được.','Báo mốc bàn giao rủi ro và đề xuất điều phối có căn cứ; không tự dời mốc 31/03 hay bỏ hạng mục.'],
+ ['Khóa kết luận định biên','Phải có số hồ sơ CMS/kênh/tài sản, M-6, giờ người thực có và sản lượng đã đối soát; không còn vượt tải không được xử lý.','Trạng thái quyết định vẫn là CHƯA ĐỦ CĂN CỨ; không kết luận 36 suất chắc chắn đủ/dư.']
+ ])+
+ '<p><strong>Tác động cần theo dõi:</strong> ngày trễ từng công đoạn, số yêu cầu bị trả lại, tỷ lệ làm lại, số sản phẩm đúng hạn, số lịch phát hành bị thay đổi, số tài liệu chậm nghiệm thu, chi phí tăng và các KPI bị ảnh hưởng. <strong>Chưa có số trễ thực tế thì không được tự gán</strong> số thiệt hại hoặc nguyên nhân.</p>';
+}
+
 function sufficiencyPanel(){
- const run=getRun(),rows=poolReviews(run).map(x=>{
- const unknown=run.cms.tasks.filter(t=>t.internal&&t.q==null&&x.keys.includes(t.role)).length,
- monthsBad=x.review.periods?.filter(z=>z.excess>0)||[];
- return [positionLink(x),x.site?e(siteTitle(x.site)):'Tổng công ty',x.slot?e(slotLabel(x.slot)):String(x.seats),
- x.id==='dmpk'&&edits.clinic==null?'Chưa xác minh':nu(x.review.planLimit),
- monthsBad.length?monthsBad.map(z=>'T'+z.m+': +'+format(z.excess)+' giờ').join('; '):'Không vượt trong phần đã tính',
- nu(unknown),
- x.id==='qlml'?'Chưa kích hoạt':x.id==='dmpk'&&edits.clinic==null?'Chưa có quỹ Clinic':
- x.slot?'Chưa phân đủ tải CMS giữa các suất':
- unknown?'Chưa đủ lượng CMS':monthsBad.length?'Vượt tải cần xử lý':'Chưa được kết luận đủ người'];
+ const run=getRun(),all=poolReviews(run),
+    known=run.roll(run.monthly(Object.keys(run.roles))),
+    overload=all.filter(x=>x.review.periods?.some(q=>q.excess>0)),
+    annual=all.filter(x=>x.review.annualExcess>0),
+    confirmed=all.filter(x=>x.review.annualExcess!==null),
+    other=all.filter(x=>x.review.annualExcess===null);
+ const scenarioRows=['base','high','opt'].map(c=>{
+    const roster=poolReviews(runs[c]);
+    const p=roster.filter(x=>x.review.periods?.some(z=>z.excess>0));
+    const y=roster.filter(x=>x.review.annualExcess>0);
+    return [e(cases[c]),nu(runs[c].roll(runs[c].monthly(Object.keys(runs[c].roles))).total),
+      nu(p.length),nu(y.length),
+      nu(runs[c].cms.unknown.length),
+      c===u.scenario?'<b>Đang xem</b>':'Chọn ở bộ lọc bên trên'];
  });
- return '<h3>Kiểm tra đủ sức xử lý công việc theo từng tháng và suất</h3>'+
- '<p class="note"><b>Không kết luận đủ/dư người chỉ từ 36 suất.</b> Phải đủ sản lượng thực tế, công đoạn, hệ thống giai đoạn đầu, CMS, kiểm tài sản/kênh, giờ thực có và kế hoạch phát sinh. M-6 hiện chỉ có 6 nhóm thư viện, chưa chốt số file, kích thước và biến thể; không coi giờ mô hình đã đủ. Kịch bản vượt giờ phải chỉ rõ tháng, vị trí và hướng xử lý; không ngầm kéo dài hạn bàn giao.</p>'+
+ const topRows=overload.map(x=>{
+    const v=x.review,peak=v.periods.reduce((a,b)=>a.excess>=b.excess?a:b);
+    return [positionLink(x),x.site?e(siteTitle(x.site)):'Tổng công ty',
+      x.slot?e(slotLabel(x.slot)):String(x.seats)+' suất',
+      nu(peak.m),nu(peak.all),nu(v.planLimit),nu(peak.excess),
+      v.annualExcess>0?'<b>'+format(v.annualExcess)+' giờ/năm</b>':'Không vượt năm trên số đã tính'];
+ }).sort((a,b)=>Number(String(b[6]).replace(/<[^>]+>/g,'').replace(',','.'))-Number(String(a[6]).replace(/<[^>]+>/g,'').replace(',','.')));
+ const allRows=all.map(x=>{
+    const unknown=run.cms.tasks.filter(t=>t.internal&&t.q==null&&x.keys.includes(t.role)).length,
+        bad=x.review.periods?.filter(z=>z.excess>0)||[];
+    return [positionLink(x),x.site?e(siteTitle(x.site)):'Tổng công ty',
+      x.slot?e(slotLabel(x.slot)):String(x.seats),
+      x.id==='dmpk'&&edits.clinic==null?'Chưa xác minh':nu(x.review.planLimit),
+      bad.length?bad.map(z=>'T'+z.m+': +'+format(z.excess)+' giờ').join('; '):'Không vượt trên phần đã tính',
+      nu(unknown),
+      x.id==='qlml'?'Chưa kích hoạt':x.id==='dmpk'&&edits.clinic==null?'Chưa có quỹ Clinic':
+      unknown?'Thiếu sản lượng CMS':bad.length?'Vượt giờ trong kịch bản':'Chưa đủ dữ liệu chốt đủ người'];
+ });
+ const critical='<p class="note"><b>KẾT LUẬN CHO BAN LÃNH ĐẠO: CHƯA ĐỦ CĂN CỨ XÁC NHẬN 36 SUẤT LÀ PHÙ HỢP.</b> Đã xuất hiện vị trí có tháng vượt giờ trong phần mô phỏng, trong khi sản lượng CMS, M-6, tài sản/kênh và nhân sự thực có chưa chốt. Đây là kết quả từ dữ liệu giả định theo MTCV, không phải chứng nhận đã đủ việc hoặc đủ người.</p>';
+ return '<h3>Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống</h3>'+critical+
  '<div class="control">'+selCase()+'</div>'+
- metrics([[nu(rows.length),'Tuyến/suất đang đối chiếu'],[nu(poolReviews(run).filter(z=>z.review.periods?.some(q=>q.excess>0)).length),'Có tháng vượt tải đã tính'],[nu(run.cms.unknown.length),'Điều kiện CMS còn thiếu']])+
- table(['Chức danh','Đơn vị','Suất/phân công','Giờ kế hoạch/tháng','Tháng vượt','Lượng CMS còn thiếu','Kết luận hiện tại'],rows,[5])+
- '<h4>Phương án khi vượt giờ</h4><p>Đối chiếu đúng mã việc gây vượt; loại bỏ việc trùng hoặc ngoài CNNV qua quyết định; chuẩn hóa mẫu có kiểm thời gian trước/sau; cân người đúng kỹ năng và thời hạn; tổ chức hỗ trợ theo tuyến quản lý; thuê ngoài đúng thẩm quyền hoặc trình điều chỉnh định biên. Trường hợp quá tải quý I cần báo rõ mốc 31/03 chưa khả thi, không tự đổi hạn hoặc cắt việc.</p>';
+ metrics([[nu(overload.length),'Đầu mối/suất vượt giờ ít nhất một tháng'],
+          [nu(annual.length),'Suất vượt quỹ kế hoạch cả năm'],
+          [nu(run.cms.unknown.length),'Trường điều kiện CMS chưa có số'],
+          [nu(known.total,0),'Giờ mô hình đã tính/năm'],
+          [nu(run.cap.plan),'Giờ kế hoạch/một suất/tháng'],
+          [nu(other.length),'Đầu mối chưa có quỹ/đang chờ kích hoạt']])+
+ '<h4>1. So sánh 3 kịch bản trên cùng công thức, chưa nhập số hồ sơ thiếu</h4>'+
+ table(['Kịch bản','Giờ công mô phỏng/năm','Đầu mối vượt tháng','Suất vượt năm','Điều kiện CMS còn thiếu','Chuyển xem'],scenarioRows,[1,2,3,4])+
+ '<h4>2. Những vị trí đã xuất hiện vượt giờ – ưu tiên xử lý</h4>'+
+ (topRows.length?table(['Chức danh','Nơi làm','Suất','Tháng cao điểm','Giờ việc trong tháng','Quỹ giờ','Vượt giờ','Vượt cả năm'],topRows,[3,4,5,6]):'<p>Chưa phát hiện vượt trên khối lượng đã tính; không đồng nghĩa đã đủ nhân sự.</p>')+
+ cascadeExposurePanel(run,all)+
+ '<h4>5. Điều kiện chưa thể nghiệm thu phương án 36 suất</h4>'+
+ table(['Khoảng trống','Tình trạng và tác động','Nguồn xác nhận'],[
+  ['CMS website/App','Chưa lượng hóa '+run.cms.unknown.length+' trường/điều kiện; sản lượng chưa chốt sẽ tăng giờ theo đúng người, đặc biệt khối biên tập và quản lý sản phẩm số.','Đầu mối cơ sở/Clinic; chủ dữ liệu y khoa, giá, giấy phép; Quản lý sản phẩm số'],
+  ['Thư viện mẫu M-6','Mới có 6 nhóm; chưa xác định số file, kích thước, biến thể và thao tác sửa/kiểm. Không được coi công việc chưa lập danh sách là 0 giờ.','Tổ Thiết kế, Media; Chuyên viên trưởng đúng tuyến; quản lý thương hiệu'],
+  ['30 kênh và tài sản','30 kênh mới là số tổng hợp, chưa đủ mã thật, đơn vị giữ, trạng thái, ngày kích hoạt và lịch bảo trì; biển, màn hình và tài sản số cần kiểm thêm.','Quảng cáo và kênh số; Truyền thông; cơ sở; Phòng Công nghệ/Số hóa theo quyền'],
+  ['Người thực có và Clinic','36 là suất trong phương án, không phải danh sách người nhận việc. Quỹ giờ của đầu mối Clinic chưa có số chính thức.','Phòng Nhân lực, BGĐ cơ sở và Trưởng phòng Marketing'],
+  ['Lịch giai đoạn, phát sinh, bản cũ','Mốc bàn giao quý I, lịch mở thương hiệu, phát sinh và hiệu lực quy trình/mẫu cũ chưa được xác nhận đủ để bảo đảm bàn giao từ quý II.','Chủ nghiệp vụ, Quản lý chất lượng, quản lý thương hiệu, các đơn vị liên quan']
+ ])+
+ detail('6. Toàn bộ 26 chức danh, 37 dòng suất/đầu mối và 12 tháng – mở kiểm từng người',
+   table(['Chức danh','Đơn vị','Suất/phân công','Quỹ tháng','Tháng vượt','CMS thiếu số','Trạng thái'],allRows,[5]))+
+ '<h4>7. Cách xử lý vượt tải và điều kiện kết luận</h4>'+
+ '<p>Truy ngược từng mã việc, công đoạn và người chịu tải; phân bổ lại <b>đúng CNNV/MTCV</b> trước khi đề xuất người mới. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
 }
