@@ -26,15 +26,15 @@ a{color:var(--blue)}.header{background:var(--blue);color:white;padding:24px max(
 <div><label for="search">Tìm công việc, mẫu, chủ đề, mã</label><input id="search" type="search" placeholder="Ví dụ: CRM, bác sĩ, biển bảng, video V2"></div>
 <div><label for="role">Lọc chức danh chịu trách nhiệm/thực hiện</label><select id="role"><option value="">Tất cả 26 chức danh</option></select></div>
 <div><label for="phase">Giai đoạn, thời hạn</label><select id="phase"><option value="">Cả năm 2027 và chuẩn bị</option></select></div>
-<div><label for="family">Danh mục chủ đề</label><select id="family"><option value="">Tất cả chủ đề</option></select></div><div><label for="month">Tháng giao việc</label><select id="month"><option value="">Cả 12 tháng</option></select></div>
+<div><label for="family">Danh mục chủ đề</label><select id="family"><option value="">Tất cả chủ đề</option></select></div><div><label for="month">Tháng / kỳ báo cáo</label><select id="month"><option value="">Cả năm 2027</option></select></div><div><label for="program">Chương trình trọng điểm</label><select id="program"><option value="">Toàn bộ chương trình</option></select></div>
 </div>
 <nav class="tabs" id="tabs" aria-label="Nhóm thông tin">
-<button class="tab" data-tab="monthly" aria-selected="true">01. Kế hoạch từng tháng</button><button class="tab" data-tab="actions" aria-selected="false">02. Lộ trình năm</button>
+<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
 <button class="tab" data-tab="themes" aria-selected="false">03. Chủ đề và mẫu chi tiết</button>
 <button class="tab" data-tab="docs" aria-selected="false">04. Hồ sơ cần ban hành</button>
 <button class="tab" data-tab="mtcv" aria-selected="false">05. Đầu ra MTCV gốc</button>
 <button class="tab" data-tab="digital" aria-selected="false">06. CRM, App, phần mềm</button>
-<button class="tab" data-tab="continuity" aria-selected="false">07. Khuyết vị trí / người tạm nhận</button><button class="tab" data-tab="coverage" aria-selected="false">08. Đối soát 496 MTCV</button><button class="tab" data-tab="overlap" aria-selected="false">09. Soát chồng chéo MTCV</button><button class="tab" data-tab="timeline" aria-selected="false">10. Lộ trình và định mức</button>
+<button class="tab" data-tab="continuity" aria-selected="false">07. Khuyết vị trí / người tạm nhận</button><button class="tab" data-tab="coverage" aria-selected="false">08. Đối soát 496 MTCV</button><button class="tab" data-tab="overlap" aria-selected="false">09. Soát chồng chéo MTCV</button><button class="tab" data-tab="issued" aria-selected="false">Báo cáo ban hành cuối kỳ</button><button class="tab" data-tab="kpis" aria-selected="false">KPI & đo lường</button><button class="tab" data-tab="import" aria-selected="false">Nhập phần mềm</button><button class="tab" data-tab="timeline" aria-selected="false">Lộ trình và định mức</button>
 </nav>
 <div class="panel" id="panel"><p>Đang nạp kế hoạch...</p></div>
 <footer class="foot">Bản làm việc ngày 21/11/2026. Các ngày và số lượng là mục tiêu kế hoạch để bố trí công việc, không phải quyết định giao việc hay nghiệm thu. Kiểm kê mẫu đã ban hành, hiệu lực pháp lý, số cơ sở hoạt động và quỹ giờ thực tế trước khi khóa định biên. Dữ liệu gốc: Khung cơ cấu Marketing TTH 2027, danh mục tài liệu và MTCV.</footer>
@@ -42,17 +42,86 @@ a{color:var(--blue)}.header{background:var(--blue);color:white;padding:24px max(
 <script>
 (function(){
 "use strict";
-var D=null,tab="monthly";
+var D=null,tab="program";
 var esc=function(x){return String(x==null?"":x).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var names={},phaseNames={}; var $=function(functionId){return document.getElementById(functionId)};
 var shortRole=function(id){return names[id]||id||"Đầu mối theo phân quyền"};
 var dmy=function(s){var m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s||"");return m?Number(m[3]+m[2]+m[1]):0};
 var valid=function(x){var q=$("search").value.trim().toLocaleLowerCase("vi"),r=$("role").value,p=$("phase").value,f=$("family").value;var obj=JSON.stringify(x).toLocaleLowerCase("vi");if(q&&!obj.includes(q))return false;if(r){var involved=[x.role,x.owner,x.writer,x.checker,x.tester,x.lead,x.writerGroup2,x.ownerGroup2,x.checkerGroup2,x.testerGroup2];if(!involved.includes(r))return false}if(p){if(x.phase&&x.phase!==p)return false;if(x.month){var mm=Number(x.month);var pp=mm<=3?"q1":mm<=6?"q2":mm<=9?"q3":"q4";if(pp!==p)return false}}if(f&&x.family&&x.family!==f)return false;if(f&&!x.family&&(tab==="themes"))return false;if(x.month&&$("month").value&&Number($("month").value)!==Number(x.month))return false;return true};
-var stats=function(){var a=[["Chức danh",D.roles.length],["Đầu việc/tháng có mã",D.monthlyActions.length],["Lộ trình năm",D.actions.length],["Loại chủ đề chi tiết",D.themes.length],["Cụm cần rà trùng",D.overlapAudits.length]];$("stats").innerHTML=a.map(function(z){return '<div class="stat"><b>'+esc(z[1])+'</b><small>'+esc(z[0])+'</small></div>'}).join("")};
+var stats=function(){var a=[["Chương trình",D.portfolio.programs.length],["Dự án",D.portfolio.projects.length],["Mốc trọng điểm",D.portfolio.tasks.length],["Dòng kế hoạch vị trí",D.monthlyActions.length],["Mã mẫu/tài liệu kiểm kê",D.issuance.catalog.length]];$("stats").innerHTML=a.map(function(z){return '<div class="stat"><b>'+esc(z[1])+'</b><small>'+esc(z[0])+'</small></div>'}).join("")};
 var head=function(title,n,help){return '<div class="panel-header"><div><h2>'+esc(title)+' <span class="count">'+n+' kết quả</span></h2>'+(help?'<div class="note">'+esc(help)+'</div>':"")+'</div><button class="btn" id="exportBtn" type="button">Xuất CSV bảng đang xem</button></div>'};
 var table=function(headers,rows,clazz){var res='<div class="scroll"><table class="'+(clazz||"")+'"><thead><tr>'+headers.map(function(h){return '<th>'+esc(h)+'</th>'}).join("")+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div>';return res};
 var card=function(t,b){return '<div class="sectioncard"><h3>'+esc(t)+'</h3>'+b+'</div>'};
 var cell=function(a){return esc(a||"—")};
+
+
+function newFilter(x){
+ var q=$("search").value.trim().toLocaleLowerCase("vi"),r=$("role").value,m=$("month").value,p=$("program").value;
+ if(q&&!JSON.stringify(x).toLocaleLowerCase("vi").includes(q))return false;
+ if(r&&![x.ownerRoleId,x.executorRoleId,x.reviewerRoleId,x.owner,x.sponsor,x.reviewer].includes(r))return false;
+ if(m&&x.month&&Number(x.month)!==Number(m))return false;
+ if(p&&x.programId&&x.programId!==p)return false;
+ return true;
+}
+function programName(id){var p=D.portfolio.programs.find(function(x){return x.programId===id});return p?p.name:id}
+function drawProgram(){
+ var p=D.portfolio,pg=p.programs.filter(newFilter),pj=p.projects.filter(newFilter),ts=p.tasks.filter(newFilter);
+ var html='<div class="call"><b>Kế hoạch mẫu năm 2027:</b> Chương trình → dự án thành phần → mốc tháng → một sản phẩm được nghiệm thu. Chương trình và dự án mẹ không hạch toán giờ; công việc con phải nối sổ giờ Mục 05. Chỉ tiêu/ngân sách chưa có số nền được để chờ xác nhận.</div>';
+ html+='<div class="summary-grid">'+pg.map(function(x){return card(x.programId+' · '+x.name,'<p>'+cell(x.goal)+'</p><p><b>Chủ trì:</b> '+cell(shortRole(x.owner))+'<br><b>Nhà bảo trợ:</b> '+cell(shortRole(x.sponsor))+'<br><b>Dự án:</b> '+cell(x.projectCodes.join(', '))+'</p>')}).join("")+'</div>';
+ html+='<h3>Danh mục dự án thành phần · '+pj.length+'</h3>';
+ html+=table(["Dự án","Chương trình","Mục tiêu","Chủ trì và kiểm","Phạm vi","Điều kiện"],pj.map(function(x){return [cell(x.projectId)+'<small>'+cell(x.name)+'</small>',cell(programName(x.programId)),cell(x.goal),cell(shortRole(x.ownerRoleId))+'<small>Kiểm: '+cell(shortRole(x.independentReviewerRoleId))+'</small>',cell(x.units),cell(x.activation)]}),"wide");
+ html+='<h3>Công việc trọng điểm theo '+($("month").value?'tháng '+$("month").value:'12 tháng')+' · '+ts.length+'</h3>';
+ html+=table(["Mã việc","Dự án","Việc phải làm","Đầu ra phải nộp","Hạn & người thực hiện","Trạng thái"],ts.map(function(x){return [cell(x.taskId),cell(x.projectId),cell(x.name),cell(x.deliverable),cell(x.dueDate)+'<small>'+cell(shortRole(x.executorRoleId))+'</small>',cell(x.status)]}),"wide");
+ $("panel").innerHTML=head("Kế hoạch năm, chương trình và dự án thành phần",ts.length,"Lọc chương trình hoặc tháng để xem đúng đầu ra và tiến độ dự kiến.")+html;
+}
+function drawTracking(){
+ var p=D.portfolio,ts=p.tasks.filter(newFilter),ops=p.operations.filter(function(x){var q=$("search").value.trim().toLocaleLowerCase("vi"),r=$("role").value;return (!q||JSON.stringify(x).toLocaleLowerCase("vi").includes(q))&&(!r||x.ownerRoleId===r)});
+ var h='<div class="call redline"><b>Giao việc không đồng nghĩa cộng giờ.</b> Mỗi mốc trọng điểm có một mã việc, mã sản phẩm và người chịu trách nhiệm. Hoạt động định kỳ dưới đây là sổ công việc đã tồn tại trong phép tính Mục 05, không phát sinh giờ thứ hai. Phải ghi người thực nhận, ngày hoàn tất, bằng chứng và thời gian thực tế trước nghiệm thu.</div>';
+ h+='<h3>Công việc hạng mục trọng điểm · '+ts.length+'</h3>';
+ h+=table(["Mã","Chương trình / dự án","Việc và đầu ra","Hạn","Chủ / người làm / kiểm","Chỉ số – chứng cứ"],ts.map(function(x){return [cell(x.taskId),cell(programName(x.programId))+'<small>'+cell(x.projectId)+'</small>',cell(x.name)+'<small>'+cell(x.deliverable)+'</small>',cell(x.dueDate),cell(shortRole(x.ownerRoleId))+'<small>Làm: '+cell(shortRole(x.executorRoleId))+'; kiểm: '+cell(shortRole(x.reviewerRoleId))+'</small>',cell(x.kpiIds.join(', '))+'<small>File, ngày nghiệm thu; giờ chờ nối sổ</small>']}),"wide");
+ h+='<h3>Đầu ra thường xuyên theo sổ Mục 05 · '+ops.length+'</h3>';
+ h+=table(["Mã sổ giờ","Người/đơn vị","Đầu ra nguồn","Chu kỳ","Định mức phút công đoạn","Trạng thái"],ops.map(function(x){return [cell(x.workloadLedgerId),cell(shortRole(x.ownerRoleId))+'<small>'+cell(x.locationName)+'</small>',cell(x.name),cell(x.frequency),cell(x.unitMinutes)+' <small>'+cell(x.minutesByStage.join(' / '))+'</small>',cell(x.status)]}),"wide");
+ $("panel").innerHTML=head("Sổ giao việc và nghiệm thu theo phần mềm",ts.length+ops.length,"Tách nguồn trọng điểm và định kỳ, giữ một mã sổ giờ gốc để không cộng trùng.")+h;
+}
+function drawIssued(){
+ var r=D.issuance,s=r.summary,m=$("month").value,term=$("search").value.trim().toLocaleLowerCase("vi"),role=$("role").value;
+ var rows=r.catalog.filter(function(x){return (!term||JSON.stringify(x).toLocaleLowerCase("vi").includes(term))&&(!role||[x.ownerRoleId,x.writerRoleId,x.reviewerRoleId].includes(role))});
+ var periods=s.monthly.filter(function(x){return !m||Number(m)===x.month});
+ var missing=s.validEvents===0;
+ var h='<div class="call redline"><b>CHƯA CÓ SỐ LIỆU BAN HÀNH THỰC TẾ ĐƯỢC XÁC MINH.</b> '+r.catalog.length+' mã ở đây chỉ là danh mục phải đối chiếu, không phải số đã ban hành. Một mẫu phát sinh ở nhiều phân hệ vẫn chỉ có một mã gốc; chỉ phiên bản có quyết định/số duyệt, ngày ký, file và người duyệt mới được tính.</div>';
+ h+=table(["Tháng","Ban hành mới","Sửa đổi/ban hành lại","Mã đã ban hành trong kỳ","Thu hồi","Có hiệu lực cuối kỳ"],periods.map(function(x){return ["T"+x.month,missing?"Chưa có chứng từ":cell(x.newCount),missing?"Chưa có chứng từ":cell(x.revisedVersionCount),missing?"Chưa có chứng từ":cell(x.uniqueReleasedCount),missing?"Chưa có chứng từ":cell(x.withdrawnCount),missing?"Chưa xác minh bản nền":cell(x.activeAtEndWithVerified2027EventsOnly)]}),"wide");
+ var group={};rows.forEach(function(x){group[x.category]=(group[x.category]||0)+1});
+ h+='<h3>Kiểm kê theo loại sản phẩm</h3>';
+ h+=table(["Loại","Mã dự kiến/tra cứu","Số ban hành có chứng từ"],Object.keys(group).sort().map(function(k){return [cell(k),cell(group[k]),missing?"Chưa có dữ liệu":"Xem sổ sự kiện"]}),"wide");
+ h+='<h3>Danh mục tài liệu, mẫu và quy trình cần đối chiếu · '+rows.length+'</h3>';
+ h+=table(["Mã","Tên","Loại","Nguồn danh mục","Chủ trì và thời hạn","Tình trạng"],rows.map(function(x){return [cell(x.code),cell(x.title),cell(x.category),cell(x.source)+(x.proposalOnly?"<small>Chưa phải bản mẫu được ký</small>":""),cell(shortRole(x.ownerRoleId))+"<small>"+cell(x.plannedDeadline)+"</small>",cell(x.status)]}),"wide");
+ $("panel").innerHTML=head("Sổ ban hành và kết quả cuối kỳ toàn Phòng Marketing",rows.length,"Tính tất cả nguồn trọng điểm, thường xuyên và phát sinh, không cộng trùng sản phẩm gốc.")+h;
+}
+function drawKpis(){
+ var p=D.portfolio,pr=$("program").value,term=$("search").value.trim().toLocaleLowerCase("vi"),role=$("role").value;
+ var pg=pr?p.programs.find(function(x){return x.programId===pr}):null;
+ var rows=p.kpis.filter(function(x){return (!pg||pg.kpiIds.includes(x.id))&&(!role||[x.ownerRoleId,x.checkerRoleId].includes(role))&&(!term||JSON.stringify(x).toLocaleLowerCase("vi").includes(term))});
+ var h='<div class="call">Mỗi chỉ số phải có công thức, người chịu số, người kiểm, nguồn, kỳ chốt và số nền. <b>Chưa có số liệu ≠ 0.</b> Tiến độ sản phẩm, chất lượng nghiệm thu và hiệu quả kinh doanh là các chỉ số khác nhau.</div>';
+ h+=table(["Mã","Chỉ số","Cách tính","Nguồn dữ liệu","Người chốt/kiểm","Kỳ & trạng thái"],rows.map(function(x){return [cell(x.id),cell(x.name),cell(x.formula),cell(x.dataSource),cell(shortRole(x.ownerRoleId))+'<small>Kiểm: '+cell(shortRole(x.checkerRoleId))+'</small>',cell(x.cadence)+'<small>Chưa duyệt giá trị đích</small>']}),"wide");
+ $("panel").innerHTML=head("Bộ 23 KPI theo chương trình, dự án và nguồn đo",rows.length,"Không đánh giá hiệu quả bằng chỉ số chưa có dữ liệu đối chiếu.")+h;
+}
+function drawImport(){
+ var links=[
+ ["Dự án trọng điểm, công việc và đầu ra","nhap-phan-mem-du-an-trong-diem.csv"],
+ ["Sổ công việc thường xuyên đúng Mục 05","nhap-phan-mem-cong-viec-thuong-xuyen.csv"],
+ ["Việc của 26 chức danh theo 12 tháng","cong-viec-theo-chuc-danh-12-thang.csv"],
+ ["Danh mục 325 mã tài liệu, mẫu, quy trình","so-tai-lieu-va-mau-goc.csv"],
+ ["Sổ bằng chứng ban hành (chưa có sự kiện xác minh)","su-kien-ban-hanh-co-chung-tu.csv"],
+ ["KPI và nguồn dữ liệu","danh-muc-kpi.csv"],
+ ["Dữ liệu hợp nhất JSON","data.json"],
+ ["Báo cáo ban hành dữ liệu nguồn","phan-tich-ban-hanh.json"]
+ ];
+ var base="../ke-hoach-mkt-2027/";
+ var h='<div class="call redline"><b>Đây là gói dữ liệu để đối chiếu trước khi nhập phần mềm, chưa có hành động nhập dữ liệu vào hệ thống đang chạy.</b> Cần kiểm schema/API và quyền trước khi tạo bản ghi thật. Người được giao, ngân sách, chỉ tiêu và giờ chưa được phê duyệt để trống.</div>';
+ h+=table(["Bảng nhập","Đường dẫn"],links.map(function(x){return [cell(x[0]),'<a href="'+base+cell(x[1])+'" target="_blank" rel="noopener">Mở CSV/JSON</a>']}),"wide");
+ h+=card("Quy tắc giao việc và đo",'<p>Một chương trình có nhiều dự án. Mỗi dự án có việc tháng theo mã duy nhất. Một đầu ra có một mã gốc và một chủ trì. Người phối hợp ghi đúng giờ từng công đoạn vào cùng mã sổ Mục 05. Cuối kỳ đếm sản phẩm ban hành theo sự kiện có chứng từ, không đếm số đầu việc.</p>');
+ $("panel").innerHTML=head("Chuyển cấu trúc kế hoạch sang phần mềm Marketing",links.length,"Hai phân hệ trọng điểm và thường xuyên dùng chung danh mục, đo lường, quyền và kiểm soát.")+h;
+}
 
 function drawMonthly(){
  var rr=D.monthlyActions.filter(function(x){return valid(x)}).sort(function(a,b){return a.month-b.month||a.role.localeCompare(b.role)||a.kind.localeCompare(b.kind)});
@@ -181,7 +250,7 @@ function drawTimeline(){
 }
 function render(){
  if(!D)return;
- if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
+ if(tab==="program")drawProgram();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
  var btn=$("exportBtn");if(btn)btn.onclick=exportTable;
 }
 function exportTable(){
@@ -191,12 +260,12 @@ function exportTable(){
 }
 fetch("./data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw Error("HTTP "+r.status);return r.json()}).then(function(d){
  D=d;D.roles.forEach(function(x){names[x.id]=x.name;var o=document.createElement("option");o.value=x.id;o.textContent=x.name;$("role").appendChild(o)});names.cc="Contact Center (chủ nghiệp vụ ngoài Phòng Marketing)";names["phap-che"]="Pháp chế";names["cc-kiem"]="Contact Center - người kiểm nghiệp vụ";
- for(var m=1;m<=12;m++){var mo=document.createElement("option");mo.value=String(m);mo.textContent="Tháng "+m+"/2027";$("month").appendChild(mo)}$("month").value="1";D.phases.forEach(function(x){phaseNames[x.id]=x.label;var o=document.createElement("option");o.value=x.id;o.textContent=x.label;$("phase").appendChild(o)});
+ for(var m=1;m<=12;m++){var mo=document.createElement("option");mo.value=String(m);mo.textContent="Tháng "+m+"/2027";$("month").appendChild(mo)}$("month").value="";D.portfolio.programs.forEach(function(x){var o=document.createElement("option");o.value=x.programId;o.textContent=x.programId+" · "+x.name;$("program").appendChild(o)});D.phases.forEach(function(x){phaseNames[x.id]=x.label;var o=document.createElement("option");o.value=x.id;o.textContent=x.label;$("phase").appendChild(o)});
  Array.from(new Set(D.themes.map(function(x){return x.family}))).forEach(function(n){var o=document.createElement("option");o.value=n;o.textContent=n;$("family").appendChild(o)});
  stats();render();
 }).catch(function(e){$("panel").innerHTML='<p class="empty">Không tải được dữ liệu kế hoạch. Kiểm tra kết nối và đường dẫn data.json. '+esc(e.message)+'</p>'});
-["search","role","phase","family","month"].forEach(function(id){$(id).addEventListener(id==="search"?"input":"change",render)});
-[].slice.call(document.querySelectorAll(".tab")).forEach(function(b){b.addEventListener("click",function(){tab=b.dataset.tab;[].slice.call(document.querySelectorAll(".tab")).forEach(function(z){z.setAttribute("aria-selected",String(z===b))});render()})});
+["search","role","phase","family","month","program"].forEach(function(id){$(id).addEventListener(id==="search"?"input":"change",render)});
+[].slice.call(document.querySelectorAll(".tab")).forEach(function(b){b.addEventListener("click",function(){tab=b.dataset.tab;if(tab==="monthly"&&!$("month").value)$("month").value="1";[].slice.call(document.querySelectorAll(".tab")).forEach(function(z){z.setAttribute("aria-selected",String(z===b))});render()})});
 })();
 </script>
 </body></html>
