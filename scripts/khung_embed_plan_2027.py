@@ -44,8 +44,9 @@ def integrate(site: Path):
     plan_html = plan_html.replace('fetch("./data.json",{cache:"no-store"})', bootstrap, 1)
     plan_html = plan_html.replace("<script>", inline_data + "<script>", 1)
     plan_html = plan_html.replace(
-        'href="../khung-marketing/#dinh-bien-2027"',
-        'href="#tth-plan-2027-data"',
+        '<a class="btn" href="../khung-marketing/#dinh-bien-2027">Về Mục 05 – Định biên</a>',
+        '<span class="btn" aria-label="Đã tích hợp trong Khung Mục 05">Đang xem trong Mục 05</span>',
+        1,
     )
     assert 'fetch("./data.json"' not in plan_html
     assert '<script type="application/json" id="tth-plan-2027-data">' in plan_html
