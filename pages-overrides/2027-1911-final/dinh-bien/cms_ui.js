@@ -193,7 +193,24 @@ function sufficiencyPanel(){
       unknown?'Thiếu sản lượng CMS':bad.length?'Vượt giờ trong kịch bản':'Chưa đủ dữ liệu chốt đủ người'];
  });
  const critical='<p class="note"><b>KẾT LUẬN CHO BAN LÃNH ĐẠO: CHƯA ĐỦ CĂN CỨ XÁC NHẬN 36 SUẤT LÀ PHÙ HỢP.</b> Đã xuất hiện vị trí có tháng vượt giờ trong phần mô phỏng, trong khi sản lượng CMS, M-6, tài sản/kênh và nhân sự thực có chưa chốt. Đây là kết quả từ dữ liệu giả định theo MTCV, không phải chứng nhận đã đủ việc hoặc đủ người.</p>';
- return '<h3>Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống</h3>'+critical+
+ const hasCmsUnknown=run.cms.unknown.length>0;
+ const shortVerdict='<div class="note" style="border-left-color:#ed3237;background:#fff9f9">'+
+ '<h4 style="margin:0 0 8px">Kết luận định biên: chưa đủ căn cứ ban hành cơ cấu 36 suất</h4>'+
+ '<p><b>'+format(overload.length)+'/'+format(confirmed.length)+' đầu mối so được quỹ giờ có tháng vượt</b>; '+
+ '<b>'+format(annual.length)+' đầu mối vượt kế hoạch cả năm</b>. Số còn lại chưa vượt trên phần việc đã định lượng, '+
+ '<b>không có nghĩa là đã đủ người</b>. Quá tải theo tháng khác với thiếu biên chế dài hạn.</p>'+
+ '<p>'+format(other.length)+' đầu mối chưa so được quỹ; '+
+ (hasCmsUnknown?format(run.cms.unknown.length)+' trường CMS/chuyển giao còn thiếu số lượng và giờ thực tế.':'Sản lượng thực vẫn phải xác nhận.')+
+ ' Chưa tính đủ việc xây mới, đào tạo SEO/CRM, duy trì hệ thống và người kiêm nhiệm nếu chưa gắn mã việc.</p></div>';
+ const direct='<h4>Diễn giải nhanh: vượt giờ không đồng nghĩa phải tăng nhân sự ngay</h4>'+
+ table(['Tình trạng hiện tại','Hiểu đúng','Hướng xử lý trước khi sửa định biên'],[
+  ['Có vị trí vượt quỹ cả năm','Một đầu mối không đủ giờ theo sản lượng của kịch bản đã nhập; có thể do phân công tập trung, không chắc do thiếu suất.','Đo lại định mức; chuyển phần việc được phép sang đầu mối đủ năng lực trong cùng tuyến hoặc tính nhân sự bổ sung nếu vẫn vượt.'],
+  ['Nhiều vị trí chỉ vượt tháng thiết lập','Công việc tạo mẫu, quy trình, đào tạo có thể đang dồn vào một kỳ, nhưng phải giữ hạn bàn giao bắt buộc.','Lập lịch tuần, đặt người hỗ trợ có thời hạn, ưu tiên thiết lập bắt buộc và ngừng mở hạng mục phụ.'],
+  ['Còn đầu vào CMS chưa lượng hóa','Bảng đang thiếu giờ chứ không chứng minh còn công suất trống.','Chốt mã hồ sơ bác sĩ/khoa/dịch vụ, khối lượng nhập/sửa, chủ nguồn, mốc bàn giao, người xử lý và số phút công đoạn.'],
+  ['Chưa có đủ người thực tế','36 là số suất cơ cấu đề xuất, không tự động có 36 người đang làm.','Giao người phụ trách tạm có văn bản, bảo toàn quyền phê duyệt, đặt trần giờ và cơ chế ngừng việc không thiết yếu.']
+ ])+
+ '<p class="fine"><b>Quy tắc quyết định:</b> chỉ đề xuất điều chỉnh số suất hoặc tuyến chức năng sau khi đã khử trùng công đoạn, xác nhận đầu vào, đối chiếu tải 12 tháng và kiểm có người làm thay đủ quyền. Không cộng tổng giờ các đầu mối rồi chia bình quân để kết luận vì sản phẩm còn phụ thuộc chuyên môn và địa điểm.</p>';
+ return '<h3>Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống</h3>'+shortVerdict+
  '<div class="control">'+selCase()+'</div>'+
  metrics([[nu(overload.length),'Đầu mối/suất vượt giờ ít nhất một tháng'],
           [nu(annual.length),'Suất vượt quỹ kế hoạch cả năm'],
@@ -201,20 +218,20 @@ function sufficiencyPanel(){
           [nu(known.total,0),'Giờ mô hình đã tính/năm'],
           [nu(run.cap.plan),'Giờ kế hoạch/một suất/tháng'],
           [nu(other.length),'Đầu mối chưa có quỹ/đang chờ kích hoạt']])+
- '<h4>1. So sánh 3 kịch bản trên cùng công thức, chưa nhập số hồ sơ thiếu</h4>'+
- table(['Kịch bản','Giờ công mô phỏng/năm','Đầu mối vượt tháng','Suất vượt năm','Điều kiện CMS còn thiếu','Chuyển xem'],scenarioRows,[1,2,3,4])+
- '<h4>2. Những vị trí đã xuất hiện vượt giờ – ưu tiên xử lý</h4>'+
+ direct+
+ detail('Mở bảng so sánh cả 3 kịch bản tính giờ',table(['Kịch bản','Giờ công mô phỏng/năm','Đầu mối vượt tháng','Suất vượt năm','Điều kiện CMS còn thiếu','Chuyển xem'],scenarioRows,[1,2,3,4]))+
+ '<h4>Điểm nghẽn phải xử lý trước khi chốt cơ cấu</h4>'+
  (topRows.length?table(['Chức danh','Nơi làm','Suất','Tháng cao điểm','Giờ việc trong tháng','Quỹ giờ','Vượt giờ','Vượt cả năm'],topRows,[3,4,5,6]):'<p>Chưa phát hiện vượt trên khối lượng đã tính; không đồng nghĩa đã đủ nhân sự.</p>')+
- cascadeExposurePanel(run,all)+
- '<h4>5. Điều kiện chưa thể nghiệm thu phương án 36 suất</h4>'+
+ detail('Mở đánh giá tác động dây chuyền khi thiếu người hoặc thiếu giờ',cascadeExposurePanel(run,all))+
+ detail('Mở danh sách điều kiện chưa thể nghiệm thu phương án 36 suất',
  table(['Khoảng trống','Tình trạng và tác động','Nguồn xác nhận'],[
   ['CMS website/App','Chưa lượng hóa '+run.cms.unknown.length+' trường/điều kiện; sản lượng chưa chốt sẽ tăng giờ theo đúng người, đặc biệt khối biên tập và quản lý sản phẩm số.','Đầu mối cơ sở/Clinic; chủ dữ liệu y khoa, giá, giấy phép; Quản lý sản phẩm số'],
   ['Thư viện mẫu M-6','Mới có 6 nhóm; chưa xác định số file, kích thước, biến thể và thao tác sửa/kiểm. Không được coi công việc chưa lập danh sách là 0 giờ.','Tổ Thiết kế, Media; Chuyên viên trưởng đúng tuyến; quản lý thương hiệu'],
   ['30 kênh và tài sản','30 kênh mới là số tổng hợp, chưa đủ mã thật, đơn vị giữ, trạng thái, ngày kích hoạt và lịch bảo trì; biển, màn hình và tài sản số cần kiểm thêm.','Quảng cáo và kênh số; Truyền thông; cơ sở; Phòng Công nghệ/Số hóa theo quyền'],
   ['Người thực có và Clinic','36 là suất trong phương án, không phải danh sách người nhận việc. Quỹ giờ của đầu mối Clinic chưa có số chính thức.','Phòng Nhân lực, BGĐ cơ sở và Trưởng phòng Marketing'],
   ['Lịch giai đoạn, phát sinh, bản cũ','Mốc bàn giao quý I, lịch mở thương hiệu, phát sinh và hiệu lực quy trình/mẫu cũ chưa được xác nhận đủ để bảo đảm bàn giao từ quý II.','Chủ nghiệp vụ, Quản lý chất lượng, quản lý thương hiệu, các đơn vị liên quan']
- ])+
- detail('6. Toàn bộ 26 chức danh, 37 dòng suất/đầu mối và 12 tháng – mở kiểm từng người',
+ ]))+
+ detail('Mở toàn bộ 26 chức danh, 37 dòng suất/đầu mối và 12 tháng để kiểm từng người',
    table(['Chức danh','Đơn vị','Suất/phân công','Quỹ tháng','Tháng vượt','CMS thiếu số','Trạng thái'],allRows,[5]))+
  '<h4>7. Cách xử lý vượt tải và điều kiện kết luận</h4>'+
  '<p>Truy ngược từng mã việc, công đoạn và người chịu tải; phân bổ lại <b>đúng CNNV/MTCV</b> trước khi đề xuất người mới. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
