@@ -1,0 +1,21 @@
+name: Thử phương án xử lý vượt tải Marketing 2027
+on:
+  push:
+    branches: ['work/dinh-bien-xu-ly-vuot-tai-21112026']
+    paths:
+      - 'scripts/staffing_capacity_snapshot_2027.js'
+      - 'scripts/staffing_capacity_snapshot_2027.py'
+      - 'pages-overrides/2027-1911-final/dinh-bien/**'
+      - '.github/workflows/staffing-relief-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calculate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare build helpers
+        run: python3 -m pip install --disable-pip-version-check pyyaml
+      - name: Compare monthly overload before and after proposed reallocation
+        run: python3 scripts/staffing_capacity_snapshot_2027.py
