@@ -34,7 +34,7 @@ a{color:var(--blue)}.header{background:var(--blue);color:white;padding:24px max(
 <button class="tab" data-tab="docs" aria-selected="false">04. Hồ sơ cần ban hành</button>
 <button class="tab" data-tab="mtcv" aria-selected="false">05. Đầu ra MTCV gốc</button>
 <button class="tab" data-tab="digital" aria-selected="false">06. CRM, App, phần mềm</button>
-<button class="tab" data-tab="continuity" aria-selected="false">07. Khuyết vị trí / người tạm nhận</button><button class="tab" data-tab="coverage" aria-selected="false">08. Đối soát 496 MTCV</button><button class="tab" data-tab="timeline" aria-selected="false">09. Lộ trình và định mức</button>
+<button class="tab" data-tab="continuity" aria-selected="false">07. Khuyết vị trí / người tạm nhận</button><button class="tab" data-tab="coverage" aria-selected="false">08. Đối soát 496 MTCV</button><button class="tab" data-tab="overlap" aria-selected="false">09. Soát chồng chéo MTCV</button><button class="tab" data-tab="timeline" aria-selected="false">10. Lộ trình và định mức</button>
 </nav>
 <div class="panel" id="panel"><p>Đang nạp kế hoạch...</p></div>
 <footer class="foot">Bản làm việc ngày 21/11/2026. Các ngày và số lượng là mục tiêu kế hoạch để bố trí công việc, không phải quyết định giao việc hay nghiệm thu. Kiểm kê mẫu đã ban hành, hiệu lực pháp lý, số cơ sở hoạt động và quỹ giờ thực tế trước khi khóa định biên. Dữ liệu gốc: Khung cơ cấu Marketing TTH 2027, danh mục tài liệu và MTCV.</footer>
@@ -48,7 +48,7 @@ var names={},phaseNames={}; var $=function(functionId){return document.getElemen
 var shortRole=function(id){return names[id]||id||"Đầu mối theo phân quyền"};
 var dmy=function(s){var m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s||"");return m?Number(m[3]+m[2]+m[1]):0};
 var valid=function(x){var q=$("search").value.trim().toLocaleLowerCase("vi"),r=$("role").value,p=$("phase").value,f=$("family").value;var obj=JSON.stringify(x).toLocaleLowerCase("vi");if(q&&!obj.includes(q))return false;if(r){var involved=[x.role,x.owner,x.writer,x.checker,x.tester,x.lead,x.writerGroup2,x.ownerGroup2,x.checkerGroup2,x.testerGroup2];if(!involved.includes(r))return false}if(p){if(x.phase&&x.phase!==p)return false;if(x.month){var mm=Number(x.month);var pp=mm<=3?"q1":mm<=6?"q2":mm<=9?"q3":"q4";if(pp!==p)return false}}if(f&&x.family&&x.family!==f)return false;if(f&&!x.family&&(tab==="themes"))return false;if(x.month&&$("month").value&&Number($("month").value)!==Number(x.month))return false;return true};
-var stats=function(){var a=[["Chức danh",D.roles.length],["Đầu việc/tháng có mã",D.monthlyActions.length],["Lộ trình năm",D.actions.length],["Loại chủ đề chi tiết",D.themes.length],["Danh mục gốc",D.docs.length]];$("stats").innerHTML=a.map(function(z){return '<div class="stat"><b>'+esc(z[1])+'</b><small>'+esc(z[0])+'</small></div>'}).join("")};
+var stats=function(){var a=[["Chức danh",D.roles.length],["Đầu việc/tháng có mã",D.monthlyActions.length],["Lộ trình năm",D.actions.length],["Loại chủ đề chi tiết",D.themes.length],["Cụm cần rà trùng",D.overlapAudits.length]];$("stats").innerHTML=a.map(function(z){return '<div class="stat"><b>'+esc(z[1])+'</b><small>'+esc(z[0])+'</small></div>'}).join("")};
 var head=function(title,n,help){return '<div class="panel-header"><div><h2>'+esc(title)+' <span class="count">'+n+' kết quả</span></h2>'+(help?'<div class="note">'+esc(help)+'</div>':"")+'</div><button class="btn" id="exportBtn" type="button">Xuất CSV bảng đang xem</button></div>'};
 var table=function(headers,rows,clazz){var res='<div class="scroll"><table class="'+(clazz||"")+'"><thead><tr>'+headers.map(function(h){return '<th>'+esc(h)+'</th>'}).join("")+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div>';return res};
 var card=function(t,b){return '<div class="sectioncard"><h3>'+esc(t)+'</h3>'+b+'</div>'};
@@ -59,7 +59,42 @@ function drawMonthly(){
  var extra='<div class="call">Mỗi chức danh có <b>12 mốc tháng + 12 đầu ra vận hành thường xuyên</b>. Dòng bổ sung SEO, đào tạo CRM và kiểm thử được tách riêng. Đây là bảng định hướng giao việc, <b>chưa tự cộng giờ</b> với Mục 05 để tránh đếm trùng. Chưa có tên người hoặc quyết định giao tạm thì để trạng thái chưa giao.</div>';
  extra+=table(["Mã / tháng","Chức danh / trạng thái","Loại việc","Hạn hoàn thành","Phải làm cụ thể","Đầu ra nghiệm thu","Phối hợp, người kiểm","Khi khuyết người"],rr.map(function(x){
  return ['<span class="code">'+cell(x.id)+'</span><small>Tháng '+x.month+'/2027</small>','<b>'+cell(shortRole(x.role))+'</b><small>'+cell(x.staffingMode)+'</small>','<span class="tag">'+cell(x.kind==="DUY_TRI"?"Vận hành định kỳ":x.kind==="BO_SUNG"?"Đầu việc chi tiết":"Mốc tháng")+'</span>','<b>'+cell(x.due)+'</b><small>Đề xuất, chưa giao chính thức</small>','<b>'+cell(x.job)+'</b><small>Nguồn: '+cell(x.source)+'</small>','<b>'+cell(x.product)+'</b>','<small>Phối hợp: '+cell(x.collaborators||"Theo CNNV")+'</small>'+cell(x.checker),'<b>'+cell(x.actingRole)+'</b><small>'+cell(x.actingRestriction)+'</small>'] }),"wide");
- $("panel").innerHTML=head("Kế hoạch theo 12 tháng cho từng chức danh",rr.length,"Lọc chức danh và tháng ở thanh phía trên để thấy chính xác việc phải làm, hạn và đầu ra.")+extra;
+ $("panel").innerHTML=head("Kế hoạch theo 12 tháng cho từng chức danh",rr.length,"Lọc chức danh và tháng ở thanh phía trên để thấy chính xác việc phải làm, hạn và đầu ra.")+extra+mtcvMonthlyDetail();
+}
+
+function drawOverlap(){
+ var audits=D.overlapAudits||[],sel=$("role").value,txt=$("search").value.trim().toLocaleLowerCase("vi"),list=audits.filter(function(a){return (!sel||a.roles.includes(sel))&&(!txt||JSON.stringify(a).toLocaleLowerCase("vi").includes(txt))});
+ var summary='<div class="call redline">Các dòng tên giống nhau <b>không tự động là lỗi</b>. Phải giữ nguyên công đoạn của Biên tập – Thiết kế – Media – Kênh số, tách công theo nhóm thương hiệu, nhận diện công việc của Pháp chế/Contact Center và nghĩa vụ của từng người. Chỉ được đánh dấu đạt sau đối chiếu hợp đồng đầu ra và giờ Mục 05.</div>';
+ summary+=table(["Mã kiểm","Đầu ra lặp lại","Số lần và các chức danh","Phân nhóm rủi ro","Nguyên tắc xử lý","Trạng thái"],list.map(function(x){return [
+ '<span class="code">'+cell(x.id)+'</span>',
+ '<b>'+cell(x.name)+'</b>',
+ String(x.count)+' lượt<small>'+x.roles.map(shortRole).map(cell).join('; ')+'</small>',
+ cell(x.type),
+ cell(x.evidence),
+ '<span class="tag">'+cell(x.status)+'</span><small>Không cộng trùng số lượng theo tên công việc</small>']}),"wide");
+ $("panel").innerHTML=head("Sổ rà chồng chéo theo 496 dòng MTCV",list.length,"119 cụm tên đầu ra giống nhau; kiểm phạm vi nhóm, chức danh, tuyến phê duyệt, định biên.")+summary;
+}
+function mtcvCadence(c,month){
+ var s=(c[1]||"").toLocaleLowerCase("vi");
+ if(/khi phát sinh|theo yêu cầu|khi nhận|khi có|theo lịch|trước khai trương|trước ngày|trong ngày.*nhận/.test(s))return "Điều kiện / phát sinh";
+ if(/10 ngày làm việc đầu quý sau/.test(s))return [1,4,7,10].includes(month)?"Đầu quý - phải làm":"Không phải tháng định kỳ";
+ if(/hằng quý|đầu quý|cuối quý/.test(s))return month%3===0?"Cuối quý - phải làm":"Không phải tháng định kỳ";
+ if(/06 tháng|6 tháng/.test(s))return [6,12].includes(month)?"6 tháng - phải làm":"Không phải tháng định kỳ";
+ if(/tháng 12/.test(s))return month===12?"Tháng 12 - phải làm":"Không phải tháng định kỳ";
+ if(/hằng năm|cuối năm/.test(s))return month===12?"Cuối năm - phải làm":"Không phải tháng định kỳ";
+ if(/đầu năm/.test(s))return month===1?"Đầu năm - phải làm":"Không phải tháng định kỳ";
+ if(/hằng tháng|mỗi tháng|hằng tuần|mỗi tuần|hằng ngày|ngày 10|ngày 15|ngày 20|ngày 28/.test(s))return "Định kỳ tháng này";
+ return "Chưa đủ mốc - kiểm lịch chuyên môn";
+}
+function mtcvMonthlyDetail(){
+ var month=Number($("month").value)||1,role=$("role").value;
+ var items=[];D.roles.filter(function(r){return !role||r.id===role}).forEach(function(r){(D.mtcv[r.id]||[]).forEach(function(c,i){var cadence=mtcvCadence(c,month);items.push({id:r.id+'-JD-'+String(i+1).padStart(2,"0"),role:r.id,c,kind:cadence})})});
+ var q=$("search").value.trim().toLocaleLowerCase("vi");if(q)items=items.filter(function(x){return JSON.stringify(x).toLocaleLowerCase("vi").includes(q)});
+ var due=items.filter(function(x){return /phải làm|Định kỳ tháng này/.test(x.kind)});
+ var others=items.filter(function(x){return !due.includes(x)});
+ function t(rows){return table(["Mã nguồn","Chức danh","Đầu ra theo MTCV","Kỳ nguyên văn","Tình trạng trong tháng"],rows.map(function(x){return ['<span class="code">'+cell(x.id)+'</span>',cell(shortRole(x.role)),cell(x.c[0]),cell(x.c[1]),'<b>'+cell(x.kind)+'</b><small>Cần lượng hóa số lần và giờ trong Mục 05; không cộng thêm theo dòng hiển thị</small>']}),"wide")}
+ return '<details style="margin-top:20px"><summary style="font-size:16px;font-weight:750;cursor:pointer">Đối chiếu nguồn MTCV đến kỳ trong tháng '+month+' ('+due.length+' dòng) – mở xem</summary><p class="note">Quy tắc gợi ý dựa trên từ khóa tần suất, cần kiểm lại hạn nghiệp vụ cụ thể; không tự nâng công việc phát sinh thành kế hoạch bắt buộc.</p>'+t(due)+'</details>'+
+ '<details style="margin-top:14px"><summary style="font-size:16px;font-weight:750;cursor:pointer">MTCV theo ca phát sinh hoặc chưa đủ lịch ('+others.length+' dòng) – mở xem</summary>'+t(others)+'</details>';
 }
 function drawContinuity(){
  var roles=D.roles.filter(function(x){return !$("role").value||x.id===$("role").value});
@@ -146,7 +181,7 @@ function drawTimeline(){
 }
 function render(){
  if(!D)return;
- if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
+ if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
  var btn=$("exportBtn");if(btn)btn.onclick=exportTable;
 }
 function exportTable(){
