@@ -1,4 +1,5 @@
 /* In-framework evidence ledger: quantities not supplied are UNKNOWN, not zero. */
+const cmsOptional=(k,v)=>'<input type="number" min="0" max="99999" step="1" name="'+e(k)+'" value="'+e(v)+'">';
 function cmsPanel(){
  const run=getRun(),catalog=model.cms,unit=catalog.units.find(x=>x.id===u.cmsUnit)||catalog.units[0],
  type=catalog.types.find(x=>x.id===u.cmsType)||catalog.types[0],key=unit.id+'/'+type.id,
@@ -18,11 +19,11 @@ function cmsPanel(){
  const controls='<div class="control">'+fLabel('Đơn vị','<select data-set="cmsUnit">'+opt(Object.fromEntries(catalog.units.map(x=>[x.id,x.name])),u.cmsUnit)+'</select>')+
  fLabel('Loại hồ sơ','<select data-set="cmsType">'+opt(Object.fromEntries(catalog.types.map(x=>[x.id,x.name])),u.cmsType)+'</select>')+selPeriod()+'</div>';
  const form='<form class="form" data-cms-row="'+e(key)+'">'+
- fLabel('Số hồ sơ GỐC có mã duy nhất',input('base',val('base'),0,99999,'1'))+
- fLabel('Số liên kết với cơ sở từ mã hồ sơ gốc có sẵn',input('reuse',val('reuse'),0,99999,'1'))+
- fLabel('Số hồ sơ cần cập nhật THÊM mỗi tháng, ngoài khối lượng W',input('maint',val('maint'),0,99999,'1'))+
- fLabel('Số đồ họa mới NGOÀI công việc thiết kế W',input('graphic',val('graphic'),0,99999,'1'))+
- fLabel('Số tư liệu mới NGOÀI công việc Media W',input('media',val('media'),0,99999,'1'))+
+ fLabel('Số hồ sơ GỐC có mã duy nhất',cmsOptional('base',val('base')))+
+ fLabel('Số liên kết với cơ sở từ mã hồ sơ gốc có sẵn',cmsOptional('reuse',val('reuse')))+
+ fLabel('Số hồ sơ cần cập nhật THÊM mỗi tháng, ngoài khối lượng W',cmsOptional('maint',val('maint')))+
+ fLabel('Số đồ họa mới NGOÀI công việc thiết kế W',cmsOptional('graphic',val('graphic')))+
+ fLabel('Số tư liệu mới NGOÀI công việc Media W',cmsOptional('media',val('media')))+
  fLabel('Tháng hoàn tất đợt đầu','<select name="month">'+opt(Object.fromEntries(months.map(m=>[m,'Tháng '+m])),String(cv.month??type.first))+'</select>')+
  apply+'</form>';
  const activation=active?'':'<form class="form" data-cms-activate="'+e(unit.id)+'"><p>Đơn vị chưa có thời điểm bắt đầu được xác nhận. Chọn tháng khi có căn cứ phân công/bàn giao để mở phép tính.</p>'+fLabel('Tháng bắt đầu','<select name="month"><option value="">Chưa xác minh</option>'+months.map(m=>'<option value="'+m+'">Tháng '+m+'</option>').join('')+'</select>')+apply+'</form>';
