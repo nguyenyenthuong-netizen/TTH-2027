@@ -6,6 +6,7 @@ on:
       - 'tth-site.zip'
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
+      - 'scripts/khung_ctda_trong_diem_2027.py'
       - 'scripts/khung_embed_plan_2027.py'
       - 'scripts/marketing_2027_bundle.py'
       - 'scripts/layout_fix.py'
@@ -347,6 +348,7 @@ jobs:
           cp pages-overrides/catalog/ke-hoach-mkt-2027.html _site/ke-hoach-mkt-2027/index.html
           cp pages-overrides/catalog/ke-hoach-mkt-2027-data.json _site/ke-hoach-mkt-2027/data.json
           python3 scripts/marketing_2027_bundle.py _site
+          python3 scripts/khung_ctda_trong_diem_2027.py _site
           python3 scripts/khung_embed_plan_2027.py _site
           python3 - <<'PY'
           from pathlib import Path
@@ -365,6 +367,9 @@ jobs:
           d=json.loads(Path('_site/ke-hoach-mkt-2027/data.json').read_text('utf-8'))
           assert len(d['roles'])==26 and len(d['monthlyActions'])>=624
           assert len(d['portfolio']['programs'])==6 and len(d['portfolio']['projects'])==24
+          assert d['ctdaAddendum']['counts']['outputs']==132 and d['ctdaAddendum']['counts']['steps']==660
+          assert d['ctdaAddendum']['workloadPolicy']['bookingStatus']=='CHUA_CHO_PHEP_CONG_TAI'
+          assert Path('_site/ke-hoach-mkt-2027/phu-luc-trong-diem-2027.csv').is_file()
           assert len(d['portfolio']['tasks'])==288 and len(d['issuance']['catalog'])==325
           assert len(d['portfolio']['stageRegister'])==64
           assert len(d['portfolio']['namedTwoPhaseInitiatives'])==2
