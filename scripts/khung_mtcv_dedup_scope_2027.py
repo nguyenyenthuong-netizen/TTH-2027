@@ -81,9 +81,9 @@ conditional=[w for w in works if isinstance(w["q"],(int,float)) and w["q"]==0]
 perrole=[]
 for rid,role in roles.items():
     rworks=[w for w in works if w["role"]==rid]
-    aswriter=sum(d["writer"]==rid for d in docs)
-    asreview=sum(d["reviewer"]==rid for d in docs)
-    asowner=sum(d["owner"]==rid for d in docs)
+    aswriter=sum(str(d["writer"]).split("@",1)[0]==rid for d in docs)
+    asreview=sum(str(d["reviewer"]).split("@",1)[0]==rid for d in docs)
+    asowner=sum(str(d["owner"]).split("@",1)[0]==rid for d in docs)
     perrole.append({"id":rid,"name":role["name"],"seats":role["seats"],
       "mtcv":len(links[rid]),"operations":len(rworks),
       "docWriter":aswriter,"docReviewer":asreview,"docOwner":asowner,
