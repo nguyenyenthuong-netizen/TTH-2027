@@ -24,6 +24,8 @@ on:
       - 'scripts/khung_dinh_bien_chi_so_audit.py'
       - 'scripts/khung_staffing_doc_columns_2027.py'
       - 'scripts/khung_reporting_qa_2027.py'
+      - 'scripts/khung_mtcv_dedup_acceptance_2027.py'
+      - 'scripts/khung_mtcv_dedup_scope_2027.py'
       - 'scripts/khung_staffing_focus_browser_2027.py'
       - 'scripts/khung_reporting_governance_2027.py'
       - 'scripts/khung_staffing_focus_layout_2027.py'
@@ -377,6 +379,10 @@ jobs:
         run: python3 scripts/khung_reporting_qa_2027.py _site
       - name: Kiem thu cua so dinh bien rong tren Chrome desktop va mobile
         run: python3 scripts/khung_staffing_focus_browser_2027.py _site
+      - name: Doi soat CNNV MTCV va canh bao tinh trung thep cong doan
+        run: python3 scripts/khung_mtcv_dedup_scope_2027.py _site
+      - name: Kiem toan tat ca gio cong theo nguoi thang va loai viec tren 3 kich ban
+        run: python3 scripts/khung_mtcv_dedup_acceptance_2027.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
