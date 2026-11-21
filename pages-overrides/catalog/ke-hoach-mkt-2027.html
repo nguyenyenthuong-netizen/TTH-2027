@@ -68,10 +68,14 @@ function drawProgram(){
  var p=D.portfolio,pg=p.programs.filter(newFilter),pj=p.projects.filter(newFilter),ts=p.tasks.filter(newFilter);
  var html='<div class="call"><b>Kế hoạch mẫu năm 2027:</b> Chương trình → dự án thành phần → mốc tháng → một sản phẩm được nghiệm thu. Chương trình và dự án mẹ không hạch toán giờ; công việc con phải nối sổ giờ Mục 05. Chỉ tiêu/ngân sách chưa có số nền được để chờ xác nhận.</div>';
  html+='<div class="summary-grid">'+pg.map(function(x){return card(x.programId+' · '+x.name,'<p>'+cell(x.goal)+'</p><p><b>Chủ trì:</b> '+cell(shortRole(x.owner))+'<br><b>Nhà bảo trợ:</b> '+cell(shortRole(x.sponsor))+'<br><b>Dự án:</b> '+cell(x.projectCodes.join(', '))+'</p>')}).join("")+'</div>';
+ html+='<h3>8 mục tiêu quản trị Marketing năm 2027</h3>';
+ html+=table(['Mục tiêu','Cách đo','Chủ trì','Chỉ tiêu'],p.annualTargets.map(function(x){return [cell(x.goal),cell(x.measure),cell(shortRole(x.owner)),'Chờ số nền và cấp có thẩm quyền duyệt']}),'wide');
  html+='<h3>Danh mục dự án thành phần · '+pj.length+'</h3>';
  html+=table(["Dự án","Chương trình","Mục tiêu","Chủ trì và kiểm","Phạm vi","Điều kiện"],pj.map(function(x){return [cell(x.projectId)+'<small>'+cell(x.name)+'</small>',cell(programName(x.programId)),cell(x.goal),cell(shortRole(x.ownerRoleId))+'<small>Kiểm: '+cell(shortRole(x.independentReviewerRoleId))+'</small>',cell(x.units),cell(x.activation)]}),"wide");
+ html+='<details'+($("month").value?' open':'')+'><summary style="font-weight:750;cursor:pointer">Mở danh sách '+ts.length+' công việc trọng điểm theo tháng</summary>';
  html+='<h3>Công việc trọng điểm theo '+($("month").value?'tháng '+$("month").value:'12 tháng')+' · '+ts.length+'</h3>';
  html+=table(["Mã việc","Dự án","Việc phải làm","Đầu ra phải nộp","Hạn & người thực hiện","Trạng thái"],ts.map(function(x){return [cell(x.taskId),cell(x.projectId),cell(x.name),cell(x.deliverable),cell(x.dueDate)+'<small>'+cell(shortRole(x.executorRoleId))+'</small>',cell(x.status)]}),"wide");
+ html+='</details>';
  $("panel").innerHTML=head("Kế hoạch năm, chương trình và dự án thành phần",ts.length,"Lọc chương trình hoặc tháng để xem đúng đầu ra và tiến độ dự kiến.")+html;
 }
 function drawTracking(){
@@ -79,8 +83,10 @@ function drawTracking(){
  var h='<div class="call redline"><b>Giao việc không đồng nghĩa cộng giờ.</b> Mỗi mốc trọng điểm có một mã việc, mã sản phẩm và người chịu trách nhiệm. Hoạt động định kỳ dưới đây là sổ công việc đã tồn tại trong phép tính Mục 05, không phát sinh giờ thứ hai. Phải ghi người thực nhận, ngày hoàn tất, bằng chứng và thời gian thực tế trước nghiệm thu.</div>';
  h+='<h3>Công việc hạng mục trọng điểm · '+ts.length+'</h3>';
  h+=table(["Mã","Chương trình / dự án","Việc và đầu ra","Hạn","Chủ / người làm / kiểm","Chỉ số – chứng cứ"],ts.map(function(x){return [cell(x.taskId),cell(programName(x.programId))+'<small>'+cell(x.projectId)+'</small>',cell(x.name)+'<small>'+cell(x.deliverable)+'</small>',cell(x.dueDate),cell(shortRole(x.ownerRoleId))+'<small>Làm: '+cell(shortRole(x.executorRoleId))+'; kiểm: '+cell(shortRole(x.reviewerRoleId))+'</small>',cell(x.kpiIds.join(', '))+'<small>File, ngày nghiệm thu; giờ chờ nối sổ</small>']}),"wide");
+ h+='<details><summary style="font-weight:750;cursor:pointer">Mở chi tiết công việc thường xuyên theo sổ giờ Mục 05</summary>';
  h+='<h3>Đầu ra thường xuyên theo sổ Mục 05 · '+ops.length+'</h3>';
  h+=table(["Mã sổ giờ","Người/đơn vị","Đầu ra nguồn","Chu kỳ","Định mức phút công đoạn","Trạng thái"],ops.map(function(x){return [cell(x.workloadLedgerId),cell(shortRole(x.ownerRoleId))+'<small>'+cell(x.locationName)+'</small>',cell(x.name),cell(x.frequency),cell(x.unitMinutes)+' <small>'+cell(x.minutesByStage.join(' / '))+'</small>',cell(x.status)]}),"wide");
+ h+='</details>';
  $("panel").innerHTML=head("Sổ giao việc và nghiệm thu theo phần mềm",ts.length+ops.length,"Tách nguồn trọng điểm và định kỳ, giữ một mã sổ giờ gốc để không cộng trùng.")+h;
 }
 function drawIssued(){
@@ -109,8 +115,10 @@ function drawIssued(){
  var group={};rows.forEach(function(x){group[x.category]=(group[x.category]||0)+1});
  h+='<h3>Kiểm kê theo loại sản phẩm</h3>';
  h+=table(["Loại","Mã dự kiến/tra cứu","Số ban hành có chứng từ"],Object.keys(group).sort().map(function(k){return [cell(k),cell(group[k]),missing?"Chưa có dữ liệu":"Xem sổ sự kiện"]}),"wide");
+ h+='<details><summary style="font-weight:750;cursor:pointer">Mở 325 mã tài liệu/mẫu/quy trình đang kiểm kê</summary>';
  h+='<h3>Danh mục tài liệu, mẫu và quy trình cần đối chiếu · '+rows.length+'</h3>';
  h+=table(["Mã","Tên","Loại","Nguồn danh mục","Chủ trì và thời hạn","Tình trạng"],rows.map(function(x){return [cell(x.code),cell(x.title),cell(x.category),cell(x.source)+(x.proposalOnly?"<small>Chưa phải bản mẫu được ký</small>":""),cell(shortRole(x.ownerRoleId))+"<small>"+cell(x.plannedDeadline)+"</small>",cell(x.status)]}),"wide");
+ h+='</details>';
  $("panel").innerHTML=head("Sổ ban hành và kết quả cuối kỳ toàn Phòng Marketing",rows.length,"Tính tất cả nguồn trọng điểm, thường xuyên và phát sinh, không cộng trùng sản phẩm gốc.")+h;
 }
 function drawKpis(){
