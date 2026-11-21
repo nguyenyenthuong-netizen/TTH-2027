@@ -144,5 +144,8 @@ def check(page, width, form, out):
     pane('suff')
     assert host.locator('#db-main').get_by_text('Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống',exact=True).is_visible()
     assert 'CHƯA ĐỦ CĂN CỨ XÁC NHẬN' in host.locator('#db-main').inner_text()
+    assert 'Bản đồ nguy cơ ảnh hưởng dây chuyền theo tháng' in host.locator('#db-main').inner_text()
+    assert 'Quy tắc chặn để tránh lan truyền chậm tiến độ' in host.locator('#db-main').inner_text()
+    assert 'CHƯA ĐỦ CĂN CỨ' in host.locator('#db-main').inner_text()
     pane('roadmap')
     print('PASS Mục 05:',form,'12 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
