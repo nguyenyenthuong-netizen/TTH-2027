@@ -144,6 +144,9 @@ def check(page, width, form, out):
     pane('suff')
     assert host.locator('#db-main').get_by_text('Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống',exact=True).is_visible()
     assert 'CHƯA ĐỦ CĂN CỨ XÁC NHẬN' in host.locator('#db-main').inner_text()
+    assert 'Giải thích quỹ 25% dự phòng' in host.locator('#db-main').inner_text()
+    assert 'không phải tăng thêm 25% suất nhân sự' in host.locator('#db-main').inner_text()
+    assert host.get_by_text('Mở bảng theo tháng: quỹ dự phòng đã dùng và giờ vượt quỹ tổng',exact=True).count()==1
     assert 'Bản đồ nguy cơ ảnh hưởng dây chuyền theo tháng' in host.locator('#db-main').inner_text()
     assert 'Quy tắc chặn để tránh lan truyền chậm tiến độ' in host.locator('#db-main').inner_text()
     assert 'CHƯA ĐỦ CĂN CỨ' in host.locator('#db-main').inner_text()
