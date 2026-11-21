@@ -35,6 +35,9 @@ on:
       - 'scripts/khung_output_semantic_review_2027.py'
       - 'scripts/khung_export_output_matrix_2027.py'
       - 'scripts/khung_role_time_output_audit_2027.py'
+      - 'scripts/khung_annual_plan_reporting_2027.py'
+      - 'pages-overrides/annual-marketing-2027-plan.html'
+      - 'pages-overrides/annual-marketing-2027-report.html'
       - 'scripts/khung_browser_acceptance_2027.py'
       - 'scripts/khung_scenario_acceptance_2027.py'
       - 'scripts/khung_cvt_examples_2027.py'
@@ -239,6 +242,8 @@ jobs:
         run: python3 scripts/khung_preissuance_review_2027.py _site
       - name: Xuat bo dinh muc san pham, thoi gian va dau ra cho toan bo 26 vi tri
         run: python3 scripts/khung_role_time_output_audit_2027.py _site
+      - name: Bo sung mau ke hoach va bao cao tong ket Marketing nam 2027 vao khung
+        run: python3 scripts/khung_annual_plan_reporting_2027.py _site
       - name: Cai thu vien kiem tra giao dien bang Chrome
         run: python3 -m pip install --user --break-system-packages --disable-pip-version-check playwright==1.55.0 Pillow
       - name: Thu 8 luong thuc te tren desktop va mobile
