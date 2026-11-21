@@ -19,10 +19,17 @@ ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/"pages-overrides/catalog"
 FIELD_TASKS=[
  "module","programId","projectId","parentId","taskId","deliverableId","name","deliverable",
- "startDate","dueDate","month","ownerRoleId","executorRoleId","reviewerRoleId",
+ "startDate","dueDate","month","stageId","stageCode","stageName","stageExitGate","gateStatus","ownerRoleId","executorRoleId","reviewerRoleId",
  "approver","brandGroup","units","channel","activationGate","status","dependencies",
  "kpiIds","completionEvidence","workloadLedgerId","approvedBudgetVND","approvedKpi",
  "proposedPersonId","actualDoneDate","actualHours"
+]
+FIELD_STAGES=[
+ "programId","projectId","stageId","stageCode","stageName","stageOrder",
+ "plannedStartMonth","plannedEndMonth","plannedStartDate","plannedEndDate",
+ "ownerRoleId","reviewerRoleId","entryGate","exitGate","acceptanceEvidence",
+ "dependencies","milestoneCount","stageProducts","stageStatus","conditionalActivation",
+ "plannedHours","actualHours","approvedAt","reviewDate","isApproved"
 ]
 FIELD_ARTIFACTS=[
  "artifactId","code","title","category","source","reported","proposalOnly",
@@ -203,6 +210,15 @@ def prepare(site):
     assert len(roles)==26 and len(cat["monthlyActions"])>=624
     assert len(programs)==6 and len(projects)==24 and len(priority)==288
     assert len(portfolio["kpis"])==23 and len(issuance["catalog"])==325
+    assert len(portfolio["stageRegister"])==64 and len(portfolio["namedTwoPhaseInitiatives"])==2
+    stage_ids={x["stageId"] for x in portfolio["stageRegister"]}
+    assert len(stage_ids)==64 and all(t.get("stageId") in stage_ids for t in priority)
+    for p in portfolio["projects"]:
+        pieces=sorted((x for x in portfolio["stageRegister"] if x["projectId"]==p["projectId"]),key=lambda x:x["plannedStartMonth"])
+        assert [m for stage in pieces for m in range(stage["plannedStartMonth"],stage["plannedEndMonth"]+1)]==list(range(1,13)), p["projectId"]
+    for phase in portfolio["stageRegister"]:
+        assert phase["stageProducts"] and phase["exitGate"] and phase["acceptanceEvidence"]
+        assert all(t["stageId"]==phase["stageId"] for t in priority if t["taskId"] in {o["taskId"] for o in phase["stageProducts"]})
     assert all(p["programId"] in programs for p in portfolio["projects"])
     assert all(t["projectId"] in projects and t["ownerRoleId"] in roles for t in priority)
     assert len(set(t["taskId"] for t in priority))==len(priority)
@@ -258,6 +274,8 @@ def prepare(site):
     (target/"phan-tich-ban-hanh.json").write_text(json.dumps(issuance["summary"],ensure_ascii=False,indent=2),"utf-8")
     (target/"phan-he-phan-mem.json").write_text(json.dumps(portfolio["importContract"],ensure_ascii=False,indent=2),"utf-8")
     write_csv(target/"nhap-phan-mem-du-an-trong-diem.csv",FIELD_TASKS,priority)
+    write_csv(target/"giai-doan-hang-muc-trong-diem.csv",FIELD_STAGES,portfolio["stageRegister"])
+    (target/"lo-trinh-hai-giai-doan.json").write_text(json.dumps(portfolio["namedTwoPhaseInitiatives"],ensure_ascii=False,indent=2),"utf-8")
     write_csv(target/"nhap-phan-mem-cong-viec-thuong-xuyen.csv",[
         "taskId","module","workloadLedgerId","name","ownerRoleId","executorRoleId",
         "locationId","locationName","quantityRule","frequency","minutesByStage",
@@ -278,7 +296,7 @@ def prepare(site):
     print("PASS Marketing 2027 bundle:",
           len(portfolio["programs"]),"programs,",
           len(projects),"projects,",
-          len(priority),"priority tasks,",
+          len(priority),"priority tasks,",len(portfolio["stageRegister"]),"project stages,",
           len(operations),"operational time-ledger references,",
           len(issuance["catalog"]),"artifact codes,",
           len(issuance["events"]),"verified release events,",
