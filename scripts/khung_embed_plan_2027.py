@@ -25,6 +25,8 @@ def integrate(site: Path):
     assert len(d["portfolio"]["programs"])==6 and len(d["portfolio"]["projects"])==24
     assert len(d["portfolio"]["tasks"])==288 and len(d["issuance"]["catalog"])==325
     assert len(d["roles"]) == 26, "Required roles absent"
+    assert len(d["yearEndCommitments"]["outcomes"])==7, "Missing 7 executive year-end outcomes"
+    assert len(d["yearEndCommitments"]["monthlyGates"])==84, "Missing 84 monthly outcome checkpoints"
     assert d["ctdaAddendum"]["counts"] == {"programs":13,"launchFacilities":7,"outputs":132,"steps":660,"mktStepsMissingHour":528,"unclassifiedHourSteps":132}, "CTDA addendum incomplete"
     assert len({o["code"] for o in d["ctdaAddendum"]["operations"]}) == 660, "Duplicate CTDA operation"
     assert len(d["monthlyActions"]) >= 624, "Missing monthly assignments"
@@ -63,13 +65,13 @@ def integrate(site: Path):
         '<details open style="margin:0">\n'
         '<summary style="background:#0837A1;color:#fff;padding:16px 20px;'
         'font-weight:750;font-size:17px;cursor:pointer;line-height:1.5">'
-        'KẾ HOẠCH 2027: 6 CHƯƠNG TRÌNH · 24 DỰ ÁN · ĐỐI CHIẾU 13 HẠNG MỤC · 12 THÁNG · 26 CHỨC DANH'
+        'KẾT QUẢ 2027: 7 ĐÍCH ĐẾN · 6 CHƯƠNG TRÌNH · 24 DỰ ÁN · 12 THÁNG · 26 CHỨC DANH'
         '<span style="display:block;font-size:12px;font-weight:450;color:#e6efff">'
         'Nằm trong Mục 05 – Định biên; nhấn để thu gọn/mở rộng nội dung'
         '</span></summary>\n'
         '<div style="padding:10px;background:#f4f7fd">'
         '<div style="padding:8px 10px 12px;color:#244466;font-size:13px;line-height:1.6">'
-        '<strong>Đang đối soát, chưa ban hành:</strong> 132 đầu ra phụ lục và 660 bước cần đối chiếu sổ giờ; '
+        '<strong>Đích đến năm 2027:</strong> 7 kết quả cấp hệ thống, 25 chỉ số cần đối chiếu bộ KPI gốc; 84 cổng tháng chưa có số giao. 132 đầu ra phụ lục và 660 bước cần đối chiếu sổ giờ; '
         '325 mã mẫu/tài liệu/quy trình cần đối chiếu; 23 KPI, 496 đầu ra MTCV. '
         'Người thực nhận, quỹ giờ và quyền phê duyệt phải xác nhận trước khi giao chính thức.'
         '</div>'
