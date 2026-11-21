@@ -4,13 +4,13 @@ const host=document.getElementById('dinh-bien-2027');if(!host||host.shadowRoot)r
 const root=host.attachShadow({mode:'open'}),db=JSON.parse(document.getElementById('csdl').textContent),model=db.dinh_bien_theo_dau_ra_2027;
 const {sum,months,simulate}=TTHStaffing;
 const cases={base:'Cơ sở',high:'Tải cao',opt:'Tối ưu'};
-const tabs={roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
+const tabs={roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán',full:'Đầu ra và công đoạn',cms:'CMS website/App',assets:'Tài sản và 30 kênh',suff:'Kiểm đủ tải'};
 const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việc dùng dự phòng',K:'Quản lý theo MTCV',T:'Kiêm Tổ trưởng',G:'Theo lộ trình vùng'};
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
 const titles={...model.external,...Object.fromEntries(db.don_vi.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vai_tro.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vi_tri.map(x=>[x.id,x.ten]))};
 const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},splits:{},docs:{},work:{}});
-let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',chiefSeat:'a',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0};
+let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',chiefSeat:'a',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0,cmsUnit:'vinh',cmsType:'bac-si',assetFilter:'all'};
 function compute(){runs=Object.fromEntries(Object.keys(cases).map(c=>[c,simulate(model,c,edits)]));}compute();
 const e=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const format=(x,n=1)=>x==null?'Chờ xác nhận':Number(x).toLocaleString('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:n});
@@ -259,7 +259,8 @@ function auditPanel(){const r=getRun(),cap=r.cap,c=edits.capacity;const counts={
  `<p class="fine">Nguồn nội bộ: CSDL Khung cơ cấu Marketing TTH 2027, MTCV 26 vị trí, phân công và KPI, mục 6, 8A, 14–16, 21–23, danh mục tài liệu, danh mục quản trị, phụ lục 26 chức danh và phụ lục cơ sở. Thông số thay đổi trong lần xem chỉ phục vụ tính thử; tải lại trang sẽ trở về phương án nguồn.</p>`;
 }
 /* EMBED_DELIVERABLES */
-const panels={roadmap:roadmapDelivery,summary,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel};
+/* EMBED_CMS_UI */
+const panels={roadmap:roadmapDelivery,summary,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel,full:detailedPanel,cms:cmsPanel,assets:assetsPanel,suff:sufficiencyPanel};
 root.innerHTML=`<style>${document.getElementById('tth-staffing-style').textContent}</style><div class="app"><nav class="nav" aria-label="Nội dung Mục 05">${Object.entries(tabs).map(([k,v])=>`<button type="button" data-panel="${k}" aria-pressed="false">${e(v)}</button>`).join('')}</nav><div class="padded"><div class="sr" aria-live="polite" id="db-feedback"></div><div id="db-main"></div></div></div>`;
 function draw(){root.querySelectorAll('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===u.panel)));root.getElementById('db-main').innerHTML=panels[u.panel]();}
 function go(panel,arg=''){
@@ -269,6 +270,7 @@ function go(panel,arg=''){
  u.panel=panel;
  if(panel==='roles'&&arg){const rid=arg.split('/')[0];if(roleMap[rid])u.role=rid;}
  if(panel==='sites'&&arg&&siteMap[arg])u.site=arg;
+ if(panel==='cms'&&arg&&model.cms.units.some(x=>x.id===arg))u.cmsUnit=arg;
  if(panel==='docs'&&arg){u.docType='all';u.doc=arg.split('~')[0];}
  if(panel==='flows'&&arg)u.flow=arg;
  draw();
@@ -302,6 +304,8 @@ root.addEventListener('submit',ev=>{ev.preventDefault();const form=ev.target,fd=
    edits.hqVideo[group]={...edits.hqVideo[group],[type]:Number(fd.driver)};
  }edits.work[id]={t:segment.map((_,i)=>Number(fd['t'+i])),...(fd.q!==undefined?{q:Number(fd.q)}:{})};reopen=['work',id];}
  else if(form.dataset.editDoc){const id=form.dataset.editDoc;edits.docs[id]={action:fd.action,count:Number(fd.count),month:Number(fd.month)};reopen=['doc',id];}
+ else if(form.dataset.cmsRow){const id=form.dataset.cmsRow;edits.cms=edits.cms||{};edits.cms[id]={...Object.fromEntries(['base','reuse','maint','graphic','media'].map(k=>[k,fd[k]===''?null:Number(fd[k])])),month:Number(fd.month)};}
+ else if(form.dataset.cmsActivate){const id=form.dataset.cmsActivate;edits.cmsUnits=edits.cmsUnits||{};edits.cmsUnits[id]=fd.month===''?null:Number(fd.month);}
  compute();draw();if(reopen){if(reopen[0]==='doc'){const it=[...root.querySelectorAll('[data-doc-key]')].find(x=>x.dataset.docKey===reopen[1]);if(it)it.open=true;}else{const ff=[...root.querySelectorAll('[data-edit-work]')].find(x=>x.dataset.editWork===reopen[1]);if(ff){for(let p=ff.parentElement;p&&p!==root;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;}}}root.getElementById('db-feedback').textContent='Đã cập nhật các phép tính theo đầu vào của lần xem.';});
 document.addEventListener('click',ev=>{const a=ev.target.closest?.('[data-staff-panel],[data-staff-role]');if(!a)return;ev.preventDefault();document.querySelector('.tab[data-target="staffing"]')?.click();go(a.dataset.staffRole?'roles':a.dataset.staffPanel,a.dataset.staffRole||'');if(location.hash!=='#dinh-bien-2027')location.hash='dinh-bien-2027';else host.scrollIntoView({block:'start'});});
 draw();
