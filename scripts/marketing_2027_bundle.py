@@ -201,9 +201,58 @@ def summarize_issuance(registry):
         "note":"Chua co du lieu duoc xac minh thi KHONG duoc suy dien 0 la ket qua thuc. Khong tu cong so ma danh muc thanh so da ban hanh."
     }
 
+def normalize_kpi_namespace(portfolio):
+    """Separate the draft plan KPI codes from strategic KPI codes.
+
+    Original KPI-01..23 labels were reused with distinct meanings in the
+    strategic CSDL. A shared number NEVER implies semantic equivalence.
+    """
+    kpis=portfolio["kpis"]
+    originals=[x["id"] for x in kpis]
+    assert len(originals)==23 and len(set(originals))==23
+    assert all(re.fullmatch(r"KPI-\d{2}",code) for code in originals),originals
+    mapping={old:"KH27-"+old for old in originals}
+    def change(node):
+        if isinstance(node,dict):
+            return {key:change(value) for key,value in node.items()}
+        if isinstance(node,list):
+            return [change(value) for value in node]
+        if isinstance(node,str):
+            return mapping.get(node,node)
+        return node
+    p=change(portfolio)
+    p["kpiCodeCrosswalk"]=[
+        {"sourceSystem":"KE_HOACH_MARKETING_2027","sourceCode":old,
+         "canonicalCode":mapping[old],
+         "name":next(x["name"] for x in kpis if x["id"]==old),
+         "equivalentStrategicKpiId":None,
+         "approvalStatus":"CHUA_XAC_NHAN_TUONG_DUONG"}
+        for old in originals
+    ]
+    p["kpiCodePolicy"]={
+        "strategyNamespace":"KPI-xx (CSDL khung)",
+        "planNamespace":"KH27-KPI-xx (kế hoạch 2027)",
+        "yearEndNamespace":"KQ27-xx",
+        "crosswalkStatus":"CHO_DOI_CHIEU_NGHIEP_VU",
+        "noImplicitEquivalence":True,
+        "meaning":"Tách mã kỹ thuật; không đồng nghĩa KPI/chỉ tiêu đã được duyệt"
+    }
+    ids={x["id"] for x in p["kpis"]}
+    assert len(ids)==23
+    def verify_refs(node):
+        if isinstance(node,dict):
+            if "kpiIds" in node:
+                assert set(node["kpiIds"])<=ids,("Unknown KPI reference",node.get("taskId") or node.get("projectId"))
+            for value in node.values():verify_refs(value)
+        elif isinstance(node,list):
+            for value in node:verify_refs(value)
+    verify_refs(p)
+    return p
+
+
 def prepare(site):
     cat=json.loads((SOURCE/"ke-hoach-mkt-2027-data.json").read_text("utf-8"))
-    portfolio=json.loads((SOURCE/"marketing-2027-portfolio.json").read_text("utf-8"))
+    portfolio=normalize_kpi_namespace(json.loads((SOURCE/"marketing-2027-portfolio.json").read_text("utf-8")))
     issuance=json.loads((SOURCE/"marketing-2027-issuance-register.json").read_text("utf-8"))
     roles={r["id"] for r in cat["roles"]}
     programs={p["programId"] for p in portfolio["programs"]}
@@ -277,6 +326,29 @@ def prepare(site):
     (target/"phan-tich-ban-hanh.json").write_text(json.dumps(issuance["summary"],ensure_ascii=False,indent=2),"utf-8")
     (target/"phan-he-phan-mem.json").write_text(json.dumps(portfolio["importContract"],ensure_ascii=False,indent=2),"utf-8")
     write_csv(target/"nhap-phan-mem-du-an-trong-diem.csv",FIELD_TASKS,priority)
+    # Review-only workload crosswalk. No unverified new hours are entered.
+    workload_review=[]
+    for item in priority:
+        current=item.get("workloadLedgerId")
+        workload_review.append({
+            "taskId":item["taskId"],"projectId":item["projectId"],
+            "stageId":item.get("stageId"),"name":item["name"],
+            "ownerRoleId":item["ownerRoleId"],
+            "executorRoleId":item["executorRoleId"],
+            "reviewerRoleId":item.get("reviewerRoleId"),
+            "workloadLedgerId":current,
+            "reconciliationState":"CO_MA_SO_GOC_CHO_KIEM" if current else "CHUA_DOI_CHIEU_SO_W",
+            "workloadClass":"CHUA_XAC_NHAN_DA_TINH_TRONG_W_HAY_TANG_MOI",
+            "incrementalHours":None,
+            "bookingAllowed":False,
+            "confirmationEvidence":None
+        })
+    write_csv(target/"doi-chieu-tai-288-cong-viec-trong-diem.csv",[
+        "taskId","projectId","stageId","name","ownerRoleId",
+        "executorRoleId","reviewerRoleId","workloadLedgerId",
+        "reconciliationState","workloadClass","incrementalHours",
+        "bookingAllowed","confirmationEvidence"
+    ],workload_review)
     write_csv(target/"giai-doan-hang-muc-trong-diem.csv",FIELD_STAGES,portfolio["stageRegister"])
     (target/"lo-trinh-hai-giai-doan.json").write_text(json.dumps(portfolio["namedTwoPhaseInitiatives"],ensure_ascii=False,indent=2),"utf-8")
     write_csv(target/"nhap-phan-mem-cong-viec-thuong-xuyen.csv",[
@@ -291,6 +363,10 @@ def prepare(site):
         "id","name","formula","dataSource","ownerRoleId","checkerRoleId",
         "cadence","base2026","plan2027","actual","collectionGate"
     ],portfolio["kpis"])
+    write_csv(target/"doi-chieu-ma-kpi.csv",[
+        "sourceSystem","sourceCode","canonicalCode","name",
+        "equivalentStrategicKpiId","approvalStatus"
+    ],portfolio["kpiCodeCrosswalk"])
     write_csv(target/"cong-viec-theo-chuc-danh-12-thang.csv",[
         "id","role","month","kind","start","due","job","product","owner",
         "executor","collaborators","checker","status","hours","quantity",
