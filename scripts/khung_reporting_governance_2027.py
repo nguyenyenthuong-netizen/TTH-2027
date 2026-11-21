@@ -54,7 +54,7 @@ for w in works:
            conditional=not bool(w['q'])))
 coverage={rid:sum(1 for x in report_ops if x['role']==rid) for rid in roles}
 assert all(any(w['role']==rid for w in works) for rid in roles)
-assert all(x['minutes']>0 for x in report_ops if x['qty']>0)
+assert all(x['minutes']>0 for x in report_ops if isinstance(x['qty'],(int,float)) and x['qty']>0)
 assert any(x['id']=='tp/bc-tuan-kiem' for x in report_ops)
 assert any(x['id']=='dl-1/tuan' for x in report_ops)
 assert any(x['id']=='dl-1/bc' for x in report_ops)
@@ -83,7 +83,7 @@ function reportCheck2027(){
  const tab=related.map(x=>[
   '<b>'+e(x.title)+'</b><small>'+e(x.ref)+'</small>',
   e(name(x.role)),
-  format(x.qty,0)+' / '+e(periods[x.period]||x.period),
+  (typeof x.qty==='number'?format(x.qty,0):e(model.drivers[String(x.qty).replace(/^@/,'')]||x.qty))+' / '+e(periods[x.period]||x.period),
   nu(x.minutes/60,2)+' giờ/lượt',
   e(x.note)
  ]);
