@@ -31,6 +31,8 @@ on:
       - 'scripts/khung_mtcv_dedup_acceptance_2027.py'
       - 'scripts/khung_mtcv_dedup_browser_2027.py'
       - 'scripts/khung_platform_dual_view_qa_2027.py'
+      - 'scripts/khung_control_tower_360_2027.py'
+      - 'scripts/khung_control_tower_360_qa_2027.py'
       - 'scripts/khung_mtcv_dedup_scope_2027.py'
       - 'scripts/khung_staffing_focus_browser_2027.py'
       - 'scripts/khung_reporting_governance_2027.py'
@@ -408,6 +410,10 @@ jobs:
         run: python3 scripts/khung_mtcv_dedup_browser_2027.py _site
       - name: Kiem thu man hinh quan tri va van hanh 30 kenh tren Chrome
         run: python3 scripts/khung_platform_dual_view_qa_2027.py _site
+      - name: Tao ban dieu hanh 360 do tren cung so viec va gio cong
+        run: python3 scripts/khung_control_tower_360_2027.py _site
+      - name: Nghiem thu 360 do thong qua 36 diem quang + quyen + 12x3 tai
+        run: python3 scripts/khung_control_tower_360_qa_2027.py _site
       - name: Kiem toan mau thuan toan bo 12 phan va Muc 05 theo du lieu trang da dung
         run: python3 scripts/khung_kiem_toan_chong_mau_thuan_2027.py _site
       - name: Cau hinh GitHub Pages
