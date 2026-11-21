@@ -109,7 +109,7 @@ function sufficiencyPanel(){
     return [e(cases[c]),nu(runs[c].roll(runs[c].monthly(Object.keys(runs[c].roles))).total),
       nu(p.length),nu(y.length),
       nu(runs[c].cms.unknown.length),
-      c===u.scenario?'<b>Đang xem</b>':btn('Chọn kịch bản','suff',c)];
+      c===u.scenario?'<b>Đang xem</b>':'Chọn ở bộ lọc bên trên'];
  });
  const topRows=overload.map(x=>{
     const v=x.review,peak=v.periods.reduce((a,b)=>a.excess>=b.excess?a:b);
