@@ -22,6 +22,9 @@ on:
       - 'scripts/site_consistency_audit.py'
       - 'scripts/khung_dinh_bien_chi_so_audit.py'
       - 'scripts/khung_staffing_doc_columns_2027.py'
+      - 'scripts/khung_reporting_qa_2027.py'
+      - 'scripts/khung_reporting_governance_2027.py'
+      - 'scripts/khung_staffing_focus_layout_2027.py'
       - 'scripts/khung_cvt_deep_audit_2027.py'
       - 'scripts/khung_contradiction_resolution_2027.py'
       - 'scripts/khung_dinh_bien_36_lock_2027.py'
@@ -360,6 +363,12 @@ jobs:
           PY
       - name: Can chinh do rong cot bang phan cong ho so Muc 05
         run: python3 scripts/khung_staffing_doc_columns_2027.py _site
+      - name: Phan biet gio soan bieu mau va lap kiem bao cao 26 chuc danh
+        run: python3 scripts/khung_reporting_governance_2027.py _site
+      - name: Mo rong cua so xem bang dinh bien
+        run: python3 scripts/khung_staffing_focus_layout_2027.py _site
+      - name: Kiem thu tai bao cao va khung rong khong cat noi dung
+        run: python3 scripts/khung_reporting_qa_2027.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
