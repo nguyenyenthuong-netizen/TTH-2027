@@ -7,6 +7,7 @@ const db=JSON.parse(match[1]);
 const model=db.dinh_bien_theo_dau_ra_2027;
 assert(model&&Object.keys(model.roles).length===26&&Object.values(model.seats).reduce((a,b)=>a+b,0)===36);
 const TTHCms=require('../pages-overrides/2027-1911-final/dinh-bien/cms_calc.js');
+global.TTHCms=TTHCms;
 const TTHStaffing=require('../pages-overrides/2027-1911-final/dinh-bien/calculate.js');
 const sum=TTHStaffing.sum,months=TTHStaffing.months;
 const edits={capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},splits:{},docs:{},work:{}};
