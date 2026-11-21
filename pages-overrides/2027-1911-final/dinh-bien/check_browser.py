@@ -119,4 +119,30 @@ def check(page, width, form, out):
     from urllib.parse import urldefrag
     page.goto(urldefrag(page.url).url+'#dinh-bien-2027',wait_until='domcontentloaded',timeout=30000)
     assert host.locator('[data-panel="summary"]').is_visible() and page.locator('#v-staffing').is_visible()
-    print('PASS Mục 05:',form,'8 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
+    pane('cms')
+    assert host.get_by_text('CMS Website và App – số hồ sơ và giờ từng công đoạn',exact=True).is_visible()
+    assert host.locator('[data-set="cmsUnit"] option').count()==14
+    assert host.locator('[data-set="cmsType"] option').count()==5
+    assert 'Chưa xác minh' in host.locator('#db-main').inner_text()
+    host.locator('[data-set="cmsUnit"]').select_option('vinh')
+    host.locator('[data-set="cmsType"]').select_option('bac-si')
+    cms_form=host.locator('[data-cms-row="vinh/bac-si"]')
+    for k,value in [('base','2'),('reuse','1'),('maint','1'),('graphic','0'),('media','0')]:
+        cms_form.locator('[name="'+k+'"]').fill(value)
+    cms_form.locator('button[type="submit"]').click()
+    assert host.locator('[data-cms-row="vinh/bac-si"] [name=base]').input_value()=='2'
+    assert float(host.locator('.metric b').first.inner_text().replace('.','').replace(',','.'))>0
+    pane('full')
+    host.locator('[data-set="role"]').select_option('qlsps')
+    assert host.get_by_text('Toàn bộ sản phẩm, công đoạn, thời gian theo từng vị trí',exact=True).is_visible()
+    assert 'T2' in host.locator('#db-main').inner_text()
+    assert 'CMS ban đầu' in host.locator('#db-main').inner_text()
+    assert 'NaN' not in host.locator('#db-main').inner_text()
+    pane('assets')
+    assert host.locator('#db-main').get_by_text('Kiểm kê 30 kênh và toàn bộ nhóm tài sản nghiệp vụ',exact=True).is_visible()
+    assert host.locator('#db-main').get_by_text('K-KK-',exact=False).count()>0
+    pane('suff')
+    assert host.locator('#db-main').get_by_text('Kiểm tra đủ sức xử lý công việc theo từng tháng và suất',exact=True).is_visible()
+    assert 'Chưa đủ' in host.locator('#db-main').inner_text() or 'Chưa có' in host.locator('#db-main').inner_text()
+    pane('roadmap')
+    print('PASS Mục 05:',form,'12 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
