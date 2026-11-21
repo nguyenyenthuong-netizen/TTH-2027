@@ -1,0 +1,21 @@
+name: Audit dinh bien 2027 theo suat thang
+on:
+  push:
+    branches: [work/dinh-bien-audit-capacity-21112026]
+    paths:
+      - 'scripts/staffing_capacity_snapshot_2027.py'
+      - 'scripts/staffing_capacity_snapshot_2027.js'
+      - 'pages-overrides/2027-1911-final/dinh-bien/deliverables.js'
+      - '.github/workflows/staffing-capacity-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install YAML
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: Build authentic model and report every overloaded person/month
+        run: python3 scripts/staffing_capacity_snapshot_2027.py
