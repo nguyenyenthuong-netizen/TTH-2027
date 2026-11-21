@@ -77,7 +77,7 @@ anchor='function docsPanel(){'
 if s.count(anchor)!=1:raise SystemExit('Cannot find unique reporting panel insertion point')
 add=r"""/* tth-report-governance-audit-2027 */
 function reportCheck2027(){
- const data=model.reporting_governance_2027,role=u.deliveryRole;
+ const data=model.reporting_governance_2027,role=u.role;
  const related=data.reportOperations.filter(x=>x.role===role);
  const periods={w:'Mỗi tuần',m:'Mỗi tháng',q:'Mỗi quý',qs:'Đầu quý',y12:'Tháng 12',y9:'Tháng 9', '2w':'Hai tuần/lần'};
  const tab=related.map(x=>[
