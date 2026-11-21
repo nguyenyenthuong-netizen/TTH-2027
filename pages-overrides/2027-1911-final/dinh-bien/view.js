@@ -4,13 +4,13 @@ const host=document.getElementById('dinh-bien-2027');if(!host||host.shadowRoot)r
 const root=host.attachShadow({mode:'open'}),db=JSON.parse(document.getElementById('csdl').textContent),model=db.dinh_bien_theo_dau_ra_2027;
 const {sum,months,simulate}=TTHStaffing;
 const cases={base:'Cơ sở',high:'Tải cao',opt:'Tối ưu'};
-const tabs={roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán',full:'Đầu ra và công đoạn',cms:'CMS website/App',assets:'Tài sản và 30 kênh',suff:'Kiểm đủ tải'};
+const tabs={suff:'Kết luận định biên',full:'Đầu ra và công đoạn',roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',cms:'CMS website/App',assets:'Tài sản và 30 kênh',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
 const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việc dùng dự phòng',K:'Quản lý theo MTCV',T:'Kiêm Tổ trưởng',G:'Theo lộ trình vùng'};
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
 const titles={...model.external,...Object.fromEntries(db.don_vi.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vai_tro.map(x=>[x.id,x.ten])),...Object.fromEntries(db.vi_tri.map(x=>[x.id,x.ten]))};
 const defaults=()=>({capacity:{week:47,days:6,leave:24,share:75},clinic:null,eligible:{},sites:{},hqVideo:{},splits:{},docs:{},work:{}});
-let edits=defaults(),runs;const u={panel:'roadmap',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',chiefSeat:'a',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0,cmsUnit:'vinh',cmsType:'bac-si',assetFilter:'all'};
+let edits=defaults(),runs;const u={panel:'suff',phase:'q1',deliveryRole:'dl-1',deliverySite:'vinh',deliverySlot:'all',chiefSeat:'a',pilot1:'',pilot2:'',scenario:'base',role:'tp',site:'vinh',doc:'',docType:'all',flow:'',period:0,cmsUnit:'vinh',cmsType:'bac-si',assetFilter:'all'};
 function compute(){runs=Object.fromEntries(Object.keys(cases).map(c=>[c,simulate(model,c,edits)]));}compute();
 const e=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const format=(x,n=1)=>x==null?'Chờ xác nhận':Number(x).toLocaleString('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:n});
