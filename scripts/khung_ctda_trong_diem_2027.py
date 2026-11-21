@@ -138,6 +138,31 @@ STEPS = [
  "Bàn giao, lưu nguồn và đối chiếu nghiệm thu"]
 LAUNCH_TIME = ["T-120","T-120","T-90","T-60","T-30","T0","T+30","T+90"]
 GATES = ["Chờ xác nhận ngày khai trương","Pháp lý và năng lực y khoa","KPI, ngân sách và công suất","Nhân sự hiện trường","Nội dung/y khoa và định danh nguồn khách","Biên bản nghiệm thu"]
+def performer(pg,n):
+    """Trả về đúng vị trí sản xuất theo hàng S1 của phụ lục gốc."""
+    if pg=="TD27-03":
+        k=(n-1)%8
+        if k==3:return "Quản lý sản phẩm số"
+        if k==5:return "Trưởng nhóm/đầu mối MKT cơ sở"
+        if k==6:return "Chuyên viên đo lường"
+        return "Quản lý thương hiệu đúng nhóm"
+    if pg=="TD27-09":
+        if n==4:return "Biên tập TCT"
+        if n==7:return "Chuyên viên kênh số"
+        return "Quản lý sản phẩm số"
+    if pg=="TD27-12":return "Chủ nghiệp vụ đúng CNNV/MTCV"
+    if pg=="TD27-13":return "Chuyên viên đo lường/đầu mối dữ liệu Marketing"
+    if pg in ("TD27-10","TD27-11"):return "Quản lý sản phẩm số"
+    return "Quản lý thương hiệu đúng nhóm"
+
+def reviewer(pg,n):
+    if pg=="TD27-01" and n in (5,6):return "Thiết kế TCT"
+    if pg=="TD27-02":return "Thiết kế/Truyền thông theo công đoạn – chưa chỉ định người kiểm"
+    if pg=="TD27-03" and (n-1)%8==5:return "CVT Nội dung – Sáng tạo và Marketing cơ sở"
+    if pg in ("TD27-11","TD27-12"):
+        return "CVT Truyền thông – Thương hiệu và Tăng trưởng số (chính); CVT Nội dung – Sáng tạo và Marketing cơ sở (phối hợp, cần tách giờ)"
+    return "CVT Truyền thông – Thương hiệu và Tăng trưởng số"
+
 def build(site: Path):
     p=site/"ke-hoach-mkt-2027/data.json"
     d=json.loads(p.read_text(encoding="utf-8"))
@@ -150,19 +175,19 @@ def build(site: Path):
         owner=next(q["owner"] for q in programs if q["code"]==pg)
         for n,name in enumerate(names,1):
             outcode=f"{pg}-SP{n:03d}"
-            outputs.append(dict(code=outcode,programId=pg,title=name,facilityId=None,relativeMilestone=None,owner=owner,reviewer="Chuyên viên trưởng theo mảng và chủ nghiệp vụ",approver="Người có thẩm quyền theo phân cấp",quantityPlan=None,hoursPerUnit=None,acceptance="Bàn giao được xác nhận; có mã nguồn, phiên bản và bằng chứng",status="CHUA_DUYET",workloadBooking="CHI_TINH_SAU_DOI_CHIEU_MA_GOC"))
+            outputs.append(dict(code=outcode,programId=pg,title=name,facilityId=None,relativeMilestone=None,owner=performer(pg,n),reviewer=reviewer(pg,n),approver="Người có thẩm quyền theo phân cấp",quantityPlan=None,hoursPerUnit=None,acceptance="Bàn giao được xác nhận; có mã nguồn, phiên bản và bằng chứng",status="CHUA_DUYET",workloadBooking="CHI_TINH_SAU_DOI_CHIEU_MA_GOC"))
     pg="TD27-03"
     for facility in launches:
         for n,name in enumerate(LAUNCH_STEPS):
             seq=(int(facility["code"][1:])-1)*8+n+1
             code=f"{pg}-SP{seq:03d}"
-            outputs.append(dict(code=code,programId=pg,title=facility["name"]+": "+name,facilityId=facility["code"],relativeMilestone=LAUNCH_TIME[n],owner="Quản lý thương hiệu đúng nhóm / Chủ dự án cơ sở",reviewer="Chuyên viên trưởng theo tuyến; Y khoa nếu liên quan",approver="Người có thẩm quyền theo phân cấp",quantityPlan=None,hoursPerUnit=None,acceptance="Đủ nguồn chứng minh và xác nhận cơ sở; không tự gán ngày T",status="CHUA_DUYET",workloadBooking="CHI_TINH_KHI_DU_DIEU_KIEN_MO"))
+            outputs.append(dict(code=code,programId=pg,title=facility["name"]+": "+name,facilityId=facility["code"],relativeMilestone=LAUNCH_TIME[n],owner=performer(pg,seq),reviewer=reviewer(pg,seq),approver="Người có thẩm quyền theo phân cấp",quantityPlan=None,hoursPerUnit=None,acceptance="Đủ nguồn chứng minh và xác nhận cơ sở; không tự gán ngày T",status="CHUA_DUYET",workloadBooking="CHI_TINH_KHI_DU_DIEU_KIEN_MO"))
     outputs.sort(key=lambda x:(x["programId"],x["code"]))
     ops=[]
     for o in outputs:
         for i,name in enumerate(STEPS,1):
             nonmkt=i==4
-            ops.append(dict(code=o["code"]+f"-S{i}",outputId=o["code"],programId=o["programId"],stepNo=i,step=name,owner="Theo thẩm quyền; cần xác minh có thuộc Marketing" if nonmkt else o["owner"],hourType="CHUA_XAC_MINH" if nonmkt else "MKT",quantity=None if i==3 else 1,standardHours=None,extraHours=None,chargeableHours=None,status="CHUA_CO_DINH_MUC",duplicateCode=False,bookingRule="Không cộng tải vào sổ giờ hiện hành khi chưa có mã đối chiếu và giờ chuẩn"))
+            ops.append(dict(code=o["code"]+f"-S{i}",outputId=o["code"],programId=o["programId"],stepNo=i,step=name,owner="Theo thẩm quyền; cần xác minh có thuộc Marketing" if nonmkt else (o["reviewer"] if i==2 else o["owner"]),hourType="CHUA_XAC_MINH" if nonmkt else "MKT",quantity=None if i==3 else 1,standardHours=None,extraHours=None,chargeableHours=None,status="CHUA_CO_DINH_MUC",duplicateCode=False,bookingRule="Không cộng tải vào sổ giờ hiện hành khi chưa có mã đối chiếu và giờ chuẩn"))
     assert len(programs)==13 and len(launches)==7 and len(outputs)==132 and len(ops)==660,(len(programs),len(launches),len(outputs),len(ops))
     ids=[x["code"] for x in outputs+ops]
     assert len(ids)==len(set(ids))
