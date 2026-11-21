@@ -38,6 +38,8 @@ on:
       - 'scripts/khung_annual_plan_reporting_2027.py'
       - 'pages-overrides/annual-marketing-2027-plan.html'
       - 'pages-overrides/annual-marketing-2027-report.html'
+      - 'pages-overrides/annual-marketing-2027-coverage.html'
+      - 'pages-overrides/annual-marketing-2027-performance.html'
       - 'scripts/khung_browser_acceptance_2027.py'
       - 'scripts/khung_scenario_acceptance_2027.py'
       - 'scripts/khung_cvt_examples_2027.py'
