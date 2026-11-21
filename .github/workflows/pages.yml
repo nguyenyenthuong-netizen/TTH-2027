@@ -7,6 +7,7 @@ on:
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
       - 'scripts/khung_embed_plan_2027.py'
+      - 'scripts/marketing_2027_bundle.py'
       - 'scripts/layout_fix.py'
       - 'scripts/remove_extra_navigation.py'
       - 'scripts/final_pages_guard.py'
@@ -342,6 +343,7 @@ jobs:
           mkdir -p _site/ke-hoach-mkt-2027
           cp pages-overrides/catalog/ke-hoach-mkt-2027.html _site/ke-hoach-mkt-2027/index.html
           cp pages-overrides/catalog/ke-hoach-mkt-2027-data.json _site/ke-hoach-mkt-2027/data.json
+          python3 scripts/marketing_2027_bundle.py _site
           python3 scripts/khung_embed_plan_2027.py _site
           python3 - <<'PY'
           from pathlib import Path
@@ -359,6 +361,9 @@ jobs:
           assert 'fetch("./data.json"' not in inside
           d=json.loads(Path('_site/ke-hoach-mkt-2027/data.json').read_text('utf-8'))
           assert len(d['roles'])==26 and len(d['monthlyActions'])>=624
+          assert len(d['portfolio']['programs'])==6 and len(d['portfolio']['projects'])==23
+          assert len(d['portfolio']['tasks'])==276 and len(d['issuance']['catalog'])==325
+          assert len(d['portfolio']['operations'])>100 and len(d['portfolio']['kpis'])==23
           assert len(d['docs'])==74 and len(d['themes'])==157 and len(d['overlapAudits'])>=119
           print('PASS: toan bo ke hoach 12 thang va du phong da nam trong Khung Muc 05')
           PY
