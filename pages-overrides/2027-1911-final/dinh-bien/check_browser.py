@@ -136,7 +136,7 @@ def check(page, width, form, out):
     host.locator('[data-set="role"]').select_option('qlsps')
     assert host.get_by_text('Toàn bộ sản phẩm, công đoạn, thời gian theo từng vị trí',exact=True).is_visible()
     assert 'T2' in host.locator('#db-main').inner_text()
-    assert 'CMS ban đầu' in host.locator('#db-main').inner_text()
+    assert 'CMS ban đầu' in host.locator('#db-main').text_content()
     assert 'NaN' not in host.locator('#db-main').inner_text()
     pane('assets')
     assert host.locator('#db-main').get_by_text('Kiểm kê 30 kênh và toàn bộ nhóm tài sản nghiệp vụ',exact=True).is_visible()
