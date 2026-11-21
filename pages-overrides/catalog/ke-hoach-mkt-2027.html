@@ -29,7 +29,7 @@ a{color:var(--blue)}.header{background:var(--blue);color:white;padding:24px max(
 <div><label for="family">Danh mục chủ đề</label><select id="family"><option value="">Tất cả chủ đề</option></select></div><div><label for="month">Tháng / kỳ báo cáo</label><select id="month"><option value="">Cả năm 2027</option></select></div><div><label for="program">Chương trình trọng điểm</label><select id="program"><option value="">Toàn bộ chương trình</option></select></div>
 </div>
 <nav class="tabs" id="tabs" aria-label="Nhóm thông tin">
-<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="stages" aria-selected="false">Giai đoạn hạng mục trọng điểm</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
+<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="addendum" aria-selected="false">Phụ lục trọng điểm · 13 hạng mục</button><button class="tab" data-tab="stages" aria-selected="false">Giai đoạn hạng mục trọng điểm</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
 <button class="tab" data-tab="themes" aria-selected="false">03. Chủ đề và mẫu chi tiết</button>
 <button class="tab" data-tab="docs" aria-selected="false">04. Hồ sơ cần ban hành</button>
 <button class="tab" data-tab="mtcv" aria-selected="false">05. Đầu ra MTCV gốc</button>
@@ -319,9 +319,45 @@ function drawTimeline(){
  s+=card("Điều kiện trước khi ban hành và giao định biên","<ul><li>Soát hồ sơ cũ, hiệu lực và phân loại: giữ, sửa, hợp nhất, bãi bỏ hoặc xây mới</li><li>Gắn một mã đầu ra với một chủ trì và tuyến kiểm/duyệt đúng thẩm quyền</li><li>Kiểm nguồn y khoa, giá, chương trình, đồng ý dữ liệu và quyền hình ảnh</li><li>Thử tại cơ sở theo mốc tiếp nhận; đo giờ từng công đoạn và số vòng sửa</li><li>Chốt phiên bản, kho lưu trữ, người được sử dụng, quyền cập nhật và chu kỳ rà soát</li></ul>");
  $("panel").innerHTML='<div class="panel-header"><h2>Lộ trình cả năm và khung hạch toán giờ</h2></div>'+s;
 }
+
+var addonFocus="all", addonShowAll=false;
+function drawAddendum(){
+ var A=D.ctdaAddendum;
+ if(!A){$("panel").innerHTML='<div class="empty">Chưa nạp dữ liệu phụ lục trọng điểm, chưa thể xác nhận đã tích hợp.</div>';return;}
+ var query=$("search").value.trim().toLocaleLowerCase("vi");
+ var programs=A.programs.filter(function(x){return !query||JSON.stringify(x).toLocaleLowerCase("vi").includes(query)});
+ var outs=A.outputs.filter(function(x){return (addonFocus==="all"||x.programId===addonFocus)&&(!query||JSON.stringify(x).toLocaleLowerCase("vi").includes(query))});
+ var ops=A.operations.filter(function(x){return (addonFocus==="all"||x.programId===addonFocus)&&(!query||JSON.stringify(x).toLocaleLowerCase("vi").includes(query))});
+ function tbl(headers,rows){
+   return '<div class="scroll"><table class="wide"><thead><tr>'+headers.map(function(h){return '<th>'+esc(h)+'</th>'}).join("")+'</tr></thead><tbody>'+
+     rows.map(function(row){return '<tr>'+row.map(function(v){return '<td>'+esc(v==null?"—":v)+'</td>'}).join("")+'</tr>'}).join("")+
+     '</tbody></table></div>';
+ }
+ var s='<div class="panel-header"><h2>Danh mục đối soát trọng điểm 2027</h2><span class="tag">Kế hoạch dự thảo · Chưa phê duyệt</span></div>';
+ s+='<div class="call redline"><b>Không cộng số lượng hai danh mục.</b> 6 chương trình/24 dự án gốc vẫn giữ nguyên; 13 hạng mục phụ lục (1 chương trình mẹ), 132 sản phẩm và 660 công đoạn là lớp đối chiếu. Chỉ hạch toán tải khi có mã gốc khớp, sản lượng, người thực hiện và giờ chuẩn được xác minh. Không tự xem 132 sản phẩm là 132 công việc phát sinh mới.</div>';
+ s+='<div class="stats"><div class="stat"><b>13</b><small>Hạng mục đối chiếu</small></div><div class="stat"><b>7</b><small>Cơ sở dự kiến ra mắt</small></div><div class="stat"><b>132</b><small>Mã đầu ra nguồn</small></div><div class="stat"><b>660</b><small>Mã bước</small></div><div class="stat"><b>0 giờ</b><small>Giờ được phép cộng thêm trước đối chiếu</small></div></div>';
+ s+='<div class="call"><b>Kiểm tải chưa đạt điều kiện:</b> 528 công đoạn Marketing chưa có giờ chuẩn và 132 bước phê duyệt chưa xác minh thuộc nhân sự Marketing hay ngoài Marketing. Dự phòng phát sinh 25% không thay thế việc tính tải từng người/tháng.</div>';
+ s+='<h3>I. Danh mục chương trình/dự án và mục tiêu nghiệm thu</h3>';
+ s+=tbl(["Mã","Cấp","Dự án/chương trình","Chủ kết quả","KPI đích / nghiệm thu","Giai đoạn tham chiếu","Kế thừa / chống trùng"],programs.map(function(x){return[x.code,x.level,x.name,x.owner,x.kpi,x.roadmap,x.crosswalk]}));
+ s+='<h3>II. Ra mắt cơ sở: mốc tương đối, không tự ấn định ngày</h3>';
+ s+=tbl(["Mã cơ sở","Tên cơ sở","Thương hiệu","Bố trí đầu mối","Tiến độ bắt buộc","Trạng thái"],A.launchFacilities.filter(function(x){return !query||JSON.stringify(x).toLocaleLowerCase("vi").includes(query)}).map(function(x){return[x.code,x.name,x.brand,x.lead,"T-120 · T-90 · T-60 · T-30 · T0 · T+30 · T+90",x.approval]}));
+ s+='<h3>III. Đầu ra theo một mã gốc</h3>';
+ s+='<label for="addonFocus">Lọc mã dự án trong phụ lục</label><select id="addonFocus" style="max-width:550px;margin-bottom:12px"><option value="all">Toàn bộ 132 đầu ra</option>'+A.programs.filter(function(x){return x.code!=="TD27-08"}).map(function(x){return '<option value="'+esc(x.code)+'"'+(addonFocus===x.code?' selected':'')+'>'+esc(x.code+" · "+x.name)+'</option>'}).join("")+'</select>';
+ s+=tbl(["Mã sản phẩm","Hạng mục","Sản phẩm bàn giao","Mốc","Chủ trì","Kiểm soát giờ","Trạng thái"],outs.map(function(x){return[x.code,x.programId,x.title,x.relativeMilestone||"Theo giai đoạn đã duyệt",x.owner,x.workloadBooking,x.status]}));
+ s+='<h3>IV. Công đoạn và phạm vi trách nhiệm</h3><p class="note">Hiển thị '+Math.min(ops.length,addonShowAll?ops.length:60)+' / '+ops.length+' dòng. Mỗi mã có đúng 5 bước; bước phê duyệt phải xác minh người và loại giờ trước khi phân tải.</p>';
+ s+=tbl(["Mã công đoạn","Mã đầu ra","Công đoạn","Người thực hiện","Loại giờ","Giờ chuẩn","Hạch toán"],ops.slice(0,addonShowAll?ops.length:60).map(function(x){return[x.code,x.outputId,x.step,x.owner,x.hourType,"Chưa có",x.bookingRule]}));
+ if(ops.length>60&&!addonShowAll)s+='<button type="button" class="btn" id="addonShowAll">Xem toàn bộ công đoạn đang lọc</button>';
+ s+='<h3>V. Cổng kiểm soát trước khi khóa Mục 05</h3><div class="sectioncard"><ol>'+A.nextApprovalGates.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol></div>';
+ s+='<p class="note">Hai chuyên viên trưởng duy trì đúng tuyến: CVT Nội dung – Sáng tạo và Marketing cơ sở quản lý nhân sự tuyến cơ sở; CVT Truyền thông – Thương hiệu và Tăng trưởng số kiểm chuẩn chuyên môn theo phân cấp, không tạo tuyến giao việc thứ hai. Chủ kết quả khác người có thẩm quyền duyệt.</p>';
+ s+='<p><a class="btn" href="../ke-hoach-mkt-2027/phu-luc-trong-diem-2027.csv" download>Tải danh mục đầu ra</a> <a class="btn" href="../ke-hoach-mkt-2027/phu-luc-cong-doan-2027.csv" download>Tải công đoạn</a></p>';
+ $("panel").innerHTML=s;
+ var select=$("addonFocus");if(select)select.onchange=function(){addonFocus=this.value;addonShowAll=false;render()};
+ var more=$("addonShowAll");if(more)more.onclick=function(){addonShowAll=true;render()};
+}
+
 function render(){
  if(!D)return;
- if(tab==="program")drawProgram();else if(tab==="stages")drawStages();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
+ if(tab==="program")drawProgram();else if(tab==="addendum")drawAddendum();else if(tab==="stages")drawStages();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
  var btn=$("exportBtn");if(btn)btn.onclick=exportTable;
 }
 function exportTable(){
