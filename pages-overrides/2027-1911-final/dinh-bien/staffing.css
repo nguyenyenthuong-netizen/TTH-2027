@@ -3,3 +3,4 @@
 @media print{.app{border:0;overflow:visible}.nav,.control,.form,.action,.plain{display:none}.scroll{overflow:visible}.entry{break-inside:avoid}.padded{padding:0}.tbl{font-size:10pt}}
 
 .entry[data-work-key],.entry[data-doc-key],.entry[data-flow-index]{scroll-margin-top:84px}
+.tbl{font-size:15px}.tbl th{font-size:14px}.tbl td small{font-size:14px;line-height:1.5}.fine{font-size:14px}

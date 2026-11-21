@@ -47,7 +47,7 @@ def reconcile(jd,work,documents,roles):
         for clause in MAP[role].split():
             code,indices=clause.split('=');key=code if code.startswith('@') else role+'/'+code
             assert (key[1:] in codes if code.startswith('@') else key in workids),(role,key)
-            for i in indices.split(','):target[int(i)]=[key,'Mã đối chiếu theo MTCV; các bước con cùng một đầu ra chỉ tính một lần.']
+            for i in indices.split(','):target[int(i)]=[key,'Dòng liên quan để kiểm tra; chưa xác nhận đã bao phủ đủ mọi công đoạn và giờ của dòng MTCV.']
         for (rid,i),(key,note) in BOUNDARY.items():
             if rid==role:target[i]=[key,note]
         assert set(target)==set(range(1,len(source))),(role,'missing',set(range(1,len(source)))-set(target),'extra',set(target)-set(range(1,len(source))))
