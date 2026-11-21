@@ -329,6 +329,29 @@ jobs:
           name: catalog-tth-group-${{ github.run_number }}
           path: artifacts/tth-catalog/
           if-no-files-found: ignore
+      - name: Xuat ban ke hoach hanh dong Marketing 2027 va lien ket Muc 05
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/ke-hoach-mkt-2027
+          cp pages-overrides/catalog/ke-hoach-mkt-2027.html _site/ke-hoach-mkt-2027/index.html
+          cp pages-overrides/catalog/ke-hoach-mkt-2027-data.json _site/ke-hoach-mkt-2027/data.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('_site/khung-marketing/index.html')
+          s=p.read_text('utf-8')
+          anchor='<section class="view" data-view="staffing" id="v-staffing">'
+          assert anchor in s, 'Khong tim thay muc dinh bien de dan ke hoach'
+          link='<p id="tth-plan-2027-link" style="margin:12px 18px;padding:12px 15px;background:#fff;border:1px solid #bfd0eb;border-left:4px solid #0837a1;border-radius:8px"><a href="/ke-hoach-mkt-2027/" style="font-weight:750;color:#0837a1">Mở Kế hoạch hành động 26 chức danh và bộ mẫu Marketing 2027</a><span style="display:block;color:#405776;margin-top:5px">Tra cứu đầu ra, hạn từng việc, 74 hồ sơ chuẩn, 157 loại mẫu chi tiết, trách nhiệm CRM/Website/App và đối chiếu MTCV. Bản làm việc, chưa ban hành.</span></p>'
+          if 'id="tth-plan-2027-link"' not in s:s=s.replace(anchor,anchor+link,1)
+          assert s.count('id="tth-plan-2027-link"')==1
+          p.write_text(s,'utf-8')
+          d=json.loads(Path('_site/ke-hoach-mkt-2027/data.json').read_text('utf-8'))
+          assert len(d['roles'])==26 and len(d['actions'])==146 and len(d['docs'])==74 and len(d['themes'])==157
+          assert all(any(x['role']==r['id'] for x in d['actions']) for r in d['roles'])
+          print('PASS action plan',len(d['roles']),'roles',len(d['actions']),'actions',len(d['themes']),'templates')
+          PY
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
