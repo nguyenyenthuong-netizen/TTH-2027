@@ -61,12 +61,11 @@ for (rid,code,period),vals in sorted(refgroups.items()):
         "titles":[v["name"] for v in vals],
         "issue":"Các bước có cùng mã biểu mẫu; xác nhận mỗi mã việc và công đoạn không hạch toán hai lần"})
 # Some sources are not tasks held by Marketing, not omissions.
-contracts=[z for f in db["quy_trinh"] for b in f["buoc"] for z in b["doi_soat_tung_dau_ra_2027"]]
+contracts=[(str(actor).split("|",1)[0].strip(),z) for f in db["quy_trinh"] for b in f["buoc"] for actor,z in zip(b["thuc_hien"],b["doi_soat_tung_dau_ra_2027"])]
 assert len(contracts)==568
 marketing=0;outside=0;unverified=0
 perroleworkflow=Counter()
-for z in contracts:
-    owner=str(z.get("chu_tri_01",""))
+for owner,z in contracts:
     if owner in roles: marketing+=1;perroleworkflow[owner]+=1
     else: outside+=1
     evidence=" ".join(str(z.get(k,"")) for k in ("can_cu_phan_vai_2027","trang_thai_duyet","nguon_kiem_chung"))
