@@ -12,6 +12,21 @@ ROOT=Path(sys.argv[1])/'khung-marketing'
 path=ROOT/'index.html'
 s=path.read_text('utf-8')
 pat=re.compile(r'(<script id="csdl" type="application/json">)([\s\S]*?)(</script>)');m=pat.search(s);D=json.loads(m[2]);assert set(SEATS)=={v['id'] for v in D['vi_tri']}
+
+# One Clinic part-time contact; distinguish management workload from professional review.
+clinic_role=next(v for v in D['vi_tri'] if v['id']=='dmpk')
+legacy=clinic_role.get('bao_cao_cho','')
+if 'cơ sở/2 hướng dẫn' in legacy:
+    clinic_role['bao_cao_cho']=(
+      'Phòng khám TTH Clinic quản lý nhiệm vụ chính và xác nhận quỹ giờ kiêm nhiệm. '
+      'Quản lý thương hiệu nhóm 1 xác định mục tiêu Marketing. '
+      'Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở điều phối tải Marketing theo tuyến; '
+      'Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số hướng dẫn/kiểm chuẩn nghiệp vụ '
+      'truyền thông và kênh số, không giao lệnh công việc thứ hai. '
+      'Quyền duyệt phát hành và chi phí tuân theo ma trận thẩm quyền có hiệu lực.'
+    )
+assert 'cơ sở/2 hướng dẫn' not in clinic_role.get('bao_cao_cho','')
+
 assert 'dinh_bien_theo_dau_ra_2027' not in D,'Run on a freshly generated framework.'
 roles={v['id']:{'to':v['to'],'name':v['ten'],'seats':SEATS[v['id']]} for v in D['vi_tri']}
 assert sum(v['seats'] for v in roles.values() if v['to']!='coso')==22 and sum(SEATS.values())==36
