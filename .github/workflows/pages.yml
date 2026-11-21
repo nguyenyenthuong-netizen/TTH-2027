@@ -343,7 +343,7 @@ jobs:
           s=p.read_text('utf-8')
           anchor='<section class="view" data-view="staffing" id="v-staffing">'
           assert anchor in s, 'Khong tim thay muc dinh bien de dan ke hoach'
-          link='<p id="tth-plan-2027-link" style="margin:12px 18px;padding:12px 15px;background:#fff;border:1px solid #bfd0eb;border-left:4px solid #0837a1;border-radius:8px"><a href="/ke-hoach-mkt-2027/" style="font-weight:750;color:#0837a1">Mở Kế hoạch hành động 26 chức danh và bộ mẫu Marketing 2027</a><span style="display:block;color:#405776;margin-top:5px">Tra cứu đầu ra, hạn từng việc, 74 hồ sơ chuẩn, 157 loại mẫu chi tiết, trách nhiệm CRM/Website/App và đối chiếu MTCV. Bản làm việc, chưa ban hành.</span></p>'
+          link='<p id="tth-plan-2027-link" style="margin:12px 18px;padding:12px 15px;background:#fff;border:1px solid #bfd0eb;border-left:4px solid #0837a1;border-radius:8px"><a href="../ke-hoach-mkt-2027/" style="font-weight:750;color:#0837a1">Mở Kế hoạch hành động 26 chức danh và bộ mẫu Marketing 2027</a><span style="display:block;color:#405776;margin-top:5px">Tra cứu đầu ra, hạn từng việc, 74 hồ sơ chuẩn, 157 loại mẫu chi tiết, trách nhiệm CRM/Website/App và đối chiếu MTCV. Bản làm việc, chưa ban hành.</span></p>'
           if 'id="tth-plan-2027-link"' not in s:s=s.replace(anchor,anchor+link,1)
           assert s.count('id="tth-plan-2027-link"')==1
           p.write_text(s,'utf-8')
