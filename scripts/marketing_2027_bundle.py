@@ -29,7 +29,9 @@ FIELD_STAGES=[
  "plannedStartMonth","plannedEndMonth","plannedStartDate","plannedEndDate",
  "ownerRoleId","reviewerRoleId","entryGate","exitGate","acceptanceEvidence",
  "dependencies","milestoneCount","stageProducts","stageStatus","conditionalActivation",
- "plannedHours","actualHours","approvedAt","reviewDate","isApproved"
+ "plannedHours","actualHours","approvedAt","reviewDate","isApproved",
+ "kpiIds","stageMeasurement","measurementOwnerRoleId","measurementCheckerRoleId",
+ "acceptedMilestones","overdueMilestones","actualFinishDate","finalGateDecision"
 ]
 FIELD_ARTIFACTS=[
  "artifactId","code","title","category","source","reported","proposalOnly",
@@ -213,6 +215,7 @@ def prepare(site):
     assert len(portfolio["stageRegister"])==64 and len(portfolio["namedTwoPhaseInitiatives"])==2
     stage_ids={x["stageId"] for x in portfolio["stageRegister"]}
     assert len(stage_ids)==64 and all(t.get("stageId") in stage_ids for t in priority)
+    assert all(s["kpiIds"] and s["measurementCheckerRoleId"] and s["stageMeasurement"] for s in portfolio["stageRegister"])
     for p in portfolio["projects"]:
         pieces=sorted((x for x in portfolio["stageRegister"] if x["projectId"]==p["projectId"]),key=lambda x:x["plannedStartMonth"])
         assert [m for stage in pieces for m in range(stage["plannedStartMonth"],stage["plannedEndMonth"]+1)]==list(range(1,13)), p["projectId"]
