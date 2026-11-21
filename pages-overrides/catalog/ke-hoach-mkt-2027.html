@@ -52,7 +52,7 @@ var stats=function(){var a=[["Chương trình",D.portfolio.programs.length],["D�
 var head=function(title,n,help){return '<div class="panel-header"><div><h2>'+esc(title)+' <span class="count">'+n+' kết quả</span></h2>'+(help?'<div class="note">'+esc(help)+'</div>':"")+'</div><button class="btn" id="exportBtn" type="button">Xuất CSV bảng đang xem</button></div>'};
 var table=function(headers,rows,clazz){var res='<div class="scroll"><table class="'+(clazz||"")+'"><thead><tr>'+headers.map(function(h){return '<th>'+esc(h)+'</th>'}).join("")+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div>';return res};
 var card=function(t,b){return '<div class="sectioncard"><h3>'+esc(t)+'</h3>'+b+'</div>'};
-var cell=function(a){return esc(a||"—")};
+var cell=function(a){return esc(a===null||a===undefined||a===""?"—":a)};
 
 
 function newFilter(x){
@@ -90,6 +90,22 @@ function drawIssued(){
  var missing=s.validEvents===0;
  var h='<div class="call redline"><b>CHƯA CÓ SỐ LIỆU BAN HÀNH THỰC TẾ ĐƯỢC XÁC MINH.</b> '+r.catalog.length+' mã ở đây chỉ là danh mục phải đối chiếu, không phải số đã ban hành. Một mẫu phát sinh ở nhiều phân hệ vẫn chỉ có một mã gốc; chỉ phiên bản có quyết định/số duyệt, ngày ký, file và người duyệt mới được tính.</div>';
  h+=table(["Tháng","Ban hành mới","Sửa đổi/ban hành lại","Mã đã ban hành trong kỳ","Thu hồi","Có hiệu lực cuối kỳ"],periods.map(function(x){return ["T"+x.month,missing?"Chưa có chứng từ":cell(x.newCount),missing?"Chưa có chứng từ":cell(x.revisedVersionCount),missing?"Chưa có chứng từ":cell(x.uniqueReleasedCount),missing?"Chưa có chứng từ":cell(x.withdrawnCount),missing?"Chưa xác minh bản nền":cell(x.activeAtEndWithVerified2027EventsOnly)]}),"wide");
+
+ h+='<h3 style="margin-top:22px">Tổng hợp ban hành từng quý và cả năm</h3>';
+ var aggregates=(s.quarterly||[]).concat(s.annual?[s.annual]:[]);
+ h+=table(["Kỳ","Ban hành mới","Sửa đổi/phiên bản","Mã gốc đã ban hành","Thu hồi","Có hiệu lực có chứng từ"],aggregates.map(function(x){return [
+ cell(x.period),missing?"Chưa có chứng từ":cell(x.banHanhMoi),
+ missing?"Chưa có chứng từ":cell(x.suaDoi),
+ missing?"Chưa có chứng từ":cell(x.maBanHanhKhongTrung),
+ missing?"Chưa có chứng từ":cell(x.thuHoi),
+ missing?"Chưa xác nhận bản nền":cell(x.dangHieuLucCoChungTuTrongSo)]}),"wide");
+ var annual=s.annual,bySource=annual?Object.keys(annual.byWorkSource||{}):[];
+ h+='<h3>Phân loại theo nguồn công việc</h3>';
+ h+=bySource.length?table(["Nguồn hình thành","Mới","Sửa đổi","Mã gốc duy nhất"],bySource.map(function(k){
+ var x=annual.byWorkSource[k];return [cell(k),cell(x.new),cell(x.revisedVersions),cell(x.distinctPublished)]}),"wide"):'<p class="note">Chưa có sự kiện ban hành đã xác minh. Nguồn trọng điểm, thường xuyên hoặc phát sinh chỉ được ghi từ hồ sơ phê duyệt, không suy từ số đầu việc.</p>';
+ var byCat=annual?Object.keys(annual.byCategory||{}):[];
+ h+='<h3>Phân loại theo loại sản phẩm được ban hành</h3>';
+ h+=byCat.length?table(["Nhóm sản phẩm","Mới","Sửa đổi","Mã gốc duy nhất","Thu hồi"],byCat.map(function(k){var x=annual.byCategory[k];return [cell(k),cell(x.new),cell(x.revisedVersions),cell(x.distinctPublished),cell(x.withdrawn)]}),"wide"):'<p>Chưa có chứng từ để xác nhận số quy trình, biểu mẫu, bộ mẫu hoặc quy chuẩn đã ban hành.</p>';
  var group={};rows.forEach(function(x){group[x.category]=(group[x.category]||0)+1});
  h+='<h3>Kiểm kê theo loại sản phẩm</h3>';
  h+=table(["Loại","Mã dự kiến/tra cứu","Số ban hành có chứng từ"],Object.keys(group).sort().map(function(k){return [cell(k),cell(group[k]),missing?"Chưa có dữ liệu":"Xem sổ sự kiện"]}),"wide");
@@ -107,7 +123,7 @@ function drawKpis(){
 }
 function drawImport(){
  var links=[
- ["Dự án trọng điểm, công việc và đầu ra","nhap-phan-mem-du-an-trong-diem.csv"],
+ ["288 mốc trọng điểm và sản phẩm đầu ra","nhap-phan-mem-du-an-trong-diem.csv"],
  ["Sổ công việc thường xuyên đúng Mục 05","nhap-phan-mem-cong-viec-thuong-xuyen.csv"],
  ["Việc của 26 chức danh theo 12 tháng","cong-viec-theo-chuc-danh-12-thang.csv"],
  ["Danh mục 325 mã tài liệu, mẫu, quy trình","so-tai-lieu-va-mau-goc.csv"],
@@ -118,7 +134,7 @@ function drawImport(){
  ];
  var base="../ke-hoach-mkt-2027/";
  var h='<div class="call redline"><b>Đây là gói dữ liệu để đối chiếu trước khi nhập phần mềm, chưa có hành động nhập dữ liệu vào hệ thống đang chạy.</b> Cần kiểm schema/API và quyền trước khi tạo bản ghi thật. Người được giao, ngân sách, chỉ tiêu và giờ chưa được phê duyệt để trống.</div>';
- h+=table(["Bảng nhập","Đường dẫn"],links.map(function(x){return [cell(x[0]),'<a href="'+base+cell(x[1])+'" target="_blank" rel="noopener">Mở CSV/JSON</a>']}),"wide");
+ h+=table(["Bảng nhập","Đường dẫn"],links.map(function(x){return [cell(x[0]),'<a href="'+base+cell(x[1])+'" download>Nhận CSV/JSON</a>']}),"wide");
  h+=card("Quy tắc giao việc và đo",'<p>Một chương trình có nhiều dự án. Mỗi dự án có việc tháng theo mã duy nhất. Một đầu ra có một mã gốc và một chủ trì. Người phối hợp ghi đúng giờ từng công đoạn vào cùng mã sổ Mục 05. Cuối kỳ đếm sản phẩm ban hành theo sự kiện có chứng từ, không đếm số đầu việc.</p>');
  $("panel").innerHTML=head("Chuyển cấu trúc kế hoạch sang phần mềm Marketing",links.length,"Hai phân hệ trọng điểm và thường xuyên dùng chung danh mục, đo lường, quyền và kiểm soát.")+h;
 }
