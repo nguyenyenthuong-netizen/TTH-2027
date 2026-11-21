@@ -75,7 +75,7 @@ tr:hover td{background:#f7faff}
 <div><label for="family">Danh mục chủ đề</label><select id="family"><option value="">Tất cả chủ đề</option></select></div><div><label for="month">Tháng / kỳ báo cáo</label><select id="month"><option value="">Cả năm 2027</option></select></div><div><label for="program">Chương trình trọng điểm</label><select id="program"><option value="">Toàn bộ chương trình</option></select></div>
 </div>
 <nav class="tabs" id="tabs" aria-label="Nhóm thông tin">
-<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="addendum" aria-selected="false">Phụ lục trọng điểm · 13 hạng mục</button><button class="tab" data-tab="stages" aria-selected="false">Giai đoạn hạng mục trọng điểm</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
+<button class="tab" data-tab="outcomes" aria-selected="true">Đích đến 31/12/2027 · kết quả TTH nhận được</button><button class="tab" data-tab="program" aria-selected="false">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="addendum" aria-selected="false">Phụ lục trọng điểm · 13 hạng mục</button><button class="tab" data-tab="stages" aria-selected="false">Giai đoạn hạng mục trọng điểm</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
 <button class="tab" data-tab="themes" aria-selected="false">03. Chủ đề và mẫu chi tiết</button>
 <button class="tab" data-tab="docs" aria-selected="false">04. Hồ sơ cần ban hành</button>
 <button class="tab" data-tab="mtcv" aria-selected="false">05. Đầu ra MTCV gốc</button>
@@ -88,7 +88,7 @@ tr:hover td{background:#f7faff}
 <script>
 (function(){
 "use strict";
-var D=null,tab="program";
+var D=null,tab="outcomes";
 var esc=function(x){return String(x==null?"":x).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var names={},phaseNames={}; var $=function(functionId){return document.getElementById(functionId)};
 var shortRole=function(id){return names[id]||id||"Đầu mối theo phân quyền"};
@@ -153,6 +153,46 @@ function drawStages(){
  });
  $("panel").innerHTML=head("Giai đoạn của 24 hạng mục trọng điểm",stages.length,
   "Mốc và điều kiện nghiệm thu là đề xuất để kiểm tải và giao việc; chưa xác nhận đã hoàn thành hoặc đã phê duyệt.")+h;
+}
+
+
+function drawOutcomes(){
+ var Y=D.yearEndCommitments;
+ if(!Y){$("panel").innerHTML='<div class="empty">Chưa có dữ liệu đích đến năm 2027. Chưa thể xác nhận cam kết đã tích hợp.</div>';return}
+ var q=$("search").value.trim().toLocaleLowerCase("vi"),month=Number($("month").value||0);
+ var outcomes=Y.outcomes.filter(function(x){return !q||JSON.stringify(x).toLocaleLowerCase("vi").includes(q)});
+ var allMetrics=outcomes.reduce(function(z,x){return z.concat(x.kpis.map(function(k){return {resultId:x.code,title:x.title,kpi:k}}))},[]);
+ var h='<div class="panel-header"><h2>Đích đến 31/12/2027: TTH nhận được gì?</h2><span class="tag">Dự thảo – chưa duyệt chỉ tiêu</span></div>';
+ h+='<div class="call redline"><b>Đây là đầu vào của kế hoạch, không phải báo cáo kết quả thực tế.</b> 7 kết quả đầu năm–cuối năm, 25 chỉ số cần đối chiếu bộ KPI gốc, 84 điểm kiểm soát tháng. Các giá trị nền 2026, chỉ tiêu 2027, ngân sách và giờ công chưa có đủ bằng chứng thì bắt buộc để trống. Không đưa mục tiêu doanh thu bệnh viện toàn phần vào KPI riêng của Marketing.</div>';
+ h+='<div class="stats"><div class="stat"><b>07</b><small>Thành quả cấp hệ thống</small></div><div class="stat"><b>25</b><small>Chỉ số cần kiểm chứng, chưa nhập thành KPI chính thức</small></div><div class="stat"><b>84</b><small>Mốc theo dõi tháng</small></div><div class="stat"><b>06 / 09</b><small>Mục tiêu và chỉ số BTGĐ cần đối chiếu văn bản</small></div><div class="stat"><b>Chờ</b><small>Số nền · chỉ tiêu · năng lực</small></div></div>';
+ h+='<h3>I. 7 kết quả cuối năm – người chịu trách nhiệm và sản phẩm chứng minh</h3>';
+ h+='<div class="summary-grid">'+outcomes.map(function(c){
+ return '<article class="sectioncard" style="min-width:0">'+
+ '<span class="tag">'+esc(c.code)+'</span><h3>'+esc(c.title)+'</h3>'+
+ '<p><b>TTH nhận được:</b> '+esc(c.result)+'</p>'+
+ '<p><b>Một chủ kết quả:</b> '+esc(c.ownerRole)+'</p>'+
+ '<p><b>Phạm vi:</b> '+esc(c.scope)+'</p>'+
+ '<p><b>Chủ thực hiện:</b> '+esc(c.executionOwner)+'</p>'+
+ '<p><b>Chứng từ:</b> '+esc(c.evidence)+'</p>'+
+ '<p><b>Chi phí/giờ:</b> '+esc(c.costBasis)+'</p>'+
+ '<p><b>Liên kết:</b> '+c.projects.map(esc).join(', ')+' (mã phụ lục đối chiếu, không cộng tải)</p>'+
+ '<details><summary style="cursor:pointer;color:#0837A1;font-size:16px;font-weight:750">Mở cổng mục tiêu theo 4 quý</summary><ol>'+c.gates.map(function(x,i){return '<li><b>Quý '+(i+1)+':</b> '+esc(x)+'</li>'}).join('')+'</ol></details>'+
+ '</article>'
+ }).join('')+'</div>';
+ h+='<details><summary style="cursor:pointer;font-size:19px;font-weight:750;color:#0837A1;padding:14px 0">II. Mở 25 chỉ số: công thức, nguồn, số nền và chỉ tiêu</summary>';
+ h+=table(['Mã kết quả','Chỉ số kiểm chứng','Công thức, mẫu số','Nguồn – người kiểm','Nền 2026','Đích 2027'],allMetrics.map(function(v){return [
+ cell(v.resultId)+'<small>'+cell(v.kpi.id)+'</small>',cell(v.kpi.name),cell(v.kpi.formula),
+ cell(v.kpi.source)+'<small>Kiểm: '+cell(v.kpi.checker)+'</small>',
+ 'Chưa có số nền xác nhận','Chưa duyệt']}),
+ 'wide');
+ h+='</details>';
+ h+='<h3>III. Điểm kiểm soát 12 tháng</h3><p class="note">Đây là lịch kiểm soát, không tự phân bổ đều chỉ tiêu năm. Lọc tháng ở thanh phía trên nếu muốn theo dõi kỳ riêng.</p>';
+ var months=Y.monthlyGates.filter(function(x){return (!month||x.month===month)&&outcomes.some(function(c){return c.code===x.resultId})});
+ h+=table(['Kết quả','Tháng','Cửa kiểm soát','Chỉ tiêu kỳ','Ngân sách','Giờ công','Trạng thái'],months.map(function(x){return [
+ cell(x.resultId),cell('Tháng '+x.month+'/2027'),cell(x.expectedCheckpoint),'Chưa duyệt','Chưa duyệt','Chưa chốt',cell(x.status)]}),'wide');
+ h+='<div class="call"><b>Không khóa định biên chỉ từ số dòng việc:</b> giờ thường xuyên + trọng điểm + phát sinh + giờ xây quy trình/bộ mẫu + quản trị, phối hợp, di chuyển và làm lại phải đối soát từng người/tháng. Dự phòng phát sinh 25% phải còn thực chất, không hạch toán phụ lục lần hai.</div>';
+ h+='<p><a class="btn" href="../ke-hoach-mkt-2027/ket-qua-cuoi-nam-2027.csv" download>Xuất ma trận 25 chỉ số</a> <a class="btn" href="../ke-hoach-mkt-2027/kiem-soat-muc-tieu-thang-2027.csv" download>Xuất 84 mốc tháng</a></p>';
+ $("panel").innerHTML=h;
 }
 
 function drawProgram(){
@@ -404,7 +444,7 @@ function drawAddendum(){
 
 function render(){
  if(!D)return;
- if(tab==="program")drawProgram();else if(tab==="addendum")drawAddendum();else if(tab==="stages")drawStages();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
+ if(tab==="outcomes")drawOutcomes();else if(tab==="program")drawProgram();else if(tab==="addendum")drawAddendum();else if(tab==="stages")drawStages();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
  var btn=$("exportBtn");if(btn)btn.onclick=exportTable;
 }
 function exportTable(){
