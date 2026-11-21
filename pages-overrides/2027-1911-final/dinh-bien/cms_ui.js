@@ -139,7 +139,7 @@ function cascadeExposurePanel(run,positions){
   const chainLabel=impacted.map(z=>z.chain.name+': '+z.parts.map(([stage])=>stage).join(' + ')).join(' | ');
   rows.push(['T'+month,e(status),nu(monthOver.length),e(chainLabel||'Chưa xác định, vẫn thiếu kiểm kê tài sản/CMS'),
     e(causes||'Không có số vượt trong các khoản đã tính'),
-    e(grossOver.length?'Tạm không nhận bổ sung việc trên tuyến quá tải; người quản lý xác nhận phương án nguồn lực và quyền phê duyệt.':
+    e(grossOver.length?'Tạm dừng cam kết việc bổ sung không khẩn cấp; với sự cố liên quan người bệnh hoặc truyền thông khẩn, kích hoạt người thay, nguồn lực dự phòng và phê duyệt ngoại lệ theo quyền.':
       downstream.length?'Ưu tiên giải phóng nút nghẽn theo công đoạn, kiểm lịch chéo và giờ người thay trước khi khóa mốc.':
       impacted.length?'Kiểm tuần cao điểm, người thay và quyền duyệt trước khi nhận thêm yêu cầu.':
       'Giữ dự phòng; chưa kết luận ổn định do số CMS/kênh/tài sản chưa chốt.')]);
@@ -149,7 +149,7 @@ function cascadeExposurePanel(run,positions){
  table(['Tháng','Cấp cảnh báo','Số suất vượt','Nhóm/thao tác có nguy cơ','Điểm nghẽn theo vị trí','Điều kiện điều phối'],rows,[2])+
  '<h4>4. Quy tắc chặn để tránh lan truyền chậm tiến độ</h4>'+
  table(['Cửa kiểm soát','Điều kiện cho phép đi tiếp','Khi chưa đạt'],[
- ['Nhận thêm việc, chiến dịch hoặc mở cơ sở','Phải có chỗ trong quỹ giờ của đúng vai, đúng tháng; đầu ra thường xuyên bắt buộc đã được bảo toàn và người thay có năng lực.','Không tự giao thêm bằng cách dùng dự phòng 25% như giờ thường xuyên; Trưởng phòng chủ trì trình điều chỉnh ưu tiên/nguồn lực theo thẩm quyền.'],
+ ['Nhận thêm việc, chiến dịch hoặc mở cơ sở','Phải có chỗ trong quỹ giờ của đúng vai, đúng tháng; đầu ra thường xuyên bắt buộc đã được bảo toàn và người thay có năng lực.','Không tự giao thêm bằng cách dùng dự phòng 25% như giờ thường xuyên; Trưởng phòng chủ trì điều chỉnh ưu tiên, thay người hoặc nguồn lực đúng thẩm quyền. Việc khẩn cấp phải xử lý theo tuyến sự cố, không trì hoãn vì chặn kế hoạch.'],
  ['Giao hạn sản xuất và chuyển công đoạn','Phiếu nhận có nguồn đầu vào, người nhận, thời gian làm/kiểm/sửa, mốc chốt; đầu ra của bước trước đạt chuẩn.','Không được phát hành thiếu hồ sơ; chuyển tín hiệu nghẽn về quản lý thương hiệu và chuyên viên trưởng đúng tuyến.'],
  ['Phát hành và công bố CMS','Nguồn y khoa/giá/giấy phép được xác nhận, kiểm độc lập, quyền công bố và kiểm website/App đã hoàn tất.','Dừng phát hành nội dung chưa đủ điều kiện; không đưa việc bị chặn thành sản lượng hoàn tất.'],
  ['Bàn giao nền tảng quý I','Tài liệu bắt buộc có phiên bản hợp lệ, đã thử, duyệt, hướng dẫn và nhận bàn giao; tải tháng 1–3 xử lý được.','Báo mốc bàn giao rủi ro và đề xuất điều phối có căn cứ; không tự dời mốc 31/03 hay bỏ hạng mục.'],
