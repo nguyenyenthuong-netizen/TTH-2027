@@ -6,6 +6,8 @@ on:
       - 'tth-site.zip'
       - 'TTH_5_Giao_Dien_GitLab_Pages_Free.zip'
       - '.github/workflows/pages.yml'
+      - 'scripts/khung_outcome_commitments_2027.py'
+      - 'pages-overrides/catalog/marketing-2027-outcome-contract.json'
       - 'scripts/khung_ctda_trong_diem_2027.py'
       - 'scripts/khung_embed_plan_2027.py'
       - 'scripts/marketing_2027_bundle.py'
@@ -350,6 +352,7 @@ jobs:
           cp pages-overrides/catalog/ke-hoach-mkt-2027-data.json _site/ke-hoach-mkt-2027/data.json
           python3 scripts/marketing_2027_bundle.py _site
           python3 scripts/khung_ctda_trong_diem_2027.py _site
+          python3 scripts/khung_outcome_commitments_2027.py _site
           python3 scripts/khung_embed_plan_2027.py _site
           python3 - <<'PY'
           from pathlib import Path
@@ -369,6 +372,11 @@ jobs:
           assert len(d['roles'])==26 and len(d['monthlyActions'])>=624
           assert len(d['portfolio']['programs'])==6 and len(d['portfolio']['projects'])==24
           assert d['ctdaAddendum']['counts']['outputs']==132 and d['ctdaAddendum']['counts']['steps']==660
+          assert len(d['yearEndCommitments']['outcomes'])==7 and len(d['yearEndCommitments']['monthlyGates'])==84
+          assert sum(len(x['kpis']) for x in d['yearEndCommitments']['outcomes'])==25
+          assert all(k['target2027'] is None and k['baseline2026'] is None for o in d['yearEndCommitments']['outcomes'] for k in o['kpis'])
+          assert Path('_site/ke-hoach-mkt-2027/ket-qua-cuoi-nam-2027.csv').is_file()
+          assert 'id="tth-year-end-commitment-2027"' in doc
           assert d['ctdaAddendum']['workloadPolicy']['bookingStatus']=='CHUA_CHO_PHEP_CONG_TAI'
           assert Path('_site/ke-hoach-mkt-2027/phu-luc-trong-diem-2027.csv').is_file()
           assert len(d['portfolio']['tasks'])==288 and len(d['issuance']['catalog'])==325
