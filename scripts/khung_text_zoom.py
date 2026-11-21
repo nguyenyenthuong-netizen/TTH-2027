@@ -47,37 +47,37 @@ css=r'''
 /* Scale text only. No CSS transform, zoom, fixed heights or width inflation. */
 #main{--tth-readable-factor:1;min-width:0}
 #main :is(p,li,dd,dt,.lede,.grel-sum,.acceptance-note,.sc-n,.scope-nonbrand){
- font-size:calc(15px * var(--tth-readable-factor))!important;
+ font-size:calc(17px * var(--tth-readable-factor))!important;
  line-height:1.56!important;max-height:none!important;overflow-wrap:break-word
 }
 #main :is(.tbl table th,.tbl table td,.std-table table th,.std-table table td){
- font-size:calc(14px * var(--tth-readable-factor))!important;
+ font-size:calc(16px * var(--tth-readable-factor))!important;
  line-height:1.52!important;
  height:auto!important;max-height:none!important;white-space:normal!important;
  overflow-wrap:break-word!important;word-break:normal!important;
  vertical-align:top!important
 }
 #main :is(.pos,.grel-it,.org-card .grp summary,.pos-n,.pos-sub,.col-h){
- font-size:calc(14px * var(--tth-readable-factor))!important;
+ font-size:calc(16px * var(--tth-readable-factor))!important;
  line-height:1.45!important;max-height:none!important;min-width:0!important
 }
 #main :is(.pos-sub span,.pos-sub i,.grel-it span,.grel-it b,.mkt-bgd-party small){
- font-size:calc(13px * var(--tth-readable-factor))!important;
+ font-size:calc(15px * var(--tth-readable-factor))!important;
  line-height:1.5!important;overflow-wrap:break-word!important
 }
 #main :is(.sec-h,.card-h,.org-card h3,.mkt-one-line h3){
- font-size:calc(19px * var(--tth-readable-factor))!important;
+ font-size:calc(22px * var(--tth-readable-factor))!important;
  line-height:1.35!important
 }
-#main .view-h .vt{font-size:clamp(24px,calc(30px * var(--tth-readable-factor)),42px)!important;line-height:1.3!important}
-#main .scope-card h3{font-size:calc(18px * var(--tth-readable-factor))!important}
-#main .scope-status .pills span{font-size:calc(13px * var(--tth-readable-factor))!important}
+#main .view-h .vt{font-size:clamp(27px,calc(32px * var(--tth-readable-factor)),45px)!important;line-height:1.3!important}
+#main .scope-card h3{font-size:calc(20px * var(--tth-readable-factor))!important}
+#main .scope-status .pills span{font-size:calc(15px * var(--tth-readable-factor))!important}
 
 /* Table wrappers preserve horizontal scroll at 125%-135% and small screens. */
 #main :is(.tbl,.std-table,.rel-scroll){max-width:100%!important;overflow-x:auto!important;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 #main :is(.tbl table,.std-table table){table-layout:auto!important;width:100%;border-collapse:separate!important;border-spacing:0!important}
 #main :is(.tbl table,.std-table table) td,
-#main :is(.tbl table,.std-table table) th{box-sizing:border-box!important;min-width:0!important;padding:9px 10px!important}
+#main :is(.tbl table,.std-table table) th{box-sizing:border-box!important;min-width:0!important;padding:13px 14px!important}
 #main .tbl table.wide{min-width:900px!important}
 #main .tbl table.mid{min-width:680px!important}
 #main .card.meta .tbl table{table-layout:fixed!important;min-width:0!important;width:100%!important}
@@ -98,7 +98,7 @@ css=r'''
  #main .card.meta .tbl table tr>*:nth-child(2){width:76%!important}
  #main .scope-grid{grid-template-columns:1fr!important}
 }
-@media(max-width:520px){#main .card.meta .tbl table tr>*{font-size:calc(13px * var(--tth-readable-factor))!important}}
+@media(max-width:520px){#main .card.meta .tbl table tr>*{font-size:calc(15px * var(--tth-readable-factor))!important}}
 
 /* Unified raised, softly translucent titles, with guaranteed separation.
    Static headings remain in the document flow; only pre-existing
@@ -177,6 +177,21 @@ css=r'''
  #main :is(.view-h,.doc-sec>.sec-h,.card-h,.jd-head,.pp-h,.std-head){background:#fff!important;box-shadow:none!important;backdrop-filter:none!important}
  #main .jd-d[open]>.jd-head,#main .pp-h{position:static!important}
 }
+
+
+/* tth-readable-density-2027: never shrink the whole page to fit text. */
+#main :is(.jd-meta,.jd-description,.role-detail,.mkt-one-line-grid p,.mkt-one-line-example,.view-content){
+ line-height:1.64!important;
+}
+#main :is(.tbl,.std-table,.rel-scroll,.staffing-table-scroll){
+ width:100%!important;max-width:100%!important;overflow-x:auto!important;
+}
+#main :is(.tbl table,.std-table table) td{border-bottom:1px solid #e3ebf5!important}
+#main .doc-sec{scroll-margin-top:90px}
+#main :is(.jd-head,.jd-d summary,.scope-card,.sectioncard){height:auto!important;max-height:none!important}
+#tth-mkt-2027-in-khung{max-width:100%!important;margin:18px 0 26px!important;box-sizing:border-box!important}
+#tth-mkt-2027-workframe{width:100%!important;height:min(1230px,calc(100dvh + 320px))!important;min-height:850px!important;background:#fff}
+@media(max-width:900px){#tth-mkt-2027-workframe{min-height:790px!important;height:980px!important}}
 
 </style>'''
 if "</head>" not in html: raise SystemExit("Missing head")
