@@ -14,7 +14,7 @@ FORM = {
 'DM-1':'dl-1 dl-1 cvt-2 dl-2','DM-2':'qc qc cvt-2 qlth','DM-3':'tk-nt tk-nt cvt-2 cvtt-a','DM-4':'qlsps qlsps cvt-2 qc-b','DM-5':'cvt cvtt-a cvt dl-1','DM-6':'qlth qlth cvt-2 cvtt','DM-7':'dl-2 dl-2 phap-che qc-b','DM-8':'cvt qlsps cvt-2 bt-ac','DM-9':'tp qlth-a tp qlth-bc','DM-10':'cvt dl-1 cvt bt-ac',
 'SO-2':'dl-1 dl-1 tp qlth-bc','SO-3':'cvt-2 cvtt-a cvt-2 qc-a','SO-4':'cvtt cvtt cvt-2 tn','SO-5':'tk-nt tk-nt cvt md-ac','HS-1':'cvt bt-ac cvt qlsps','HS-2':'phap-che dl-2 phap-che qlsps','HS-3':'phap-che bt-ac phap-che qc-a','HS-4':'cvtt cvtt cvt-2 qlth','HS-5':'cvtt cvtt cvt-2 qlth'}
 GROUP={'qc':['qc-a','qc-b'],'bt':['bt-ac','bt-b'],'md':['md-ac','md-b'],'tk':['tk-a','tk-b'],'cvtt':['cvtt-a','cvtt-bc'],'qlth':['qlth-a','qlth-bc'],'tn':['tn-a@vinh','tn-b@nguyenphuc'],'mdcs':['mdcs-a@vinh','mdcs-b@nguyenphuc']}
-EXTERNAL={'cc':'Contact Center','cc-kiem':'Người kiểm tra nghiệp vụ độc lập của Contact Center','nhan-luc':'Phòng Nhân lực','phap-che':'Pháp chế','btgd':'Ban Tổng Giám đốc','qlcl':'Phòng Quản lý chất lượng','ke-toan':'Kế toán','cong-nghe':'Phòng Công nghệ','so-hoa':'Phòng Số hóa','ky':'Người được giao ký ban hành (chờ văn bản phân cấp)','bgd-coso':'Ban Giám đốc cơ sở','gd-coso':'Giám đốc cơ sở','ptgd-tc':'Phó Tổng Giám đốc phụ trách tài chính','ncc':'Đơn vị thiết kế thuê ngoài'}
+EXTERNAL={'cc':'Contact Center','cc-kiem':'Người kiểm tra nghiệp vụ độc lập của Contact Center','nhan-luc':'Phòng Nhân lực','phap-che':'Pháp chế','btgd':'Ban Tổng Giám đốc','qlcl':'Phòng Quản lý chất lượng','ke-toan':'Kế toán','cong-nghe':'Phòng Công nghệ','so-hoa':'Phòng Số hóa','ky':'Người được giao ký ban hành (chờ văn bản phân cấp)','bgd-coso':'Ban Giám đốc cơ sở','gd-coso':'Giám đốc cơ sở','ptgd-tc':'Phó Tổng Giám đốc phụ trách tài chính','ncc':'Đơn vị thiết kế thuê ngoài','chu-du-lieu':'Chủ dữ liệu chuyên môn, người hành nghề, giá và giấy phép theo phân cấp','nguon-doi-tac':'Đầu mối dữ liệu được ủy quyền tại thương hiệu/đối tác'}
 # The flow catalogue owner controls the process, not every technical work stage.
 FLOW_WRITERS = '''qlth-a bt-ac tn-a@vinh dl-1 dl-2 cvtt-a bt-ac tn-b@nguyenphuc qlth-a qlth-a tk-a cvtt-a tk-nt qlsps dl-1 cvtt-a qlsps bt-ac qlth-bc cvtt-bc tn-a@vinh cvtt-a qc-a tk-nt dl-2 qlth-a cvtt-bc qlsps cvtt-bc bt-ac bt-ac qlth-a cvtt-a cvtt-bc cvtt-a tn-a@vinh qlth-a bt-ac qc-a dl-2 tp tn-a@vinh cvtt-a qlth-bc bt-ac tn-b@nguyenphuc md-ac bt-ac qlsps dl-2 qlth-a dl-2 bt-b cvtt-a qc-b qc-a qc-a dl-1 bt-ac qlth-a'''.split()
 # Extra catalogue rows with links to the costed master, for references covering the same scope.
@@ -90,6 +90,13 @@ def register(d):
                 put(code,name,'Chi tiết bổ sung',kind,'Nhóm '+str(g+1),team,1,'moi',4,1,'Đầu ra đề xuất, cần xác nhận số cấu hình riêng.','Theo văn bản phân cấp còn hiệu lực.',note,source)
             continue
         put(code,name,'Chi tiết bổ sung',kind,'Theo phạm vi của sản phẩm',jobs.split(),n,'moi',3+i%4,1,'Sản phẩm chi tiết đề xuất. Cần đối chiếu bản đã có trước khi giao xây mới.','Người có thẩm quyền theo phân cấp còn hiệu lực, cần hồ sơ giao quyền.',note,source)
+    # The initial operating set must be ready before Q2 handover. Critical
+    # prerequisites close first; the schedule may overload a role and must show it.
+    starts={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'B-7':2,'QC-1':2,'QC-2':2,'B-3':2,'B-4':2,'B-5':2,'MAU-QC':3,'YC-WEB':1,'YC-CRM':1,'YC-APP':1,'YC-PM':1,'ND-WEB1':2,'ND-WEB2':2,'QC-BT':1,'QC-KS':1}
+    early={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'QC-1':2,'QC-2':2,'YC-WEB':1,'QC-BT':1,'QC-KS':1}
+    for index,item in enumerate(items):
+        item['month']=starts.get(item['code'],1 if item['category']=='23 văn bản' else 1+index%3)
+        item['deadline']=early.get(item['code'],3)
     assert len({x['code'] for x in items if x['category']=='74 tài liệu'})==74
     assert len({x['code'] for x in items if x['category'] in ['60 quy trình','23 văn bản']})==83
     return items

@@ -9,6 +9,7 @@ def check(page, width, form, out):
         dims=host.evaluate('h=>{const a=h.shadowRoot.querySelector(".app");return [a.clientWidth,a.scrollWidth,h.getBoundingClientRect().right]}')
         assert dims[1]<=dims[0]+2 and dims[2]<=width+18,(form,which,dims)
     pane('roadmap')
+    assert host.get_by_text('Cân song song việc chuyên môn và xây dựng hệ thống theo tháng',exact=True).is_visible()
     host.get_by_role('button',name='Xem kết quả rà soát phạm vi và việc còn thiếu',exact=True).click()
     assert host.get_by_text('Tài sản và kênh của từng đơn vị',exact=True).is_visible()
     assert 'Chưa có đầy đủ ngày nhận người' in host.locator('#db-main').inner_text()
@@ -106,11 +107,42 @@ def check(page, width, form, out):
     script=host.locator('[data-work-key="bt-ac/loi"]')
     assert 'Tổng số V2 và V3' in script.text_content()
     pane('manage');assert host.locator('#db-main').get_by_text('Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số',exact=True).count()>=1
-    pane('docs');host.locator('[data-search="doc"]').fill('B-7');rec=host.locator('[data-doc-key="B-7~1"]');rec.locator('summary').first.click();rec.locator('[data-edit-doc]').wait_for();assert rec.locator('.inner').get_by_text('V3-B02',exact=False).count()>=1
+    pane('docs')
+    host.locator('[data-set="role"]').select_option('md-ac')
+    host.locator('[data-set="deliverySlot"]').select_option('all')
+    assert '12 cấu phần trong bộ mẫu' in host.locator('#db-main').inner_text()
+    assert 'chậm nhất 31/03/2027' in host.locator('#db-main').inner_text()
+    host.locator('[data-search="doc"]').fill('B-7');rec=host.locator('[data-doc-key="B-7~1"]');rec.locator('summary').first.click();rec.locator('[data-edit-doc]').wait_for();assert rec.locator('.inner').get_by_text('V3-B02',exact=False).count()>=1
     rec.locator('[name=count]').fill('2');rec.locator('[type=submit]').click();assert host.locator('[data-doc-key="B-7~1"] [name=count]').input_value()=='2'
     pane('flows');assert '568' in host.locator('[data-results="flow"] .count').inner_text();host.locator('[data-search="flow"]').fill('DA-hang-muc-01-01');flow=host.locator('[data-flow-index]').first;flow.locator('summary').first.click();flow.locator('.flowstep .entry summary').first.click();assert flow.get_by_text('Cách tính công',exact=True).is_visible()
     pane('audit');host.locator('[data-cap] [name=clinic]').fill('25');host.locator('[data-cap] button').click();assert host.locator('[data-cap] [name=clinic]').input_value()=='25'
     from urllib.parse import urldefrag
     page.goto(urldefrag(page.url).url+'#dinh-bien-2027',wait_until='domcontentloaded',timeout=30000)
     assert host.locator('[data-panel="summary"]').is_visible() and page.locator('#v-staffing').is_visible()
-    print('PASS Mục 05:',form,'8 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
+    pane('cms')
+    assert host.get_by_text('CMS Website và App – số hồ sơ và giờ từng công đoạn',exact=True).is_visible()
+    assert host.locator('[data-set="cmsUnit"] option').count()==14
+    assert host.locator('[data-set="cmsType"] option').count()==5
+    assert 'Thiếu:' in host.locator('#db-main').inner_text()
+    host.locator('[data-set="cmsUnit"]').select_option('vinh')
+    host.locator('[data-set="cmsType"]').select_option('bac-si')
+    cms_form=host.locator('[data-cms-row="vinh/bac-si"]')
+    for k,value in [('base','2'),('reuse','1'),('maint','1'),('graphic','0'),('media','0')]:
+        cms_form.locator('[name="'+k+'"]').fill(value)
+    cms_form.locator('button[type="submit"]').click()
+    assert host.locator('[data-cms-row="vinh/bac-si"] [name=base]').input_value()=='2'
+    assert float(host.locator('.metric b').first.inner_text().replace('.','').replace(',','.'))>0
+    pane('full')
+    host.locator('[data-set="role"]').select_option('qlsps')
+    assert host.get_by_text('Toàn bộ sản phẩm, công đoạn, thời gian theo từng vị trí',exact=True).is_visible()
+    assert 'T2' in host.locator('#db-main').inner_text()
+    assert 'CMS ban đầu' in host.locator('#db-main').text_content()
+    assert 'NaN' not in host.locator('#db-main').inner_text()
+    pane('assets')
+    assert host.locator('#db-main').get_by_text('Kiểm kê 30 kênh và toàn bộ nhóm tài sản nghiệp vụ',exact=True).is_visible()
+    assert host.locator('#db-main').get_by_text('K-KK-',exact=False).count()>0
+    pane('suff')
+    assert host.locator('#db-main').get_by_text('Kiểm tra đủ sức xử lý công việc theo từng tháng và suất',exact=True).is_visible()
+    assert 'Chưa đủ' in host.locator('#db-main').inner_text() or 'Chưa có' in host.locator('#db-main').inner_text()
+    pane('roadmap')
+    print('PASS Mục 05:',form,'12 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
