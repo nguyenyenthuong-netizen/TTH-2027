@@ -361,8 +361,8 @@ jobs:
           assert 'fetch("./data.json"' not in inside
           d=json.loads(Path('_site/ke-hoach-mkt-2027/data.json').read_text('utf-8'))
           assert len(d['roles'])==26 and len(d['monthlyActions'])>=624
-          assert len(d['portfolio']['programs'])==6 and len(d['portfolio']['projects'])==23
-          assert len(d['portfolio']['tasks'])==276 and len(d['issuance']['catalog'])==325
+          assert len(d['portfolio']['programs'])==6 and len(d['portfolio']['projects'])==24
+          assert len(d['portfolio']['tasks'])==288 and len(d['issuance']['catalog'])==325
           assert len(d['portfolio']['operations'])>100 and len(d['portfolio']['kpis'])==23
           assert len(d['docs'])==74 and len(d['themes'])==157 and len(d['overlapAudits'])>=119
           print('PASS: toan bo ke hoach 12 thang va du phong da nam trong Khung Muc 05')
