@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2027.11.21.1",
+  "schemaVersion": "2027.11.21.2",
   "title": "Mục tiêu và cam kết kết quả Marketing TTH 2027",
   "scope": "TTH Group / Phòng Marketing năm 2027",
   "periodStart": "2027-01-01",
@@ -503,1010 +503,1095 @@
     {
       "resultId": "KQ27-01",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Kiểm kê nhận diện đã ban hành, phân loại giữ/sửa/xây mới",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Khóa phạm vi thương hiệu, logo chuẩn và đầu ra ưu tiên",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Trình duyệt bộ chuẩn và danh mục điểm chạm ưu tiên",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Ban hành thư viện và quy tắc áp dụng đã được duyệt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Triển khai điểm chạm ưu tiên tại cơ sở đủ điều kiện",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Nghiệm thu điểm chạm và kiểm soát tuân thủ quý II",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Bổ sung tài sản còn thiếu, đánh giá rủi ro nhận diện",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm tra ứng dụng 2D/3D và điểm chạm số–vật lý",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đóng sai lệch nhận diện đến hạn và nghiệm thu quý III",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Kiểm định bổ sung cơ sở mới theo lịch thực tế",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Tổng hợp tỷ lệ tuân thủ, xử lý lỗi tái diễn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-01",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Chốt tài sản đã nghiệm thu, phiên bản hiệu lực và kế hoạch duy trì",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Khóa định nghĩa nhận biết/cân nhắc và tệp khảo sát",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Đo số nền 2026/đầu 2027 theo phương pháp thống nhất",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Phê duyệt mục tiêu và kế hoạch thông điệp thị trường",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Triển khai chương trình truyền thông thương hiệu quý II",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Đối soát kết quả xu hướng tìm kiếm thương hiệu giữa kỳ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Rà mức nhận biết giữa kỳ và điều chỉnh thông điệp",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Mở rộng nội dung uy tín có xác nhận chuyên môn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Thực hiện nghiên cứu theo cùng mẫu và phương pháp",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đối soát uy tín/truyền thông, loại các chỉ số ảo",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Hoàn thiện đợt duy trì nhận biết cuối năm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Đánh giá mức cân nhắc theo tệp và vùng thị trường",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-02",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Đo lại số cuối năm, đối chiếu nền, kết luận chênh lệch",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Xác định dịch vụ ưu tiên và khả năng tiếp nhận từng cơ sở",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Khóa định nghĩa lead hợp lệ, mã nguồn CRM/HIS, số nền",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Trình duyệt chỉ tiêu nguồn khách và kế hoạch kênh quý II",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Triển khai và nghiệm thu nhóm chiến dịch ưu tiên",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Đối chiếu lead → lịch hẹn → đến viện → sử dụng dịch vụ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Rà soát chi phí/khách và doanh thu đủ điều kiện nửa năm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Điều chỉnh chương trình theo tắc nghẽn chăm sóc/nhu cầu",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Thử tối ưu kênh và đo chất lượng lead theo dịch vụ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đối soát khách sử dụng dịch vụ và chi quý III",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Thử nghiệm nhóm nguồn khách tăng trưởng cuối năm đã duyệt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Đối chiếu chi phí, số khách và quy thuộc nguồn theo kỳ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-03",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Chốt khách/doanh thu Marketing đủ điều kiện với HIS/Kế toán",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Rà soát danh sách dự án mở cơ sở, lịch dự kiến chưa phải T0",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Xác nhận điều kiện pháp lý, lịch mở dự kiến, chủ dự án theo cơ sở",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Kiểm tra cổng T-120/T-90 các cơ sở đủ điều kiện",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Kích hoạt kế hoạch truyền thông trước mở theo T được xác nhận",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm nội dung CMS, nhân sự tiếp nhận và luồng nguồn khách",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Nghiệm thu các cổng T0 hoặc T+30 thực tế phát sinh",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Cập nhật lịch mở bị thay đổi, tải dự án phụ thuộc T",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm tra cổng T-60/T-30 ở các cơ sở được kích hoạt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đối soát kết quả T+30/T+90 của cơ sở đã mở",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Rà kết quả khách và hiệu quả chi khai trương từng cơ sở",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Dự kiến nguồn lực cho cơ sở mở muộn/khác năm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-04",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Chốt số cơ sở mở thực tế, đánh giá T+30/T+90 đủ hạn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Kiểm kê hệ thống, luồng nghiệp vụ, tính năng đang dùng và vấn đề",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Khóa yêu cầu CRM + Contact Center + HIS, website/app và phần mềm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Nghiệm thu mốc giai đoạn 1 đủ điều kiện theo quyết định",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Hoàn thiện dữ liệu bác sĩ, dịch vụ, cơ sở trên CMS theo danh mục",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm thử liên kết mã bệnh nhân HIS–CRM, luồng tư vấn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Đo chất lượng hồ sơ, sử dụng chức năng và phản hồi nửa năm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Đối soát tỷ lệ lỗi tích hợp và thời gian xử lý theo nguồn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Rà điều kiện mở giai đoạn nâng cấp/đa kênh/AI đã được duyệt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Nghiệm thu hệ thống, phân quyền, nhật ký và luồng MKT",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Đo tỷ lệ ứng dụng thực tế theo vai trò và đơn vị",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Khắc phục lỗi chặn trước chốt năm; đối soát năng suất",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-05",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Tổng kết giai đoạn nghiệm thu và tác động số hóa có chứng cứ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Kiểm kê toàn bộ quy trình, mẫu và hiệu lực trước 2027",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Đối chiếu CNNV/MTCV; xác định chủ từng tài liệu và tuyến duyệt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Trình duyệt danh mục bắt buộc, phân loại mới/sửa/hợp nhất",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Ban hành ưu tiên các quy trình điều phối, duyệt và dữ liệu",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Nghiệm thu thư viện bộ mẫu dùng chung theo mã nguồn gốc",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Đánh giá sử dụng mẫu tại TCT, Marketing cơ sở và điểm nghẽn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Rà quy chuẩn từng vị trí và thủ tục chưa đủ điều kiện",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Bổ sung hướng dẫn, đào tạo sử dụng và cơ chế kiểm soát",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đo tỷ lệ tuân thủ, lỗi quy trình và mức sửa làm lại",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Rà danh mục hồ sơ hết hiệu lực và phiên bản mới",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm tra hồ sơ ban hành đủ chứng từ ở từng phân hệ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-06",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Chốt sổ mới/sửa/hợp nhất, tỷ lệ áp dụng và tài sản quản trị",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 1,
-      "expectedCheckpoint": "Số nền và nguồn dữ liệu",
+      "expectedCheckpoint": "Chốt bảng 26 vị trí, nhân sự thực có, định mức và tải nền",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc"
+      "blockingNote": "Thiếu số nền 2026 nếu chưa có hồ sơ gốc",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 2,
-      "expectedCheckpoint": "Trình chỉ tiêu, ngân sách và phê duyệt",
+      "expectedCheckpoint": "Đối soát tải thường xuyên, trọng điểm, thiết lập và 25% dự phòng",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 3,
-      "expectedCheckpoint": "Đối soát kết quả quý I",
+      "expectedCheckpoint": "Kiểm năng lực theo người/quý, cảnh báo điểm nghẽn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 4,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Đo giờ thực tế và chất lượng đầu ra, sai lệch giờ chuẩn",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 5,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Xác định công việc tái làm, giờ phối hợp, họp và kiểm duyệt",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 6,
-      "expectedCheckpoint": "Đối soát kết quả 6 tháng",
+      "expectedCheckpoint": "Đánh giá khả năng đáp ứng và chi phí thực 6 tháng",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 7,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Tối ưu quy trình khi có chứng cứ hiệu suất, không chuyển tải trái CNNV",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 8,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Kiểm tình trạng nhân sự khuyết, kiêm nhiệm và thay thế",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 9,
-      "expectedCheckpoint": "Đối soát kết quả 9 tháng",
+      "expectedCheckpoint": "Đối soát tải 9 tháng, đề xuất điều chỉnh có căn cứ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 10,
-      "expectedCheckpoint": "Giao việc và kiểm năng lực đầu quý",
+      "expectedCheckpoint": "Chuẩn bị năng lực chiến dịch cao điểm và cơ sở mới",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 11,
-      "expectedCheckpoint": "Theo dõi tiến độ, cảnh báo và cải tiến",
+      "expectedCheckpoint": "Rà tổng chi, giờ, chất lượng, tiến độ trước khóa năm",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     },
     {
       "resultId": "KQ27-07",
       "month": 12,
-      "expectedCheckpoint": "Khóa chứng từ, đánh giá kết quả năm",
+      "expectedCheckpoint": "Kết luận định biên có đủ tải hay thiếu tải, lý do và chứng cứ",
       "targetValue": null,
       "plannedBudgetVND": null,
       "plannedHours": null,
       "actualValue": null,
       "status": "CHUA_DUYET",
       "sourceConfirm": "Chờ nguồn được xác nhận",
-      "blockingNote": "Không tự chia đều mục tiêu năm"
+      "blockingNote": "Không tự chia đều mục tiêu năm",
+      "monthlyDeliverableClass": "Cơ sở · Sản lượng · Bằng chứng · Người chịu trách nhiệm · Giờ và ngân sách"
     }
-  ]
+  ],
+  "planningNote": "84 mốc tháng khác nhau theo từng kết quả là gợi ý lộ trình kiểm soát, không phải số lượng giao việc hoặc chỉ tiêu đã phê duyệt; cơ sở mới căn cứ T0 thực tế."
 }
