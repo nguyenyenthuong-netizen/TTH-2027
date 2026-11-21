@@ -107,7 +107,7 @@ function decisions(r,all){
  const peaks=active.filter(x=>x.review.annualExcess===0&&x.review.peak.excess>0);
  const cluster=[...yearly,...peaks];
  const clinic=all.find(x=>x.id==='dmpk');
- const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.slot?' · '+slotLabel(x.slot):'')+(x.site?' tại '+siteTitle(x.site):'')+' (vượt '+format(x.review.annualExcess)+' giờ/năm)').join(', ')+'.':'Giữ phương án 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm làm mốc bố trí.';
+ const first=yearly.length?'Xác minh khối lượng cả năm của '+yearly.map(x=>name(x.id)+(x.slot?' · '+slotLabel(x.slot):'')+(x.site?' tại '+siteTitle(x.site):'')+' (vượt '+format(x.review.annualExcess)+' giờ/năm)').join(', ')+'.':'Phương án đang đối chiếu gồm 22 suất Tổng công ty, 13 suất ở 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm; chưa đủ dữ liệu để chốt bố trí dài hạn.';
  const evidence='Số người thực có năm 2027 và lịch trực tại từng cơ sở chờ Phòng Nhân lực và đơn vị xác nhận. Số giờ trong bảng là ước tính theo sản phẩm.';
  const hr=['Chức danh','Địa điểm','Bố trí theo cơ cấu','Giờ việc đã tính/tháng (bình quân)','So với quỹ giờ của cơ cấu'];
  const peaksTable=cluster.length?table(['Người hoặc vị trí cần xem','Tháng vượt quỹ','Tháng cần hỗ trợ nhiều nhất','Việc có thể quyết'],cluster.map(x=>{
@@ -115,7 +115,7 @@ function decisions(r,all){
   const action=x.review.annualExcess>0?'Năm vượt '+format(x.review.annualExcess)+' giờ kế hoạch. Đo lại tải và kiểm khả năng phân công trước khi trình bổ sung người.':m.ongoing===0?'Dàn lại lịch làm tài liệu hoặc bố trí người thử, kiểm đúng chuyên môn.':'Xếp người hỗ trợ việc chuẩn bị hoặc đối soát theo lịch. Giữ người chịu trách nhiệm và thẩm quyền duyệt.';
   return [positionLink(x)+(x.site?'<small>'+e(siteTitle(x.site))+'</small>':''),periods.map(t=>'T'+t.m).join(', '),'T'+m.m+' · '+format(m.excess)+' giờ',e(action)];
  }),[2]):'<p>Trong kịch bản này, các vị trí đã có quỹ giờ đều nằm trong quỹ ở cả 12 tháng.</p>';
- return '<h4>Quyết định nhân sự theo kịch bản '+e(cases[u.scenario])+'</h4>'+stack([
+ return '<h4>Vấn đề nhân sự cần kiểm chứng theo kịch bản '+e(cases[u.scenario])+'</h4>'+stack([
  ['Bố trí dài hạn',e(first)+' <b>'+yearly.length+' người hoặc vị trí có khối lượng đã tính vượt quỹ bình quân năm.</b>'],
  ['Bố trí theo tháng','<b>'+peaks.length+' người hoặc vị trí chỉ vượt quỹ ở một số tháng.</b> Bảng dưới ghi tháng và số giờ cần thu xếp.'],
  ['Đầu mối Clinic','Khối lượng tham chiếu '+format(clinic.review.avgHours)+' giờ/tháng trong mô hình đủ phạm vi. Chốt số giờ kiêm nhiệm, ngày bàn giao và người thay với đơn vị.']
@@ -426,6 +426,14 @@ function workBasis(w,inTrial,pilots){
  }
  return volumeReason(w);
 }
+function templateCondition(w,r){
+ const z=w.item,uses=(z.role.startsWith('mdcs-')&&['v2','v3'].includes(z.code))||(z.role.startsWith('md-')&&z.code==='kiem');
+ if(!uses)return null;
+ const group=w.site?siteMap[w.site].group:(z.role==='md-ac'?'g1':'g2');
+ const rec=r.docs.find(d=>d.d.id===(group==='g1'?'B-7~1':'B-7~2'));
+ const setup=rec?rec.monthly.flatMap((arr,i)=>arr.some(a=>a.type==='setup')?[i+1]:[]):[];
+ return {finish:setup.length?Math.max(...setup):null,group};
+}
 function assignmentCondition(w,site){
  const z=w.item,notes=[];
  if(z.id==='tp/kpi'||z.id==='dl-1/kpi')notes.push('Các mốc T1, T4, T7 và T10 là chốt kết quả quý trước. Mốc T1 chỉ thực hiện khi có hồ sơ được bàn giao.');
@@ -437,13 +445,10 @@ function assignmentCondition(w,site){
    }
  }
  if(u.phase==='q2'&&site)notes.push('Giao từ ngày ký biên bản tiếp nhận tại đơn vị.');
- const usesTemplate=(z.role.startsWith('mdcs-')&&['v2','v3'].includes(z.code))||(z.role.startsWith('md-')&&z.code==='kiem');
- if(usesTemplate){
-   const group=site?site.group:(z.role==='md-ac'?'g1':'g2');
-   const rec=getRun().docs.find(r=>r.d.id===(group==='g1'?'B-7~1':'B-7~2'));
-   const stageMonths=rec.monthly.flatMap((arr,i)=>arr.some(a=>a.type==='setup')?[i+1]:[]);
-   const last=stageMonths.length?' Mốc hoàn tất theo lịch thử: T'+Math.max(...stageMonths)+'.':'';
-   notes.push('Chỉ giao quay/dựng hoặc kiểm theo mẫu khi có phiên bản B-7 đúng nhóm đã được nghiệm thu. Trước mốc đó cần bản cũ còn hiệu lực.'+last);
+ const template=templateCondition(w,getRun());
+ if(template){
+   const last=template.finish?' Mốc hoàn tất theo lịch thử: T'+template.finish+'.':'';
+   notes.push('Chỉ giao quay/dựng hoặc kiểm theo mẫu khi có phiên bản B-7 đúng nhóm đã được nghiệm thu. Chưa có bằng chứng mẫu cũ còn hiệu lực; lượng và giờ đến hết tháng hoàn tất bộ mẫu trong lịch thử đang chờ xác nhận điều kiện thực hiện.'+last);
  }
  return notes.length?'<small>'+e(notes.join(' '))+'</small>':'';
 }
@@ -458,7 +463,7 @@ function roadmapDelivery(){
  const slotSelect=division?fLabel('Phân công trong '+model.seats[rid]+' suất','<select data-set="deliverySlot">'+opt({all:'Cả hai suất',a:'Người phụ trách hệ thống',b:'Người phụ trách bệnh viện'},slot)+'</select>'):'';
  const choices='<div class="control">'+phaseSelect+roleSelect+(local?phaseSite(possible):'')+slotSelect+selCase()+'</div>';
  const phaseTable=table(['Giai đoạn','Phạm vi giao việc','Điều kiện chuyển bước'],Object.entries(stages).map(([k,v])=>[btn(v.title,'stage',k),e(v.scope),e(v.gate)]));
- const heading='<h3>Đầu ra theo từng vị trí và lộ trình</h3><p>Phương án gồm 22 suất ở Tổng công ty, 13 suất tại 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm. Chọn chức danh, giai đoạn và đơn vị để đọc chức năng, sản phẩm, số lượng tính thử, người nhận và thời hạn.</p>'+choices+
+ const heading='<h3>Đầu ra theo từng vị trí và lộ trình</h3><p>Phương án gồm 22 suất ở Tổng công ty, 13 suất tại 5 bệnh viện và 1 đầu mối Clinic kiêm nhiệm. Chọn chức danh, giai đoạn và đơn vị để đọc chức năng, sản phẩm, số lượng tính thử, người nhận và thời hạn.</p>'+completenessNote()+choices+
    (division?'<p class="fine">Hai người cùng MTCV, phân công cố định theo Mục 2 và Mục 3: một người phụ trách hệ thống, một người phụ trách bệnh viện. Nơi đặt hàng quyết định người nhận từng sản phẩm. Các số phân bổ chưa có phiếu giao là giả định tính thử. Người kiểm độc lập phải khác người lập.</p>':'');
  const gate='<p class="note"><b>'+e(st.title)+'.</b> '+e(st.scope)+'</p>';
  const roleIndex=detail('Xem đủ 26 chức danh và một số đầu ra chính',table(['Chức danh','Suất theo cơ cấu','Phần việc chủ trì trong MTCV','Ví dụ sản phẩm để mở chi tiết'],db.vi_tri.map(v=>[btn(v.ten,'deliveryRole',v.id),v.id==='dmpk'?'1 kiêm nhiệm':v.id==='dl-2'?'Kiêm cùng Đo lường':v.id==='qlml'?'Chờ phân vùng':String(model.seats[v.id]),e(v.phan_dinh_chu_tri_dau_ra||v.muc_dich),e(model.work.filter(w=>w.role===v.id&&w.kind!=='T'&&w.code!=='du-gb').slice(0,3).map(w=>w.name).join(' · '))]),[1])+'<p>Chọn tên chức danh để xem toàn bộ đầu ra và phần tài liệu trong kỳ.</p>');
@@ -478,6 +483,8 @@ function roadmapDelivery(){
  if(u.phase==='q2')scope+=' Sản lượng là mức khi nhận đủ phạm vi; ngày hiệu lực và phần tháng chuyển giao chốt theo biên bản từng đơn vị.';
  function phasedQty(w,m){
    const z=w.item;
+   const template=templateCondition(w,r);
+   if(template&&(!template.finish||m<=template.finish))return null;
    if(inTrial&&clinic)return null;
    if(!inTrial)return w.qty[m-1];
    if(z.role==='cvt'&&z.code==='bv')return w.qty[m-1]*2/5;
@@ -503,7 +510,7 @@ function roadmapDelivery(){
      const when=w.item.kind==='G'?'Chờ quyết định phân vùng':w.item.period.startsWith('y')?'Thực hiện vào '+periodName(w.item.period):slot!=='all'?'Chưa phân cho người đang chọn trong kịch bản':w.item.kind==='U'?'Khi phát sinh; chưa có số lần để tính giờ':'Chưa có số lượng trong kỳ hoặc theo điều kiện giao việc';
      conditional.push([product,e(when),e(recipient)+'<small>Hạn: '+e(due)+'</small>']);return null;
    }
-   const quantity=incomplete?'Chờ xác nhận phạm vi':count.map((v,i)=>'T'+monthsHere[i]+': '+format(v)).join(' / ');
+   const quantity=count.map((v,i)=>'T'+monthsHere[i]+': '+(v===null?'Chờ phạm vi hoặc điều kiện':format(v))).join(' / ');
    const measure='<b>'+e(quantity)+'</b><small>Tổng quý: '+format(qty)+' · '+format(sum(w.t))+' phút/đầu ra · '+format(hours)+' giờ</small><small><b>Cách xác định lượng:</b> '+e(workBasis(w,inTrial,pilots))+'</small>';
    return [product,measure,e(recipient)+'<small>Hạn: '+e(due)+'</small>'];
  }).filter(Boolean);
@@ -524,7 +531,7 @@ function roadmapDelivery(){
  const docsHours=sum(stageDocs.map(z=>z.h));
  const advisory='<p class="fine">Định mức là phút của người làm một đơn vị đầu ra. Giờ theo quý gồm thời gian trực tiếp, phối hợp, kiểm, sửa và di chuyển của vị trí. Mỗi người ghi giờ cho công đoạn mình làm. Thời gian chờ duyệt nằm ngoài phép tính.</p>';
  return heading+roleIndex+gate+trialSelection+roleMandate(rid,site)+splitControls+'<h4>Sản phẩm của '+e(name(rid))+(site?' · '+e(site.name):'')+'</h4><p>'+e(scope)+'</p><p class="note"><b>Số lượng và thời gian là kịch bản tính thử.</b> Cần đối chiếu kế hoạch từng đơn vị, nhật ký thực hiện, nhân sự thực có và thời điểm bàn giao trước khi giao chỉ tiêu hoặc quyết định số người. Nhịp thực hiện, quy cách và phạm vi được ghi trên từng dòng.</p>'+
- '<p class="receipt"><b>'+(pending&&operationHours===0?'Chờ xác nhận giờ đầu ra vận hành':format(operationHours)+' giờ đầu ra vận hành')+'</b> và <b>'+format(docsHours)+' giờ công việc tài liệu</b> trong quý theo phần đã định lượng.'+(pending?' Còn '+pending+' dòng chờ xác nhận phạm vi.':'')+(!ready?' Số giờ tại cơ sở đang dùng làm tham chiếu, chờ giao cho vai trò mới.':'')+'</p>'+
+ '<p class="receipt"><b>'+(pending&&operationHours===0?'Chờ xác nhận giờ đầu ra vận hành':format(operationHours)+' giờ đầu ra vận hành')+'</b> và <b>'+format(docsHours)+' giờ công việc tài liệu</b> trong quý theo phần đã định lượng.'+(pending?' Còn '+pending+' dòng chờ xác nhận phạm vi hoặc điều kiện; tổng trên chưa gồm đủ các dòng này.':'')+(!ready?' Số giờ tại cơ sở đang dùng làm tham chiếu, chờ giao cho vai trò mới.':'')+'</p>'+
  (rows.length?table(['Sản phẩm và quy cách bàn giao','Sản lượng, thời gian và căn cứ tính thử','Người nhận, kiểm và hạn'],rows):'<p>Chưa có sản phẩm được định lượng trong giai đoạn đã chọn.</p>')+advisory+
  (conditional.length?'<h4>Đầu ra theo phát sinh, điều kiện hoặc đến kỳ khác</h4><p>Các việc này vẫn thuộc phạm vi vị trí; số 0 trong kỳ không có nghĩa là bỏ nhiệm vụ.</p>'+table(['Sản phẩm và quy cách','Điều kiện thực hiện','Người nhận, kiểm và hạn'],conditional):'')+
  '<h4>Quy trình, mẫu và báo cáo do vị trí tham gia trong quý</h4>'+(stageDocs.length?table(['Hồ sơ','Phạm vi','Tháng','Phần việc của vị trí','Sản lượng theo lịch','Giờ trong quý','Người kiểm chuẩn'],stageDocs.map(d=>d.cells),[5]):'<p>Chưa phân công hồ sơ tài liệu cho vị trí này trong lịch quý.</p>')+
