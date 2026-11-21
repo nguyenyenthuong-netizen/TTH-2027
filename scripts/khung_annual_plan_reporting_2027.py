@@ -17,11 +17,25 @@ items = [
 ]
 for new_id, filename, next_id in items:
     fragment = (base / filename).read_text(encoding="utf-8").strip()
+    extra_file = {
+        "m-30-4a": "annual-marketing-2027-coverage.html",
+        "m-30-5a": "annual-marketing-2027-performance.html",
+    }[new_id]
+    extra = (base / extra_file).read_text(encoding="utf-8").strip()
+    extra_id = {"m-30-4a": "m-30-4a-matrix",
+                "m-30-5a": "m-30-5a-scorecard"}[new_id]
+    if extra.count('id="' + extra_id + '"') != 1:
+        raise RuntimeError("Lỗi mã khối đo lường " + extra_file)
+    if fragment.count("</section>") != 1 or not fragment.endswith("</section>"):
+        raise RuntimeError("Biểu mẫu năm có cấu trúc section ngoài dự kiến: " + filename)
+    fragment = fragment[:-len("</section>")] + extra + "\n</section>"
     if fragment.count('id="' + new_id + '"') != 1:
         raise RuntimeError("Trùng hoặc thiếu id trong " + filename)
     if 'id="' + new_id + '"' in src:
         if src.count('id="' + new_id + '"') != 1:
             raise RuntimeError("Đã có nhiều section " + new_id)
+        if 'id="' + extra_id + '"' not in src:
+            raise RuntimeError("Cấu trúc kế hoạch năm cũ không có ma trận hiệu suất: " + new_id)
         continue
     pattern = r'(<section\s+class="doc-sec(?:\s+sub)?"[^>]*\bid="' + re.escape(next_id) + r'")'
     if len(re.findall(pattern, src)) != 1:
@@ -42,6 +56,10 @@ for origin_id, target_id, label in [
         if count != 1:
             raise RuntimeError("Không liên kết được từ " + origin_id)
 
+for required in ('id="m-30-4a-matrix"', 'id="m-30-5a-scorecard"',
+                 "Phát sinh ngoài kế hoạch", "Tổ chuyên môn TCT"):
+    if required not in src:
+        raise RuntimeError("Thiếu phạm vi hoặc hiệu suất bắt buộc: " + required)
 for marker in ("m-30-4", "m-30-4a", "m-30-5", "m-30-5a", "m-31"):
     if src.count('id="' + marker + '"') != 1:
         raise RuntimeError("Lỗi cấu trúc mục " + marker)
