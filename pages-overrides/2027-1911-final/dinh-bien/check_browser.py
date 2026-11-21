@@ -139,6 +139,8 @@ def check(page, width, form, out):
     assert 'CMS ban đầu' in host.locator('#db-main').text_content()
     assert 'NaN' not in host.locator('#db-main').inner_text()
     pane('assets')
+    assert host.locator('#db-main').get_by_text('Quản trị và vận hành đa nền tảng',exact=True).is_visible()
+    host.locator('#db-main').get_by_text('Danh mục 30 ô kênh, tài sản và chứng cứ cần xác minh',exact=True).click()
     assert host.locator('#db-main').get_by_text('Kiểm kê 30 kênh và toàn bộ nhóm tài sản nghiệp vụ',exact=True).is_visible()
     assert host.locator('#db-main').get_by_text('K-KK-',exact=False).count()>0
     pane('suff')
