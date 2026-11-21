@@ -1,0 +1,19 @@
+name: Kiem thu Muc 05 – CMS va dinh bien 2027
+on:
+  push:
+    branches:
+      - 'work/dinh-bien-2027-giai-doan-dau-21112026'
+    paths:
+      - 'pages-overrides/2027-1911-final/dinh-bien/**'
+      - 'scripts/staffing_cms_gate_2027.py'
+      - '.github/workflows/staffing-cms-branch-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Kiem tra Python + Node cho 26 chuc danh, luong CMS va cong doan
+        run: python3 scripts/staffing_cms_gate_2027.py
