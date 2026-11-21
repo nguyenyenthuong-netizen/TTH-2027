@@ -123,7 +123,7 @@ def check(page, width, form, out):
     assert host.get_by_text('CMS Website và App – số hồ sơ và giờ từng công đoạn',exact=True).is_visible()
     assert host.locator('[data-set="cmsUnit"] option').count()==14
     assert host.locator('[data-set="cmsType"] option').count()==5
-    assert 'Chưa xác minh' in host.locator('#db-main').inner_text()
+    assert 'Thiếu:' in host.locator('#db-main').inner_text()
     host.locator('[data-set="cmsUnit"]').select_option('vinh')
     host.locator('[data-set="cmsType"]').select_option('bac-si')
     cms_form=host.locator('[data-cms-row="vinh/bac-si"]')
