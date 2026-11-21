@@ -33,7 +33,7 @@ works.append(dict(
 ))
 # Distinguish review complexity for *template revisions*; all numbers remain hypotheses.
 # Values are *base minutes before the existing 0.75 modification factor*.
-template_review_minutes={'BM-1':100,'BM-2':70,'BM-9':90,'BM-10':100,'BM-12':150,'BM-13':120,'BM-18':120,'BM-27':120}
+template_review_minutes={'BM-1':100,'BM-2':70,'BM-3':75,'BM-8':110,'BM-9':90,'BM-10':100,'BM-12':150,'BM-13':120,'BM-14':110,'BM-18':120,'BM-27':120}
 changed={}
 for d in docs:
     if d['code'] not in template_review_minutes or d.get('link'):continue
@@ -43,8 +43,8 @@ for d in docs:
     d['reviewEstimateBasis']='Ước tính rà cấu trúc, phép kiểm và điểm quyết định theo mức phức tạp biểu mẫu. Đây là công sửa mẫu, không phải công lập hoặc kiểm duyệt báo cáo kỳ.'
     changed[d['code']]=[before,d['profile'][2]]
 assert set(changed)==set(template_review_minutes),(changed,template_review_minutes)
-report_words=('báo cáo','tổng kết','thuyết minh','bản số','bộ số','chốt kỳ','đối soát','phân tích','hiệu suất','dự toán','kpi','sai lệch','kết quả khảo sát')
-report_refs=('BM-1','BM-2','BM-9','BM-10','BM-12','BM-13','BM-18','BM-27')
+report_words=('báo cáo','kế hoạch','tổng kết','thuyết minh','bản số','bộ số','chốt kỳ','đối soát','phân tích','hiệu suất','dự toán','kpi','sai lệch','kết quả khảo sát')
+report_refs=('BM-1','BM-2','BM-3','BM-8','BM-9','BM-10','BM-12','BM-13','BM-14','BM-18','BM-27')
 report_ops=[]
 for w in works:
     label=(w['name']+' '+w['ref']).lower()
