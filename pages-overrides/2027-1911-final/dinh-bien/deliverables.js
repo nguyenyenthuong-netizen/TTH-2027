@@ -1,8 +1,8 @@
 /* Giai đoạn, đầu ra và quyết định dùng cùng một sổ giờ với 26 MTCV. */
 const stages={
  prep:{title:'Chuẩn bị · đến 31/12/2026',months:[],scope:'Nhân sự hiện có. Trưởng phòng chuẩn bị phương án phân công và danh sách hai bệnh viện thí điểm.',gate:'Có văn bản giao phụ trách, danh sách người làm, phân quyền, mẫu yêu cầu và sổ nhận việc.'},
- q1:{title:'Quý I/2027 · thí điểm',months:[1,2,3],scope:'Hai bệnh viện, mỗi nhóm thương hiệu một bệnh viện. Các đơn vị còn lại thực hiện theo phân công hiện hành. Khe Tre bàn giao đầu mối từ 15/03 theo lộ trình.',gate:'Đối soát giờ từng người, ít nhất 90% yêu cầu đúng hạn theo ngưỡng thử tại Mục 29, kênh liên tục, có người xử lý hộp thư và đánh giá đạt của Ban Giám đốc bệnh viện.'},
- q2:{title:'Quý II/2027 · bàn giao từng đợt',months:[4,5,6],scope:'Tiếp nhận theo từng bệnh viện. Đích cuối quý là 5 bệnh viện và 2 phòng khám. Số lượng theo phạm vi mới chỉ giao kể từ mốc bàn giao của từng đơn vị.',gate:'Mỗi đơn vị có biên bản bàn giao kênh, quyền, kho tư liệu, người nhận, ngày hiệu lực và số liệu đánh giá cuối quý.'},
+ q1:{title:'Quý I/2027 · thí điểm',months:[1,2,3],scope:'Hoàn tất bộ quy trình, biểu mẫu và bộ mẫu nền tảng trước 31/03 để bàn giao chính thức từ quý II. Thí điểm tại hai bệnh viện theo phiên bản được phép áp dụng; các đơn vị còn lại thực hiện theo phân công hiện hành. Khe Tre bàn giao đầu mối từ 15/03 theo lộ trình.',gate:'Bộ nền tảng có phiên bản, kết quả thử, phê duyệt theo thẩm quyền và biên bản bàn giao. Đối soát tải từng người, ít nhất 90% yêu cầu đúng hạn theo ngưỡng thử ở Mục 29 và đánh giá của Ban Giám đốc bệnh viện trước khi chuyển giai đoạn.'},
+ q2:{title:'Quý II/2027 · bàn giao từng đợt',months:[4,5,6],scope:'Tiếp nhận từng bệnh viện khi bộ quy trình và bộ mẫu cần dùng đã hoàn thành, được duyệt và người nhận đã được hướng dẫn. Đích cuối quý là 5 bệnh viện và 2 phòng khám; lượng chỉ giao từ mốc hiệu lực từng đơn vị.',gate:'Mỗi đơn vị có biên bản bàn giao kênh, quyền, kho tư liệu, người nhận, ngày hiệu lực và số liệu đánh giá cuối quý.'},
  q3:{title:'Quý III/2027 · ổn định vận hành',months:[7,8,9],scope:'Vận hành theo hai nhóm thương hiệu. Triển khai nhận diện, sản phẩm số và nội dung dịch vụ theo các hạng mục đã được giao.',gate:'Bộ mẫu hoặc hạng mục có phiên bản, bằng chứng thử và người nghiệm thu. Gói khai trương chỉ thực hiện khi có lịch và chủ trương.'},
  q4:{title:'Quý IV/2027 · tổng kết và bố trí năm sau',months:[10,11,12],scope:'Duy trì các hoạt động đã bàn giao. Chốt kết quả từng nhóm, đối soát dữ liệu, tổng hợp năm và rà phương án nhân sự.',gate:'Báo cáo năm có nguồn số liệu, giải thích chênh lệch, tải theo từng vị trí và phương án cho năm sau.'}
 };
@@ -497,13 +497,15 @@ function roadmapDelivery(){
  }
  const ready=!(inTrial&&local&&(clinic||!chosen||chosen!==site.id));
  let operationHours=0,pending=0;const conditional=[];
+ const monthLoad=monthsHere.map(m=>({m,regular:0,incident:0,setup:0,maint:0,pending:0}));
  const rows=works.map(w=>{
    const count=monthsHere.map(m=>slotShare(w,slot,phasedQty(w,m),m,r)),incomplete=count.some(v=>v===null);
    const qty=incomplete?null:sum(count),hours=incomplete?null:sum(monthsHere.map((m,i)=>{
      const initial=w.qty[m-1];
      return initial?w.hours[m-1]*count[i]/initial:count[i]*sum(w.t)/60;
    }));
-   if(hours!=null)operationHours+=hours;else pending++;
+   if(incomplete)pending++;
+   count.forEach((q,i)=>{if(q===null){monthLoad[i].pending++;return;}const initial=w.qty[monthsHere[i]-1];const h=initial?w.hours[monthsHere[i]-1]*q/initial:q*sum(w.t)/60;monthLoad[i][w.item.kind==='U'?'incident':'regular']+=h;operationHours+=h;});
    const [recipient,due]=deliveryRoute(w);
    const product=btn(w.item.name,'roles',w.id)+(rid==='dl-1'&&w.item.role==='dl-2'?'<small>Phần dữ liệu kiêm nhiệm</small>':'')+'<small><b>Quy cách:</b> '+e(w.item.note)+'<br><b>Căn cứ trong Khung:</b> '+e(w.item.ref)+'</small>'+assignmentCondition(w,site);
    if(qty===0){
@@ -524,16 +526,25 @@ function roadmapDelivery(){
   const matching=monthsHere.flatMap(m=>rec.monthly[m-1].filter(z=>z.type!=='next'&&inScope(z)&&slotDoc(rec.d,z,rid,slot)).map(z=>({...z,m})));
   if(!matching.length)return [];
   const contribution=sum(matching.map(z=>z.h));
-  const batches=monthsHere.map(m=>rec.monthly[m-1].filter(z=>z.stage==='Đối chiếu bản gốc'&&z.type==='setup').length);
-  const reviews=matching.filter(z=>z.type==='maint').length;
-  return [{h:contribution,cells:[btn(rec.d.code+' · '+rec.d.name,'docs',rec.d.id),e(rec.d.scope),e([...new Set(matching.map(z=>'T'+z.m))].join(', ')),e([...new Set(matching.map(z=>z.stage))].join(' · ')),sum(batches)?sum(batches)+' đơn vị trong lịch':reviews?reviews+' lượt rà':'Theo phiên bản',nu(contribution),e(name(rec.d.reviewer))]}];
+  matching.forEach(z=>monthLoad.find(a=>a.m===z.m)[z.type]+=z.h);
+  const setup=sum(matching.filter(z=>z.type==='setup').map(z=>z.h)),maint=contribution-setup;
+  return [{h:contribution,cells:[btn(rec.d.code+' · '+rec.d.name,'docs',rec.d.id)+'<small>'+e(rec.d.scope)+' · Hạn kế hoạch T'+rec.deadline+(rec.late?' · CHƯA ĐẠT HẠN':'')+'<br>'+e(rec.d.note)+'</small>',documentParts(rec.d,matching),'Lập/kiện toàn: <b>'+format(setup)+' giờ</b><br>Duy trì: <b>'+format(maint)+' giờ</b>','Soạn chính: '+e(name(rec.d.writer))+'<br>Kiểm: '+e(name(rec.d.reviewer))+'<br>Thử: '+e(name(rec.d.tester))]}];
  });
  const docsHours=sum(stageDocs.map(z=>z.h));
+ const seats=local?1:division?(slot==='all'?model.seats[rid]:1):model.seats[rid];
+ const plan=clinic?edits.clinic:seats>0?seats*r.cap.plan:null,gross=clinic?edits.clinic:seats>0?seats*r.cap.gross:null;
+ const parallel=table(['Tháng','Chuyên môn, quản lý và vận hành','Quy trình, biểu mẫu và bộ mẫu','Tổng đã tính / quỹ kế hoạch','Đối chiếu trong tháng'],monthLoad.map(x=>{
+  const total=x.regular+x.incident+x.setup+x.maint;
+  const excess=plan===null?null:Math.max(0,x.regular+x.setup+x.maint-plan,total-gross);
+  const status=plan===null?'Chờ xác nhận quỹ giờ hoặc đang kiêm tại vị trí khác.':excess>0?'Phần đã tính vượt quỹ ít nhất '+format(excess)+' giờ.':'Phần đã định lượng nằm trong quỹ; còn đối chiếu đủ phạm vi.';
+  return ['T'+x.m,format(x.regular+x.incident)+' giờ<small>Gồm '+format(x.incident)+' giờ sự việc dùng dự phòng</small>','Lập/kiện toàn '+format(x.setup)+' giờ<br>Duy trì '+format(x.maint)+' giờ','<b>'+format(total)+' / '+format(plan)+' giờ</b>',e(status)+(x.pending?'<small>'+x.pending+' dòng còn chờ điều kiện hoặc phạm vi; tổng giờ chưa đủ các dòng này.</small>':'')];
+ }));
  const advisory='<p class="fine">Định mức là phút của người làm một đơn vị đầu ra. Giờ theo quý gồm thời gian trực tiếp, phối hợp, kiểm, sửa và di chuyển của vị trí. Mỗi người ghi giờ cho công đoạn mình làm. Thời gian chờ duyệt nằm ngoài phép tính.</p>';
  return heading+roleIndex+gate+trialSelection+roleMandate(rid,site)+splitControls+'<h4>Sản phẩm của '+e(name(rid))+(site?' · '+e(site.name):'')+'</h4><p>'+e(scope)+'</p><p class="note"><b>Số lượng và thời gian là kịch bản tính thử.</b> Cần đối chiếu kế hoạch từng đơn vị, nhật ký thực hiện, nhân sự thực có và thời điểm bàn giao trước khi giao chỉ tiêu hoặc quyết định số người. Nhịp thực hiện, quy cách và phạm vi được ghi trên từng dòng.</p>'+
  '<p class="receipt"><b>'+(pending&&operationHours===0?'Chờ xác nhận giờ đầu ra vận hành':format(operationHours)+' giờ đầu ra vận hành')+'</b> và <b>'+format(docsHours)+' giờ công việc tài liệu</b> trong quý theo phần đã định lượng.'+(pending?' Còn '+pending+' dòng chờ xác nhận phạm vi hoặc điều kiện; tổng trên chưa gồm đủ các dòng này.':'')+(!ready?' Số giờ tại cơ sở đang dùng làm tham chiếu, chờ giao cho vai trò mới.':'')+'</p>'+
+ '<h4>Cân song song việc chuyên môn và xây dựng hệ thống theo tháng</h4><p>Giờ lập quy trình, biểu mẫu, bộ mẫu và giờ duy trì được cộng với công việc chuyên môn/vận hành của đúng vị trí trong cùng tháng. Người giữ nhiều vai chỉ có một quỹ giờ; phần phối hợp của người khác theo dõi tại người đó.</p>'+parallel+
  (rows.length?table(['Sản phẩm và quy cách bàn giao','Sản lượng, thời gian và căn cứ tính thử','Người nhận, kiểm và hạn'],rows):'<p>Chưa có sản phẩm được định lượng trong giai đoạn đã chọn.</p>')+advisory+
  (conditional.length?'<h4>Đầu ra theo phát sinh, điều kiện hoặc đến kỳ khác</h4><p>Các việc này vẫn thuộc phạm vi vị trí; số 0 trong kỳ không có nghĩa là bỏ nhiệm vụ.</p>'+table(['Sản phẩm và quy cách','Điều kiện thực hiện','Người nhận, kiểm và hạn'],conditional):'')+
- '<h4>Quy trình, mẫu và báo cáo do vị trí tham gia trong quý</h4>'+(stageDocs.length?table(['Hồ sơ','Phạm vi','Tháng','Phần việc của vị trí','Sản lượng theo lịch','Giờ trong quý','Người kiểm chuẩn'],stageDocs.map(d=>d.cells),[5]):'<p>Chưa phân công hồ sơ tài liệu cho vị trí này trong lịch quý.</p>')+
+ '<h4>Quy trình, mẫu và báo cáo do vị trí tham gia trong quý</h4>'+(stageDocs.length?table(['Hồ sơ, phạm vi và hạn','Phần việc, số lượng và tháng của vị trí','Giờ phải dành trong quý','Người soạn, kiểm và thử'],stageDocs.map(d=>d.cells)):'<p>Chưa phân công hồ sơ tài liệu cho vị trí này trong lịch quý.</p>')+
  sourceMtcv(rid)+keyMilestones+detail('Toàn bộ lộ trình',phaseTable);
 }

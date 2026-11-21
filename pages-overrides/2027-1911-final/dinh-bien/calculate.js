@@ -104,7 +104,8 @@ const TTHStaffing = (() => {
       if(!finishes.has(code)){
         const end=data.docs.filter(d=>d.code===code).map(d=>{
           const units=edits.docs?.[d.id]?.count??d.count;
-          const lastOffset=scenario==='opt'?(units>1?Math.min(2,units-1):d.order%3):0;
+          const window=Math.max(0,Math.min(2,(d.deadline??12)-startMonth(d)));
+          const lastOffset=scenario==='opt'?(units>1?Math.min(window,units-1):d.order%(window+1)):0;
           return units?Math.min(12,startMonth(d)+lastOffset):0;
         });finishes.set(code,Math.max(0,...end));
       }
@@ -121,7 +122,8 @@ const TTHStaffing = (() => {
       const mayMaintain=!['link','bo','soat'].includes(action);
       for(let i=0;i<units;i++){
         // Each unit closes after its stages. In the optimized scenario deliver independent lots over up to three months.
-        const closeMonth=scenario==='opt'?Math.min(12,scheduled+((units>1?i:d.order)%3)):scheduled;
+        const window=Math.max(0,Math.min(2,(d.deadline??12)-scheduled));
+        const closeMonth=scenario==='opt'?Math.min(12,scheduled+((units>1?i:d.order)%(window+1))):scheduled;
         if(i===0&&d.link)continue;
         const stages=[['Đối chiếu bản gốc',d.owner],['Soạn hoặc cập nhật bản gốc',d.writer],['Kiểm chuẩn độc lập',d.reviewer],['Thử áp dụng',d.tester],['Trình và ký theo thẩm quyền','ky'],['Bàn giao, lưu phiên bản',d.owner]];
         stages.forEach(([label,r],j)=>add(closeMonth,r,label,p[j]*rate[j]/60,'setup'));
@@ -134,7 +136,9 @@ const TTHStaffing = (() => {
           }
         }
       }
-      docs.push({d,action,units,monthly,m0,scheduled,depends:dependencies[d.code]||[]});
+      const closeMonths=monthly.flatMap((a,i)=>a.some(x=>x.type==='setup')?[i+1]:[]);
+      const finish=closeMonths.length?Math.max(...closeMonths):null;
+      docs.push({d,action,units,monthly,m0,scheduled,finish,deadline:d.deadline??null,late:finish!==null&&d.deadline!=null&&finish>d.deadline,depends:dependencies[d.code]||[]});
     }
     function monthly(keys){return months.map((m)=>{
       const v=empty();for(const k of keys){const x=roles[k]?.[m-1];if(x)for(const field in v)v[field]+=x[field]};return v;

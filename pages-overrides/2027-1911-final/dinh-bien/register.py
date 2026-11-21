@@ -90,6 +90,13 @@ def register(d):
                 put(code,name,'Chi tiết bổ sung',kind,'Nhóm '+str(g+1),team,1,'moi',4,1,'Đầu ra đề xuất, cần xác nhận số cấu hình riêng.','Theo văn bản phân cấp còn hiệu lực.',note,source)
             continue
         put(code,name,'Chi tiết bổ sung',kind,'Theo phạm vi của sản phẩm',jobs.split(),n,'moi',3+i%4,1,'Sản phẩm chi tiết đề xuất. Cần đối chiếu bản đã có trước khi giao xây mới.','Người có thẩm quyền theo phân cấp còn hiệu lực, cần hồ sơ giao quyền.',note,source)
+    # The initial operating set must be ready before Q2 handover. Critical
+    # prerequisites close first; the schedule may overload a role and must show it.
+    starts={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'B-7':2,'QC-1':2,'QC-2':2,'B-3':2,'B-4':2,'B-5':2,'MAU-QC':3,'YC-WEB':1,'YC-CRM':1,'YC-APP':1,'YC-PM':1,'ND-WEB1':2,'ND-WEB2':2,'QC-BT':1,'QC-KS':1}
+    early={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'QC-1':2,'QC-2':2,'YC-WEB':1,'QC-BT':1,'QC-KS':1}
+    for index,item in enumerate(items):
+        item['month']=starts.get(item['code'],1 if item['category']=='23 văn bản' else 1+index%3)
+        item['deadline']=early.get(item['code'],3)
     assert len({x['code'] for x in items if x['category']=='74 tài liệu'})==74
     assert len({x['code'] for x in items if x['category'] in ['60 quy trình','23 văn bản']})==83
     return items
