@@ -6,6 +6,7 @@ on:
     paths:
       - 'pages-overrides/2027-1911-final/dinh-bien/**'
       - 'scripts/staffing_cms_gate_2027.py'
+      - 'scripts/staffing_preview_browser_2027.py'
       - '.github/workflows/staffing-cms-branch-check.yml'
   workflow_dispatch:
 permissions:
@@ -17,3 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Kiem tra Python + Node cho 26 chuc danh, luong CMS va cong doan
         run: python3 scripts/staffing_cms_gate_2027.py
+      - name: Cai bo phan doc quy trinh xuat ban
+        run: python3 -m pip install pyyaml
+      - name: Dung Khung nhu ban chinh va chay Chrome desktop/mobile
+        run: python3 scripts/staffing_preview_browser_2027.py
