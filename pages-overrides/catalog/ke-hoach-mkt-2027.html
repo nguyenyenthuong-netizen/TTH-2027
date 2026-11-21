@@ -94,7 +94,7 @@ function drawIssued(){
  var rows=r.catalog.filter(function(x){return (!term||JSON.stringify(x).toLocaleLowerCase("vi").includes(term))&&(!role||[x.ownerRoleId,x.writerRoleId,x.reviewerRoleId].includes(role))});
  var periods=s.monthly.filter(function(x){return !m||Number(m)===x.month});
  var missing=s.validEvents===0;
- var h='<div class="call redline"><b>CHƯA CÓ SỐ LIỆU BAN HÀNH THỰC TẾ ĐƯỢC XÁC MINH.</b> '+r.catalog.length+' mã ở đây chỉ là danh mục phải đối chiếu, không phải số đã ban hành. Một mẫu phát sinh ở nhiều phân hệ vẫn chỉ có một mã gốc; chỉ phiên bản có quyết định/số duyệt, ngày ký, file và người duyệt mới được tính.</div>';
+ var h='<div class="call redline"><b>'+(missing?'CHƯA CÓ SỐ LIỆU BAN HÀNH THỰC TẾ ĐƯỢC XÁC MINH.':'SỐ BAN HÀNH CHỈ TÍNH TRÊN CÁC SỰ KIỆN CÓ CHỨNG TỪ ĐÃ NHẬP.')+'</b> '+r.catalog.length+' mã ở đây là danh mục phải đối chiếu, không phải số đã ban hành. Một mẫu phát sinh ở nhiều phân hệ vẫn chỉ có một mã gốc; chỉ phiên bản có quyết định/số duyệt, ngày ký, file và người duyệt mới được tính.</div>';
  h+=table(["Tháng","Ban hành mới","Sửa đổi/ban hành lại","Mã đã ban hành trong kỳ","Thu hồi","Có hiệu lực cuối kỳ"],periods.map(function(x){return ["T"+x.month,missing?"Chưa có chứng từ":cell(x.newCount),missing?"Chưa có chứng từ":cell(x.revisedVersionCount),missing?"Chưa có chứng từ":cell(x.uniqueReleasedCount),missing?"Chưa có chứng từ":cell(x.withdrawnCount),missing?"Chưa xác minh bản nền":cell(x.activeAtEndWithVerified2027EventsOnly)]}),"wide");
 
  h+='<h3 style="margin-top:22px">Tổng hợp ban hành từng quý và cả năm</h3>';
