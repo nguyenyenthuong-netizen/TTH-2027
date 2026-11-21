@@ -131,6 +131,54 @@ def summarize_issuance(registry):
             "bySource":{k:len(v) for k,v in sources.items()},
             "dataStatus":"DA_CO_CHUNG_TU" if dedup else "CHUA_CO_SU_KIEN_BAN_HANH_DUOC_XAC_MINH"
         })
+    def period_result(label,start,end):
+        events=[e for e in dedup if start<=e["eventDate"]<end]
+        published=[e for e in events if e["eventType"] in RELEASE_EVENTS]
+        revised=[e for e in events if e["eventType"] in {"BAN_HANH_SUA_DOI","THAY_THE"}]
+        withdrawn=[e for e in events if e["eventType"] in WITHDRAW_EVENTS]
+        out=defaultdict(lambda:{"new":set(),"revisedVersions":set(),"distinctPublished":set(),"withdrawn":set()})
+        by_source=defaultdict(lambda:{"new":set(),"revisedVersions":set(),"distinctPublished":set()})
+        for e in events:
+            row=out[ids[e["artifactId"]]["category"]]
+            source=by_source[e["workSource"]]
+            if e["eventType"]=="BAN_HANH_MOI":
+                row["new"].add(e["artifactId"])
+                source["new"].add(e["artifactId"])
+            if e["eventType"] in {"BAN_HANH_SUA_DOI","THAY_THE"}:
+                row["revisedVersions"].add((e["artifactId"],e["version"]))
+                source["revisedVersions"].add((e["artifactId"],e["version"]))
+            if e["eventType"] in RELEASE_EVENTS:
+                row["distinctPublished"].add(e["artifactId"])
+                source["distinctPublished"].add(e["artifactId"])
+            if e["eventType"] in WITHDRAW_EVENTS:
+                row["withdrawn"].add(e["artifactId"])
+        known_state={}
+        for e in dedup:
+            if e["eventDate"]>=end or e["effectiveFrom"]>=end:
+                continue
+            if e["eventType"] in RELEASE_EVENTS:
+                known_state[e["artifactId"]]="HIEU_LUC"
+            if e["eventType"] in WITHDRAW_EVENTS:
+                known_state[e["artifactId"]]="KHONG_HIEU_LUC"
+        return {
+            "period":label,"start":start,"endExclusive":end,
+            "banHanhMoi":len({e["artifactId"] for e in events if e["eventType"]=="BAN_HANH_MOI"}),
+            "suaDoi":len({(e["artifactId"],e["version"]) for e in revised}),
+            "maBanHanhKhongTrung":len({e["artifactId"] for e in published}),
+            "thuHoi":len({e["artifactId"] for e in withdrawn}),
+            "dangHieuLucCoChungTuTrongSo":sum(v=="HIEU_LUC" for v in known_state.values()),
+            "byCategory":{k:{metric:len(group) for metric,group in state.items()} for k,state in out.items()},
+            "byWorkSource":{k:{metric:len(group) for metric,group in state.items()} for k,state in by_source.items()},
+            "missingSourceOrEvidence":len(invalid),
+            "baselineCoverageVerified":False,
+            "status":"CHUA_CO_SU_KIEN_DUOC_XAC_MINH" if not dedup else "CHI_TINH_TREN_SU_KIEN_CO_CHUNG_TU",
+            "interpretation":"So dang hieu luc chua phai tong day du neu chua du ban goc da ban hanh truoc 2027. Gop theo phan he can bao toan ma goc de khong trung."
+        }
+    quarters=[
+        period_result("Quy %s"%q,"2027-%02d-01"%(3*q-2),"2027-%02d-01"%(3*q+1) if q<4 else "2028-01-01")
+        for q in range(1,5)
+    ]
+    year=period_result("Nam 2027","2027-01-01","2028-01-01")
     new_year={e["artifactId"] for e in dedup if e["eventDate"][:4]=="2027" and e["eventType"]=="BAN_HANH_MOI"}
     updated_year={(e["artifactId"],e["version"]) for e in dedup if e["eventDate"][:4]=="2027" and e["eventType"] in {"BAN_HANH_SUA_DOI","THAY_THE"}}
     return {
@@ -139,6 +187,8 @@ def summarize_issuance(registry):
         "invalidEvents":invalid,
         "newDistinctArtifacts2027":len(new_year), "revisedDistinctVersions2027":len(updated_year),
         "monthly":periods,
+        "quarterly":quarters,
+        "annual":year,
         "note":"Chua co du lieu duoc xac minh thi KHONG duoc suy dien 0 la ket qua thuc. Khong tu cong so ma danh muc thanh so da ban hanh."
     }
 
