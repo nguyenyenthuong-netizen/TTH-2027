@@ -29,7 +29,7 @@ a{color:var(--blue)}.header{background:var(--blue);color:white;padding:24px max(
 <div><label for="family">Danh mục chủ đề</label><select id="family"><option value="">Tất cả chủ đề</option></select></div><div><label for="month">Tháng / kỳ báo cáo</label><select id="month"><option value="">Cả năm 2027</option></select></div><div><label for="program">Chương trình trọng điểm</label><select id="program"><option value="">Toàn bộ chương trình</option></select></div>
 </div>
 <nav class="tabs" id="tabs" aria-label="Nhóm thông tin">
-<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
+<button class="tab" data-tab="program" aria-selected="true">01. Kế hoạch năm & chương trình</button><button class="tab" data-tab="stages" aria-selected="false">Giai đoạn hạng mục trọng điểm</button><button class="tab" data-tab="tracking" aria-selected="false">02. Giao việc & nghiệm thu</button><button class="tab" data-tab="monthly" aria-selected="false">03. Kế hoạch từng vị trí/tháng</button><button class="tab" data-tab="actions" aria-selected="false">Lộ trình chức danh cả năm</button>
 <button class="tab" data-tab="themes" aria-selected="false">03. Chủ đề và mẫu chi tiết</button>
 <button class="tab" data-tab="docs" aria-selected="false">04. Hồ sơ cần ban hành</button>
 <button class="tab" data-tab="mtcv" aria-selected="false">05. Đầu ra MTCV gốc</button>
@@ -64,6 +64,51 @@ function newFilter(x){
  return true;
 }
 function programName(id){var p=D.portfolio.programs.find(function(x){return x.programId===id});return p?p.name:id}
+
+function drawStages(){
+ var P=D.portfolio, chosen=$("program").value, role=$("role").value,
+     month=Number($("month").value||0), q=$("search").value.trim().toLocaleLowerCase("vi");
+ var projects=P.projects.filter(function(p){
+  if(chosen&&p.programId!==chosen)return false;
+  if(role&&p.ownerRoleId!==role&&p.independentReviewerRoleId!==role)return false;
+  if(q&&!JSON.stringify(p).toLocaleLowerCase("vi").includes(q)&&
+      !P.stageRegister.some(function(z){return z.projectId===p.projectId&&JSON.stringify(z).toLocaleLowerCase("vi").includes(q)}))return false;
+  return true;
+ });
+ var stages=P.stageRegister.filter(function(x){
+  if(!projects.some(function(p){return p.projectId===x.projectId}))return false;
+  return !month||(x.plannedStartMonth<=month&&x.plannedEndMonth>=month);
+ });
+ var h='<div class="call redline"><b>Không đồng nhất giai đoạn và phân hệ.</b> Giai đoạn có điều kiện vào/ra, sản phẩm nghiệm thu và người có quyền xác nhận. Tháng/quý là lịch dự kiến. Đến ngày không tự chuyển giai đoạn; dự án có điều kiện không được tạo giờ thi công khi chưa được duyệt. Giờ công chỉ hạch toán tại một mã công đoạn Mục 05.</div>';
+ h+='<h3>Hai dự án số có phân giai đoạn cần đọc đúng</h3>';
+ h+='<div class="summary-grid">'+P.namedTwoPhaseInitiatives.map(function(x){
+  return card(x.name,'<p>'+x.phases.map(function(z){return '<b>'+cell(z.label)+'</b> — '+cell(z.title)+'<small><b>Cổng chuyển:</b> '+cell(z.exitGate)+'</small>'}).join('</p><p>')+'</p><small>'+cell(x.exclusion)+'</small>');
+ }).join('')+'</div>';
+ h+='<h3 style="margin-top:18px">Lộ trình từng hạng mục trọng điểm · '+projects.length+' dự án / '+stages.length+' bước theo bộ lọc</h3>';
+ h+='<p class="note">Tất cả 24 dự án thành phần thuộc chương trình trọng điểm đều phải có giai đoạn, không chỉ CRM và phần mềm quản trị. Các dự án có điều kiện được rà điều kiện nhưng chưa triển khai sản phẩm khi chưa có quyết định.</p>';
+ projects.forEach(function(p){
+  var projectStages=stages.filter(function(x){return x.projectId===p.projectId}).sort(function(a,b){return a.plannedStartMonth-b.plannedStartMonth});
+  if(!projectStages.length)return;
+  var open=p.code==="P07"||p.code==="P08"||p.code==="P20";
+  h+='<details'+(open?' open':'')+' style="border:1px solid #d4dfec;border-radius:8px;margin:10px 0;padding:8px 12px;background:#fff">';
+  h+='<summary style="cursor:pointer;line-height:1.5;font-size:16px;font-weight:700;color:#0837a1">'+cell(p.projectId)+' · '+cell(p.name)+' <small>'+projectStages.length+' bước đang hiển thị · Chủ: '+cell(shortRole(p.ownerRoleId))+'</small></summary>';
+  h+='<p class="note">'+cell(p.stageApproach)+'</p>';
+  h+=table(["Giai đoạn / thời điểm","Phần việc và đầu ra nghiệm thu","Điều kiện chuyển/không được vượt","Chủ trì – kiểm – trạng thái"],projectStages.map(function(g){
+   return [
+    '<b>'+cell(g.stageName)+'</b><small>'+cell(g.stageId)+' · tháng '+g.plannedStartMonth+'–'+g.plannedEndMonth+'/2027</small>',
+    '<b>'+g.milestoneCount+' đầu việc có mã</b><small>'+cell(g.acceptanceEvidence)+'</small>',
+    cell(g.exitGate)+'<small>Điều kiện trước: '+cell(g.dependencies.join(', ')||'Khóa nguồn, người, quyền và công suất')+'</small>',
+    '<b>'+cell(shortRole(g.ownerRoleId))+'</b><small>Kiểm: '+cell(shortRole(g.reviewerRoleId))+'</small><small>'+cell(g.stageStatus)+'</small>'
+   ];
+  }),"wide");
+  h+='<details style="margin:6px 0"><summary style="cursor:pointer">Mở đầu ra tháng của các giai đoạn này</summary>';
+  var out=projectStages.flatMap(function(g){return g.stageProducts.map(function(z){return [cell(g.stageId),cell(z.month+'/2027'),cell(z.taskId),cell(z.deliverable)]})});
+  h+=table(["Giai đoạn","Tháng","Mã công việc","Sản phẩm nghiệm thu"],out,"wide")+'</details></details>';
+ });
+ $("panel").innerHTML=head("Giai đoạn của 24 hạng mục trọng điểm",stages.length,
+  "Mốc và điều kiện nghiệm thu là đề xuất để kiểm tải và giao việc; chưa xác nhận đã hoàn thành hoặc đã phê duyệt.")+h;
+}
+
 function drawProgram(){
  var p=D.portfolio,pg=p.programs.filter(newFilter),pj=p.projects.filter(newFilter),ts=p.tasks.filter(newFilter);
  var html='<div class="call"><b>Kế hoạch mẫu năm 2027:</b> Chương trình → dự án thành phần → mốc tháng → một sản phẩm được nghiệm thu. Chương trình và dự án mẹ không hạch toán giờ; công việc con phải nối sổ giờ Mục 05. Chỉ tiêu/ngân sách chưa có số nền được để chờ xác nhận.</div>';
@@ -131,7 +176,9 @@ function drawKpis(){
 }
 function drawImport(){
  var links=[
- ["288 mốc trọng điểm và sản phẩm đầu ra","nhap-phan-mem-du-an-trong-diem.csv"],
+ ["288 mốc trọng điểm, mã giai đoạn và đầu ra","nhap-phan-mem-du-an-trong-diem.csv"],
+ ["64 bước giai đoạn của 24 hạng mục trọng điểm","giai-doan-hang-muc-trong-diem.csv"],
+ ["Lộ trình CRM và phần mềm quản trị hai giai đoạn","lo-trinh-hai-giai-doan.json"],
  ["Sổ công việc thường xuyên đúng Mục 05","nhap-phan-mem-cong-viec-thuong-xuyen.csv"],
  ["Việc của 26 chức danh theo 12 tháng","cong-viec-theo-chuc-danh-12-thang.csv"],
  ["Danh mục 325 mã tài liệu, mẫu, quy trình","so-tai-lieu-va-mau-goc.csv"],
@@ -274,7 +321,7 @@ function drawTimeline(){
 }
 function render(){
  if(!D)return;
- if(tab==="program")drawProgram();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
+ if(tab==="program")drawProgram();else if(tab==="stages")drawStages();else if(tab==="tracking")drawTracking();else if(tab==="issued")drawIssued();else if(tab==="kpis")drawKpis();else if(tab==="import")drawImport();else if(tab==="monthly")drawMonthly();else if(tab==="continuity")drawContinuity();else if(tab==="coverage")drawCoverage();else if(tab==="overlap")drawOverlap();else if(tab==="actions")drawActions();else if(tab==="themes")drawThemes();else if(tab==="docs")drawDocs();else if(tab==="mtcv")drawMTCV();else if(tab==="digital")drawDigital();else drawTimeline();
  var btn=$("exportBtn");if(btn)btn.onclick=exportTable;
 }
 function exportTable(){
