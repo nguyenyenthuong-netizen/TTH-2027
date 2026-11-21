@@ -42,7 +42,7 @@ def integrate(site: Path):
     inline_data = '<script type="application/json" id="tth-plan-2027-data">' + data + '</script>'
     bootstrap = 'Promise.resolve({ok:true,json:function(){return Promise.resolve(JSON.parse(document.getElementById("tth-plan-2027-data").textContent))}})'
     plan_html = plan_html.replace('fetch("./data.json",{cache:"no-store"})', bootstrap, 1)
-    plan_html = plan_html.replace("</body>", inline_data + "</body>", 1)
+    plan_html = plan_html.replace("<script>", inline_data + "<script>", 1)
     plan_html = plan_html.replace(
         'href="../khung-marketing/#dinh-bien-2027"',
         'href="#tth-plan-2027-data"',
