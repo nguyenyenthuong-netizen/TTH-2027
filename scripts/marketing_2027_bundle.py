@@ -151,7 +151,7 @@ def prepare(site):
     projects={p["projectId"] for p in portfolio["projects"]}
     priority=portfolio["tasks"]
     assert len(roles)==26 and len(cat["monthlyActions"])>=624
-    assert len(programs)==6 and len(projects)==23 and len(priority)==276
+    assert len(programs)==6 and len(projects)==24 and len(priority)==288
     assert len(portfolio["kpis"])==23 and len(issuance["catalog"])==325
     assert all(p["programId"] in programs for p in portfolio["projects"])
     assert all(t["projectId"] in projects and t["ownerRoleId"] in roles for t in priority)
