@@ -142,7 +142,7 @@ def check(page, width, form, out):
     assert host.locator('#db-main').get_by_text('Kiểm kê 30 kênh và toàn bộ nhóm tài sản nghiệp vụ',exact=True).is_visible()
     assert host.locator('#db-main').get_by_text('K-KK-',exact=False).count()>0
     pane('suff')
-    assert host.locator('#db-main').get_by_text('Kiểm tra đủ sức xử lý công việc theo từng tháng và suất',exact=True).is_visible()
-    assert 'Chưa đủ' in host.locator('#db-main').inner_text() or 'Chưa có' in host.locator('#db-main').inner_text()
+    assert host.locator('#db-main').get_by_text('Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống',exact=True).is_visible()
+    assert 'CHƯA ĐỦ CĂN CỨ XÁC NHẬN' in host.locator('#db-main').inner_text()
     pane('roadmap')
     print('PASS Mục 05:',form,'12 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')
