@@ -255,3 +255,107 @@ function sufficiencyPanel(){
  '<h4>7. Cách xử lý vượt tải và điều kiện kết luận</h4>'+
  '<p>Truy ngược từng mã việc và công đoạn; giữ nguyên phạm vi <b>CNNV/MTCV và người chịu trách nhiệm</b>, không chuyển việc sang chức danh hoặc người khác để cân giờ. Trước hết chuẩn hóa mẫu, bỏ thao tác trùng và xếp lịch hợp lệ của chính vị trí; phần vượt còn lại là căn cứ tính bổ sung năng lực đúng chuyên môn. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
 }
+
+
+/* tth-platform-ops-dual-view-2027
+   One inventory/ledger is projected differently for administrators and operators.
+   This section NEVER creates additional workload, campaigns, or guessed platform counts.
+*/
+function platformOperationsPanel(){
+ const run=getRun(),mode=u.platformMode||'manage',group=u.platformGroup||'g1',selected=u.platformFilter||'fb';
+ const brands={g1:'Nhóm thương hiệu 1',g2:'Nhóm thương hiệu 2'};
+ const platformDef=[
+  {key:'fb',label:'Facebook',rate:720,grouped:false,summary:'Lịch nội dung, xuất bản, phản hồi, thống kê',guide:'Bài ảnh/clip, bình luận và tin nhắn; kiểm phản hồi cần chuyển tuyến, mã nguồn khách và lịch đăng.'},
+  {key:'tik',label:'TikTok',rate:480,grouped:false,summary:'Đăng video, theo dõi và thống kê',guide:'Video dọc, phụ đề, ảnh bìa, âm thanh/bản quyền, bình luận và chỉ số xem/chuyển đổi.'},
+  {key:'khac',label:'Zalo / YouTube / LinkedIn / Threads – chưa tách',rate:240,grouped:true,summary:'Gói giờ chung chờ định danh kênh',guide:'Định mức 4 giờ/kênh là số mô phỏng gộp, chưa thể giao làm định mức riêng cho từng nền tảng.'}
+ ];
+ const platformGuides={
+  zalo:{label:'Zalo OA',guide:'Phân nhóm, đồng ý nhận tin, tin/bài OA, điều kiện thông báo và kết quả gửi; phối hợp CRM và Contact Center.',output:'Mã tin/thông báo, nhóm nhận, điều kiện gửi, kết quả; không nhập trùng dữ liệu CRM.'},
+  youtube:{label:'YouTube',guide:'Video dài/Shorts, ảnh bìa, mô tả, bản quyền, danh sách phát và thời lượng xem.',output:'Mã video gốc, phiên bản YouTube, quyền nội dung, ngày công bố và kết quả.'},
+  linkedin:{label:'LinkedIn',guide:'Nội dung doanh nghiệp, chuyên môn, đối tác và tuyển dụng; định dạng và phản hồi phù hợp.',output:'Bản chuyển thể doanh nghiệp, người duyệt, số lượt và kết quả.'},
+  threads:{label:'Threads',guide:'Nội dung ngắn, tương tác, quản lý uy tín và chuyển phản hồi cho tuyến chuyên môn.',output:'Bản chuyển thể ngắn, nhật ký phản hồi, mã nội dung nguồn.'},
+  fb:{label:'Facebook',guide:platformDef[0].guide,output:'Mã bài/clip trên kênh, lượt xuất bản và theo dõi, nguồn tương tác/chuyển đổi.'},
+  tik:{label:'TikTok',guide:platformDef[1].guide,output:'Mã video/phiên bản TikTok, lịch đăng, chất lượng nội dung và số liệu xem/chuyển đổi.'}
+ };
+ const ledger=(code,role)=>run.works.find(w=>w.item.role===role&&w.item.code===code&&!w.site);
+ const q=w=>w?(u.period?w.qty[u.period-1]:sum(w.qty)/12):null;
+ const hrs=w=>w?(u.period?w.hours[u.period-1]:sum(w.hours)/12):null;
+ const num=x=>x==null?'Chưa xác minh':format(x,1);
+ const monitored=model.cms.assets.filter(x=>x.kind==='Kênh số');
+ const unresolved=monitored.filter(x=>String(x.status).toLowerCase().includes('chưa'));
+ const base=platformDef.map(x=>{
+  const a=ledger(x.key,'qc-a'),b=ledger(x.key,'qc-b');
+  return {...x,a,b,qa:q(a),qb:q(b),ha:hrs(a),hb:hrs(b)};
+ });
+ const totalQ=sum(base.map(x=>(x.qa||0)+(x.qb||0)));
+ const totalH=sum(base.map(x=>(x.ha||0)+(x.hb||0)));
+ const others=base.find(x=>x.key==='khac');
+ const periodLabel=u.period?'tháng '+u.period:'bình quân tháng theo kịch bản '+cases[u.scenario];
+ const shared='<p class="note"><b>Một nội dung gốc chỉ biên tập/duyệt phần gốc một lần.</b> Mỗi nền tảng có mã phiên bản, thao tác vận hành và số liệu riêng. Giờ chuyển thể mới chỉ cộng khi xác định được công đoạn ngoài đầu ra thiết kế/Media đang tính; 8 chiến dịch quảng cáo/tháng thuộc hạng mục riêng, không cộng vào giờ vận hành nền tảng.</p>';
+ const chooser='<div class="control">'+
+ fLabel('Góc nhìn','<select data-set="platformMode">'+opt({manage:'Quản trị và kiểm soát tải',operate:'Vận hành và bàn giao'},mode)+'</select>')+
+ (mode==='manage'?selCase()+selPeriod():
+ fLabel('Nhóm thương hiệu','<select data-set="platformGroup">'+opt(brands,group)+'</select>')+
+ fLabel('Nền tảng','<select data-set="platformFilter">'+opt({fb:'Facebook',tik:'TikTok',zalo:'Zalo OA',youtube:'YouTube',linkedin:'LinkedIn',threads:'Threads'},selected)+'</select>'))+
+ '</div>';
+ const head='<h3>Quản trị và vận hành đa nền tảng</h3><p>Hai góc nhìn cùng dùng <b>một sổ kênh và một bảng giờ công</b>. Đây là khung mô phỏng định biên; chưa phải phần mềm giao việc hoặc dữ liệu vận hành đã xác minh.</p>'+chooser+shared;
+ if(mode==='manage'){
+  const rows=base.map(x=>[
+   '<b>'+e(x.label)+'</b><small>'+e(x.summary)+'</small>',
+   nu(x.qa,1),nu(x.qb,1),nu((x.qa||0)+(x.qb||0),1),
+   nu(x.rate,0)+' phút/kênh',
+   nu((x.ha||0)+(x.hb||0),1),
+   x.grouped?'CHƯA TÁCH 4 NỀN TẢNG':'Định mức mô phỏng, chờ đo'
+  ]);
+  const ownership=base.flatMap(x=>[['g1','qc-a',x.a,x.qa,x.ha],['g2','qc-b',x.b,x.qb,x.hb]].map(([g,role,w,qty,hours])=>
+    [e(brands[g]),e(x.label),e(name(role)),nu(qty,1),nu(hours,1),w?e(w.item.id):'Thiếu dòng W']));
+  const limit='<p class="fine"><b>Điểm chặn:</b> '+format(unresolved.length,0)+'/'+format(monitored.length,0)+' ô kênh chưa xác minh thông tin chủ sở hữu/URL, tình trạng và ngày bàn giao. '
+   +'Nhóm Zalo, YouTube, LinkedIn, Threads đang có '+format((others.qa||0)+(others.qb||0),1)+' ô kiểm kê chung; không được suy đoán số kênh riêng của từng nền tảng. '
+   +'Quỹ giờ được tổng hợp từ các dòng W hiện hành, không cộng thêm lần thứ hai ở bảng này.</p>';
+  return head+
+   metrics([[nu(totalQ,0),'Ô kênh dự kiến theo kỳ'],[nu(totalH,1),'Giờ vận hành '+periodLabel],[nu(unresolved.length,0),'Ô kênh chưa xác minh']])+
+   '<h4>I. Kiểm soát tải theo nền tảng</h4>'+
+   table(['Nền tảng','Nhóm 1','Nhóm 2','Tổng kênh','Phút/kênh','Giờ/kỳ','Độ tin cậy'],rows,[1,2,3,4,5])+
+   '<h4>II. Người chịu trách nhiệm và công được hạch toán</h4>'+
+   detail('Mở bảng phân công từng nhóm và mã định mức',table(['Nhóm','Nền tảng','Chức danh vận hành','Số kênh','Giờ/kỳ','Mã nguồn'],ownership,[3,4]),false)+
+   limit+
+   detail('Danh mục 30 ô kênh, tài sản và chứng cứ cần xác minh',assetsPanel(),false)+
+   '<p><b>Quyết định của người quản trị:</b> Xác minh số kênh thực tế; chốt mục tiêu, sản lượng đăng, giờ theo nền tảng; nhận cảnh báo khi có công đoạn chưa được tính hoặc vượt quỹ. Không hạ số giờ chỉ để cân tải.</p>';
+ }
+ const guide=platformGuides[selected]||platformGuides.fb;
+ const operRole=group==='g1'?'qc-a':'qc-b';
+ const editor=group==='g1'?'bt-ac':'bt-b';
+ const design=group==='g1'?'tk-a':'tk-b';
+ const media=group==='g1'?'md-ac':'md-b';
+ const manager=group==='g1'?'qlth-a':'qlth-bc';
+ const sourceCode=selected==='fb'||selected==='tik'?selected:'khac';
+ const w=ledger(sourceCode,operRole);
+ const inferred=sourceCode==='khac';
+ const stages=[
+  ['1. Tiếp nhận mã nội dung/chiến dịch gốc',name(manager),'Mục tiêu, cơ sở/thương hiệu, bản nguồn đã xác nhận','Không lập lại nội dung gốc'],
+  ['2. Chuyển thể và chuẩn hóa phiên bản',name(editor)+' · '+name(design)+' · '+name(media),'File, tỷ lệ, nội dung, ảnh/video phù hợp '+guide.label,'Dùng đầu ra sáng tạo đã tính; việc mới phải có mã riêng'],
+  ['3. Kiểm chuyên môn, thương hiệu và quyền',name(manager)+' · chủ dữ liệu khi liên quan','Dấu vết kiểm, căn cứ y khoa/quảng cáo, người duyệt','Không tự cấp quyền duyệt cho người đăng'],
+  ['4. Lập lịch và xuất bản',name(operRole),'URL, mã phiên bản, thời điểm, kênh đích','Thuộc dòng vận hành nền tảng W'],
+  ['5. Theo dõi và xử lý tương tác',name(operRole),'Nhật ký phản hồi, đầu mối chuyển tuyến, lỗi kênh','Việc sự cố có mã riêng, không gộp vòng chờ'],
+  ['6. Ghi kết quả, bàn giao và lưu',name(operRole)+' · đo lường khi được giao','Chỉ số kênh, nguồn khách, đối soát chiến dịch','Báo cáo chiến dịch BM-14 không làm lại số liệu nền']
+ ];
+ const rows=stages.map(x=>x.map(e));
+ const runQty=q(w),runH=hrs(w);
+ const metric=runQty==null?'Chưa có mã định mức':inferred?
+  format(runQty,1)+' ô trong nhóm gộp · '+format(runH||0,1)+' giờ/tháng; CHƯA phân bổ riêng '+guide.label:
+  format(runQty,1)+' kênh · '+format(runH||0,1)+' giờ/tháng theo mã '+w.item.id;
+ return head+
+  '<h4>'+e(brands[group])+' · '+e(guide.label)+'</h4>'+
+  '<p class="note"><b>Phạm vi đang tính:</b> '+e(metric)+'. '+e(guide.guide)+'</p>'+
+  stack([['Chủ trì vận hành',e(name(operRole))],
+         ['Chủ trì mục tiêu và kiểm',e(name(manager))],
+         ['Đầu ra phải lưu',e(guide.output)],
+         ['Căn cứ định mức',e(w?w.item.ref:'Chưa có mã nguồn')]])+
+  '<h4>Luồng giao việc 6 bước, một mã nguồn xuyên suốt</h4>'+
+  table(['Công đoạn','Người thực hiện/kiểm','Chứng từ bàn giao','Nguyên tắc hạch toán'],rows)+
+  '<p class="fine">Mã vận hành chuẩn: mã yêu cầu → mã nội dung gốc → mã phiên bản nền tảng → URL/kênh → mã hiệu quả. '
+   +'Một sản phẩm đăng nhiều kênh có nhiều phiên bản xuất bản nhưng một lần tạo nội dung nguồn. '
+   +'Nếu chưa xác minh chủ kênh/URL, không coi là giao việc vận hành đã chốt.</p>'+
+  detail('Mở sổ kênh/tài sản để xác minh trước khi giao việc',assetsPanel(),false);
+}
+
