@@ -10,6 +10,7 @@ on:
       - 'pages-overrides/catalog/marketing-2027-outcome-contract.json'
       - 'scripts/khung_kiem_toan_chong_mau_thuan_2027.py'
       - 'scripts/khung_inline_grid_cell_fix_2027.py'
+      - 'scripts/khung_inline_grid_cell_browser_qa_2027.py'
       - 'scripts/khung_ctda_trong_diem_2027.py'
       - 'scripts/khung_embed_plan_2027.py'
       - 'scripts/marketing_2027_bundle.py'
@@ -419,12 +420,17 @@ jobs:
         run: python3 scripts/khung_kiem_toan_chong_mau_thuan_2027.py _site
       - name: Khac phuc ky tu va nhan bi tach cot trong toan bo bang the
         run: python3 scripts/khung_inline_grid_cell_fix_2027.py _site
+      - name: Nghiem thu bang chuc danh III.0 va lien ket trong ngoac tren Chrome
+        run: python3 scripts/khung_inline_grid_cell_browser_qa_2027.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      # The upload artifact can be finalized before GitHub Pages metadata catches up.
+      - name: Cho dong bo metadata goi trien khai GitHub Pages
+        run: sleep 20
       - name: Trien khai cong khai
         id: deployment
         uses: actions/deploy-pages@v4
