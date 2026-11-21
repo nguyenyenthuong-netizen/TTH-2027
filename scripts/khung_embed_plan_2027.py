@@ -22,8 +22,8 @@ def integrate(site: Path):
     parent = Path(__file__).resolve().parents[1]
     source = parent / "pages-overrides/catalog"
     d = json.loads((site / "ke-hoach-mkt-2027/data.json").read_text("utf-8"))
-    assert len(d["portfolio"]["programs"])==6 and len(d["portfolio"]["projects"])==23
-    assert len(d["portfolio"]["tasks"])==276 and len(d["issuance"]["catalog"])==325
+    assert len(d["portfolio"]["programs"])==6 and len(d["portfolio"]["projects"])==24
+    assert len(d["portfolio"]["tasks"])==288 and len(d["issuance"]["catalog"])==325
     assert len(d["roles"]) == 26, "Required roles absent"
     assert len(d["monthlyActions"]) >= 624, "Missing monthly assignments"
     assert {x["month"] for x in d["monthlyActions"]} == set(range(1, 13))
@@ -61,7 +61,7 @@ def integrate(site: Path):
         '<details open style="margin:0">\n'
         '<summary style="background:#0837A1;color:#fff;padding:16px 20px;'
         'font-weight:750;font-size:17px;cursor:pointer;line-height:1.5">'
-        'KẾ HOẠCH 2027: 6 CHƯƠNG TRÌNH · 23 DỰ ÁN · 12 THÁNG · 26 CHỨC DANH · BÁO CÁO BAN HÀNH'
+        'KẾ HOẠCH 2027: 6 CHƯƠNG TRÌNH · 24 DỰ ÁN · 12 THÁNG · 26 CHỨC DANH · BÁO CÁO BAN HÀNH'
         '<span style="display:block;font-size:12px;font-weight:450;color:#e6efff">'
         'Nằm trong Mục 05 – Định biên; nhấn để thu gọn/mở rộng nội dung'
         '</span></summary>\n'
