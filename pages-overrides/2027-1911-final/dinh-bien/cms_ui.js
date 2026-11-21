@@ -73,7 +73,7 @@ function detailedPanel(){
     e(segment.map((x,i)=>x+': '+format(w.t[i])+' phút').join(' · ')),nu(h),e(name(w.rid))];
  });
  const drows=dlist.map(x=>['T'+x.m,btn(x.d.code+' · '+x.d.name,'docs',x.d.id),e(x.d.scope),e(x.act.stage),
- e(name(x.act.r)),nu(x.act.h),'Kiểm: '+e(name(x.d.reviewer))+'; thử: '+e(name(x.d.tester))]);
+ e(name(x.act.r)),nu(x.act.h*60),nu(x.act.h),'Kiểm: '+e(name(x.d.reviewer))+'; thử: '+e(name(x.d.tester))]);
  const crows=cms.map(x=>['T'+x.m,e(x.unit+' / '+x.type),e(x.stage),e(name(x.role)),
  x.q==null?'<b>Chưa xác minh</b>':nu(x.q),nu(x.mins),x.h==null?'Chưa tính':nu(x.h),e(x.control)]);
  const missing=cms.filter(x=>x.q==null).length;
@@ -90,7 +90,7 @@ function detailedPanel(){
  table(['Tháng','Chuyên môn / quản lý','Xây dựng hệ thống','CMS ban đầu','Duy trì tài liệu','CMS duy trì','Phát sinh','Tổng đã tính','Vượt quỹ kế hoạch'],workload,[1,2,3,4,5,6,7])+
  '<p class="note">Không coi giờ đã tính thấp hơn quỹ là bằng chứng đủ người khi còn đầu ra chưa có lượng, tài sản chưa kiểm, giờ Clinic/nhân sự thực có chưa đối chiếu. Chức danh 2 suất phải kiểm riêng phân công từng người.</p>'+
  detail('II. Toàn bộ đầu ra chuyên môn và 5 công đoạn (phút)',table(['Mã/đầu ra','Căn cứ','Đơn vị','Số lượng','Phút: làm, phối hợp, kiểm, sửa, đi','Giờ','Người thực hiện'],wrows,[3,5]),true)+
- detail('III. Lập, sửa, kiểm, thử, bàn giao tài liệu – giờ theo người',table(['Tháng','Mã/tên tài liệu','Phạm vi','Công đoạn','Người','Giờ','Kiểm và thử'],drows,[5]),true)+
+ detail('III. Lập, sửa, kiểm, thử, bàn giao tài liệu – giờ theo người',table(['Tháng','Mã/tên tài liệu','Phạm vi','Công đoạn','Người','Phút công đoạn','Giờ công đoạn','Kiểm và thử'],drows,[5,6]),true)+
  detail('IV. CMS – nguồn, biên tập, nhập, kiểm, công bố – giờ theo người',table(['Tháng','Đơn vị/hồ sơ','Công đoạn','Người','Lượng','Phút','Giờ','Căn cứ'],crows,[4,5,6]),true)+
  detail('V. Toàn bộ dòng MTCV gốc và đối chiếu phần thiếu',origOutputs(id))+
  '<p><strong>Điều kiện ra quyết định:</strong> phải chốt các trường chưa lượng hóa, người thực có, phút chuẩn và giờ khả dụng; không dùng số 0 cho dữ liệu thiếu, không xếp người vào việc ngoài MTCV.</p>';
@@ -108,7 +108,7 @@ function sufficiencyPanel(){
  unknown?'Chưa đủ lượng CMS':monthsBad.length?'Vượt tải cần xử lý':'Chưa được kết luận đủ người'];
  });
  return '<h3>Kiểm tra đủ sức xử lý công việc theo từng tháng và suất</h3>'+
- '<p class="note"><b>Không kết luận đủ/dư người chỉ từ 36 suất.</b> Phải đủ sản lượng thực tế, công đoạn, hệ thống giai đoạn đầu, CMS, kiểm tài sản/kênh, giờ thực có và kế hoạch phát sinh. Kịch bản vượt giờ phải chỉ rõ tháng, vị trí và hướng xử lý; không ngầm kéo dài hạn bàn giao.</p>'+
+ '<p class="note"><b>Không kết luận đủ/dư người chỉ từ 36 suất.</b> Phải đủ sản lượng thực tế, công đoạn, hệ thống giai đoạn đầu, CMS, kiểm tài sản/kênh, giờ thực có và kế hoạch phát sinh. M-6 hiện chỉ có 6 nhóm thư viện, chưa chốt số file, kích thước và biến thể; không coi giờ mô hình đã đủ. Kịch bản vượt giờ phải chỉ rõ tháng, vị trí và hướng xử lý; không ngầm kéo dài hạn bàn giao.</p>'+
  '<div class="control">'+selCase()+'</div>'+
  metrics([[nu(rows.length),'Tuyến/suất đang đối chiếu'],[nu(poolReviews(run).filter(z=>z.review.periods?.some(q=>q.excess>0)).length),'Có tháng vượt tải đã tính'],[nu(run.cms.unknown.length),'Điều kiện CMS còn thiếu']])+
  table(['Chức danh','Đơn vị','Suất/phân công','Giờ kế hoạch/tháng','Tháng vượt','Lượng CMS còn thiếu','Kết luận hiện tại'],rows,[5])+
