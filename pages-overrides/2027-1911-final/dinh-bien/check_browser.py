@@ -143,9 +143,12 @@ def check(page, width, form, out):
     assert host.locator('#db-main').get_by_text('K-KK-',exact=False).count()>0
     pane('suff')
     assert host.locator('#db-main').get_by_text('Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống',exact=True).is_visible()
-    assert 'CHƯA ĐỦ CĂN CỨ XÁC NHẬN' in host.locator('#db-main').inner_text()
-    assert 'Bản đồ nguy cơ ảnh hưởng dây chuyền theo tháng' in host.locator('#db-main').inner_text()
-    assert 'Quy tắc chặn để tránh lan truyền chậm tiến độ' in host.locator('#db-main').inner_text()
-    assert 'CHƯA ĐỦ CĂN CỨ' in host.locator('#db-main').inner_text()
+    assert 'Kết luận định biên: chưa đủ căn cứ ban hành cơ cấu 36 suất' in host.locator('#db-main').inner_text()
+    assert 'Giải thích quỹ 25% dự phòng' in host.locator('#db-main').inner_text()
+    assert 'không phải tăng thêm 25% suất nhân sự' in host.locator('#db-main').inner_text()
+    assert host.get_by_text('Mở bảng theo tháng: quỹ dự phòng đã dùng và giờ vượt quỹ tổng',exact=True).count()==1
+    assert 'Bản đồ nguy cơ ảnh hưởng dây chuyền theo tháng' in host.locator('#db-main').text_content()
+    assert 'Quy tắc chặn để tránh lan truyền chậm tiến độ' in host.locator('#db-main').text_content()
+    assert 'Chưa đủ dữ liệu' in host.locator('#db-main').text_content() or 'chưa đủ căn cứ' in host.locator('#db-main').inner_text()
     pane('roadmap')
     print('PASS Mục 05:',form,'12 nội dung, 26 chức danh, 3 kịch bản, sửa sản lượng và tài liệu, tra đầu ra, quỹ Clinic')

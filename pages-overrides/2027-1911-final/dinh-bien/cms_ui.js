@@ -190,9 +190,9 @@ function sufficiencyPanel(){
       bad.length?bad.map(z=>'T'+z.m+': +'+format(z.excess)+' giờ').join('; '):'Không vượt trên phần đã tính',
       nu(unknown),
       x.id==='qlml'?'Chưa kích hoạt':x.id==='dmpk'&&edits.clinic==null?'Chưa có quỹ Clinic':
-      unknown?'Thiếu sản lượng CMS':bad.length?'Vượt giờ trong kịch bản':'Chưa đủ dữ liệu chốt đủ người'];
+      unknown?'Thiếu sản lượng CMS':bad.length?'Lấn quỹ dự phòng trong kịch bản':'Chưa đủ dữ liệu chốt đủ người'];
  });
- const critical='<p class="note"><b>KẾT LUẬN CHO BAN LÃNH ĐẠO: CHƯA ĐỦ CĂN CỨ XÁC NHẬN 36 SUẤT LÀ PHÙ HỢP.</b> Đã xuất hiện vị trí có tháng vượt giờ trong phần mô phỏng, trong khi sản lượng CMS, M-6, tài sản/kênh và nhân sự thực có chưa chốt. Đây là kết quả từ dữ liệu giả định theo MTCV, không phải chứng nhận đã đủ việc hoặc đủ người.</p>';
+ const critical='<p class="note"><b>KẾT LUẬN CHO BAN LÃNH ĐẠO: CHƯA ĐỦ CĂN CỨ XÁC NHẬN 36 SUẤT LÀ PHÙ HỢP.</b> Đã xuất hiện vị trí lấn quỹ dự phòng kế hoạch trong phần mô phỏng, trong khi sản lượng CMS, M-6, tài sản/kênh và nhân sự thực có chưa chốt. Đây là kết quả từ dữ liệu giả định theo MTCV, không phải chứng nhận đã đủ việc hoặc đủ người.</p>';
  const hasCmsUnknown=run.cms.unknown.length>0;
  const shortVerdict='<div class="note" style="border-left-color:#ed3237;background:#fff9f9">'+
  '<h4 style="margin:0 0 8px">Kết luận định biên: chưa đủ căn cứ ban hành cơ cấu 36 suất</h4>'+
@@ -202,26 +202,45 @@ function sufficiencyPanel(){
  '<p>'+format(other.length)+' đầu mối chưa so được quỹ; '+
  (hasCmsUnknown?format(run.cms.unknown.length)+' trường CMS/chuyển giao còn thiếu số lượng và giờ thực tế.':'Sản lượng thực vẫn phải xác nhận.')+
  ' Chưa tính đủ việc xây mới, đào tạo SEO/CRM, duy trì hệ thống và người kiêm nhiệm nếu chưa gắn mã việc.</p></div>';
+ const reserveCases=all.flatMap(x=>(x.review.periods||[]).filter(p=>p.excess>0||p.all>x.review.planLimit+1e-7).map(p=>{
+  const plannedBeyond=Math.max(0,p.planned-x.review.planLimit);
+  const grossBeyond=Math.max(0,p.all-x.review.totalLimit);
+  const reserveUse=Math.max(0,Math.min(x.review.totalLimit-x.review.planLimit,p.all-x.review.planLimit));
+  return {x,p,plannedBeyond,grossBeyond,reserveUse};
+ })).sort((a,b)=>b.grossBeyond-a.grossBeyond||b.plannedBeyond-a.plannedBeyond);
+ const reserveRows=reserveCases.map(({x,p,plannedBeyond,grossBeyond,reserveUse})=>[
+    positionLink(x),e(x.site?siteTitle(x.site):'Tổng công ty'),e(x.slot?slotLabel(x.slot):String(x.seats)+' suất'),
+    'T'+p.m,nu(p.planned),nu(p.all),nu(x.review.planLimit),nu(x.review.totalLimit),
+    nu(reserveUse),nu(plannedBeyond),nu(grossBeyond),
+    grossBeyond>0?'<b>Vượt tổng quỹ giờ tham chiếu</b>':plannedBeyond>0?'Việc kế hoạch lấn quỹ dự phòng':'Phát sinh dùng dự phòng'
+ ]);
+ const reserveExplanation='<h4>Giải thích quỹ 25% dự phòng</h4>'+
+ '<p><b>Quỹ giờ khả dụng bình quân:</b> '+format(run.cap.gross)+' giờ/người/tháng. <b>75% dành cho kế hoạch:</b> '+format(run.cap.plan)+' giờ. <b>25% để dự phòng:</b> '+format(run.cap.reserve)+' giờ. Đây là 25% thời gian của cùng một người, không phải tăng thêm 25% suất nhân sự.</p>'+
+ '<p class="note"><b>Cần phân biệt:</b> phần việc kế hoạch vượt ngưỡng 75% là <b>chiếm dụng dự phòng</b>, chưa phải vượt thời giờ làm việc. Tổng công việc, kể cả phát sinh, vượt ngưỡng 100% là <b>vượt quỹ giờ tổng tham chiếu</b> phải xử lý và kiểm lịch thực tế. Các ngưỡng là bình quân năm theo giả định, không phải lịch chấm công từng tháng.</p>'+
+ detail('Mở bảng theo tháng: quỹ dự phòng đã dùng và giờ vượt quỹ tổng',
+   reserveRows.length?table(['Chức danh','Đơn vị','Suất','Tháng','Giờ kế hoạch','Giờ tổng kể phát sinh','Ngưỡng 75%','Ngưỡng 100%','Dự phòng đã dùng','Việc kế hoạch lấn dự phòng','Vượt quỹ giờ tổng','Nhận định'],reserveRows,[4,5,6,7,8,9,10]):
+    '<p>Chưa phát hiện giờ kế hoạch lấn dự phòng trên phạm vi đã tính; không đồng nghĩa đủ năng lực khi dữ liệu thiếu.</p>');
+
  const direct='<h4>Diễn giải nhanh: vượt giờ không đồng nghĩa phải tăng nhân sự ngay</h4>'+
  table(['Tình trạng hiện tại','Hiểu đúng','Hướng xử lý trước khi sửa định biên'],[
-  ['Có vị trí vượt quỹ cả năm','Một đầu mối không đủ giờ theo sản lượng của kịch bản đã nhập; có thể do phân công tập trung, không chắc do thiếu suất.','Đo lại định mức; chuyển phần việc được phép sang đầu mối đủ năng lực trong cùng tuyến hoặc tính nhân sự bổ sung nếu vẫn vượt.'],
-  ['Nhiều vị trí chỉ vượt tháng thiết lập','Công việc tạo mẫu, quy trình, đào tạo có thể đang dồn vào một kỳ, nhưng phải giữ hạn bàn giao bắt buộc.','Lập lịch tuần, đặt người hỗ trợ có thời hạn, ưu tiên thiết lập bắt buộc và ngừng mở hạng mục phụ.'],
+  ['Có vị trí vượt quỹ cả năm','Một đầu mối lấn quỹ 75% theo kịch bản; chưa có nghĩa đã vượt tổng quỹ giờ hoặc nhất thiết thiếu suất dài hạn.','Đo lại định mức, khử trùng công đoạn, kiểm tải đúng CNNV/MTCV; nếu vẫn vượt thì xác định năng lực cần bổ sung trong chính chuyên môn, không chuyển việc để cân giờ.'],
+  ['Nhiều vị trí chỉ vượt tháng thiết lập','Công việc tạo mẫu, quy trình, đào tạo có thể đang dồn vào một kỳ, nhưng phải giữ hạn bàn giao bắt buộc.','Lập lịch tuần của chính vị trí; ưu tiên tài liệu bắt buộc, đối chiếu bản cũ, giảm sửa trùng; hỗ trợ chỉ trong phạm vi CNNV/MTCV và thẩm quyền đã có.'],
   ['Còn đầu vào CMS chưa lượng hóa','Bảng đang thiếu giờ chứ không chứng minh còn công suất trống.','Chốt mã hồ sơ bác sĩ/khoa/dịch vụ, khối lượng nhập/sửa, chủ nguồn, mốc bàn giao, người xử lý và số phút công đoạn.'],
   ['Chưa có đủ người thực tế','36 là số suất cơ cấu đề xuất, không tự động có 36 người đang làm.','Giao người phụ trách tạm có văn bản, bảo toàn quyền phê duyệt, đặt trần giờ và cơ chế ngừng việc không thiết yếu.']
  ])+
  '<p class="fine"><b>Quy tắc quyết định:</b> chỉ đề xuất điều chỉnh số suất hoặc tuyến chức năng sau khi đã khử trùng công đoạn, xác nhận đầu vào, đối chiếu tải 12 tháng và kiểm có người làm thay đủ quyền. Không cộng tổng giờ các đầu mối rồi chia bình quân để kết luận vì sản phẩm còn phụ thuộc chuyên môn và địa điểm.</p>';
- return '<h3>Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống</h3>'+shortVerdict+
+ return '<h3>Quyết định định biên – nhìn ngay mức đủ tải và khoảng trống</h3>'+shortVerdict+reserveExplanation+
  '<div class="control">'+selCase()+'</div>'+
- metrics([[nu(overload.length),'Đầu mối/suất vượt giờ ít nhất một tháng'],
-          [nu(annual.length),'Suất vượt quỹ kế hoạch cả năm'],
+ metrics([[nu(overload.length),'Suất có tháng lấn quỹ dự phòng kế hoạch'],
+          [nu(annual.length),'Suất lấn quỹ kế hoạch cả năm'],
           [nu(run.cms.unknown.length),'Trường điều kiện CMS chưa có số'],
           [nu(known.total,0),'Giờ mô hình đã tính/năm'],
-          [nu(run.cap.plan),'Giờ kế hoạch/một suất/tháng'],
+          [nu(run.cap.plan),'Giờ kế hoạch 75%/một suất/tháng'],
           [nu(other.length),'Đầu mối chưa có quỹ/đang chờ kích hoạt']])+
  direct+
  detail('Mở bảng so sánh cả 3 kịch bản tính giờ',table(['Kịch bản','Giờ công mô phỏng/năm','Đầu mối vượt tháng','Suất vượt năm','Điều kiện CMS còn thiếu','Chuyển xem'],scenarioRows,[1,2,3,4]))+
  '<h4>Điểm nghẽn phải xử lý trước khi chốt cơ cấu</h4>'+
- (topRows.length?table(['Chức danh','Nơi làm','Suất','Tháng cao điểm','Giờ việc trong tháng','Quỹ giờ','Vượt giờ','Vượt cả năm'],topRows,[3,4,5,6]):'<p>Chưa phát hiện vượt trên khối lượng đã tính; không đồng nghĩa đã đủ nhân sự.</p>')+
+ (topRows.length?table(['Chức danh','Nơi làm','Suất','Tháng cao điểm','Giờ việc trong tháng','Quỹ giờ','Lấn quỹ 75%','Lấn quỹ 75% cả năm'],topRows,[3,4,5,6]):'<p>Chưa phát hiện vượt trên khối lượng đã tính; không đồng nghĩa đã đủ nhân sự.</p>')+
  detail('Mở đánh giá tác động dây chuyền khi thiếu người hoặc thiếu giờ',cascadeExposurePanel(run,all))+
  detail('Mở danh sách điều kiện chưa thể nghiệm thu phương án 36 suất',
  table(['Khoảng trống','Tình trạng và tác động','Nguồn xác nhận'],[
@@ -232,7 +251,7 @@ function sufficiencyPanel(){
   ['Lịch giai đoạn, phát sinh, bản cũ','Mốc bàn giao quý I, lịch mở thương hiệu, phát sinh và hiệu lực quy trình/mẫu cũ chưa được xác nhận đủ để bảo đảm bàn giao từ quý II.','Chủ nghiệp vụ, Quản lý chất lượng, quản lý thương hiệu, các đơn vị liên quan']
  ]))+
  detail('Mở toàn bộ 26 chức danh, 37 dòng suất/đầu mối và 12 tháng để kiểm từng người',
-   table(['Chức danh','Đơn vị','Suất/phân công','Quỹ tháng','Tháng vượt','CMS thiếu số','Trạng thái'],allRows,[5]))+
+   table(['Chức danh','Đơn vị','Suất/phân công','Quỹ kế hoạch 75%/tháng','Tháng lấn dự phòng','CMS thiếu số','Trạng thái'],allRows,[5]))+
  '<h4>7. Cách xử lý vượt tải và điều kiện kết luận</h4>'+
- '<p>Truy ngược từng mã việc, công đoạn và người chịu tải; phân bổ lại <b>đúng CNNV/MTCV</b> trước khi đề xuất người mới. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
+ '<p>Truy ngược từng mã việc và công đoạn; giữ nguyên phạm vi <b>CNNV/MTCV và người chịu trách nhiệm</b>, không chuyển việc sang chức danh hoặc người khác để cân giờ. Trước hết chuẩn hóa mẫu, bỏ thao tác trùng và xếp lịch hợp lệ của chính vị trí; phần vượt còn lại là căn cứ tính bổ sung năng lực đúng chuyên môn. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
 }

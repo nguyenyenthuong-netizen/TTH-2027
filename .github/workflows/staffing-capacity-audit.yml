@@ -1,7 +1,7 @@
 name: Audit dinh bien 2027 theo suat thang
 on:
   push:
-    branches: [work/dinh-bien-audit-capacity-21112026]
+    branches: [work/dinh-bien-audit-capacity-21112026, work/dinh-bien-phan-biet-du-phong-21112026]
     paths:
       - 'scripts/staffing_capacity_snapshot_2027.py'
       - 'scripts/staffing_capacity_snapshot_2027.js'
