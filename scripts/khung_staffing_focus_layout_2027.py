@@ -25,6 +25,30 @@ css=r"""
   .app.reader-wide .tbl.doc-responsibility{min-width:0}
 }
 @media print{.app.reader-wide{position:static;inset:auto;height:auto;box-shadow:none;overflow:visible}}
+
+/* tth-staffing-readable-fonts-2027 */
+:host{font-size:17px;line-height:1.65}
+.app{overflow:hidden}
+.nav button{font-size:15.5px;line-height:1.4;min-height:44px;padding:10px 14px}
+.padded{padding:clamp(18px,2vw,30px)}
+h3{font-size:clamp(24px,2.4vw,32px);line-height:1.32}
+h4{font-size:22px;line-height:1.4}
+h5{font-size:18px}
+small,.fine,.metric span,.note{font-size:15px;line-height:1.6}
+.control label,.form label{font-size:15px;line-height:1.5}
+.control input,.control select,.form input,.form select{font-size:16px;min-height:46px;padding:10px 12px}
+.action,.plain{font-size:16px;padding:10px 14px;min-height:43px}
+.tbl{font-size:16px;line-height:1.55;min-width:1120px}
+.tbl th{font-size:15.5px;line-height:1.5}
+.tbl th,.tbl td{padding:13px 14px;line-height:1.56;white-space:normal;word-break:normal;overflow-wrap:break-word}
+.tbl td small{font-size:15px}
+.link,.tag{font-size:inherit}
+.tag{font-size:14px}
+.mini p,.mini li,.inline,.count{font-size:16px;line-height:1.6}
+.scroll{overflow-x:auto!important;max-width:100%}
+@media(max-width:760px){.tbl.mobile{min-width:0}.nav button{font-size:14.5px}.tbl.mobile td:before{font-size:14px}}
+@media print{.tbl{min-width:0;font-size:11pt}.tbl th{font-size:10.5pt}}
+
 """
 if mark not in s:
     pat=re.compile(r'(<script[^>]*id="tth-staffing-style"[^>]*>)(.*?)(</script>)',re.S)
