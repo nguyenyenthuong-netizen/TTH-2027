@@ -67,28 +67,3 @@ for(let m=0;m<12;m++)
    assert(Math.abs(a[m][k]+b[m][k]-row[m][k])<1e-6,'Split mismatch '+k+' month '+(m+1));
  }
 console.log('SPLIT_CMS_CHECK_PASS',JSON.stringify({initialB:split[1].cmsInitial,maintB:split[3].cmsMaintain}));
-
-/* One non-binding allocation scenario; no reallocation is executed in live MTCV. */
-{
- const transfer={...edits,splits:{'qc-a/fb':4}};
- const base=TTHStaffing.simulate(model,'base',edits);
- const test=TTHStaffing.simulate(model,'base',transfer);
- const before=poolReviews(base),after=poolReviews(test);
- const selection=roster=>roster.filter(x=>x.id==='qc-a').map(x=>({
-   slot:x.slot,annual:Math.round(x.review.annual.total*10)/10,
-   peak:Math.round((x.review.peak?.excess||0)*10)/10,
-   annualExcess:Math.round((x.review.annualExcess||0)*10)/10,
-   over:x.review.periods.filter(y=>y.excess>0).map(y=>({m:y.m,excess:Math.round(y.excess*10)/10}))
- }));
- assert(Math.abs(base.roll(base.monthly(['qc-a'])).total-test.roll(test.monthly(['qc-a'])).total)<1e-6,'Transfer must preserve total hours');
- console.log('ALLOCATION_TRIAL',JSON.stringify({
-   modification:'Transfer operational ownership of ONE Facebook channel from hospital-facing to system-facing seat of Chuyên viên quảng cáo và kênh số nhóm 1, only after accepted written reassignment and rights',
-   minutesPerChannel:720,
-   before:selection(before),after:selection(after),
-   allOverBefore:before.filter(x=>x.review.periods.some(y=>y.excess>0)).length,
-   allOverAfter:after.filter(x=>x.review.periods.some(y=>y.excess>0)).length,
-   groupHoursUnchanged: true,
-   hasConfirmedChannels:false,
-   status:'Kịch bản kiểm thử; không phải phân công chính thức'
- }));
-}
