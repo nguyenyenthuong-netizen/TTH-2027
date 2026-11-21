@@ -4,7 +4,7 @@ const TTHStaffing = (() => {
   const months=Array.from({length:12},(_,i)=>i+1);
   const peak=m=>[4,9,11].includes(m);
   const sum=a=>a.reduce((x,y)=>x+y,0);
-  const empty=()=>({direct:0,coord:0,check:0,fix:0,travel:0,regular:0,incident:0,setup:0,maint:0,lead:0,next:0,external:0});
+  const empty=()=>({direct:0,coord:0,check:0,fix:0,travel:0,regular:0,incident:0,setup:0,maint:0,cmsInitial:0,cmsMaintain:0,lead:0,next:0,external:0});
   const timeKeys=['direct','coord','check','fix','travel'];
   const hqVideoPlan={g1:{short:9,complex:4,film:2},g2:{short:6,complex:3,film:1}};
   function capacity(settings={}){
@@ -140,6 +140,7 @@ const TTHStaffing = (() => {
       const finish=closeMonths.length?Math.max(...closeMonths):null;
       docs.push({d,action,units,monthly,m0,scheduled,finish,deadline:d.deadline??null,late:finish!==null&&d.deadline!=null&&finish>d.deadline,depends:dependencies[d.code]||[]});
     }
+    const cms=TTHCms.simulate(data.cms,edits,consume);
     function monthly(keys){return months.map((m)=>{
       const v=empty();for(const k of keys){const x=roles[k]?.[m-1];if(x)for(const field in v)v[field]+=x[field]};return v;
     });}
@@ -151,7 +152,7 @@ const TTHStaffing = (() => {
       v.fteNext=req(v.regular+v.next,u,array.length);v.fteProject=v.fte-v.fteRun;
       const peaks=array.map(x=>req(x.regular+x.maint+x.setup,x.incident,1));v.peak=Math.max(...peaks);v.peakIndex=peaks.indexOf(v.peak);return v;
     }
-    return {scenario,cap,works,docs,roles,monthly,roll,siteInputs,siteRoles};
+    return {scenario,cap,works,docs,cms,roles,monthly,roll,siteInputs,siteRoles};
   }
   return {simulate,capacity,scenarios,sum,months,hqVideoPlan,reviewPosition};
 })();
