@@ -202,7 +202,7 @@ function sufficiencyPanel(){
  '<p>'+format(other.length)+' đầu mối chưa so được quỹ; '+
  (hasCmsUnknown?format(run.cms.unknown.length)+' trường CMS/chuyển giao còn thiếu số lượng và giờ thực tế.':'Sản lượng thực vẫn phải xác nhận.')+
  ' Chưa tính đủ việc xây mới, đào tạo SEO/CRM, duy trì hệ thống và người kiêm nhiệm nếu chưa gắn mã việc.</p></div>';
- const reserveCases=all.flatMap(x=>(x.review.periods||[]).filter(p=>p.excess>0).map(p=>{
+ const reserveCases=all.flatMap(x=>(x.review.periods||[]).filter(p=>p.excess>0||p.all>x.review.planLimit+1e-7).map(p=>{
   const plannedBeyond=Math.max(0,p.planned-x.review.planLimit);
   const grossBeyond=Math.max(0,p.all-x.review.totalLimit);
   const reserveUse=Math.max(0,Math.min(x.review.totalLimit-x.review.planLimit,p.all-x.review.planLimit));
@@ -251,7 +251,7 @@ function sufficiencyPanel(){
   ['Lịch giai đoạn, phát sinh, bản cũ','Mốc bàn giao quý I, lịch mở thương hiệu, phát sinh và hiệu lực quy trình/mẫu cũ chưa được xác nhận đủ để bảo đảm bàn giao từ quý II.','Chủ nghiệp vụ, Quản lý chất lượng, quản lý thương hiệu, các đơn vị liên quan']
  ]))+
  detail('Mở toàn bộ 26 chức danh, 37 dòng suất/đầu mối và 12 tháng để kiểm từng người',
-   table(['Chức danh','Đơn vị','Suất/phân công','Quỹ tháng','Tháng vượt','CMS thiếu số','Trạng thái'],allRows,[5]))+
+   table(['Chức danh','Đơn vị','Suất/phân công','Quỹ kế hoạch 75%/tháng','Tháng lấn dự phòng','CMS thiếu số','Trạng thái'],allRows,[5]))+
  '<h4>7. Cách xử lý vượt tải và điều kiện kết luận</h4>'+
- '<p>Truy ngược từng mã việc, công đoạn và người chịu tải; phân bổ lại <b>đúng CNNV/MTCV</b> trước khi đề xuất người mới. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
+ '<p>Truy ngược từng mã việc và công đoạn; giữ nguyên phạm vi <b>CNNV/MTCV và người chịu trách nhiệm</b>, không chuyển việc sang chức danh hoặc người khác để cân giờ. Trước hết chuẩn hóa mẫu, bỏ thao tác trùng và xếp lịch hợp lệ của chính vị trí; phần vượt còn lại là căn cứ tính bổ sung năng lực đúng chuyên môn. Tách phần duy trì và phần xây dựng hệ thống trong quý I; chỉ điều chỉnh lịch mẫu khi phê duyệt và không được tự lùi mốc 31/03. Kiểm thử định mức thực tế, danh mục dùng chung để tránh cộng trùng, tính cả công việc ngoài kế hoạch và yêu cầu hiện diện tại cơ sở. Chỉ chuyển trạng thái sang “Đủ căn cứ chốt” khi từng khoản thiếu được đối soát, có người cung cấp, bằng chứng nguồn và giờ công đã xác minh.</p>';
 }
