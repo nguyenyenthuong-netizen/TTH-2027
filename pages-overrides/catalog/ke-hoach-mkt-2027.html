@@ -70,7 +70,7 @@ function drawDocs(){
  var stage=['Đối chiếu bản cũ','Xây/sửa bản nháp','Kiểm chuyên môn','Thử nghiệm','Trình phê duyệt','Bàn giao','Rà soát định kỳ'];
  $("panel").innerHTML=head("Danh mục tài liệu và sản phẩm chuẩn cần xử lý",rows.length,"74 mã tài liệu gốc; 83 quy trình/văn bản khác lưu như nguồn đối chiếu, không cộng thêm thành mẫu mới.")+
  '<div class="call">Định mức dưới đây là <b>phút tham chiếu cho một hồ sơ mẫu</b> theo loại tài liệu, chưa phải giờ đã phê duyệt. Động tác rà soát bản cũ và sản xuất mới không được tính cùng lúc nếu không phát sinh cả hai.</div>'+
- table(["Mã và tên hồ sơ","Nhóm","Phạm vi / chủ trì","Người trực tiếp xây","Người kiểm / thử","Hạn mục tiêu","Cấu phần phải có","Định mức 7 công đoạn, phút"],rows.map(function(x){return ['<span class="code">'+cell(x.code)+'</span><br><b>'+cell(x.title)+'</b>',cell(x.kind),cell(x.scope)+'<small>Chủ trì: '+cell(shortRole(x.owner))+'</small>',cell(shortRole(x.writer)),cell(shortRole(x.checker))+'<small>Thử: '+cell(shortRole(x.tester))+'</small>','<b>'+cell(x.deadline)+'</b><small>Số cấu phần tham chiếu: '+cell(x.quantity)+'</small>',cell(x.description),x.minutes.map(function(m,i){return '<span class="tag">'+stage[i]+': '+m+'</span>'}).join(" ")]),"wide");
+ table(["Mã và tên hồ sơ","Nhóm","Phạm vi / chủ trì","Người trực tiếp xây","Người kiểm / thử","Hạn mục tiêu","Cấu phần phải có","Định mức 7 công đoạn, phút"],rows.map(function(x){return ['<span class="code">'+cell(x.code)+'</span><br><b>'+cell(x.title)+'</b>',cell(x.kind),cell(x.scope)+'<small>Chủ trì: '+cell(shortRole(x.owner))+'</small>',cell(shortRole(x.writer)),cell(shortRole(x.checker))+'<small>Thử: '+cell(shortRole(x.tester))+'</small>','<b>'+cell(x.deadline)+'</b><small>Số cấu phần tham chiếu: '+cell(x.quantity)+'</small>',cell(x.description),x.minutes.map(function(m,i){return '<span class="tag">'+stage[i]+': '+m+'</span>'}).join(" ")]}),"wide");
 }
 function drawMTCV(){
  var rows=[];D.roles.filter(function(r){return !$("role").value||r.id===$("role").value}).forEach(function(role){(D.mtcv[role.id]||[]).forEach(function(c,i){var rec={role:role.id,fields:c};if(valid(rec)) rows.push([role,i+1,c])})});
@@ -100,7 +100,7 @@ function drawDigital(){
  content+=table(["Vị trí","Phải thực hiện","Sản phẩm phải bàn giao","Không được đánh đồng"],matrix.map(function(a){return a.map(cell)}),"digital");
  var selected=D.actions.filter(function(a){return ["qlsps","dl-2","dl-1","qc-a","qc-b"].includes(a.role)&&valid(a)});
  content+='<h3 style="margin:22px 0 9px">Các đầu việc có hạn cụ thể ('+selected.length+')</h3>';
- content+=table(["Vị trí","Mốc","Hành động","Sản phẩm"],selected.map(function(x){return [cell(shortRole(x.role)),cell(x.start)+' – '+cell(x.end),'<b>'+cell(x.job)+'</b>',cell(x.product)]});
+ content+=table(["Vị trí","Mốc","Hành động","Sản phẩm"],selected.map(function(x){return [cell(shortRole(x.role)),cell(x.start)+' – '+cell(x.end),'<b>'+cell(x.job)+'</b>',cell(x.product)]}));
  $("panel").innerHTML='<div class="panel-header"><h2>Ma trận triển khai sản phẩm số</h2></div>'+content;
 }
 function drawTimeline(){
