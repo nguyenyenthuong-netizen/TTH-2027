@@ -200,6 +200,66 @@ function positionDocuments(r){
  '<p>'+btn('Cân song song với việc chuyên môn và quỹ giờ theo giai đoạn','deliveryRole',id+(slot==='all'?'':'/'+slot))+'</p>'+
  detail('Danh sách đủ 26 chức danh: mã soạn chính và mã phối hợp/kiểm/thử',table(['Chức danh','Phân công soạn chính theo phương án','Phối hợp, kiểm hoặc thử'],index)+'<p class="fine">Vai trò sở hữu hồ sơ không mặc nhiên là người viết mọi tài liệu. Tên mã trong nhiều dòng biểu thị các công đoạn của nhiều người; số sản phẩm toàn hệ thống chỉ tính một lần theo mã/phiên bản/phạm vi.</p>');
 }
+/* Monthly issuance roadmap, from the SAME document ledger used by 26-role capacity.
+   No new subsystem, no autonomous approval or double charging. */
+function issuanceMonthlyRoadmap(r){
+ const milestones=[
+  'Chốt quyền, nguồn yêu cầu, kế hoạch năm và bản nhận diện gốc',
+  'Chốt mẫu kiểm, kiểm thương hiệu, đặc tả hệ thống giai đoạn 1',
+  'Thư viện mẫu, chuẩn video, bộ công cụ và thí điểm đầu ra',
+  'Thử áp dụng quy trình số, báo cáo chiến dịch và phối hợp cơ sở',
+  'Kiểm thử CRM/Website/App và mẫu quản trị theo giai đoạn',
+  'Nghiệm thu đợt triển khai, rà số liệu và mẫu báo cáo nửa năm',
+  'Mở rộng theo cơ sở, thương hiệu đủ điều kiện và mẫu đã nghiệm thu',
+  'Chuẩn hóa quy trình vận hành trên dữ liệu triển khai',
+  'Rà tài sản, chiến dịch, bộ mẫu phát sinh và độ phủ theo thương hiệu',
+  'Đối soát phiên bản, quyền hạn và chuẩn bị báo cáo cuối năm',
+  'Kiểm kết quả, kế hoạch chuyển tiếp và các mẫu cần sửa',
+  'Chốt báo cáo, danh mục hiệu lực và đầu ra cần duy trì năm sau'
+ ];
+ const names=Object.keys(model.roles).filter(k=>model.seats[k]>0&&k!=='dmpk'&&k!=='dl-2'&&k!=='qlml');
+ const monthRows=[],details=[];
+ let totalOver=0,overMonths=0;
+ for(let m=1;m<=12;m++){
+   const closing=r.docs.filter(x=>x.finish===m);
+   const pieces=r.docs.flatMap(x=>x.monthly[m-1].filter(z=>z.type==='setup'&&z.internal).map(z=>z.h));
+   const h=sum(pieces);
+   const late=closing.filter(x=>x.late||x.capacityWarnings.length);
+   const over=[];
+   for(const id of names){
+     const keys=Object.keys(r.roles).filter(k=>k===id||k.startsWith(id+'@')||(id==='dl-1'&&k==='dl-2'));
+     const t=r.monthly(keys)[m-1],hours=t.regular+t.setup+t.maint;
+     const excess=hours-model.seats[id]*r.cap.plan;
+     if(excess>0.001){over.push(e(name(id))+' ('+format(excess,1)+' giờ)');totalOver+=excess;overMonths++;}
+   }
+   const top=closing.slice(0,7).map(x=>btn(x.d.code,'docs',x.d.id)).join(' · ')+(closing.length>7?' · … ('+closing.length+' hồ sơ)':'');
+   monthRows.push(['T'+m,e(milestones[m-1]),String(closing.length)+' hồ sơ'+(top?'<small>'+top+'</small>':''),
+     nu(h,1),over.length?'<b>VƯỢT 75%</b><small>'+over.join('; ')+'</small>':'Trong quỹ giờ đã mô phỏng',
+     late.length?'<b>'+late.length+' hồ sơ trễ/chưa đủ điều kiện</b>':'Không có cảnh báo lịch']);
+   const items=closing.map(x=>[
+      btn(x.d.code+' · '+x.d.name,'docs',x.d.id),
+      e(x.d.phaseReason||'Phân kỳ kiện toàn')+
+       '<small>'+e(x.d.issuanceStatus||'Chờ xác nhận')+'</small>',
+      'Dự kiến T'+x.d.month+'; hạn T'+x.deadline+
+       (x.late?'<small><b>Chưa đạt hạn</b></small>':''),
+      e(name(x.d.writer))+'<small>Kiểm: '+e(name(x.d.reviewer))+'</small>',
+      x.depends.length?x.depends.map(code=>btn(code,'docs',code)).join(' · '):'Không có mã tiền đề trong sổ',
+      x.capacityWarnings.length?'<b>Chờ xử lý: '+e(x.capacityWarnings.map(y=>y.reason).join('; '))+'</b>':'Chờ phê duyệt'
+   ]);
+   details.push(detail('Tháng '+m+' – '+closing.length+' hồ sơ dự kiến hoàn thành',
+     items.length?table(['Mã và đầu ra','Mức ưu tiên / trạng thái','Tháng và hạn','Người soạn / kiểm','Mã phải có trước','Điểm chặn'],items):
+       '<p>Không có hồ sơ kết thúc trong tháng này; công đoạn chuẩn bị có thể vẫn được thực hiện.</p>',false));
+ }
+ const blockers=r.docs.filter(x=>x.late||x.capacityWarnings.length);
+ return '<h4>Lộ trình ban hành, thử áp dụng và duy trì theo 12 tháng</h4>'+
+ '<p class="note"><b>Quy tắc xếp lịch:</b> một mẫu phải có nguồn và phân quyền trước khi đưa vào sử dụng; bộ nhận diện trước quy chuẩn ứng dụng; QC-4 trước bộ video B-7; yêu cầu số trước nội dung CMS tạo mới. Từng công đoạn được đặt vào quỹ kế hoạch 75% của đúng vị trí. Không rút ngắn số phút chuyên môn hoặc cắt sản lượng để cân bảng.</p>'+
+ '<p class="fine">Tất cả tháng và mốc trình dưới đây là <b>phương án dự kiến</b>. Hồ sơ chưa xác minh bản đã ban hành và quyền ký thì chưa đủ điều kiện áp dụng; khi tài liệu mới chưa có hiệu lực, chỉ được dùng bản cũ còn hiệu lực đã được kiểm chứng. Không mặc định một tài liệu trong danh mục là văn bản cần xây mới.</p>'+
+ metrics([[nu(171,0),'Dòng hồ sơ quản trị cần đối chiếu'],[nu(blockers.length,0),'Hồ sơ chưa đạt mốc/điều kiện trong kịch bản'],[nu(overMonths,0),'Lượt vị trí–tháng vượt quỹ 75% ở kịch bản đang chọn']])+
+ table(['Tháng','Mục tiêu triển khai','Hồ sơ dự kiến hoàn thành','Giờ xây/kiểm/thử','Quỹ kế hoạch 75%','Điểm chặn lịch'],monthRows,[3])+
+ detail('Tra mã, điều kiện tiên quyết, chức danh và trạng thái từng tháng',details.join(''),false)+
+ '<p class="fine"><b>Cảnh báo phạm vi:</b> Đầu ra trọng điểm, CMS chưa xác minh và giờ kiêm nhiệm Clinic chưa được coi là đã đủ trong bảng. '+(totalOver>0.001?'Kịch bản hiện chọn còn '+format(totalOver,1)+' giờ vượt quỹ kế hoạch ở những tháng khác nhau; phải xử lý tại đúng chức danh.':'Trong kịch bản đang chọn, phần việc đã lượng hóa không vượt quỹ 75%; chưa thể kết luận đủ định biên khi còn dữ liệu chưa chốt.')+'</p>';
+}
+
 function issuancePlan(r){
  const original=db.danh_muc_tai_lieu,source=r.docs.filter(x=>x.d.category==='74 tài liệu');
  const order=['Biểu mẫu','Sổ','Mẫu','Bộ','Quy chuẩn','Danh sách kiểm tra','Danh mục','Hồ sơ'];
@@ -230,7 +290,7 @@ function issuancePlan(r){
  ['ND-WEB1, ND-WEB2','14 trang dịch vụ mới trong kịch bản (8 + 6)','Sản phẩm nội dung cần nghiệm thu/xuất bản; không cộng vào số biểu mẫu hay quy trình ban hành.']
  ];
  const phaseRows=[0,1,2,3].map(q=>{const mo=[q*3+1,q*3+2,q*3+3],items=r.docs.filter(rec=>mo.some(m=>rec.monthly[m-1].some(z=>z.type==='setup')));const codes=cat=>new Set(items.filter(x=>x.d.category===cat).map(x=>x.d.code)).size;const hrs=sum(items.map(rec=>sum(mo.flatMap(m=>rec.monthly[m-1].filter(z=>z.type==='setup'&&z.internal).map(z=>z.h)))));return ['Quý '+['I','II','III','IV'][q],String(codes('74 tài liệu')),String(codes('60 quy trình')),String(codes('23 văn bản')),String(codes('Chi tiết bổ sung')),nu(hrs)];});
- return '<h4>Số lượng bộ mẫu, biểu mẫu và quy trình cần kiện toàn, trình áp dụng</h4><p class="note"><b>Bộ nền tảng phải hoàn thành trong giai đoạn đầu, chậm nhất 31/03/2027 trước bàn giao chính thức từ quý II.</b> Các bộ tiền đề đi trước: nhận diện và chuẩn Media tháng 1; thư viện mẫu tháng 2; các phần còn lại trong quý I. Giờ xây dựng này được cộng với việc chuyên môn của từng vị trí. Lịch đúng hạn cần đồng thời đáp ứng quỹ giờ và điều kiện phê duyệt.</p><p><b>Danh mục mục tiêu:</b> '+original.length+' mã tài liệu nghiệp vụ và '+workflows.length+' quy trình. Bảng dưới tính số lượng theo đúng cấp mã, bộ và cấu phần. Số phải ban hành mới được chốt sau khi kiểm bản cũ, hiệu lực và phạm vi thay thế.</p>'+table(['Loại trong danh mục gốc','Số mã','Dòng theo phạm vi','Khối lượng và cách hiểu'],forms,[1,2])+
+ return issuanceMonthlyRoadmap(r)+'<h4>Số lượng bộ mẫu, biểu mẫu và quy trình cần kiện toàn, trình áp dụng</h4><p class="note"><b>Không dồn toàn bộ hồ sơ vào quý I.</b> Tài liệu tiền đề phải có trước khi vận hành; các văn bản kiện toàn không bắt buộc ban hành đồng loạt nếu có quy trình cũ còn hiệu lực đã xác minh. Mỗi đợt cần có biên bản thử áp dụng, người kiểm, quyền ký và mốc bàn giao. Phần mềm ghi cảnh báo các mốc chưa cân đủ quỹ giờ thay vì tự coi là hoàn thành.</p><p><b>Danh mục mục tiêu:</b> '+original.length+' mã tài liệu nghiệp vụ và '+workflows.length+' quy trình. Bảng dưới tính số lượng theo đúng cấp mã, bộ và cấu phần. Số phải ban hành mới được chốt sau khi kiểm bản cũ, hiệu lực và phạm vi thay thế.</p>'+table(['Loại trong danh mục gốc','Số mã','Dòng theo phạm vi','Khối lượng và cách hiểu'],forms,[1,2])+
  '<h5>60 quy trình trong đề án</h5>'+table(['Hướng xử lý đối chiếu','Số luồng mục tiêu','Điều kiện trước khi trình'],[
  ['Có một ứng viên quy trình cũ',String(existing),'Đề xuất sửa/kiện toàn sau khi kiểm điều khoản và hiệu lực.'],
  ['Có nhiều ứng viên quy trình cũ',String(merged),'Đề xuất hợp nhất; quyết định thay thế/bãi bỏ từng bản cũ đi kèm.'],
