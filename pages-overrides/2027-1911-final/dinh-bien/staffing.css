@@ -4,3 +4,30 @@
 
 .entry[data-work-key],.entry[data-doc-key],.entry[data-flow-index]{scroll-margin-top:84px}
 .tbl{font-size:15px}.tbl th{font-size:14px}.tbl td small{font-size:14px;line-height:1.5}.fine{font-size:14px}
+
+
+/* TTH 2027 — tách chỉ tiêu phân sản phẩm thành thẻ có nhóm nghiệp vụ.
+   Chỉ tác động đến form chia 02 suất; không ảnh hưởng form CMS, tải việc, KPI. */
+.split-toolbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin:4px 0 12px}
+.split-toolbar label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px;font-weight:700;color:#14366e}
+.split-toolbar select{max-width:100%;width:auto;min-width:min(260px,100%);min-height:43px;padding:8px 12px;background:white;border:1px solid #adbed4;border-radius:8px;font-size:15px}
+.split-intro{margin:10px 0 14px;max-width:100%;font-size:15px;line-height:1.62;color:#344f6b}
+.form.split-form{display:block;max-width:100%;margin:12px 0 14px;padding:16px;border:1px solid #d6e1ee;border-radius:11px;background:#f5f8fc}
+.split-form .split-group{min-width:0;margin:0 0 18px}
+.split-form .split-group:last-of-type{margin-bottom:0}
+.split-form .split-group-title{margin:0 0 10px;padding:0 0 8px;border-bottom:1px solid #dbe5f2;color:#103b7d;font-weight:750;font-size:16px;line-height:1.4}
+.split-form .split-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.split-form .split-metric{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-height:145px;min-width:0;max-width:none;margin:0;padding:14px;border:1px solid #d9e3f0;border-radius:9px;background:#fff;box-shadow:0 1px 3px rgba(8,55,161,.035);color:#1a3557;font-size:15px;line-height:1.48}
+.split-form .split-metric-title{display:block;min-width:0;max-width:100%;font-size:15px;font-weight:700;line-height:1.48;color:#1a3557;overflow-wrap:break-word;word-break:normal}
+.split-form .split-metric-unit{display:block;font-size:13px;line-height:1.4;font-weight:500;color:#617590}
+.split-form .split-metric-field{display:block;margin-top:auto;padding-top:3px}
+.split-form .split-metric input[type=number]{display:block;width:126px;max-width:100%;min-height:43px;margin:0;padding:7px 11px;border:1px solid #adc0d9;border-radius:7px;background:#fff;color:#153b79;font-size:19px;font-weight:750;line-height:1.35;font-variant-numeric:tabular-nums}
+.split-form .split-metric:focus-within{border-color:#0837a1;box-shadow:0 0 0 2px rgba(8,55,161,.1)}
+.split-form .split-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:12px;margin-top:17px;padding-top:15px;border-top:1px solid #d5e1ef}
+.split-form .split-actions-hint{flex:1 1 230px;font-size:13px;font-weight:500;line-height:1.5;color:#566b84}
+.split-form .split-actions .action{flex:0 0 auto;min-height:44px;padding:9px 18px;border-radius:8px;background:#0837a1;color:#fff;font-size:15px;font-weight:700}
+.split-form .split-actions .action:hover{background:#062b7c}
+.split-footnote{max-width:100%;margin:8px 0 3px;padding-left:12px;border-left:3px solid #bacbe1;color:#5a6b7e;font-size:14px;line-height:1.56}
+@media(max-width:1160px){.split-form .split-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:690px){.form.split-form{padding:12px}.split-form .split-grid{grid-template-columns:minmax(0,1fr)}.split-form .split-metric{min-height:0;padding:12px}.split-form .split-actions{display:flex;align-items:stretch;flex-direction:column}.split-form .split-actions .action{width:100%}.split-toolbar label{align-items:flex-start;flex-direction:column}.split-toolbar select{width:100%;min-width:0}}
+@media print{.split-form .split-actions{display:none}.split-form .split-metric{break-inside:avoid;box-shadow:none}}

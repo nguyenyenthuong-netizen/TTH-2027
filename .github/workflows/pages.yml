@@ -38,6 +38,7 @@ on:
       - 'scripts/khung_control_tower_360_qa_2027.py'
       - 'scripts/khung_mtcv_dedup_scope_2027.py'
       - 'scripts/khung_staffing_focus_browser_2027.py'
+      - 'scripts/khung_staffing_split_cards_browser_qa_2027.py'
       - 'scripts/khung_reporting_governance_2027.py'
       - 'scripts/khung_staffing_focus_layout_2027.py'
       - 'scripts/khung_cvt_deep_audit_2027.py'
@@ -403,6 +404,8 @@ jobs:
         run: python3 scripts/khung_reporting_governance_2027.py _site
       - name: Mo rong cua so xem bang dinh bien
         run: python3 scripts/khung_staffing_focus_layout_2027.py _site
+      - name: Kiem thu bang phan chia san luong 4 chuc danh tren desktop mobile
+        run: python3 scripts/khung_staffing_split_cards_browser_qa_2027.py _site
       - name: Kiem thu tai bao cao va khung rong khong cat noi dung
         run: python3 scripts/khung_reporting_qa_2027.py _site
       - name: Kiem thu cua so dinh bien rong tren Chrome desktop va mobile

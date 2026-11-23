@@ -140,6 +140,59 @@ function decisions(r,all){
  detail('Bố trí từng chức danh ở Tổng công ty',table(hr,positionRows(all.filter(x=>!x.site)),[2,3]),true);
 }
 function phaseSite(s){return fLabel('Đơn vị', '<select data-set="deliverySite">'+opt(Object.fromEntries(s.map(v=>[v.id,v.name])),u.deliverySite)+'</select>');}
+// A common, data-driven split editor for all four two-seat job families.
+// This changes presentation only. Work IDs, input names, numerical limits,
+// submitted values and the splitSeats calculations remain unchanged.
+const splitGroupPlans={
+ 'bt-ac':[
+  ['Nội dung chính',['bai','dv','web']],
+  ['Kiểm duyệt và phối hợp',['kt','cc','sua','phaply']],
+  ['Nội dung hỗ trợ',['phat','sk','english']]
+ ],
+ 'tk-a':[
+  ['Thiết kế và dàn trang',['c1','c2','c3','c4']],
+  ['Kiểm chuẩn và chỉnh sửa',['kiem','sua']]
+ ],
+ 'md-ac':[
+  ['Sản xuất và quản lý tư liệu',['ghi','am','kho']],
+  ['Chỉnh sửa sản phẩm',['sua']]
+ ],
+ 'qc-a':[
+  ['Vận hành kênh và quảng cáo',['fb','tik','khac','ads','landing']],
+  ['Phối hợp và xử lý phát sinh',['suco','tin','dia-chi']]
+ ]
+};
+function splitMetricCard(w,rid,division){
+ const code=w.item.code;
+ return '<label class="split-metric" data-split-code="'+e(code)+'">'+
+  '<span class="split-metric-title">'+e(w.item.name)+'</span>'+
+  '<span class="split-metric-unit">Sản lượng / '+e(periodName(w.item.period))+'</span>'+
+  '<span class="split-metric-field">'+input(code,edits.splits?.[w.item.id]??division[code],0,w.item.q)+'</span>'+
+  '</label>';
+}
+function splitQuantityEditor(rid,division,works){
+ const items=works.filter(w=>Object.hasOwn(division,w.item.code));
+ const used=new Set(),groups=[];
+ for(const [title,codes] of splitGroupPlans[rid]||[]){
+  const matched=items.filter(w=>codes.includes(w.item.code)&&!used.has(w.item.code));
+  if(!matched.length)continue;
+  matched.forEach(w=>used.add(w.item.code));
+  groups.push([title,matched]);
+ }
+ // Newly introduced work codes must remain editable, never silently disappear.
+ const remainder=items.filter(w=>!used.has(w.item.code));
+ if(remainder.length)groups.push(['Chỉ tiêu bổ sung',remainder]);
+ return '<form class="form split-form" data-split-role="'+e(rid)+'">'+
+  groups.map(function(group){
+   return '<section class="split-group" aria-label="'+e(group[0])+'">'+
+    '<h5 class="split-group-title">'+e(group[0])+'</h5>'+
+    '<div class="split-grid">'+group[1].map(w=>splitMetricCard(w,rid,division)).join('')+'</div>'+
+   '</section>';
+  }).join('')+
+  '<div class="split-actions"><span class="split-actions-hint">Chỉ tính thử theo sản lượng nhập; chưa phải định mức đã phê duyệt.</span>'+
+   apply+'</div>'+
+ '</form>';
+}
 // For every quantity, the system and hospital shares are disjoint and cover the original row.
 const splitSeats={
  'bt-ac':{bai:6,dv:4,web:6,kt:9,phat:1,sk:4,cc:1,sua:2,english:2,phaply:1},
@@ -533,10 +586,10 @@ function roadmapDelivery(){
  }).filter(Boolean);
  const inScope=z=>keys.has(z.r);
  const splitControls=division?detail('Căn cứ phân sản phẩm giữa hệ thống và bệnh viện',(
-   rid==='bt-ac'?fLabel('Suất kiêm Tổ trưởng trong kịch bản','<select data-set="chiefSeat">'+opt({a:'Người phụ trách hệ thống',b:'Người phụ trách bệnh viện'},u.chiefSeat)+'</select>'):'')+
-   '<p>Số dưới đây là sản lượng của người phụ trách hệ thống trong một kỳ chuẩn. Phần còn lại thuộc người phụ trách bệnh viện. Thay số theo phiếu của bên đặt hàng. Hai người cùng giữ nghiệp vụ của chức danh.</p><form class="form" data-split-role="'+e(rid)+'">'+
-   works.filter(w=>Object.hasOwn(division,w.item.code)).map(w=>fLabel(w.item.name+' / '+periodName(w.item.period),input(w.item.code,edits.splits?.[w.item.id]??division[w.item.code],0,w.item.q))).join('')+apply+'</form>'+
-   '<p>Media kiểm bản do bệnh viện nộp tính cho người phụ trách bệnh viện. Phần phân cảnh hoặc kịch bản lời được tách theo nguồn video. Cùng một buổi giao ban, mỗi người ghi thời gian tham dự của mình. Trong hồ sơ tài liệu gốc, phần thử tại bệnh viện chỉ tính cho người được giao thử. Số đo và nhân sự thực có chờ đối chiếu.</p>'):'';
+   rid==='bt-ac'?'<div class="split-toolbar">'+fLabel('Suất kiêm Tổ trưởng trong kịch bản','<select data-set="chiefSeat">'+opt({a:'Người phụ trách hệ thống',b:'Người phụ trách bệnh viện'},u.chiefSeat)+'</select>')+'</div>':'')+
+   '<p class="split-intro">Số dưới đây là sản lượng của người phụ trách hệ thống trong một kỳ chuẩn. Phần còn lại thuộc người phụ trách bệnh viện. Thay số theo phiếu của bên đặt hàng. Hai người cùng giữ nghiệp vụ của chức danh.</p>'+
+   splitQuantityEditor(rid,division,works)+
+   '<p class="split-footnote">Media kiểm bản do bệnh viện nộp tính cho người phụ trách bệnh viện. Phần phân cảnh hoặc kịch bản lời được tách theo nguồn video. Cùng một buổi giao ban, mỗi người ghi thời gian tham dự của mình. Trong hồ sơ tài liệu gốc, phần thử tại bệnh viện chỉ tính cho người được giao thử. Số đo và nhân sự thực có chờ đối chiếu.</p>'):'';
  const stageDocs=r.docs.flatMap(rec=>{
   const matching=monthsHere.flatMap(m=>rec.monthly[m-1].filter(z=>z.type!=='next'&&inScope(z)&&slotDoc(rec.d,z,rid,slot)).map(z=>({...z,m})));
   if(!matching.length)return [];
