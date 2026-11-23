@@ -61,6 +61,26 @@ tr:hover td{background:#f7faff}
 @media(max-width:560px){.tools{grid-template-columns:minmax(0,1fr)}.header{padding:18px}.panel{padding:12px}.stat b{font-size:28px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media print{body{background:white}.header{color:black;background:white}.header p{color:black}.tools,.tabs,.btn{display:none!important}.scroll{max-height:none;overflow:visible}.panel{border:0;padding:0}table{font-size:11px}.header{padding:0 0 10px}.container{padding:0}}
+
+/* Hai dự án số: cổng chuyển là một vùng khối, không dính vào tên giai đoạn.
+   Bảo toàn toàn bộ nội dung, phân đoạn theo nghĩa và tránh chữ tràn/thô. */
+.summary-grid .phase-summary{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.summary-grid .phase-item{min-width:0;padding:0 0 12px;border-bottom:1px solid #e2e9f4}
+.summary-grid .phase-item:last-child{padding-bottom:0;border-bottom:0}
+.summary-grid .phase-title{font-size:16px;line-height:1.58;color:#1e3554;overflow-wrap:break-word;word-break:normal}
+.summary-grid .phase-title>b{color:#0837A1;font-weight:750;white-space:nowrap}
+.summary-grid .phase-gate{display:block;clear:both;position:static;max-width:100%;min-width:0;
+ margin-top:9px;padding:9px 12px;background:#f5f8ff;border-left:3px solid #0837A1;
+ border-radius:0 6px 6px 0;font-size:14.5px;line-height:1.6;color:#36516d;
+ white-space:normal;overflow-wrap:break-word;word-break:normal}
+.summary-grid .phase-gate>b{font-weight:750;color:#173e77}
+.summary-grid .phase-exclusion{margin:15px 0 0;padding-top:12px;border-top:1px solid #dce5f1;
+ font-size:14.5px;line-height:1.6;color:#2c415e;overflow-wrap:break-word}
+@media (max-width:900px){
+ .summary-grid .phase-summary{gap:12px}
+ .summary-grid .phase-item{padding-bottom:10px}
+ .summary-grid .phase-gate{margin-top:8px;padding:8px 10px;font-size:14.5px}
+}
 </style>
 </head>
 <body>
@@ -128,7 +148,14 @@ function drawStages(){
  var h='<div class="call redline"><b>Không đồng nhất giai đoạn và phân hệ.</b> Giai đoạn có điều kiện vào/ra, sản phẩm nghiệm thu và người có quyền xác nhận. Tháng/quý là lịch dự kiến. Đến ngày không tự chuyển giai đoạn; dự án có điều kiện không được tạo giờ thi công khi chưa được duyệt. Giờ công chỉ hạch toán tại một mã công đoạn Mục 05.</div>';
  h+='<h3>Hai dự án số có phân giai đoạn cần đọc đúng</h3>';
  h+='<div class="summary-grid">'+P.namedTwoPhaseInitiatives.map(function(x){
-  return card(x.name,'<p>'+x.phases.map(function(z){return '<b>'+cell(z.label)+'</b> — '+cell(z.title)+'<small><b>Cổng chuyển:</b> '+cell(z.exitGate)+'</small>'}).join('</p><p>')+'</p><small>'+cell(x.exclusion)+'</small>');
+  return card(x.name,
+   '<div class="phase-summary">'+x.phases.map(function(z){
+    return '<div class="phase-item">'+
+     '<div class="phase-title"><b>'+cell(z.label)+'</b> — '+cell(z.title)+'</div>'+
+     '<div class="phase-gate"><b>Cổng chuyển:</b> '+cell(z.exitGate)+'</div>'+
+     '</div>';
+   }).join('')+'</div>'+
+   '<p class="phase-exclusion">'+cell(x.exclusion)+'</p>');
  }).join('')+'</div>';
  h+='<h3 style="margin-top:18px">Lộ trình từng hạng mục trọng điểm · '+projects.length+' dự án / '+stages.length+' bước theo bộ lọc</h3>';
  h+='<p class="note">Tất cả 24 dự án thành phần thuộc chương trình trọng điểm đều phải có giai đoạn, không chỉ CRM và phần mềm quản trị. Các dự án có điều kiện được rà điều kiện nhưng chưa triển khai sản phẩm khi chưa có quyết định.</p>';
