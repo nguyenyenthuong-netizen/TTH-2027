@@ -4,7 +4,7 @@ const host=document.getElementById('dinh-bien-2027');if(!host||host.shadowRoot)r
 const root=host.attachShadow({mode:'open'}),db=JSON.parse(document.getElementById('csdl').textContent),model=db.dinh_bien_theo_dau_ra_2027;
 const {sum,months,simulate}=TTHStaffing;
 const cases={base:'Cơ sở',high:'Tải cao',opt:'Điều phối thử'};
-const tabs={suff:'Kết luận định biên',full:'Đầu ra và công đoạn',roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',cms:'CMS website/App',assets:'Nền tảng và tài sản',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
+const tabs={suff:'Kết luận định biên',full:'Đầu ra và công đoạn',roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'Tính sản lượng 26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',cms:'CMS website/App',assets:'Nền tảng và tài sản',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
 const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việc dùng dự phòng',K:'Quản lý theo MTCV',T:'Kiêm Tổ trưởng',G:'Theo lộ trình vùng'};
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
@@ -146,8 +146,78 @@ function docRoleRows(r,id,site,slot='all',period=0,pool=false){
  ]);}
  return rows;
 }
+// Bulk quantity editor covers EVERY role, not only the four shared-seat roles.
+// The same simulation and original work-ledger are used for all 26 job descriptions.
+// Source-driven quantities (site/campaign/CMS) stay linked to their original driver.
+function roleQuantityEditor(r,id){
+ const work=r.works.filter(w=>w.item.role===id);
+ const groups=Object.entries(kind).map(([type,label])=>{
+  const list=work.filter(w=>w.item.kind===type);
+  if(!list.length)return '';
+  return '<section class="role-qty-group" data-kind="'+e(type)+'">'+
+    '<h5>'+e(label)+' <small>'+list.length+' công việc</small></h5>'+
+    '<div class="role-qty-grid">'+list.map(w=>{
+      const z=w.item,prev=edits.work[w.id]||{};
+      const directed=typeof z.q==='string'&&/:(short|complex|film)$/.test(z.q);
+      const canEdit=typeof z.q==='number'&&z.kind!=='G'&&z.code!=='du-gb';
+      const videos=directed?z.q.split(':'):[];
+      const driverValue=directed?(edits.hqVideo?.[videos[0]]?.[videos[1]]??TTHStaffing.hqVideoPlan[videos[0]][videos[1]]):null;
+      const field=canEdit?
+         '<label class="role-qty-edit"><span>Sản lượng / '+e(periodName(z.period))+'</span>'+
+         input('q:'+w.id,prev.q??z.q,0,100000,'1')+'</label>':
+       directed?
+         '<label class="role-qty-edit"><span>Video TCT / tháng thường</span>'+
+         input('v:'+videos[0]+':'+videos[1],driverValue,0,100000,'1')+'</label>':
+         '<div class="role-qty-source">Sản lượng tính từ dữ liệu nguồn'+
+         (z.kind==='G'?' — chờ quyết định kích hoạt':
+         z.code==='du-gb'?' — theo số suất và lịch giao ban':
+         typeof z.q==='string'&&z.q.startsWith('@')?' — thay đổi ở mục Từng cơ sở':
+         typeof z.q==='string'?' — theo sản lượng video và cơ sở':'')+
+         '</div>';
+      const per=periodName(z.period);
+      const qty=u.period?w.qty[u.period-1]:sum(w.qty);
+      const hours=u.period?w.hours[u.period-1]:sum(w.hours);
+      const scope=w.site?'<span class="role-qty-site">'+e(siteTitle(w.site))+'</span>':'';
+      return '<div class="role-qty-card" data-work-id="'+e(w.id)+'">'+
+       '<div class="role-qty-name">'+e(z.name)+'</div>'+scope+
+       '<div class="role-qty-unit">Kỳ nguồn: '+e(per)+' · '+e(kind[z.kind])+'</div>'+
+       field+
+       '<div class="role-qty-hours"><b>'+format(qty)+'</b> sản phẩm · <b>'+format(hours)+'</b> giờ '+(u.period?'tháng '+u.period:'năm')+'</div>'+
+       '<div class="role-qty-basis">'+format(sum(w.t))+' phút/đầu ra · '+e(z.ref)+'</div>'+
+      '</div>';
+    }).join('')+'</div>'+
+   '</section>';
+ }).filter(Boolean);
+ const seats=model.seats[id],cap=r.cap;
+ const review=TTHStaffing.reviewPosition(r,roleKeys(r,id),seats,edits.clinic);
+ const needsActual=id==='dmpk'||seats===0;
+ const monthExcess=!needsActual?review.periods.filter(m=>m.excess>0):[];
+ const reserve=needsActual?'Chưa xác nhận':format(seats*cap.reserve);
+ const plan=needsActual?'Chưa xác nhận':format(seats*cap.plan);
+ const warn=needsActual?
+    'Chưa đủ dữ liệu suất hoặc giờ kiêm nhiệm để xác nhận tải':
+    monthExcess.length?'Có '+monthExcess.length+' tháng vượt quỹ ở kịch bản đang chọn; không được trừ vào 25% dự phòng để hợp thức hóa':'Các đầu việc đã định lượng chưa vượt quỹ trong kịch bản đang chọn; vẫn phải đối chiếu công việc chưa ghi giờ';
+ const note='<div class="role-qty-ledger"><div><b>'+plan+'</b><span>Giờ kế hoạch/tháng theo cơ cấu</span></div>'+
+   '<div><b>'+reserve+'</b><span>Giờ dự phòng/tháng theo cơ cấu</span></div>'+
+   '<div><b>'+format(aRoleHours(r,id,u.period))+'</b><span>Giờ đã tính trong '+(u.period?'tháng '+u.period:'năm')+'</span></div></div>'+
+   '<p class="role-qty-warning">'+e(warn)+'</p>';
+ if(!work.length)return '<p class="note">Chức danh chưa có định mức vận hành trong sổ nguồn. Không tự nhập sản lượng giả định.</p>'+note;
+ return '<div class="role-qty-editor">'+
+   '<p class="role-qty-intro">Từng đầu ra được ghi vào đúng mã công việc của chức danh. Chỉnh sản lượng nguồn ở thẻ có ô số; thẻ dữ liệu dẫn xuất chỉ hiển thị để tránh cộng trùng. Định mức năm/tháng và chứng cứ nghiệp vụ kiểm ở từng đầu ra bên dưới.</p>'+
+   '<form class="role-qty-form" data-edit-role-products="'+e(id)+'">'+
+    groups.join('')+
+    '<div class="role-qty-actions"><span>Chỉ cập nhật dữ liệu tính thử; chưa phải giao chỉ tiêu đã duyệt.</span>'+
+    '<button class="action" type="submit">Áp dụng tính thử cho chức danh</button></div>'+
+   '</form>'+note+'</div>';
+}
+function aRoleHours(r,id,month){
+ const z=roll(r,roleKeys(r,id),month);
+ return z.run+z.setup;
+}
 function rolePanel(){const r=getRun(),id=u.role,info=roleMap[id],a=roll(r,roleKeys(r,id),u.period);const own=r.works.filter(w=>w.item.role===id);const dr=docRoleRows(r,id,undefined,'all',u.period);const cards=Object.values(runs).map(rr=>{const z=roll(rr,roleKeys(rr,id),u.period);return [cases[rr.scenario],nu(z.regular+z.incident),nu(z.maint),nu(z.setup),nu(z.fteRun,2),nu(z.fte,2)];});const nr=db.quy_trinh.flatMap(f=>f.buoc.flatMap(b=>b.doi_soat_tung_dau_ra_2027)).filter(c=>Object.values(c.ma_chu_tri_theo_nhom||{}).includes(id)).length;
- return `<h3>Sản lượng và định mức theo chức danh</h3><div class="control">${roleSel()}${selCase()}${selPeriod()}</div><h4>${e(info.ten)}</h4><p>${e(groupMap[info.to])} · ${e(info.nhom_thuong_hieu||'Phạm vi chung theo MTCV')} · ${model.seats[id]} suất cơ cấu${id==='dmpk'?' kiêm nhiệm':''}.</p>`+metrics([[nu(a.run),'Giờ vận hành kỳ chọn'],[nu(a.setup),'Giờ thiết lập kỳ chọn'],[nu(a.fte,2),'Nhu cầu quy đổi của nghiệp vụ']])+ (splitSeats[id]?'<p class="note">Phần này tổng hợp hai người cùng chức danh. Đọc công việc và mức tải của từng người tại '+btn('phụ trách hệ thống','deliveryRole',id+'/a')+' và '+btn('phụ trách bệnh viện','deliveryRole',id+'/b')+'.</p>':'')+ (id==='dl-2'||id==='dl-1'?'<p class="note">Hai nghiệp vụ dữ liệu đang do một người kiêm. Tổng hợp cộng hai phần giờ vào quỹ của Chuyên viên đo lường và đối soát đúng một lần.</p>':'')+`<p>${e(decision(a,model.seats[id],id))}</p>`+table(['Kịch bản','Vận hành, sự việc (giờ)','Duy trì tài liệu (giờ)','Thiết lập (giờ)','Thường xuyên (suất)','Cả kỳ (suất)'],cards,[1,2,3,4,5])+
+ return `<h3>Tính sản lượng và định mức cho toàn bộ 26 chức danh</h3><p class="fine">Chọn từng chức danh để nhập sản lượng, đối chiếu tải công việc và 25% dự phòng. Mỗi đầu ra chỉ tính một lần theo mã gốc.</p><div class="control">${roleSel()}${selCase()}${selPeriod()}</div><h4>${e(info.ten)}</h4><p>${e(groupMap[info.to])} · ${e(info.nhom_thuong_hieu||'Phạm vi chung theo MTCV')} · ${model.seats[id]} suất cơ cấu${id==='dmpk'?' kiêm nhiệm':''}.</p>`+metrics([[nu(a.run),'Giờ vận hành kỳ chọn'],[nu(a.setup),'Giờ thiết lập kỳ chọn'],[nu(a.fte,2),'Nhu cầu quy đổi của nghiệp vụ']])+ (splitSeats[id]?'<p class="note">Phần này tổng hợp hai người cùng chức danh. Đọc công việc và mức tải của từng người tại '+btn('phụ trách hệ thống','deliveryRole',id+'/a')+' và '+btn('phụ trách bệnh viện','deliveryRole',id+'/b')+'.</p>':'')+ (id==='dl-2'||id==='dl-1'?'<p class="note">Hai nghiệp vụ dữ liệu đang do một người kiêm. Tổng hợp cộng hai phần giờ vào quỹ của Chuyên viên đo lường và đối soát đúng một lần.</p>':'')+`<p>${e(decision(a,model.seats[id],id))}</p>`+
+ detail('Bảng nhập sản lượng, giờ công và dự phòng của chức danh',roleQuantityEditor(r,id),true)+
+ table(['Kịch bản','Vận hành, sự việc (giờ)','Duy trì tài liệu (giờ)','Thiết lập (giờ)','Thường xuyên (suất)','Cả kỳ (suất)'],cards,[1,2,3,4,5])+
  '<h4>Đầu ra tính giờ</h4><p class="fine">Mở một dòng để xem sản lượng tháng, quý, năm, định mức từng công đoạn, quy cách và căn cứ.</p>'+own.map(w=>w.site?detail(e(siteTitle(w.site))+' · '+e(w.item.name)+' · '+format(u.period?w.hours[u.period-1]:sum(w.hours))+' giờ',workdetail(w)):workdetail(w)).join('')+
  '<h4>Thiết lập và duy trì tài liệu do chức danh tham gia</h4>'+ (dr.length?table(['Hồ sơ, phạm vi và hạn','Phần việc, số lượng và tháng','Giờ trong kỳ chọn','Người soạn, kiểm và thử'],dr):'<p>Chưa phân bổ công đoạn tài liệu riêng cho chức danh này trong kịch bản.</p>')+
  detail('MTCV, tuyến quản lý, người thay và KPI dự thảo',peopleClarity(id))+detail(`Toàn bộ ${model.jd[id].length-1} đầu ra ghi trong Phụ lục 1 của MTCV`,origOutputs(id))+
@@ -357,6 +427,22 @@ root.addEventListener('submit',ev=>{ev.preventDefault();const form=ev.target,fd=
  else if(form.hasAttribute('data-opt')){edits.eligible=Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]));}
  else if(form.hasAttribute('data-split-role')){
    const rid=form.dataset.splitRole;for(const [code,value] of Object.entries(fd))edits.splits[rid+'/'+code]=Number(value);
+ }
+ else if(form.hasAttribute('data-edit-role-products')){
+   const id=form.dataset.editRoleProducts;
+   const jobs=getRun().works.filter(w=>w.item.role===id);
+   const eligible=new Set(jobs.filter(w=>typeof w.item.q==='number'&&w.item.kind!=='G'&&w.item.code!=='du-gb').map(w=>w.id));
+   const videoKeys=new Set(jobs.filter(w=>typeof w.item.q==='string'&&/:(short|complex|film)$/.test(w.item.q)).map(w=>w.item.q));
+   for(const [key,value] of Object.entries(fd)){
+     if(key.startsWith('q:')){
+       const wid=key.slice(2);if(!eligible.has(wid))continue;
+       edits.work[wid]={...(edits.work[wid]||{}),q:Number(value)};
+     }else if(key.startsWith('v:')){
+       const parts=key.split(':');const src=parts[1]+':'+parts[2];
+       if(!videoKeys.has(src))continue;
+       edits.hqVideo[parts[1]]={...(edits.hqVideo[parts[1]]||{}),[parts[2]]:Number(value)};
+     }
+   }
  }
  else if(form.dataset.editSite){const key=form.dataset.editSite;edits.sites[key]={...siteMap[key].inputs,...Object.fromEntries(Object.entries(fd).map(([k,v])=>[k,Number(v)]))};}
  else if(form.dataset.editWork){const id=form.dataset.editWork;if(fd.driver!==undefined){
