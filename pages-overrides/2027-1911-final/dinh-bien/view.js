@@ -4,7 +4,7 @@ const host=document.getElementById('dinh-bien-2027');if(!host||host.shadowRoot)r
 const root=host.attachShadow({mode:'open'}),db=JSON.parse(document.getElementById('csdl').textContent),model=db.dinh_bien_theo_dau_ra_2027;
 const {sum,months,simulate}=TTHStaffing;
 const cases={base:'Cơ sở',high:'Tải cao',opt:'Điều phối thử'};
-const tabs={suff:'Kết luận định biên',full:'Đầu ra và công đoạn',roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',roles:'Tính sản lượng 26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',cms:'CMS website/App',assets:'Nền tảng và tài sản',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
+const tabs={suff:'Kết luận định biên',full:'Đầu ra và công đoạn',roadmap:'Lộ trình và đầu ra',summary:'Đối chiếu nhân sự',hours:'Phân loại giờ công',roles:'Tính sản lượng 26 chức danh',sites:'Từng cơ sở',manage:'Tải quản lý',docs:'Tài liệu và bộ mẫu',cms:'CMS website/App',assets:'Nền tảng và tài sản',flows:'Luồng và đầu ra',audit:'Căn cứ và kiểm toán'};
 const kind={R:'Thường xuyên',H:'Hạng mục / chiến dịch',U:'Sự việc dùng dự phòng',K:'Quản lý theo MTCV',T:'Kiêm Tổ trưởng',G:'Theo lộ trình vùng'};
 const segment=['Thực hiện','Phối hợp','Kiểm','Sửa','Đi lại'];const siteMap=Object.fromEntries(model.sites.map(s=>[s.id,s]));
 const roleMap=Object.fromEntries(db.vi_tri.map(r=>[r.id,r])),groupMap=Object.fromEntries(db.to.map(r=>[r.id,r.ten]));
@@ -388,9 +388,111 @@ function auditPanel(){const r=getRun(),cap=r.cap,c=edits.capacity;const counts={
  detail('Các căn cứ nghiệp vụ cần kiểm lại trước khi trình',table(['Dữ liệu cần xác nhận','Đầu mối','Chứng từ cần có','Cách xử lý'],sign.map(row=>row.map(e))),true)+
  `<p class="fine">Nguồn nội bộ: CSDL Khung cơ cấu Marketing TTH 2027, MTCV 26 vị trí, phân công và KPI, mục 6, 8A, 14–16, 21–23, danh mục tài liệu, danh mục quản trị, phụ lục 26 chức danh và phụ lục cơ sở. Thông số thay đổi trong lần xem chỉ phục vụ tính thử; tải lại trang sẽ trở về phương án nguồn.</p>`;
 }
+
+/* MA TRẬN PHÂN LOẠI GIỜ 2027: MỖI GIỜ CHỈ ĐƯỢC HẠCH TOÁN MỘT LẦN. */
+function hourTypeBreakdown(run,keys,period=0){
+ const allowed=new Set(keys),p={R:0,H:0,K:0,T:0,G:0,U:0};
+ for(const w of run.works){
+  if(!allowed.has(w.rid))continue;
+  const h=period?(w.hours[period-1]||0):sum(w.hours);
+  p[w.item.kind]=(p[w.item.kind]||0)+h;
+ }
+ const z=roll(run,keys,period);
+ const otherRegular=z.regular-(p.R+p.H+p.K+p.T+p.G);
+ const otherIncident=z.incident-p.U;
+ const missing=Math.abs(otherRegular)>0.05||Math.abs(otherIncident)>0.05;
+ return {
+  chuyenMon:p.R,hangMuc:p.H,quanLy:p.K+p.T,
+  xayDungTaiLieu:Math.max(0,z.setup-z.cmsInitial),khoiTaoCMS:z.cmsInitial,
+  duyTriTaiLieu:Math.max(0,z.maint-z.cmsMaintain),duyTriCMS:z.cmsMaintain,
+  phatSinh:z.incident,khac:otherRegular+otherIncident,
+  keHoach:z.regular+z.maint+z.setup,tong:z.total,missing,
+  timeSegments:{direct:z.direct,coord:z.coord,check:z.check,fix:z.fix,travel:z.travel}
+ };
+}
+function hourTypeLimit(run,id,period,b){
+ const monthsCount=period?1:12,seats=model.seats[id]||0;
+ if(id==='dl-2')return {message:'Kiêm vào quỹ giờ của Chuyên viên đo lường và đối soát; không có suất độc lập.',plan:null,reserve:null,overPlan:null,overReserve:null};
+ if(id==='qlml'&&seats===0)return {message:'Tuyến vùng chưa kích hoạt; không tính quỹ nhân lực.',plan:null,reserve:null,overPlan:null,overReserve:null};
+ if(id==='dmpk'&&edits.clinic==null)return {message:'Chưa có quỹ giờ kiêm nhiệm được đơn vị xác nhận.',plan:null,reserve:null,overPlan:null,overReserve:null};
+ const plan=id==='dmpk'?edits.clinic*monthsCount:seats*run.cap.plan*monthsCount;
+ const reserve=id==='dmpk'?null:seats*run.cap.reserve*monthsCount;
+ const gross=id==='dmpk'?plan:seats*run.cap.gross*monthsCount;
+ const overPlan=Math.max(0,b.keHoach-plan);
+ const overReserve=reserve===null?null:Math.max(0,b.phatSinh-reserve);
+ const overGross=Math.max(0,b.tong-gross);
+ const message=b.missing?'Chưa khớp phân loại'
+  :overPlan>0.05&&overReserve!==null&&overReserve>0.05?'Vượt kế hoạch và dự phòng'
+  :overPlan>0.05?'Vượt quỹ kế hoạch'
+  :overReserve!==null&&overReserve>0.05?'Vượt quỹ dự phòng'
+  :overGross>0.05?'Vượt quỹ hữu ích'
+  :id==='dmpk'?'Đối chiếu quỹ kiêm nhiệm'
+  :'Trong quỹ tính thử';
+ return {message,plan,reserve,gross,overPlan,overReserve,overGross};
+}
+function hourTypesPanel(){
+ const run=getRun(),p=u.period,n=p?1:12;
+ const selected=hourTypeBreakdown(run,roleKeys(run,u.role),p);
+ const selectedLimit=hourTypeLimit(run,u.role,p,selected);
+ const total=hourTypeBreakdown(run,runsKeys(run,'all'),p);
+ const roleResults=db.vi_tri.map(role=>{
+  const id=role.id,b=hourTypeBreakdown(run,roleKeys(run,id),p),limit=hourTypeLimit(run,id,p,b);
+  return {id,b,limit};
+ });
+ const detailRows=[
+  ['Chuyên môn – vận hành thường xuyên',selected.chuyenMon,'R: sản phẩm và nghiệp vụ thực hiện theo lịch duy trì'],
+  ['Hạng mục trọng điểm / chiến dịch đã lên kế hoạch',selected.hangMuc,'H: chỉ các đầu việc trọng điểm đã được lượng hóa vào sổ nguồn'],
+  ['Quản lý – điều phối – kiểm soát định kỳ',selected.quanLy,'K và T: quản lý chuyên trách, kiêm Tổ trưởng; không tạo quỹ giờ mới'],
+  ['Xây dựng / cập nhật quy trình, biểu mẫu, bộ chuẩn',selected.xayDungTaiLieu,'Thiết lập tài liệu theo phiên bản; không cộng lại ở danh mục ban hành'],
+  ['Khởi tạo hồ sơ CMS website / App',selected.khoiTaoCMS,'Nhập mới và kiểm chuẩn ban đầu, tính một lần'],
+  ['Duy trì / rà soát hồ sơ, bộ mẫu',selected.duyTriTaiLieu,'Rà phiên bản sau bàn giao'],
+  ['Duy trì dữ liệu CMS website / App',selected.duyTriCMS,'Cập nhật thường kỳ, khác khởi tạo ban đầu'],
+  ['Sự việc phát sinh dự kiến',selected.phatSinh,'U: ghi riêng để kiểm áp lực lên quỹ 25%'],
+  ['Chưa phân loại / sai lệch kiểm toán',selected.khac,'Chỉ có số khác 0 nếu sổ công việc và tổng tải không khớp']
+ ];
+ const splitRows=roleResults.map(x=>[
+  btn(name(x.id),'roles',x.id),
+  nu(x.b.chuyenMon),nu(x.b.hangMuc),nu(x.b.quanLy),
+  nu(x.b.xayDungTaiLieu),nu(x.b.khoiTaoCMS),
+  nu(x.b.duyTriTaiLieu+x.b.duyTriCMS),
+  nu(x.b.phatSinh),nu(x.b.tong)
+ ]);
+ const limitRows=roleResults.map(x=>[
+  btn(name(x.id),'roles',x.id),
+  nu(x.b.keHoach),nu(x.limit.plan),
+  x.limit.plan===null?'Chờ phân bổ':nu(x.limit.plan-x.b.keHoach),
+  nu(x.b.phatSinh),nu(x.limit.reserve),
+  x.limit.reserve===null?'Chờ xác nhận':nu(x.limit.reserve-x.b.phatSinh),
+  e(x.limit.message)
+ ]);
+ const monthRows=months.map(m=>{
+  const b=hourTypeBreakdown(run,roleKeys(run,u.role),m);
+  const l=hourTypeLimit(run,u.role,m,b);
+  return ['T'+m,nu(b.chuyenMon),nu(b.hangMuc),nu(b.quanLy),
+   nu(b.xayDungTaiLieu+b.khoiTaoCMS),nu(b.duyTriTaiLieu+b.duyTriCMS),
+   nu(b.keHoach),nu(b.phatSinh),nu(l.reserve===null?null:l.reserve-b.phatSinh),e(l.message)];
+ });
+ const numeric=detailRows.reduce((a,x)=>a+Number(x[1]||0),0);
+ return '<h3>Phân chia loại giờ công – 26 chức danh</h3>'+
+  '<p class="note"><b>Nguyên tắc 75% / 25%:</b> Quỹ kế hoạch dùng cho công việc thường xuyên, hạng mục trọng điểm, xây dựng hệ thống, CMS và quản lý; 25% còn lại giữ cho phát sinh. Giờ phát sinh dự kiến không được cộng vào giờ kế hoạch rồi sử dụng tiếp phần dự phòng. Kế hoạch phải tự nằm trong 75%; sự việc được kiểm riêng với 25%.</p>'+
+  completenessNote()+
+  '<div class="control">'+selCase()+selPeriod()+roleSel()+'</div>'+
+  metrics([[nu(total.keHoach,0),'Giờ kế hoạch đã lượng hóa · kỳ chọn'],[nu(total.phatSinh,0),'Giờ phát sinh dự kiến · kỳ chọn'],[nu(total.tong,0),'Tổng giờ công đã lượng hóa'],[nu(run.cap.reserve,1),'Quỹ dự phòng một suất/tháng']])+
+  '<h4>'+e(roleMap[u.role].ten)+' · cấu phần giờ'+(p?' tháng '+p:' năm 2027')+'</h4>'+
+  table(['Loại giờ','Giờ','Quy tắc xác định'],detailRows.map(x=>[e(x[0]),nu(x[1]),e(x[2])]),[1])+
+  '<p class="fine">Đối chiếu tổng cấu phần: '+nu(numeric)+' giờ; tổng tải nguồn: '+nu(selected.tong)+' giờ. '+(Math.abs(numeric-selected.tong)>0.1?'Có sai lệch cần rà soát mã giờ.':'Các loại giờ khớp tổng tải nguồn.')+'</p>'+
+  metrics([[nu(selected.keHoach),'Tải kế hoạch'],[nu(selectedLimit.plan),'Quỹ kế hoạch'],[nu(selected.phatSinh),'Giờ phát sinh'],[nu(selectedLimit.reserve===null?null:selectedLimit.reserve-selected.phatSinh),'Dự phòng còn sau phát sinh']])+
+  '<p class="note"><b>Đối soát chức danh:</b> '+e(selectedLimit.message)+'. Chỉ là kiểm tra định mức giả định, không thay biên chế được duyệt. Riêng Clinic cần xác nhận quỹ giờ kiêm nhiệm trước khi kết luận.</p>'+
+  detail('Đối chiếu 26 chức danh theo 8 nhóm giờ',table(['Chức danh','Chuyên môn','Trọng điểm','Quản lý','Xây hệ thống','CMS ban đầu','Duy trì','Phát sinh','Tổng'],splitRows,[1,2,3,4,5,6,7,8]),true)+
+  detail('Bảng giới hạn 75% giờ kế hoạch và 25% giờ dự phòng theo chức danh',table(['Chức danh','Tải kế hoạch','Quỹ 75%','Còn / vượt kế hoạch','Dự kiến phát sinh','Quỹ 25%','Dự phòng còn','Kết luận'],limitRows,[1,2,3,4,5,6]),true)+
+  detail('Lịch giờ 12 tháng của chức danh đang chọn',table(['Tháng','Chuyên môn','Trọng điểm','Quản lý','Khởi tạo','Duy trì','Kế hoạch','Phát sinh','Dự phòng còn','Kết luận'],monthRows,[1,2,3,4,5,6,7,8]))+
+  detail('Phân loại giờ theo công đoạn, không phải quỹ bổ sung',table(['Công đoạn','Giờ kỳ chọn'],[['Thực hiện',selected.timeSegments.direct],['Phối hợp',selected.timeSegments.coord],['Kiểm',selected.timeSegments.check],['Sửa',selected.timeSegments.fix],['Di chuyển',selected.timeSegments.travel]].map(x=>[e(x[0]),nu(x[1])]),[1])+'<p class="fine">Năm loại công đoạn chỉ dùng để giải trình cấu thành thời gian; không cộng thêm vào bảng nhóm việc ở trên.</p>')+
+  '<p class="fine">Cần bổ sung dữ liệu gốc theo MTCV, phạm vi đơn vị, sản lượng tháng, tài sản/kênh, đầu ra hạng mục số và nhật ký thực đo để chốt định biên. Các giờ triển khai chưa lượng hóa không được hiểu là bằng 0 về nhu cầu thực tế.</p>';
+}
+
 /* EMBED_DELIVERABLES */
 /* EMBED_CMS_UI */
-const panels={roadmap:roadmapDelivery,summary,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel,full:detailedPanel,cms:cmsPanel,assets:platformOperationsPanel,suff:sufficiencyPanel};
+const panels={roadmap:roadmapDelivery,summary,hours:hourTypesPanel,roles:rolePanel,sites:sitePanel,manage:managePanel,docs:docsPanel,flows:flowsPanel,audit:auditPanel,full:detailedPanel,cms:cmsPanel,assets:platformOperationsPanel,suff:sufficiencyPanel};
 root.innerHTML=`<style>${document.getElementById('tth-staffing-style').textContent}</style><div class="app"><nav class="nav" aria-label="Nội dung Mục 05">${Object.entries(tabs).map(([k,v])=>`<button type="button" data-panel="${k}" aria-pressed="false">${e(v)}</button>`).join('')}</nav><div class="padded"><div class="sr" aria-live="polite" id="db-feedback"></div><div id="db-main"></div></div></div>`;
 function draw(){root.querySelectorAll('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===u.panel)));root.getElementById('db-main').innerHTML=panels[u.panel]();}
 function go(panel,arg=''){
