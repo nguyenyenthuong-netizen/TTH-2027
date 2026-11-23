@@ -20,17 +20,20 @@ change('<small>Quản lý 02 tổ: Truyền thông và Thương hiệu · Tăng 
        '<small>Quản trị Tổ Truyền thông và Thương hiệu (04) và Tổ Tăng trưởng số (05)</small>')
 change('<div class="col-b">\n<details class="grp" open=""><summary>Tổ Nội dung và Sáng tạo (10)',
        '<div class="col-b"><div class="mkt-cvt-connector" aria-label="Một tổ trực thuộc Chuyên viên trưởng Nội dung và cơ sở"><span>↓</span><strong>01 tổ trực thuộc</strong></div>\n<details class="grp" open=""><summary>Tổ Nội dung và Sáng tạo (10)')
-# Target the team card heading, not mutable source prose normalized earlier.
-import re
-patt=r'(<summary>Tổ Nội dung và Sáng tạo \\(10\\)<small>)[^<]*(</small>)'
-replacement=r'\\1Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở quản trị chuyên môn toàn tổ; Tổ trưởng kiêm nhiệm chỉ điều phối nhóm 1 trong phạm vi được giao\\2'
-assert len(re.findall(patt,s))==1,("Tổ Nội dung",len(re.findall(patt,s)))
-s=re.sub(patt,replacement,s,count=1)
+# Target each team's heading rather than source prose that is normalized at build time.
+def change_team_small(prefix,description):
+ global s
+ assert s.count(prefix)==1,(prefix,s.count(prefix))
+ a=s.index(prefix)+len(prefix)
+ b=s.index("</small>",a)
+ assert b>a
+ s=s[:a]+description+s[b:]
+change_team_small('<summary>Tổ Nội dung và Sáng tạo (10)<small>',
+                  'Chuyên viên trưởng Nội dung – Sáng tạo và Marketing cơ sở quản trị chuyên môn toàn tổ; Tổ trưởng kiêm nhiệm chỉ điều phối nhóm 1 trong phạm vi được giao')
 change('<div class="org-right-teams"><div class="col">',
        '<div class="mkt-cvt-connector" aria-label="Hai tổ trực thuộc Chuyên viên trưởng Truyền thông và số"><span>↓</span><strong>02 tổ trực thuộc</strong></div><div class="org-right-teams"><div class="col">')
-patt2=r'(Tổ Tăng trưởng số \\(05\\)<small>)[^<]*(</small>)'
-assert len(re.findall(patt2,s))==1,("Tổ Tăng trưởng số",len(re.findall(patt2,s)))
-s=re.sub(patt2,r'\\1Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số quản lý; Tổ trưởng là Quản lý sản phẩm số (kiêm nhiệm)\\2',s,count=1)
+change_team_small('Tổ Tăng trưởng số (05)<small>',
+                  'Chuyên viên trưởng Truyền thông – Thương hiệu và Tăng trưởng số quản lý; Tổ trưởng là Quản lý sản phẩm số (kiêm nhiệm)')
 css="""
 <style id="tth-org-cvt-ownership-map-2027">
 #v-org .org-cols.mkt-cvt-map{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important;padding-top:24px!important;border-top:2px solid #0837a1}
