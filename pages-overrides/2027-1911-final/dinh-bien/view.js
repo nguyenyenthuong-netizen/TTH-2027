@@ -224,7 +224,7 @@ function issuanceMonthlyRoadmap(r){
    const closing=r.docs.filter(x=>x.finish===m);
    const pieces=r.docs.flatMap(x=>x.monthly[m-1].filter(z=>z.type==='setup'&&z.internal).map(z=>z.h));
    const h=sum(pieces);
-   const late=closing.filter(x=>x.late||x.capacityWarnings.length);
+   const late=closing.filter(x=>x.late||(x.capacityWarnings||[]).length);
    const over=[];
    for(const id of names){
      const keys=Object.keys(r.roles).filter(k=>k===id||k.startsWith(id+'@')||(id==='dl-1'&&k==='dl-2'));
@@ -244,13 +244,13 @@ function issuanceMonthlyRoadmap(r){
        (x.late?'<small><b>Chưa đạt hạn</b></small>':''),
       e(name(x.d.writer))+'<small>Kiểm: '+e(name(x.d.reviewer))+'</small>',
       x.depends.length?x.depends.map(code=>btn(code,'docs',code)).join(' · '):'Không có mã tiền đề trong sổ',
-      x.capacityWarnings.length?'<b>Chờ xử lý: '+e(x.capacityWarnings.map(y=>y.reason).join('; '))+'</b>':'Chờ phê duyệt'
+      (x.capacityWarnings||[]).length?'<b>Chờ xử lý: '+e(x.capacityWarnings.map(y=>y.reason).join('; '))+'</b>':'Chờ phê duyệt'
    ]);
    details.push(detail('Tháng '+m+' – '+closing.length+' hồ sơ dự kiến hoàn thành',
      items.length?table(['Mã và đầu ra','Mức ưu tiên / trạng thái','Tháng và hạn','Người soạn / kiểm','Mã phải có trước','Điểm chặn'],items):
        '<p>Không có hồ sơ kết thúc trong tháng này; công đoạn chuẩn bị có thể vẫn được thực hiện.</p>',false));
  }
- const blockers=r.docs.filter(x=>x.late||x.capacityWarnings.length);
+ const blockers=r.docs.filter(x=>x.late||(x.capacityWarnings||[]).length);
  return '<h4>Lộ trình ban hành, thử áp dụng và duy trì theo 12 tháng</h4>'+
  '<p class="note"><b>Quy tắc xếp lịch:</b> một mẫu phải có nguồn và phân quyền trước khi đưa vào sử dụng; bộ nhận diện trước quy chuẩn ứng dụng; QC-4 trước bộ video B-7; yêu cầu số trước nội dung CMS tạo mới. Từng công đoạn được đặt vào quỹ kế hoạch 75% của đúng vị trí. Không rút ngắn số phút chuyên môn hoặc cắt sản lượng để cân bảng.</p>'+
  '<p class="fine">Tất cả tháng và mốc trình dưới đây là <b>phương án dự kiến</b>. Hồ sơ chưa xác minh bản đã ban hành và quyền ký thì chưa đủ điều kiện áp dụng; khi tài liệu mới chưa có hiệu lực, chỉ được dùng bản cũ còn hiệu lực đã được kiểm chứng. Không mặc định một tài liệu trong danh mục là văn bản cần xây mới.</p>'+
