@@ -90,13 +90,51 @@ def register(d):
                 put(code,name,'Chi tiết bổ sung',kind,'Nhóm '+str(g+1),team,1,'moi',4,1,'Đầu ra đề xuất, cần xác nhận số cấu hình riêng.','Theo văn bản phân cấp còn hiệu lực.',note,source)
             continue
         put(code,name,'Chi tiết bổ sung',kind,'Theo phạm vi của sản phẩm',jobs.split(),n,'moi',3+i%4,1,'Sản phẩm chi tiết đề xuất. Cần đối chiếu bản đã có trước khi giao xây mới.','Người có thẩm quyền theo phân cấp còn hiệu lực, cần hồ sơ giao quyền.',note,source)
-    # The initial operating set must be ready before Q2 handover. Critical
-    # prerequisites close first; the schedule may overload a role and must show it.
-    starts={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'B-7':2,'QC-1':2,'QC-2':2,'B-3':2,'B-4':2,'B-5':2,'MAU-QC':3,'YC-WEB':1,'YC-CRM':1,'YC-APP':1,'YC-PM':1,'ND-WEB1':2,'ND-WEB2':2,'QC-BT':1,'QC-KS':1}
-    early={'B-1':1,'B-2':1,'QC-4':1,'M-6':2,'QC-1':2,'QC-2':2,'YC-WEB':1,'QC-BT':1,'QC-KS':1}
+    # Proposed 12-month ISSUANCE roadmap, not a claim that documents are approved.
+    # Documents with an effective existing edition can be operated under that edition
+    # while a replacement is reviewed. Missing / invalid editions block rollout.
+    # Priority codes are ordered by operational dependencies, not by catalogue order.
+    # A fixed due date for 162 miscellaneous rows at T3 was an unrealistic Q1 load.
+    foundation={
+        'BM-7':1,'BM-11':1,'BM-12':1,'BM-13':1,'BM-14':1,'BM-15':2,
+        'BM-19':1,'BM-25':1,'BM-1':2,'BM-2':2,'BM-3':2,'BM-4':2,
+        'DM-1':1,'DM-2':1,'DM-7':2,'SO-1':1,'DS-1':1,'DS-3':2,
+        'B-1':1,'B-2':2,'QC-4':1,'QC-1':2,'QC-2':2,'QC-3':3,
+        'M-6':3,'B-7':3,'B-3':3,'B-4':3,'B-5':3,'B-6':4,
+        'YC-WEB':1,'YC-CRM':1,'YC-APP':2,'YC-PM':1,
+        'ND-WEB1':3,'ND-WEB2':3,'QC-BT':2,'QC-KS':2,
+        'MAU-QC':4,'M-7':4,'HS-1':3,'BC-NAM':9,
+        'BM-27':2,'BM-8':3,'BM-9':3,'BM-10':4,
+        'QT.1':1,'QT.2':1,'QT.14':1,'QT.15':1,
+        'QT.21':2,'QT.25':2,'QT.46':2,'QT.48':2,
+        'QT.49':2,'QT.57':2,'QT.58':2
+    }
+    # The eight windows organize documentation by true purpose and handover.
+    # Numeric flow code is not a dependency; remaining 60 flows are staged by
+    # the operating units in the 12-month roadmap, with owner sign-off pending.
+    def proposed_month(item,index):
+        code=item['code']
+        if code in foundation:return foundation[code]
+        category=item['category']
+        if category=='60 quy trình':
+            number=int(code.split('.')[-1]) if code.startswith('QT.') and code.split('.')[-1].isdigit() else index
+            return min(10,3+(number-1)//8)
+        if category=='23 văn bản':return min(9,2+(index%8))
+        if category=='Chi tiết bổ sung':return min(10,4+index%6)
+        if code.startswith(('BM-','SO-')):return min(8,3+index%6)
+        if code.startswith(('DS-','DM-')):return min(9,4+index%6)
+        return min(11,4+index%8)
+    hard={'B-1','QC-4','BM-7','BM-11','BM-12','BM-19',
+          'DM-1','DM-2','SO-1','YC-CRM','YC-WEB','YC-PM'}
     for index,item in enumerate(items):
-        item['month']=starts.get(item['code'],1 if item['category']=='23 văn bản' else 1+index%3)
-        item['deadline']=early.get(item['code'],3)
+        month=proposed_month(item,index)
+        item['month']=month
+        # First-use deadlines for core prerequisites are HARD GATES. Other
+        # deadlines are rollout proposals, explicitly subject to approval.
+        item['deadline']=month if item['code'] in hard else min(12,month+1)
+        item['phasePriority']=0 if item['code'] in hard else 1 if item['code'] in foundation else 2
+        item['issuanceStatus']='Dự kiến; chờ kiểm bản gốc, thẩm quyền và phê duyệt'
+        item['phaseReason']='Tiền đề trước triển khai nghiệp vụ' if item['phasePriority']==0 else 'Mẫu/kênh ưu tiên theo giai đoạn' if item['phasePriority']==1 else 'Kiện toàn theo đợt sau khi có mẫu nền'
     assert len({x['code'] for x in items if x['category']=='74 tài liệu'})==74
     assert len({x['code'] for x in items if x['category'] in ['60 quy trình','23 văn bản']})==83
     return items
