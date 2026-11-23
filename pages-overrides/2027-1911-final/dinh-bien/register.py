@@ -101,8 +101,8 @@ def register(d):
         'DM-1':1,'DM-2':1,'DM-7':2,'SO-1':1,'DS-1':1,'DS-3':2,
         'B-1':1,'B-2':2,'QC-4':1,'QC-1':2,'QC-2':2,'QC-3':3,
         'M-6':3,'B-7':3,'B-3':3,'B-4':3,'B-5':3,'B-6':4,
-        'YC-WEB':1,'YC-CRM':1,'YC-APP':2,'YC-PM':1,
-        'ND-WEB1':3,'ND-WEB2':3,'QC-BT':2,'QC-KS':2,
+        'YC-WEB':2,'YC-CRM':2,'YC-APP':3,'YC-PM':2,
+        'ND-WEB1':4,'ND-WEB2':4,'QC-BT':2,'QC-KS':2,
         'MAU-QC':4,'M-7':4,'HS-1':3,'BC-NAM':9,
         'BM-27':2,'BM-8':3,'BM-9':3,'BM-10':4,
         'QT.1':1,'QT.2':1,'QT.14':1,'QT.15':1,
@@ -125,14 +125,15 @@ def register(d):
         if code.startswith(('DS-','DM-')):return min(9,4+index%6)
         return min(11,4+index%8)
     hard={'B-1','QC-4','BM-7','BM-11','BM-12','BM-19',
-          'DM-1','DM-2','SO-1','YC-CRM','YC-WEB','YC-PM'}
+          'DM-1','DM-2','SO-1'}
     for index,item in enumerate(items):
         month=proposed_month(item,index)
         item['month']=month
         # First-use deadlines for core prerequisites are HARD GATES. Other
         # deadlines are rollout proposals, explicitly subject to approval.
         item['deadline']=month if item['code'] in hard else min(12,month+1)
-        item['phasePriority']=0 if item['code'] in hard else 1 if item['code'] in foundation else 2
+        item['hardGate']=item['code'] in hard
+        item['phasePriority']=0 if item['code'] in hard or item['code'] in {'YC-CRM','YC-WEB','YC-PM','BM-27'} else 1 if item['code'] in foundation else 2
         item['issuanceStatus']='Dự kiến; chờ kiểm bản gốc, thẩm quyền và phê duyệt'
         item['phaseReason']='Tiền đề trước triển khai nghiệp vụ' if item['phasePriority']==0 else 'Mẫu/kênh ưu tiên theo giai đoạn' if item['phasePriority']==1 else 'Kiện toàn theo đợt sau khi có mẫu nền'
     assert len({x['code'] for x in items if x['category']=='74 tài liệu'})==74
