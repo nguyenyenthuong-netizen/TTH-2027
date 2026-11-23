@@ -11,6 +11,8 @@ on:
       - 'scripts/khung_kiem_toan_chong_mau_thuan_2027.py'
       - 'scripts/khung_inline_grid_cell_fix_2027.py'
       - 'scripts/khung_inline_grid_cell_browser_qa_2027.py'
+      - 'scripts/khung_org_cvt_visual_hierarchy_2027.py'
+      - 'scripts/khung_org_cvt_visual_hierarchy_browser_qa_2027.py'
       - 'scripts/khung_ctda_trong_diem_2027.py'
       - 'scripts/khung_embed_plan_2027.py'
       - 'scripts/marketing_2027_bundle.py'
@@ -431,6 +433,10 @@ jobs:
         run: python3 scripts/khung_inline_grid_cell_fix_2027.py _site
       - name: Nghiem thu bang chuc danh III.0 va lien ket trong ngoac tren Chrome
         run: python3 scripts/khung_inline_grid_cell_browser_qa_2027.py _site
+      - name: Lam ro tuyen CVT quan ly 03 to va Marketing benh vien
+        run: python3 scripts/khung_org_cvt_visual_hierarchy_2027.py _site
+      - name: Kiem thu so do CVT o 3 kich thuoc man hinh
+        run: python3 scripts/khung_org_cvt_visual_hierarchy_browser_qa_2027.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
