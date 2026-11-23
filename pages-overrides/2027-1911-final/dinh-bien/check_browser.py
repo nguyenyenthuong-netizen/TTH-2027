@@ -111,7 +111,12 @@ def check(page, width, form, out):
     host.locator('[data-set="role"]').select_option('md-ac')
     host.locator('[data-set="deliverySlot"]').select_option('all')
     assert '12 cấu phần trong bộ mẫu' in host.locator('#db-main').inner_text()
-    assert 'chậm nhất 31/03/2027' in host.locator('#db-main').inner_text()
+    # The mandatory Q1 gate is now displayed in the Roadmap panel instead
+    # of duplicating the deadline inside the Docs catalogue.
+    pane('roadmap')
+    assert 'trước 31/03' in host.locator('#db-main').inner_text()
+    pane('docs')
+    host.locator('[data-set="role"]').select_option('md-ac')
     host.locator('[data-search="doc"]').fill('B-7');rec=host.locator('[data-doc-key="B-7~1"]');rec.locator('summary').first.click();rec.locator('[data-edit-doc]').wait_for();assert rec.locator('.inner').get_by_text('V3-B02',exact=False).count()>=1
     rec.locator('[name=count]').fill('2');rec.locator('[type=submit]').click();assert host.locator('[data-doc-key="B-7~1"] [name=count]').input_value()=='2'
     pane('flows');assert '568' in host.locator('[data-results="flow"] .count').inner_text();host.locator('[data-search="flow"]').fill('DA-hang-muc-01-01');flow=host.locator('[data-flow-index]').first;flow.locator('summary').first.click();flow.locator('.flowstep .entry summary').first.click();assert flow.get_by_text('Cách tính công',exact=True).is_visible()
