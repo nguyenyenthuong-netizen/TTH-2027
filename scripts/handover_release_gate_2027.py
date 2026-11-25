@@ -30,6 +30,7 @@ handover_urls=[u for u in hl if u.startswith("https://")]
 assert len(expected)==5
 assert len(catalog_urls)==len(expected) and set(catalog_urls)==expected,"Catalog destinations mismatch"
 assert len(handover_urls)==len(expected) and set(handover_urls)==expected,"Handover destinations mismatch"
+assert "kien-truc-thuong-hieu/" in cl and (root/"kien-truc-thuong-hieu"/"index.html").is_file(),"Missing architecture route"
 assert "bo-ho-so/" in cl,"Catalog must expose stakeholder handover"
 assert all("quan-tri-marketing" not in u for u in cl+hl),"GitHub catalog/handover may not list Marketing software"
 assert all("tth-marketing-2027-slide.vercel.app" not in u for u in cl+hl),"Duplicate presentation must not be listed"
@@ -49,7 +50,8 @@ report={
  "document":"Ho so phoi hop va doi soat TTH 2027",
  "date":"2026-11-20",
  "revision_sha":os.environ.get("GITHUB_SHA","local"),
- "interfaces":len(expected),
+ "interfaces":len(expected)+1,
+ "handover_vercel_links":len(expected),
  "catalog_consistent":True,
  "supporting_pages_present":True,
  "integration_claimed":False,

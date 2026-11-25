@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regression gate for the TTH Group one-screen Vercel link directory.
-Checks original logo, branding, no old search strip, five Vercel links and viewport fit.
+Checks original logo, branding, no old search strip, five Vercel links, architecture HTML and viewport fit.
 """
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -20,9 +20,13 @@ expected_order=[
  "https://tth-healthcare-website.vercel.app/",
  "https://tth-healthcare-app.vercel.app/",
  "https://tth-crm-da-kenh.vercel.app/",
+ "kien-truc-thuong-hieu/",
 ]
 found_order=re.findall(r'<a class="tile" href="([^"]+)"',html)
 assert found_order==expected_order,f"Wrong catalog card order: {found_order}"
+architecture=root/"kien-truc-thuong-hieu"/"index.html"
+assert architecture.is_file() and architecture.stat().st_size==4654013,"Missing or incomplete architecture HTML"
+assert "Điểm chặn pháp lý" in architecture.read_text("utf-8") and "Tìm kiếm nâng cao".lower() in architecture.read_text("utf-8").lower(),"Missing legal/search content"
 assert "<strong>Phương án vận hành Marketing toàn hệ thống TTH Group 2027</strong>" in html,"Incorrect official presentation title"
 assert 'grid-template-columns:repeat(6,minmax(0,1fr))' in html
 assert (root/"trinh-chieu-marketing"/"assets"/"tth-logo.png").stat().st_size>1000,"Original TTH Group logo asset unavailable"
@@ -42,7 +46,7 @@ with sync_playwright() as p:
    const main=document.querySelector('main');
    return {title:document.title,viewport:[innerWidth,innerHeight],
      scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
-     cards:cards.length,validUrls:cards.every(a=>/^https:\\/\\/[^/]+\\.vercel\\.app\\/$/.test(a.href)),
+     cards:cards.length,validUrls:cards.every((a,i)=>i===5?a.getAttribute("href")==="kien-truc-thuong-hieu/":/^https:\\/\\/[^/]+\\.vercel\\.app\\/$/.test(a.href)),
      logoLoaded:!!(logo&&logo.complete&&logo.naturalWidth>0),
      logoInside:!!(logo&&logo.getBoundingClientRect().width>0),
      clippedCards:cards.filter(c=>c.scrollHeight>c.clientHeight+2||c.scrollWidth>c.clientWidth+2)
@@ -52,14 +56,14 @@ with sync_playwright() as p:
   }""")
   if errs or not result["logoLoaded"] or not result["logoInside"]:
    raise AssertionError(f"Catalog image/JS error at {width}x{height}: {result} {errs}")
-  if result["cards"]!=5 or not result["validUrls"]:
-   raise AssertionError(f"Incorrect five Vercel destinations: {result}")
+  if result["cards"]!=6 or not result["validUrls"]:
+   raise AssertionError(f"Incorrect six catalog destinations: {result}")
   if result["scrollHeight"]>height+1 or result["scrollWidth"]>width+1 or result["bottom"]>height+1:
    raise AssertionError(f"Catalog not contained in one viewport at {width}x{height}: {result}")
   if width>=1200:
-   p0,p1,p2,p3,p4=result["positions"]
-   assert p0["top"]==p1["top"] and p2["top"]==p3["top"]==p4["top"] and p2["top"]>p0["top"],f"Wrong two-row desktop order: {result['positions']}"
-   assert abs(p0["width"]-p1["width"])<=2 and max(p2["width"],p3["width"],p4["width"])-min(p2["width"],p3["width"],p4["width"])<=2,f"Unequal card widths: {result['positions']}"
+   p0,p1,p2,p3,p4,p5=result["positions"]
+   assert p0["top"]==p1["top"]==p2["top"] and p3["top"]==p4["top"]==p5["top"] and p3["top"]>p0["top"],f"Wrong two-row desktop order: {result['positions']}"
+   assert max(c["width"] for c in result["positions"])-min(c["width"] for c in result["positions"])<=2,f"Unequal card widths: {result['positions']}"
   if result["clippedCards"]:
    raise AssertionError(f"Catalog card text clipped at {width}x{height}: {result}")
   out=root.parent/"artifacts"/"tth-catalog";out.mkdir(parents=True,exist_ok=True)
@@ -68,4 +72,4 @@ with sync_playwright() as p:
   checks.append(result)
   page.close()
  browser.close()
-print("TTH_CATALOG_OK",len(checks),"viewport sizes; original Group logo; five Vercel links; no scroll")
+print("TTH_CATALOG_OK",len(checks),"viewport sizes; original Group logo; six catalog links; no scroll")

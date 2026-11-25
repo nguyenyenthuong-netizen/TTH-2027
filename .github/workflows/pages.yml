@@ -1,4 +1,4 @@
-name: Xuat ban 5 giao dien TTH
+name: Xuat ban danh muc 6 giao dien TTH
 on:
   push:
     branches: [main]
@@ -338,11 +338,14 @@ jobs:
         run: |
           set -euo pipefail
           cp pages-overrides/catalog/index.html _site/index.html
+          mkdir -p _site/kien-truc-thuong-hieu
+          cat pages-overrides/catalog/kien-truc-thuong-hieu/part-* > _site/kien-truc-thuong-hieu/index.html
+          test "$(wc -c < _site/kien-truc-thuong-hieu/index.html)" -eq 4654013
           mkdir -p _site/bo-ho-so
           cp pages-overrides/catalog/bo-ho-so/index.html _site/bo-ho-so/index.html
           test -s _site/bo-ho-so/index.html
           test -s _site/trinh-chieu-marketing/assets/tth-logo.png
-      - name: Kiem tra logo goc, 5 lien ket Vercel va fit desktop/mobile
+      - name: Kiem tra logo goc, 6 muc danh muc va fit desktop/mobile
         run: python3 scripts/catalog_fit_qa_2027.py _site
       - name: Kiem thu ho so phoi hop, 5 lien ket va ho so nghiem thu
         run: python3 scripts/handover_release_gate_2027.py _site
