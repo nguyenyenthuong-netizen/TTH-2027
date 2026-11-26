@@ -101,6 +101,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -446,6 +447,13 @@ jobs:
         run: python3 scripts/khung_org_cvt_visual_hierarchy_browser_qa_2027.py _site
       - name: Kiem thu V8 va phat hanh tai duong dan muc 06 hien co
         run: python3 scripts/website_v8_preview_gate.py _site --promote
+      - name: Khoi phuc dung hai mockup FINAL tu goi chenh lech
+        if: ${{ hashFiles('release-final-2027/arch.patch.b64') != '' && hashFiles('release-final-2027/hc.patch.b64') != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          command -v zstd >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y zstd)
+          python3 scripts/reconstruct_approved_final_2027.py _site
       - name: Khoa phat hanh FINAL da duyet va kiem thu hai website
         run: python3 scripts/website_final_approved_gate_2027.py _site
       - name: Luu ho so nghiem thu FINAL
@@ -475,7 +483,7 @@ jobs:
           from urllib.request import urlopen,Request
           from hashlib import sha256
           import time,json
-          if not Path("release-final-2027/TTH-FINAL-kien-truc.zip").exists():
+          if not Path("artifacts/tth-final-release/report.json").exists():
               print("No approved FINAL package; legacy release only")
               raise SystemExit(0)
           base="https://nguyenyenthuong-netizen.github.io/TTH-2027/"

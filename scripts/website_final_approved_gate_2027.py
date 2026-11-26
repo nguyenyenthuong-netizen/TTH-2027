@@ -16,18 +16,23 @@ out=Path("artifacts/tth-final-release");out.mkdir(parents=True,exist_ok=True)
 report={"files":[],"cases":[]}
 def persist():
  (out/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+raw_root=Path("_release-approved")
+raw_present=[(raw_root/route/"index.html").is_file() for _,route,*_ in specs]
 present=[(incoming/name).is_file() for name,*_ in specs]
-if not any(present):
- print("FINAL_GATE: approved archives not supplied; keep existing V8 release")
+if not any(present) and not any(raw_present):
+ print("FINAL_GATE: approved files not supplied; keep existing V8 release")
  sys.exit(0)
-assert all(present),"FINAL_GATE: both archives required; refusing partial release"
+assert all(raw_present) or all(present),"FINAL_GATE: both approved files required"
 payloads={}
 for name,route,zsha,hsha,size in specs:
- z=incoming/name
- assert digest(z.read_bytes())==zsha,(name,"archive checksum mismatch")
- with zipfile.ZipFile(z) as f:
-  assert f.namelist()==["index.html"] and f.testzip() is None,name
-  b=f.read("index.html")
+ if all(raw_present):
+  b=(raw_root/route/"index.html").read_bytes()
+ else:
+  z=incoming/name
+  assert digest(z.read_bytes())==zsha,(name,"archive checksum mismatch")
+  with zipfile.ZipFile(z) as f:
+   assert f.namelist()==["index.html"] and f.testzip() is None,name
+   b=f.read("index.html")
  assert len(b)==size and digest(b)==hsha,(name,"HTML checksum mismatch")
  payloads[route]=b
  report["files"].append({"route":route,"sha256":hsha,"size":size})
