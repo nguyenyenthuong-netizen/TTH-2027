@@ -1,0 +1,27 @@
+name: Nghiem thu doc lap TTH Healthcare (chi doc)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/healthcare-live-audit.yml'
+      - '.github/qa/healthcare_live_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install browser audit dependency
+        run: python3 -m pip install playwright
+      - name: Inspect current public websites without changing them
+        run: python3 .github/qa/healthcare_live_audit.py
+      - name: Save actual screenshots and audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tth-healthcare-live-audit
+          path: artifacts/healthcare-live-audit/
+          if-no-files-found: warn
