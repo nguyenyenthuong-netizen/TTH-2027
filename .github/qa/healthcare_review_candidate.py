@@ -63,6 +63,21 @@ for n,doc in list(pages.items()):
             newcss=oldcss.replace("100vw - var(--tth-website-left-gap) - var(--tth-website-cta-gap)","100vw - 2 * var(--tth-website-cta-gap)").replace("margin-left:var(--tth-website-left-gap)!important","margin-left:auto!important")
             doc=doc.replace(oldcss,newcss,1)
             report["changes"]["symmetric_layout"].append(n)
+
+    # Protect shared template detail routes from presenting unrelated clinical content.
+    if ('DichVu_ChiTiet.html' in doc or 'KienThuc_BaiViet.html' in doc) and '</head>' in doc:
+        doc=doc.replace('</head>', "<script id=\"tth-review-detail-identity-guard\">\n(function(){\n\"use strict\";\nconst rules={\"DichVu_ChiTiet.html\":{kind:\"service\",expected:\"khám sức khỏe tổng quát\"},\"KienThuc_BaiViet.html\":{kind:\"article\",expected:\"tăng huyết áp\"}};\nfunction plain(s){return (s||\"\").trim().replace(/\\s+/g,\" \")}\nfunction cardFor(a){return a.closest(\"article.card,article,.card\")}\nfunction titleOf(card){const e=card.querySelector(\"h1,h2,h3,h4,h5\");if(e&&plain(e.textContent))return plain(e.textContent);return card.innerText.split(/\\n+/).map(plain).find(x=>x&&!/^(gói khám|dịch vụ|bài viết|video|kiến thức|xem chi tiết|đọc bài)$/i.test(x))||\"\"}\nfunction show(card,title,rule){\n const existing=document.getElementById(\"tth-review-detail\");if(existing)existing.remove();\n const d=document.createElement(\"dialog\");d.id=\"tth-review-detail\";d.setAttribute(\"aria-labelledby\",\"tth-review-detail-title\");\n d.style.cssText=\"box-sizing:border-box;width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;padding:24px;border:1px solid #b8cbe7;border-radius:12px;background:white;color:#16345b;box-shadow:0 12px 44px #142c5a40;font:16px/1.5 Arial,sans-serif\";\n const close=document.createElement(\"button\");close.type=\"button\";close.textContent=\"Đóng\";close.style.cssText=\"float:right;border:1px solid #0837A1;color:#0837A1;background:#fff;padding:8px 14px;border-radius:6px;cursor:pointer\";close.onclick=()=>d.close();\n const heading=document.createElement(\"h2\");heading.id=\"tth-review-detail-title\";heading.textContent=title;heading.style.cssText=\"margin:12px 0;color:#0837A1;font-size:23px;clear:both\";\n d.append(close,heading);\n const description=Array.from(card.querySelectorAll(\"p\")).map(e=>plain(e.textContent)).find(s=>s&&s!==title);\n if(description){const body=document.createElement(\"p\");body.textContent=description;d.append(body)}\n const note=document.createElement(\"p\");note.textContent=rule.kind===\"service\"?\"Thông tin chi tiết và chi phí của dịch vụ này chưa được cập nhật. Vui lòng liên hệ cơ sở để được tư vấn.\":\"Nội dung đầy đủ của bài viết này chưa được cập nhật.\";d.append(note);\n if(rule.kind===\"service\"){const a=document.createElement(\"a\");a.href=\"tel:19002675\";a.textContent=\"Tư vấn: 1900 2675\";a.style.cssText=\"display:inline-block;padding:10px 15px;background:#0837A1;color:#fff;text-decoration:none;border-radius:6px\";d.append(a)}\n document.body.append(d);d.addEventListener(\"close\",()=>d.remove(),{once:true});d.showModal();\n}\nwindow.addEventListener(\"click\",function(e){\n const a=e.target.closest&&e.target.closest(\"a[href]\");if(!a)return;\n const rule=rules[a.getAttribute(\"href\")];if(!rule)return;\n const c=cardFor(a);if(!c)return;\n const title=titleOf(c);if(!title)return;\n // Only preserve the source's exact demonstrated detail identity.\n if(title.toLocaleLowerCase(\"vi\").includes(rule.expected))return;\n e.preventDefault();e.stopImmediatePropagation();show(c,title,rule);\n},true);\n})();\n</script>"+'</head>',1)
+        report.setdefault("detail_guard_pages",[]).append(n)
+    if n.startswith("EN_"):
+        doc,lang_count=re.subn(r'(<html\b[^>]*\blang=["\'])vi(["\'])',r'\g<1>en\2',doc,count=1,flags=re.I)
+        if lang_count:report.setdefault("english_language_fixed",[]).append(n)
+        # Add a return only to an actual, unambiguous Vietnamese home route.
+        if n=="EN_TrangChu.html":
+            homes=[x for x in pages if x in ("TrangChu.html","Home.html","Index.html","index.html")]
+            report["vi_home_candidates"]=homes
+            if len(homes)==1 and not re.search(r'href=["\']'+re.escape(homes[0])+r'["\']',doc):
+                doc=doc.replace('</body>', '<a href="'+homes[0]+'" aria-label="Tiếng Việt" style="position:fixed;top:8px;right:12px;z-index:10000;border:1px solid #0837A1;background:#fff;color:#0837A1;padding:8px 12px;border-radius:6px;text-decoration:none">VN | EN</a></body>',1)
+                report["vi_return_added"]=homes[0]
     pages[n]=doc
 assert len(pages)==125
 packed=json.dumps(pages,ensure_ascii=False,separators=(",",":")).replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026")
@@ -128,18 +143,25 @@ with sync_playwright() as p:
                 f.locator(f'a[href="{list_route}"]').first.evaluate("e=>e.click()")
                 page.wait_for_timeout(500)
                 links=f.locator(f'#app main a[href^="{detail}"]')
-                if links.count()<=i:break
+                if links.count()<=i:
+                    result["available_actions"]=f.locator("#app main").evaluate("""e=>[...e.querySelectorAll('a,button')].map(x=>({href:x.getAttribute('href'),label:(x.innerText||x.getAttribute('aria-label')||'').trim()})).filter(x=>x.label).slice(0,65)""")
+                    break
                 a=links.nth(i)
                 sample=a.evaluate("""e=>({href:e.getAttribute('href'),context:(e.closest('article')||e.parentElement.parentElement).innerText.slice(0,300)})""")
                 a.evaluate("e=>e.click()")
                 page.wait_for_timeout(500)
-                sample["detail_text"]=f.locator("#app main").first.inner_text()[:1600]
+                dialog=f.locator("#tth-review-detail")
+                sample["guarded"]=dialog.count()>0 and dialog.is_visible()
+                sample["detail_text"]=(dialog.inner_text() if sample["guarded"] else f.locator("#app main").first.inner_text())[:1600]
                 result["samples"].append(sample)
             ss=result["samples"]
             result["status"]="not enough samples" if len(ss)<2 else ("same detail content" if ss[0]["detail_text"]==ss[1]["detail_text"] else "distinct detail content")
         except Exception as e: result["error"]=str(e)[:500]
         identity.append(result)
     report["identity_checks"]=identity
+    for entry in identity:
+        if entry["list"] in ("DichVu_DanhSach.html","KienThuc_TrangChu.html") and len(entry["samples"])==2:
+            assert entry["status"]=="distinct detail content" and entry["samples"][1].get("guarded"),entry
     print("HEALTHCARE_IDENTITY_QA",json.dumps(identity,ensure_ascii=False),flush=True)
     language={}
     try:
