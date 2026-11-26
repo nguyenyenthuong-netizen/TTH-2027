@@ -467,3 +467,48 @@ jobs:
       - name: Trien khai cong khai
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Nghiem thu sau deploy tren dung URL online
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen,Request
+          from hashlib import sha256
+          import time,json
+          if not Path("release-final-2027/TTH-FINAL-kien-truc.zip").exists():
+              print("No approved FINAL package; legacy release only")
+              raise SystemExit(0)
+          base="https://nguyenyenthuong-netizen.github.io/TTH-2027/"
+          checks=[
+              (base,"_site/index.html"),
+              (base+"kien-truc-thuong-hieu/","_site/kien-truc-thuong-hieu/index.html"),
+              (base+"healthcare-website/","_site/healthcare-website/index.html"),
+              ("https://tth-healthcare-website.vercel.app/","_site/healthcare-website/index.html")]
+          rows=[]
+          for url,filename in checks:
+              expect=sha256(Path(filename).read_bytes()).hexdigest()
+              row={"url":url,"expected_sha256":expect,"result":"fail"}
+              for attempt in range(12):
+                  try:
+                      request=Request(url+"?tth-final="+expect[:12]+"-"+str(attempt),headers={"User-Agent":"TTH-FINAL-acceptance","Cache-Control":"no-cache","Accept-Encoding":"identity"})
+                      with urlopen(request,timeout=30) as r:
+                          actual=sha256(r.read()).hexdigest()
+                          row.update(status=r.status,actual_sha256=actual)
+                          if r.status==200 and actual==expect:
+                              row["result"]="pass"
+                              break
+                  except Exception as exc:row["error"]=str(exc)[:300]
+                  time.sleep(10)
+              rows.append(row)
+              print("FINAL_LIVE_QA",json.dumps(row),flush=True)
+          out=Path("artifacts/tth-final-live");out.mkdir(parents=True,exist_ok=True)
+          (out/"live-report.json").write_text(json.dumps(rows,indent=2),encoding="utf-8")
+          assert all(x["result"]=="pass" for x in rows),"Published URL did not match approved build; inspect live report"
+          PY
+      - name: Luu ket qua nghiem thu online FINAL
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tth-final-live-${{ github.run_number }}
+          path: artifacts/tth-final-live/
+          if-no-files-found: ignore
