@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Validate and stage V8 preview without replacing the existing catalog or production item 06."""
+"""Validate V8 preview and promote verified content to the original item 06 URL."""
 from pathlib import Path
 from zipfile import ZipFile
 from hashlib import sha256
 import json, re, sys, threading
+from shutil import copytree
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from functools import partial
 from urllib.parse import urlsplit, parse_qs
@@ -36,43 +37,56 @@ with ZipFile(archive) as z:
         p.parent.mkdir(parents=True,exist_ok=True)
         p.write_bytes(z.read(name))
 assert all(sha256(p.read_bytes()).hexdigest()==v for p,v in before.items())
-server=ThreadingHTTPServer(("127.0.0.1",0),partial(SimpleHTTPRequestHandler,directory=str(root)))
-threading.Thread(target=server.serve_forever,daemon=True).start()
-base=f"http://127.0.0.1:{server.server_port}/kien-truc-thuong-hieu-v8/"
-report=[]
-try:
-    with sync_playwright() as p:
-        browser=p.chromium.launch(channel="chrome",headless=True,args=["--no-sandbox","--disable-dev-shm-usage"])
-        for width,height in [(1440,900),(390,844)]:
-            page=browser.new_page(viewport={"width":width,"height":height})
-            errors=[];bad=[]
-            page.on("pageerror",lambda e:errors.append(str(e)))
-            page.on("response",lambda r:bad.append((r.status,r.url)) if r.url.startswith(base) and r.status>=400 else None)
-            for brand in ["group","bach","tri","chau","thao","phuc","tam","tth","elder"]:
-                for lang in ["vi","en"]:
-                    response=page.goto(base+f"?site={brand}&page=home&lang={lang}",wait_until="domcontentloaded",timeout=30000)
-                    assert response.status==200
-                    page.wait_for_function("document.readyState==='complete'",timeout=30000)
-                    state=page.evaluate("({site:active,route:currentHash,lang:document.documentElement.lang,overflow:document.documentElement.scrollWidth>innerWidth+2,images:[...document.images].filter(x=>x.complete&&x.naturalWidth===0&&x.getAttribute('src')).map(x=>x.src),loaded:[...document.images].filter(x=>x.complete&&x.naturalWidth>0).length})")
-                    assert state["site"]==brand and state["route"]=="#home" and state["lang"]==lang and not state["overflow"] and not state["images"] and state["loaded"]>0,state
-                    report.append({"brand":brand,"lang":lang,"viewport":[width,height],"state":state})
-            page.goto(base+"?site=tam&page=home&lang=en",wait_until="load")
-            page.evaluate("currentHash='#about';window.navRoute()")
-            page.wait_for_function("new URL(location.href).searchParams.get('page')==='about'")
-            page.reload(wait_until="load")
-            assert page.evaluate("active==='tam'&&currentHash==='#about'&&document.documentElement.lang==='en'")
-            page.evaluate("currentHash='#services';window.navRoute()")
-            page.wait_for_function("new URL(location.href).searchParams.get('page')==='services'")
-            page.go_back(wait_until="commit")
-            page.wait_for_function("currentHash==='#about'")
-            page.go_forward(wait_until="commit")
-            page.wait_for_function("currentHash==='#services'")
-            assert not errors and not bad, {"errors":errors,"bad_responses":bad}
-            report.append({"viewport":[width,height],"reload":True,"back":True,"forward":True})
-            page.close()
-        browser.close()
-finally:
-    server.shutdown()
-    server.server_close()
+def http_qa(route):
+    server=ThreadingHTTPServer(("127.0.0.1",0),partial(SimpleHTTPRequestHandler,directory=str(root)))
+    threading.Thread(target=server.serve_forever,daemon=True).start()
+    base=f"http://127.0.0.1:{server.server_port}/{route}/"
+    report=[]
+    try:
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel="chrome",headless=True,args=["--no-sandbox","--disable-dev-shm-usage"])
+            for width,height in [(1440,900),(390,844)]:
+                page=browser.new_page(viewport={"width":width,"height":height})
+                errors=[];bad=[]
+                page.on("pageerror",lambda e:errors.append(str(e)))
+                page.on("response",lambda r:bad.append((r.status,r.url)) if r.url.startswith(base) and r.status>=400 else None)
+                for brand in ["group","bach","tri","chau","thao","phuc","tam","tth","elder"]:
+                    for lang in ["vi","en"]:
+                        response=page.goto(base+f"?site={brand}&page=home&lang={lang}",wait_until="domcontentloaded",timeout=30000)
+                        assert response.status==200
+                        page.wait_for_function("document.readyState==='complete'",timeout=30000)
+                        state=page.evaluate("({site:active,route:currentHash,lang:document.documentElement.lang,overflow:document.documentElement.scrollWidth>innerWidth+2,images:[...document.images].filter(x=>x.complete&&x.naturalWidth===0&&x.getAttribute('src')).map(x=>x.src),loaded:[...document.images].filter(x=>x.complete&&x.naturalWidth>0).length})")
+                        assert state["site"]==brand and state["route"]=="#home" and state["lang"]==lang and not state["overflow"] and not state["images"] and state["loaded"]>0,state
+                        report.append({"brand":brand,"lang":lang,"viewport":[width,height],"state":state})
+                page.goto(base+"?site=tam&page=home&lang=en",wait_until="load")
+                page.evaluate("currentHash='#about';window.navRoute()")
+                page.wait_for_function("new URL(location.href).searchParams.get('page')==='about'")
+                page.reload(wait_until="load")
+                assert page.evaluate("active==='tam'&&currentHash==='#about'&&document.documentElement.lang==='en'")
+                page.evaluate("currentHash='#services';window.navRoute()")
+                page.wait_for_function("new URL(location.href).searchParams.get('page')==='services'")
+                page.go_back(wait_until="commit")
+                page.wait_for_function("currentHash==='#about'")
+                page.go_forward(wait_until="commit")
+                page.wait_for_function("currentHash==='#services'")
+                assert not errors and not bad, {"errors":errors,"bad_responses":bad}
+                report.append({"viewport":[width,height],"reload":True,"back":True,"forward":True})
+                page.close()
+            browser.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+    return report
+
+report = http_qa("kien-truc-thuong-hieu-v8")
 assert all(sha256(p.read_bytes()).hexdigest()==v for p,v in before.items())
 print("V8_PREVIEW_HTTP_QA",json.dumps(report,ensure_ascii=False))
+if "--promote" in sys.argv:
+    final = root/"kien-truc-thuong-hieu"
+    copytree(target, final, dirs_exist_ok=True)
+    for name in ["index.html",*manifest]:
+        assert sha256((final/name).read_bytes()).digest()==sha256((target/name).read_bytes()).digest(), name
+    assert sha256((root/"index.html").read_bytes()).hexdigest()==before[root/"index.html"], "Catalog changed"
+    final_report=http_qa("kien-truc-thuong-hieu")
+    assert sha256((root/"index.html").read_bytes()).hexdigest()==before[root/"index.html"]
+    print("V8_CANONICAL_HTTP_QA",json.dumps(final_report,ensure_ascii=False))
