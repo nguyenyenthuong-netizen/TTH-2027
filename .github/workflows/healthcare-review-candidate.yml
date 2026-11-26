@@ -1,0 +1,26 @@
+name: Ban duyet TTH Healthcare (khong phat hanh)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/healthcare-review-candidate.yml'
+      - '.github/qa/healthcare_review_candidate.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install playwright
+      - name: Build candidate from current published HTML and test locally
+        run: python3 .github/qa/healthcare_review_candidate.py
+      - name: Save review HTML, report and real screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tth-healthcare-review-candidate
+          path: artifacts/healthcare-review/
+          if-no-files-found: warn
