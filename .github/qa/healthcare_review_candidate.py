@@ -73,13 +73,52 @@ for n,doc in list(pages.items()):
         if lang_count:report.setdefault("english_language_fixed",[]).append(n)
         # Add a return only to an actual, unambiguous Vietnamese home route.
         if n=="EN_TrangChu.html":
-            homes=[x for x in pages if x in ("TrangChu.html","Home.html","Index.html","index.html")]
+            homes=[x for x in pages if x in ("Main.html",)]
             report["vi_home_candidates"]=homes
             if len(homes)==1 and not re.search(r'href=["\']'+re.escape(homes[0])+r'["\']',doc):
                 doc=doc.replace('</body>', '<a href="'+homes[0]+'" aria-label="Tiếng Việt" style="position:fixed;top:8px;right:12px;z-index:10000;border:1px solid #0837A1;background:#fff;color:#0837A1;padding:8px 12px;border-radius:6px;text-decoration:none">VN | EN</a></body>',1)
                 report["vi_return_added"]=homes[0]
+
+    # Use an explicit, accessible tablet menu rather than wrapping the desktop navigation.
+    if 'class="gh"' in doc and 'mnav' in doc and '</head>' in doc:
+        doc=doc.replace('</head>',"<style id=\"tth-review-tablet\">\n@media(min-width:981px) and (max-width:1179px){\n#app header.gh > div:first-child{display:flex!important;flex-wrap:nowrap!important;width:calc(100% - 48px)!important;max-width:calc(100% - 48px)!important;margin-inline:auto!important;gap:12px!important;padding:6px 12px!important;position:relative}\n#app header.gh nav.mnav{display:none!important}\n#app header.gh nav.mnav.tth-review-menu-open{display:flex!important;position:absolute!important;top:100%;left:0;right:0;flex-direction:column!important;align-items:stretch!important;gap:8px!important;padding:12px!important;background:#fff;border:1px solid #cfeaff;box-shadow:0 8px 22px #0837a125;z-index:10000;max-height:65dvh;overflow:auto}\n#app header.gh .tth-review-tablet-toggle{display:inline-flex!important}\n#app header.gh .gsrch{min-width:0!important;max-width:200px!important;width:200px!important}\n#app header.gh .tth-review-tablet-toggle{border:1px solid #0837A1;background:#fff;color:#0837A1;padding:9px 12px;border-radius:6px;white-space:nowrap}\n}\n.tth-review-tablet-toggle{display:none}\n</style><script id=\"tth-review-tablet-script\">\n(function(){function init(){const h=document.querySelector(\"#app header.gh\");if(!h)return;const n=h.querySelector(\"nav.mnav\");if(!n||h.querySelector(\".tth-review-tablet-toggle\"))return;const b=document.createElement(\"button\");b.type=\"button\";b.className=\"tth-review-tablet-toggle\";b.textContent=\"Menu\";b.setAttribute(\"aria-expanded\",\"false\");const last=h.querySelector(\":scope > div:first-child > div:last-child\");if(!last)return;last.append(b);function set(v){n.classList.toggle(\"tth-review-menu-open\",v);b.setAttribute(\"aria-expanded\",String(v))}b.addEventListener(\"click\",()=>set(!n.classList.contains(\"tth-review-menu-open\")));document.addEventListener(\"keydown\",e=>{if(e.key===\"Escape\")set(false)});document.addEventListener(\"click\",e=>{if(!h.contains(e.target))set(false)});window.addEventListener(\"resize\",()=>{if(innerWidth<981||innerWidth>1179)set(false)})}if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",init,{once:true});else init()})();\n</script>"+'</head>',1)
+        report.setdefault("tablet_menu_pages",[]).append(n)
     pages[n]=doc
 assert len(pages)==125
+
+# All pages, all declared local links; preserve unresolved items as explicit release blockers.
+from html.parser import HTMLParser
+from urllib.parse import urlsplit,unquote
+class AuditParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True);self.links=[];self.suppressed=0;self.visible=[]
+    def handle_starttag(self,tag,attrs):
+        a=dict(attrs)
+        if tag in ("script","style"):self.suppressed+=1
+        if tag=="a" and a.get("href"):self.links.append(a["href"])
+    def handle_endtag(self,tag):
+        if tag in ("script","style"):self.suppressed=max(0,self.suppressed-1)
+    def handle_data(self,data):
+        if not self.suppressed and data.strip():self.visible.append(data.strip())
+audit=[]
+for n,doc in pages.items():
+    parser=AuditParser();parser.feed(doc)
+    missing=[];placeholder=[];notes=[]
+    for href in parser.links:
+        u=urlsplit(href)
+        if href=="#chua-co-trang":placeholder.append(href)
+        if not u.scheme and not u.netloc and u.path.lower().endswith(".html"):
+            target=unquote(u.path).split("/")[-1]
+            if target not in pages:missing.append(href)
+    txt="\n".join(parser.visible)
+    for needle in ("[…]","[...]", "bộ trang gốc","Nội dung và hình ảnh minh họa"):
+        if needle.casefold() in txt.casefold():notes.append(needle)
+    audit.append({"page":n,"links":len(parser.links),"missing_targets":sorted(set(missing)),"placeholder_count":len(placeholder),"content_gaps":notes})
+report["static_all_pages"]=audit
+report["static_summary"]={"pages":len(audit),"links":sum(x["links"] for x in audit),"pages_missing_targets":sum(bool(x["missing_targets"]) for x in audit),"placeholder_links":sum(x["placeholder_count"] for x in audit),"pages_content_gaps":sum(bool(x["content_gaps"]) for x in audit)}
+print("HEALTHCARE_ALL_PAGES_STATIC",json.dumps(report["static_summary"],ensure_ascii=False),flush=True)
+persist()
+
 packed=json.dumps(pages,ensure_ascii=False,separators=(",",":")).replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026")
 review=source[:m.start(2)]+packed+source[m.end(2):]
 if not re.search(r'<meta[^>]+name=["\']robots["\']',review,re.I):
@@ -87,7 +126,7 @@ if not re.search(r'<meta[^>]+name=["\']robots["\']',review,re.I):
 path=out/"TTH-Healthcare-ban-duyet.html"
 path.write_text(review,encoding="utf-8")
 report["candidate_sha256"]=sha256(path.read_bytes()).hexdigest()
-report["unresolved"]+=["Tablet header: requires separate menu behavior verification before any changes","Song ngữ: inspect top utility strip, no unsupported translation changes","Per-doctor and per-service detail routing: requires identity-level verification"]
+report["unresolved"]+=["Bản dịch chuyên môn và nội dung y khoa chưa đủ cần người phụ trách xác nhận; không đồng nghĩa với kiểm thử kỹ thuật đạt","Đặt lịch là mô phỏng, không kết nối HIS/CRM; không gửi dữ liệu bệnh nhân trong kiểm thử","Các liên kết thiếu và nội dung còn trống được thống kê toàn bộ trong static_all_pages"]
 persist()
 with sync_playwright() as p:
     browser=p.chromium.launch(channel="chrome",headless=True,args=["--no-sandbox","--disable-dev-shm-usage"])
@@ -107,6 +146,16 @@ with sync_playwright() as p:
             if foot.count():
                 foot.scroll_into_view_if_needed(timeout=15000)
                 page.screenshot(path=str(out/f"{w}-footer.png"),timeout=30000,animations="disabled")
+            if w==1024:
+                t=frame.locator(".tth-review-tablet-toggle").first
+                if t.count() and t.is_visible():
+                    t.click()
+                    menu=frame.locator("nav.mnav.tth-review-menu-open").first
+                    row["tablet_menu_visible"]=menu.is_visible()
+                    row["tablet_menu_link_count"]=menu.locator("a").count()
+                    page.screenshot(path=str(out/"1024-menu-open.png"),timeout=30000)
+                    t.click()
+                    row["tablet_menu_closed"]=not menu.is_visible()
             assert row["scrollWidth"]<=w+2 and row["homeText"]>300,row
             if w>=981 and report["changes"]["symmetric_layout"]:
                 assert abs(row["left"]-row["right"])<=3,row
@@ -142,7 +191,7 @@ with sync_playwright() as p:
                 f=home()
                 f.locator(f'a[href="{list_route}"]').first.evaluate("e=>e.click()")
                 page.wait_for_timeout(500)
-                links=f.locator(f'#app main a[href^="{detail}"]')
+                links=f.locator(f'#app main a[href^="{detail[:-5] if detail=="BacSi_HoSo.html" else detail}"]')
                 if links.count()<=i:
                     result["available_actions"]=f.locator("#app main").evaluate("""e=>[...e.querySelectorAll('a,button')].map(x=>({href:x.getAttribute('href'),label:(x.innerText||x.getAttribute('aria-label')||'').trim()})).filter(x=>x.label).slice(0,65)""")
                     break
@@ -161,7 +210,7 @@ with sync_playwright() as p:
     report["identity_checks"]=identity
     for entry in identity:
         if entry["list"] in ("DichVu_DanhSach.html","KienThuc_TrangChu.html") and len(entry["samples"])==2:
-            assert entry["status"]=="distinct detail content" and entry["samples"][1].get("guarded"),entry
+            entry["gate_pass"]=entry["status"]=="distinct detail content" and bool(entry["samples"][1].get("guarded"))
     print("HEALTHCARE_IDENTITY_QA",json.dumps(identity,ensure_ascii=False),flush=True)
     language={}
     try:
@@ -172,13 +221,65 @@ with sync_playwright() as p:
         page.wait_for_timeout(600)
         language["en_text"]=f.locator("#app main").first.inner_text()[:600]
         language["en_lang"]=f.locator("html").get_attribute("lang")
-        language["return_links"]=f.locator('a[href="TrangChu.html"]').count()
+        language["return_links"]=f.locator('a[href="Main.html"]').count()
+        return_link=f.locator('a[href="Main.html"][aria-label="Tiếng Việt"]').first
+        if return_link.count()==0:return_link=f.locator('a[href="Main.html"]').first
+        if return_link.count():
+            return_link.evaluate("e=>e.click()")
+            page.wait_for_timeout(500)
+            language["return_lang"]=f.locator("html").get_attribute("lang")
+            language["return_text"]=f.locator("#app main").first.inner_text()[:160]
         page.screenshot(path=str(out/"1440-english-home.png"),timeout=30000)
     except Exception as e:language["error"]=str(e)[:500]
     report["language_check"]=language
     print("HEALTHCARE_LANGUAGE_QA",json.dumps(language,ensure_ascii=False),flush=True)
+
+    # Check every physician-profile link on the actual list against its own page.
+    doctors=[]
+    try:
+        f=home()
+        f.locator('a[href="BacSi_DanhSach.html"]').first.evaluate("e=>e.click()")
+        page.wait_for_timeout(500)
+        links=f.locator('#app main a[href^="BacSi_HoSo_"]').evaluate_all("""xs=>xs.map(a=>({href:a.getAttribute('href'),name:(a.closest('article')||a.closest('.card')||a.parentElement.parentElement).querySelector('h2,h3,h4,h5')?.innerText||'',context:(a.closest('article')||a.closest('.card')||a.parentElement.parentElement).innerText.slice(0,300)}))""")
+        for link in links:
+            d=dict(link)
+            target=pages.get(d["href"])
+            d["page_exists"]=target is not None
+            if target:
+                q=AuditParser();q.feed(target);txt=" ".join(q.visible)
+                d["name_in_target"]=bool(d["name"] and d["name"].casefold() in txt.casefold())
+            doctors.append(d)
+    except Exception as e:report["doctor_inventory_error"]=str(e)[:500]
+    report["doctor_inventory"]=doctors
+    print("HEALTHCARE_DOCTOR_INVENTORY",json.dumps({"total":len(doctors),"existing":sum(x["page_exists"] for x in doctors),"exact_name_matches":sum(x.get("name_in_target",False) for x in doctors),"unmatched":[x for x in doctors if not x.get("name_in_target",False)]},ensure_ascii=False),flush=True)
     page.close()
     persist()
+    # Render every one of the 125 embedded documents on desktop and mobile.
+    # This verifies the document rendering, not every possible interaction.
+    all_render=[]
+    for w,h in [(390,844),(1440,900)]:
+        pg=browser.new_page(viewport={"width":w,"height":h})
+        pg.set_default_timeout(9000)
+        for n,doc in pages.items():
+            row={"page":n,"viewport":[w,h]}
+            errors=[]
+            handler=lambda e:errors.append(str(e)[:160])
+            pg.on("pageerror",handler)
+            try:
+                pg.goto("about:blank")
+                pg.set_content(doc,wait_until="domcontentloaded",timeout=15000)
+                pg.wait_for_timeout(100)
+                row.update(pg.evaluate("""()=>({scrollWidth:document.documentElement.scrollWidth,width:innerWidth,visibleText:document.body.innerText.trim().length,main:!!document.querySelector('#app main,main'),lang:document.documentElement.lang,brokenImages:[...document.images].filter(x=>x.complete&&!x.naturalWidth).length})"""))
+                row["result"]="pass" if row["scrollWidth"]<=w+2 and row["visibleText"]>0 and not errors else "review"
+            except Exception as e:row.update(result="review",error=str(e)[:300])
+            row["errors"]=errors
+            pg.remove_listener("pageerror",handler)
+            all_render.append(row)
+        pg.close()
+        report["all_page_render"]=all_render
+        persist()
+    print("HEALTHCARE_ALL_RENDER",json.dumps({"cases":len(all_render),"pass":sum(x["result"]=="pass" for x in all_render),"review":[{k:x.get(k) for k in ("page","viewport","scrollWidth","visibleText","errors","error")} for x in all_render if x["result"]!="pass"]},ensure_ascii=False),flush=True)
+
     browser.close()
 print("HEALTHCARE_REVIEW_SUMMARY",json.dumps({"source_sha256":report["source_sha256"],"candidate_sha256":report["candidate_sha256"],"pages":report["pages"],"changes":{k:len(v) for k,v in report["changes"].items()},"az_candidates":candidate_names,"unresolved":report["unresolved"],"passes":sum(x["result"]=="pass" for x in report["browser"]),"cases":len(report["browser"])},ensure_ascii=False),flush=True)
 if any(x["result"]!="pass" for x in report["browser"]):raise SystemExit("Review candidate not accepted; screenshots preserved")
