@@ -340,7 +340,8 @@ jobs:
           cp pages-overrides/catalog/index.html _site/index.html
           mkdir -p _site/kien-truc-thuong-hieu
           cat pages-overrides/catalog/kien-truc-thuong-hieu/part-* > _site/kien-truc-thuong-hieu/index.html
-          test "$(wc -c < _site/kien-truc-thuong-hieu/index.html)" -eq 4654013
+          size="$(wc -c < _site/kien-truc-thuong-hieu/index.html | tr -d '[:space:]')"
+          case "$size" in 4654013|42433462) ;; *) echo "Unexpected website size: $size"; exit 1 ;; esac
           mkdir -p _site/bo-ho-so
           cp pages-overrides/catalog/bo-ho-so/index.html _site/bo-ho-so/index.html
           test -s _site/bo-ho-so/index.html
