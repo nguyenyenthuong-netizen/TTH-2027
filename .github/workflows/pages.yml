@@ -441,6 +441,8 @@ jobs:
         run: python3 scripts/khung_org_cvt_visual_hierarchy_2027.py _site
       - name: Kiem thu so do CVT o 3 kich thuoc man hinh
         run: python3 scripts/khung_org_cvt_visual_hierarchy_browser_qa_2027.py _site
+      - name: Kiem thu V8 tren may chu va tao ban xem thu doc lap
+        run: python3 scripts/website_v8_preview_gate.py _site
       - name: Cau hinh GitHub Pages
         uses: actions/configure-pages@v5
       - name: Tai site len GitHub Pages
