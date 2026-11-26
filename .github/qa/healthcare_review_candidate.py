@@ -29,6 +29,11 @@ az_anchor=re.compile(r'(<a\b[^>]*\bhref=["\'])#chua-co-trang(["\'][^>]*>)([^<]*(
 email_anchor=re.compile(r'<a\b[^>]*href=["\']mailto:cskh@tthhealthcare\.com["\'][^>]*>.*?</a>',re.I|re.S)
 for n,doc in list(pages.items()):
     before=doc
+    # Remove the source-production note from customer-facing specialty directory.
+    internal_note="Tên khoa tại từng cơ sở được giữ theo dữ liệu đang thể hiện trong bộ trang gốc."
+    if internal_note in doc:
+        doc=doc.replace(" "+internal_note,"").replace(internal_note,"")
+        report.setdefault("removed_internal_note",[]).append(n)
     if az:
         doc,ct=az_anchor.subn(lambda x:x.group(1)+az+x.group(2)+x.group(3)+x.group(4),doc)
         if ct: report["changes"]["az_links"].append({"page":n,"count":ct,"target":az})
@@ -107,6 +112,51 @@ with sync_playwright() as p:
         report["browser"].append(row);persist()
         print("HEALTHCARE_REVIEW_CASE",json.dumps(row,ensure_ascii=False),flush=True)
         page.close()
+    # Check whether different card links resolve to distinct content, without submitting forms.
+    identity=[]
+    page=browser.new_page(viewport={"width":1440,"height":900})
+    def home():
+        page.goto(path.resolve().as_uri(),wait_until="domcontentloaded",timeout=60000)
+        f=page.frame_locator("iframe#frame")
+        f.locator("#app main").first.wait_for(state="visible",timeout=25000)
+        return f
+    for list_route, detail in [("BacSi_DanhSach.html","BacSi_HoSo.html"),("DichVu_DanhSach.html","DichVu_ChiTiet.html"),("KienThuc_TrangChu.html","KienThuc_BaiViet.html")]:
+        result={"list":list_route,"detail":detail,"samples":[]}
+        try:
+            for i in range(2):
+                f=home()
+                f.locator(f'a[href="{list_route}"]').first.evaluate("e=>e.click()")
+                page.wait_for_timeout(500)
+                links=f.locator(f'#app main a[href^="{detail}"]')
+                if links.count()<=i:break
+                a=links.nth(i)
+                sample=a.evaluate("""e=>({href:e.getAttribute('href'),context:(e.closest('article')||e.parentElement.parentElement).innerText.slice(0,300)})""")
+                a.evaluate("e=>e.click()")
+                page.wait_for_timeout(500)
+                sample["detail_text"]=f.locator("#app main").first.inner_text()[:1600]
+                result["samples"].append(sample)
+            ss=result["samples"]
+            result["status"]="not enough samples" if len(ss)<2 else ("same detail content" if ss[0]["detail_text"]==ss[1]["detail_text"] else "distinct detail content")
+        except Exception as e: result["error"]=str(e)[:500]
+        identity.append(result)
+    report["identity_checks"]=identity
+    print("HEALTHCARE_IDENTITY_QA",json.dumps(identity,ensure_ascii=False),flush=True)
+    language={}
+    try:
+        f=home()
+        a=f.locator('a[href="EN_TrangChu.html"]').first
+        language["vi_label"]=a.inner_text()
+        a.evaluate("e=>e.click()")
+        page.wait_for_timeout(600)
+        language["en_text"]=f.locator("#app main").first.inner_text()[:600]
+        language["en_lang"]=f.locator("html").get_attribute("lang")
+        language["return_links"]=f.locator('a[href="TrangChu.html"]').count()
+        page.screenshot(path=str(out/"1440-english-home.png"),timeout=30000)
+    except Exception as e:language["error"]=str(e)[:500]
+    report["language_check"]=language
+    print("HEALTHCARE_LANGUAGE_QA",json.dumps(language,ensure_ascii=False),flush=True)
+    page.close()
+    persist()
     browser.close()
 print("HEALTHCARE_REVIEW_SUMMARY",json.dumps({"source_sha256":report["source_sha256"],"candidate_sha256":report["candidate_sha256"],"pages":report["pages"],"changes":{k:len(v) for k,v in report["changes"].items()},"az_candidates":candidate_names,"unresolved":report["unresolved"],"passes":sum(x["result"]=="pass" for x in report["browser"]),"cases":len(report["browser"])},ensure_ascii=False),flush=True)
 if any(x["result"]!="pass" for x in report["browser"]):raise SystemExit("Review candidate not accepted; screenshots preserved")
