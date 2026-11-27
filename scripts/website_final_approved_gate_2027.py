@@ -111,6 +111,11 @@ header details>summary .tth-menu-primary{color:inherit!important;font:inherit!im
 header details>summary .tth-menu-primary:hover{text-decoration:underline!important;text-underline-offset:4px}
 header details>summary .tth-menu-primary:focus-visible{outline:2px solid currentColor;outline-offset:3px}
 header details>summary .un-chevron{cursor:pointer}
+header details>summary:has(.tth-menu-toggle){display:flex!important;align-items:center!important;gap:3px!important}
+header details>summary:has(.tth-menu-toggle)::after{display:none!important}
+header details>summary .tth-menu-toggle{border:0;background:none;color:inherit;cursor:pointer;padding:4px;display:inline-flex;align-items:center;justify-content:center;min-width:22px;min-height:30px}
+header details>summary .tth-menu-toggle:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+footer .tth-footer-address,footer .tth-footer-hotline{min-width:0;overflow-wrap:anywhere}
 .tth-added-illustration{margin:0 0 12px;overflow:hidden;border-radius:6px}
 .tth-added-illustration img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .tth-added-illustration figcaption{font-size:12px;color:inherit;padding:4px 0}
@@ -124,21 +129,23 @@ footer .tth-footer-address a{overflow-wrap:anywhere}
  const specialtyEN={bach:'Selected specialties',chau:'Ophthalmology',tri:'Ear, Nose and Throat',thao:'Dentistry and Maxillofacial Care',phuc:'Traditional Medicine',tam:'Aesthetic Medicine'};
  const address={phuc:'Đại lộ 72m, phường Vinh Hưng, Nghệ An',tth:'28 Nguyễn Sỹ Sách, phường Thành Vinh, Nghệ An'};
  const addressEN={phuc:'72m Boulevard, Vinh Hung Ward, Nghe An',tth:'28 Nguyen Sy Sach Street, Thanh Vinh Ward, Nghe An'};
+ const demoHotline={tri:'1900 0001',chau:'1900 0002',thao:'1900 0003',phuc:'1900 0004',tam:'1900 0005',tth:'1900 0006',bach:'1900 0007',elder:'1900 0008',group:'1900 0009'};
  function put(el,s){if(el&&el.textContent!==s)el.textContent=s}
  function apply(){
   const id=typeof active==='string'?active:'';
   const en=document.documentElement.lang==='en';
   const route=typeof currentHash==='string'?currentHash:'#home';
-  // The text is a real link, the chevron retains the native details toggle.
+  // A dedicated text link and a dedicated chevron button are independent.
   document.querySelectorAll('header details>summary').forEach(s=>{
-   if(s.querySelector('.tth-menu-primary'))return;
-   const first=s.parentElement.querySelector('a[href^="#"]');
+   if(s.querySelector('.tth-menu-primary')&&s.querySelector('.tth-menu-toggle'))return;
+   const prior=s.querySelector('a[href^="#"]');
+   const first=prior||s.parentElement.querySelector(':scope > :not(summary) a[href^="#"]');
    if(!first)return;
-   const nodes=[...s.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim());
-   if(!nodes.length)return;
-   const a=document.createElement('a');a.className='tth-menu-primary';a.href=first.getAttribute('href');
-   a.textContent=nodes.map(n=>n.textContent).join('').trim();
-   nodes[0].replaceWith(a);nodes.slice(1).forEach(n=>n.remove());
+   const label=(prior?.textContent||s.textContent).trim().replace(/[⌄▾▼›]+$/,'').trim();
+   if(!label)return;
+   const a=document.createElement('a');a.className='v19-menulabel tth-menu-primary';a.href=first.getAttribute('href');a.textContent=label;
+   const b=document.createElement('button');b.type='button';b.className='tth-menu-toggle';b.setAttribute('aria-label',en?'Open submenu':'Mở danh mục con');b.setAttribute('aria-expanded',String(s.parentElement.open));b.innerHTML='<svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 6 5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+   s.replaceChildren(a,b);s.parentElement.addEventListener('toggle',()=>b.setAttribute('aria-expanded',String(s.parentElement.open)));
   });
   const brand=document.querySelector('header .brand-name-stack');
   if(brand&&names[id]){
@@ -182,8 +189,26 @@ footer .tth-footer-address a{overflow-wrap:anywhere}
     put(a.querySelector('strong'),en?'Address':'Địa chỉ');
     const fixed=en?addressEN[id]:address[id];
     if(fixed)put(target,fixed);
-    else if(names[id]&&target.tagName==='A'){target.href='#facilities';put(target,en?'See addresses by hospital':'Xem địa chỉ từng bệnh viện')}
-    else put(target,en?'Address not yet confirmed':'Địa chỉ chưa xác nhận');
+    else {
+     const m=route.match(/^#med-facility-(\d+)$/);
+     const facility=m&&typeof GEO!=='undefined'?GEO[id]?.[Number(m[1])]:null;
+     const loc=facility?.loc||'Vinh';
+     const span=target.tagName==='A'?document.createElement('span'):target;
+     if(span!==target){span.className='footer-contact-link';span.dataset.tthAddress='1';target.replaceWith(span);}
+     put(span,en?'00 Illustration Street, '+loc+' (sample)':'Số 00, đường Minh Họa, '+loc+' (mẫu)');
+    }
+   }else if(a&&/chưa cập nhật|chưa xác nhận|not available|not yet confirmed/i.test(a.textContent)){
+    const old=a.querySelector('a,span,p');if(old){const span=document.createElement('span');span.className='footer-contact-link';span.dataset.tthAddress='1';span.textContent=en?'00 Illustration Street, Vinh (sample)':'Số 00, đường Minh Họa, Vinh (mẫu)';old.replaceWith(span);}
+   }
+   let hot=[...c.children].find(x=>/^hotline$/i.test(x.querySelector('strong,h3,h4')?.textContent.trim()||''));
+   if(!hot&&demoHotline[id]){hot=document.createElement('div');hot.innerHTML='<strong>Hotline</strong><span class="footer-contact-link"></span>';c.append(hot);}
+   if(hot&&demoHotline[id]){
+    let v=hot.querySelector('a,span,p');
+    const value=v?.textContent.trim()||'';
+    if(!value||/xxxx|chưa cập nhật|chưa xác nhận|not available|not yet confirmed|mẫu|minh họa|sample|illustrative/i.test(value)||hot.classList.contains('tth-footer-hotline')){
+     if(!v||v.tagName==='A'){const span=document.createElement('span');span.className='footer-contact-link';if(v)v.replaceWith(span);else hot.append(span);v=span;}
+     hot.classList.add('tth-footer-hotline');put(v,demoHotline[id]+(en?' (sample)':' (mẫu)'));
+    }
    }
   });
   // Only reuse a relevant existing brand illustration; never fabricate a doctor's portrait or facility photograph.
@@ -201,14 +226,19 @@ footer .tth-footer-address a{overflow-wrap:anywhere}
    }
   }
  }
- document.addEventListener('click',e=>{
-  const a=e.target.closest?.('.tth-menu-primary');if(!a)return;
-  if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
-  e.preventDefault();e.stopImmediatePropagation();const h=a.getAttribute('href');
-  if(h&&typeof window.navRoute==='function'){a.closest('details').open=false;currentHash=h;window.navRoute()}
+ window.addEventListener('click',e=>{
+  const a=e.target.closest?.('header .tth-menu-primary'),b=e.target.closest?.('header .tth-menu-toggle');if(!a&&!b)return;
+  if(a&&(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  const d=(a||b).closest('details');
+  if(b){const open=!d.open;d.closest('header').querySelectorAll('details[open]').forEach(x=>{if(x!==d)x.open=false});d.open=open;b.setAttribute('aria-expanded',String(open));return;}
+  const h=a.getAttribute('href');
+  if(h&&typeof window.navRoute==='function'){d.open=false;currentHash=h;window.navRoute()}
   else if(h)location.hash=h;
  },true);
+ window.addEventListener('pointerover',e=>{if(e.target.closest?.('header summary:has(.tth-menu-toggle)'))e.stopPropagation();},true);
  if(typeof GEO!=='undefined'&&GEO.chau?.[1])GEO.chau[1].spec=[1,0];
+ if(typeof NORMALIZED!=='undefined'&&NORMALIZED.chau?.facilities?.[1])NORMALIZED.chau.facilities[1].spec=[1,0];
  if(typeof clinicalDictionary!=='undefined')Object.assign(clinicalDictionary,{'Hệ thống bệnh viện chuyên khoa':'Specialty hospital system','Hệ thống bệnh viện thành viên':'Member hospitals','Địa chỉ':'Address','Xem địa chỉ từng bệnh viện':'See addresses by hospital','Địa chỉ chưa xác nhận':'Address not yet confirmed','Hình minh họa chung':'General illustration'});
  let pending=false;
  function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply()})}
@@ -276,7 +306,14 @@ def check(pg,route,w,lang=None,site=None):
       pg.wait_for_function("h=>currentHash===h",arg=href,timeout=10000)
      pg.evaluate("x=>tthRestoreState(x)",{"site":site,"route":"#home","lang":lang})
      pg.evaluate("window.tthUnifiedUI2711()")
+    if w>=1000 and pg.locator("header .tth-menu-toggle:visible").count():
+     arrow=pg.locator("header .tth-menu-toggle:visible").first
+     arrow.click(timeout=10000)
+     assert arrow.evaluate("e=>e.closest('details').open"),"Submenu did not open"
+     arrow.click(timeout=10000)
+     assert not arrow.evaluate("e=>e.closest('details').open"),"Submenu did not close"
     assert not pg.locator("footer .final-footer-contact > div").filter(has=pg.locator("strong",has_text=re.compile("^Website$",re.I))).count(),"Duplicate website footer"
+    assert not pg.locator("footer .tth-footer-hotline a[href^='tel:']").count(),"Sample hotline must not dial"
     if site in ("bach","tri","chau","thao","phuc","tam"):
      assert pg.locator("header .brand-name-stack").count()>0
    row["unified_ui"]="checked"
