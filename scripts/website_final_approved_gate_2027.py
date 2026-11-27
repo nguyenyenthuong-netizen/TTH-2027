@@ -66,6 +66,27 @@ for old,new in rename_pairs:
    if old.casefold().startswith("chuỗi bệnh viện"):title_count+=count
 assert title_count>0,"Nguyen Bach naming correction: exact old Vietnamese title not found; no release"
 assert "Chuỗi bệnh viện đa chuyên khoa Nguyên Bách".casefold() not in arch_text.casefold()
+# TTH Healthcare: distinguish the general hospital/clinic system from specialty brands.
+tth_pairs=[
+ ("Hệ thống bệnh viện và phòng khám","Hệ thống bệnh viện và phòng khám đa khoa"),
+ ("System of hospitals and clinics","System of general hospitals and clinics"),
+ ("Hospital and clinic system","General hospital and clinic system"),
+ ("Hospital and Clinic System","General Hospital and Clinic System"),
+ ("Network of hospitals and clinics","Network of general hospitals and clinics"),
+]
+tth_vi_count=0
+for old,new in tth_pairs:
+ for source,target in [(old,new),(json.dumps(old,ensure_ascii=True)[1:-1],json.dumps(new,ensure_ascii=True)[1:-1])]:
+  if source==target: continue
+  # Do not alter a phrase already qualified as general/multispecialty.
+  suffix=(" "+("đa khoa" if old.startswith("Hệ") else "đa khoa"))
+  if not old.startswith("Hệ"): suffix=" general"
+  if source!=old: suffix=json.dumps(suffix,ensure_ascii=True)[1:-1]
+  arch_text,n=re.subn(re.escape(source)+r"(?!"+re.escape(suffix)+r")",lambda m:target,arch_text)
+  if n:
+   changes.append({"old":old,"new":new,"count":n})
+   if old.startswith("Hệ"):tth_vi_count+=n
+assert tth_vi_count>0 or "Hệ thống bệnh viện và phòng khám đa khoa" in arch_text,"TTH Healthcare descriptor not found"
 payloads[route]=arch_text.encode("utf-8")
 assert payloads[route]!=arch_before
 report["naming_correction"]={"route":route,"original_sha256":digest(arch_before),"published_sha256":digest(payloads[route]),"changes":changes}
