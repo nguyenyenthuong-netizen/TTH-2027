@@ -36,6 +36,40 @@ for name,route,zsha,hsha,size in specs:
  assert len(b)==size and digest(b)==hsha,(name,"HTML checksum mismatch")
  payloads[route]=b
  report["files"].append({"route":route,"sha256":hsha,"size":size})
+# 27/11/2026: user-approved naming correction, applied only after original checksum verification.
+# Keep the approved source immutable and record the derivative checksum separately.
+route="kien-truc-thuong-hieu"
+arch_before=payloads[route]
+arch_text=arch_before.decode("utf-8")
+rename_pairs=[
+ ("Chuỗi bệnh viện đa chuyên khoa Nguyên Bách","Hệ thống Bệnh viện Chuyên khoa Nguyên Bách"),
+ ("Chuỗi Bệnh viện Đa chuyên khoa Nguyên Bách","Hệ thống Bệnh viện Chuyên khoa Nguyên Bách"),
+ ("Chuỗi Bệnh viện Đa Chuyên Khoa Nguyên Bách","Hệ thống Bệnh viện Chuyên khoa Nguyên Bách"),
+ ("Hệ thống bệnh viện chuyên khoa; mỗi bệnh viện thành viên từ 03 chuyên khoa trở lên","Hệ thống bệnh viện phát triển theo mô hình tích hợp nhiều chuyên khoa chọn lọc, với mỗi bệnh viện thành viên có từ 03 chuyên khoa trở lên."),
+ ("Nguyen Bach Multi-specialty Hospital Chain","Nguyen Bach Specialty Hospital System"),
+ ("Nguyen Bach Multispecialty Hospital Chain","Nguyen Bach Specialty Hospital System"),
+ ("Nguyen Bach Multi-Specialty Hospital Chain","Nguyen Bach Specialty Hospital System"),
+ ("Nguyen Bach Multi-specialty Hospitals","Nguyen Bach Specialty Hospital System"),
+ ("Nguyen Bach Multi-specialty Hospital System","Nguyen Bach Specialty Hospital System"),
+ ("Nguyen Bach multi-specialty hospital chain","Nguyen Bach Specialty Hospital System"),
+ ("Multi-specialty Hospital Chain Nguyen Bach","Nguyen Bach Specialty Hospital System"),
+]
+changes=[]
+title_count=0
+for old,new in rename_pairs:
+ for source,target in [(old,new),(json.dumps(old,ensure_ascii=True)[1:-1],json.dumps(new,ensure_ascii=True)[1:-1])]:
+  if source==target: continue
+  count=arch_text.count(source)
+  if count:
+   arch_text=arch_text.replace(source,target)
+   changes.append({"old":old,"new":new,"count":count})
+   if old.casefold().startswith("chuỗi bệnh viện"):title_count+=count
+assert title_count>0,"Nguyen Bach naming correction: exact old Vietnamese title not found; no release"
+assert "Chuỗi bệnh viện đa chuyên khoa Nguyên Bách".casefold() not in arch_text.casefold()
+payloads[route]=arch_text.encode("utf-8")
+assert payloads[route]!=arch_before
+report["naming_correction"]={"route":route,"original_sha256":digest(arch_before),"published_sha256":digest(payloads[route]),"changes":changes}
+print("FINAL_NGUYEN_BACH_CORRECTION",json.dumps(report["naming_correction"],ensure_ascii=False),flush=True)
 hc=payloads["healthcare-website"].decode("utf-8")
 m=re.search(r'(<script\b[^>]*\bid=["\']pagesData["\'][^>]*>)(.*?)(</script>)',hc,re.S|re.I)
 assert m and len(json.loads(m.group(2)))==126
@@ -125,7 +159,8 @@ with sync_playwright() as p:
  browser.close()
 srv.shutdown()
 assert other_files()==before
-assert all(digest((root/route/"index.html").read_bytes())==hsha for _,route,_,hsha,_ in specs)
+assert all((root/route/"index.html").read_bytes()==b for route,b in payloads.items())
+assert digest(payloads["healthcare-website"])==next(hsha for _,route,_,hsha,_ in specs if route=="healthcare-website")
 report["summary"]={"cases":len(report["cases"]),"pass":sum(x["result"]=="pass" for x in report["cases"])}
 persist()
 print("FINAL_GATE_SUMMARY",json.dumps(report["summary"]),flush=True)
