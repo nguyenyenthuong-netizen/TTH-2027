@@ -1,0 +1,12 @@
+{
+  "baseline_commit": "6c85df8d83bff74f50ce36d71aff1ec82057d250",
+  "observed_during": "Follow-up production review after release 6c85df8",
+  "source": "Main.html",
+  "label": "Sản phụ khoa",
+  "expected_page": "ChuyenKhoa_san-phu-khoa.html",
+  "actual_page": "ChuyenKhoa_TimMach.html",
+  "observed_heading": "Tim mạch",
+  "result": "FAIL",
+  "cause": "Legacy shared destination and capture handler bypassed later object-specific routing. Prior inventory checked route existence but did not cover this semantic mismatch.",
+  "status": "Reproduced in production browser; correction and retest in progress."
+}

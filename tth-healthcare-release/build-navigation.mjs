@@ -7,10 +7,16 @@ const source=execFileSync('unzip',['-p',join(base,'website.zip'),'index.html'],{
 const match=/<script id="pagesData" type="application\/json">([\s\S]*?)<\/script>/.exec(source);
 if(!match)throw Error('Missing authoritative pagesData');
 const pages=JSON.parse(match[1]),known=Object.keys(pages),adapter=readFileSync(join(base,'navigation.js'),'utf8');
+// Read identities from the approved detail pages, rather than routing unrelated
+// cards to the old shared Tim mạch/doctor templates.
+const entities=Object.entries(pages).filter(([page])=>/^ChuyenKhoa_(?!DanhSach)|^BacSi_HoSo_/.test(page)).map(([page,doc])=>({
+ page,title:(/<h1[^>]*>([\s\S]*?)<\/h1>/.exec(doc)?.[1]||'').replace(/<[^>]*>/g,'').trim()
+}));
+if(entities.some(x=>!x.title))throw Error('Missing approved entity identity');
 for(const [page,doc]of Object.entries(pages)){
  if(doc.includes('id="tth-central-navigation"'))throw Error('Duplicate navigation adapter');
  const title=/<title>([\s\S]*?)<\/title>/.exec(doc)?.[1]||page;
- const config=JSON.stringify({page,title,known}).replaceAll('</','<\\/');
+ const config=JSON.stringify({page,title,known,entities}).replaceAll('</','<\\/');
  const injection='<script id="tth-central-navigation">window.__TTH_NAV_CONFIG__='+config+';'+adapter+'</script>';
  pages[page]=doc.replace('</head>',injection+'</head>');
 }

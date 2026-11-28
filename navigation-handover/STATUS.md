@@ -1,5 +1,9 @@
 # Trạng thái nguồn phát hành điều hướng TTH — 28/11/2026
 
+## Cập nhật sau rà soát production
+
+Bản 6c85df8 có lỗi sai đối tượng Healthcare còn sót: thẻ chuyên khoa trỏ chung Tim mạch và hồ sơ bác sĩ dùng trang mẫu. Không dùng kết quả 675 assertions của lượt trước để kết luận toàn bộ đích đúng nội dung. Xem FOLLOWUP.md và healthcare-semantic-baseline.json. Bản hiệu chỉnh kế tiếp bổ sung phân giải 45 danh tính đã có trong nguồn, 107 assertions về danh tính/ngữ cảnh và kiểm tra trực tiếp nội dung đích trong trình duyệt. Trạng thái phát hành và nghiệm thu mới nhất nằm trong biên nhận production của gói bàn giao cùng nhánh tth-navigation-handover.
+
 Nguồn tiếp quản và production trước sửa: 9412d7ffaadd886a19deed520a914a05cd70a9b9.
 Mốc hero được bảo vệ: 06ab2e950546cc463cef62215ffafbd836619e36.
 

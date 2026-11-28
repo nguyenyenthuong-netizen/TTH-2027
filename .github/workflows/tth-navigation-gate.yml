@@ -7,6 +7,7 @@ on:
       - 'tth-healthcare-release/**'
       - 'scripts/tth_navigation*'
       - 'scripts/tth_healthcare_navigation_test.mjs'
+      - 'scripts/tth_healthcare_semantic_test.mjs'
       - '.github/workflows/tth-navigation-gate.yml'
   pull_request:
     paths:
@@ -14,6 +15,7 @@ on:
       - 'tth-healthcare-release/**'
       - 'scripts/tth_navigation*'
       - 'scripts/tth_healthcare_navigation_test.mjs'
+      - 'scripts/tth_healthcare_semantic_test.mjs'
 permissions:
   contents: read
 jobs:
@@ -31,6 +33,7 @@ jobs:
         run: |
           node scripts/tth_navigation_contract_test.mjs
           node scripts/tth_healthcare_navigation_test.mjs
+          node scripts/tth_healthcare_semantic_test.mjs
       - name: Build existing catalogue and Healthcare source
         run: |
           node pages-overrides/catalog/kien-truc-thuong-hieu-final/build.mjs /tmp/tth-catalog
