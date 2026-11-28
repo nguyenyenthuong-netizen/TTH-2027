@@ -1,0 +1,102 @@
+[
+  {
+    "source": "Main.html",
+    "button": "Sản phụ khoa",
+    "expected": "Sản phụ khoa",
+    "actual": "\t\t\t\t\t36 heading Sản phụ khoa, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_san-phu-khoa.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "Mắt – mổ Phaco",
+    "expected": "Mắt",
+    "actual": "36 heading Mắt, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_mat.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "Thận nhân tạo",
+    "expected": "Thận – Tiết niệu",
+    "actual": "36 heading Thận – Tiết niệu, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_than-tiet-nieu.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "Hồi sức cấp cứu",
+    "expected": "Hồi sức cấp cứu",
+    "actual": "36 heading Hồi sức cấp cứu, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_hoi-suc-cap-cuu.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "ThS.BS Nguyễn Lê Trang",
+    "expected": "ThS.BS Nguyễn Lê Trang",
+    "actual": "40 heading ThS.BS Nguyễn Lê Trang, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#BacSi_HoSo_ths-bs-nguyen-le-trang.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "BS.CKII Mai Văn Lục",
+    "expected": "BS.CKII Mai Văn Lục",
+    "actual": "40 heading BS.CKII Mai Văn Lục, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#BacSi_HoSo_bs-ckii-mai-van-luc.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "ThS.BS Hoàng Minh Hiệp",
+    "expected": "ThS.BS Hoàng Minh Hiệp",
+    "actual": "40 heading ThS.BS Hoàng Minh Hiệp, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#BacSi_HoSo_ths-bs-hoang-minh-hiep.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "ThS.BSNT.CKII Võ Công Binh",
+    "expected": "ThS.BSNT.CKII Võ Công Binh",
+    "actual": "40 heading ThS.BSNT.CKII Võ Công Binh, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#BacSi_HoSo_ths-bsnt-ckii-vo-cong-binh.html%3Flang%3Dvi"
+  },
+  {
+    "source": "Main.html",
+    "button": "Thai sản trọn gói / Xem chi tiết",
+    "expected": "Thai sản trọn gói",
+    "actual": "39 heading Thai sản trọn gói, Value: 1, ID: tth-demo-title",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#Demo_ChiTiet.html%3Fitem%3D%257B%2522kind%2522%253A%2522service%2522%252C%2522title%2522%253A%2522Thai%2Bs%25E1%25BA%25A3n%2Btr%25E1%25BB%258Dn%2Bg%25C3%25B3i%2522%252C%2522description%2522%253A%2522Theo%2Bd%25C3%25B5i%2Bthai%2Bk%25E1%25BB%25B3%2Btheo%2Bc%25C3%25A1c%2Bm%25E1%25BB%2591c%2Bkh%25C3%25A1m%2Bv%25C3%25A0%2Bsinh%2Bt%25E1%25BA%25A1i%2Bb%25E1%25BB%2587nh%2Bvi%25E1%25BB%2587n.%2522%252C%2522lines%2522%253A%255B%2522G%25C3%25B3i%2Bkh%25C3%25A1m%2522%252C%2522Theo%2Bd%25C3%25B5i%2Bthai%2Bk%25E1%25BB%25B3%2Btheo%2Bc%25C3%25A1c%2Bm%25E1%25BB%2591c%2Bkh%25C3%25A1m%2Bv%25C3%25A0%2Bsinh%2Bt%25E1%25BA%25A1i%2Bb%25E1%25BB%2587nh%2Bvi%25E1%25BB%2587n.%2522%252C%2522C%25C3%25B3%2Bt%25E1%25BA%25A1i%2522%252C%2522B%25E1%25BB%2587nh%2Bvi%25E1%25BB%2587n%2B%25C4%2590a%2Bkhoa%2BTTH%2BVinh%2522%252C%2522B%25E1%25BB%2587nh%2Bvi%25E1%25BB%2587n%2B%25C4%2590a%2Bkhoa%2BTTH%2BH%25C3%25A0%2BT%25C4%25A9nh%2522%252C%2522B%25E1%25BB%2587nh%2Bvi%25E1%25BB%2587n%2B%25C4%2590a%2Bkhoa%2BTTH%2BQu%25E1%25BA%25A3ng%2BB%25C3%25ACnh%2522%252C%2522Gi%25C3%25A1%2522%252C%2522Xem%2Bgi%25C3%25A1%2Bt%25E1%25BB%25ABng%2Bc%25C6%25A1%2Bs%25E1%25BB%259F%2522%252C%2522%25C4%2590%25E1%25BA%25B7t%2Bl%25E1%25BB%258Bch%2522%255D%252C%2522back%2522%253A%2522Main.html%2522%252C%2522list%2522%253A%2522DichVu_DanhSach.html%2522%257D%26lang%3Dvi"
+  },
+  {
+    "source": "Microsite_TTHHaTinh.html",
+    "button": "Sản phụ khoa",
+    "expected": "Sản phụ khoa / TTH Hà Tĩnh",
+    "actual": "36 heading Sản phụ khoa, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_san-phu-khoa.html%3Flang%3Dvi%26branch%3DTTH%2BH%25C3%25A0%2BT%25C4%25A9nh"
+  },
+  {
+    "source": "ChuyenKhoa_san-phu-khoa.html / Hà Tĩnh / en",
+    "button": "Đặt lịch khám",
+    "expected": "TTH Hà Tĩnh / Sản phụ khoa / en",
+    "actual": [
+      "46 text field Subject of interest, Value: Sản phụ khoa",
+      "55 pop up button (collapsed, settable) Bệnh viện đa khoa, Value: TTH Hà Tĩnh, Secondary Actions: Expand",
+      "66 text field (settable) Chuyên khoa, Value: Sản phụ khoa"
+    ],
+    "url": "http://127.0.0.1:4173/healthcare.html#DatLich_Offline.html%3Fbranch%3DTTH%2BH%25C3%25A0%2BT%25C4%25A9nh%26specialty%3DS%25E1%25BA%25A3n%2Bph%25E1%25BB%25A5%2Bkhoa%26nav_subject%3DS%25E1%25BA%25A3n%2Bph%25E1%25BB%25A5%2Bkhoa%26nav_from%3DChuyenKhoa_san-phu-khoa.html%26nav_object%3DChuyenKhoa_san-phu-khoa.html%26lang%3Den",
+    "pass": true
+  },
+  {
+    "source": "Microsite_TTHHaTinh.html",
+    "button": "Thận nhân tạo",
+    "expected": "Thận – Tiết niệu / TTH Hà Tĩnh",
+    "actual": "36 heading Thận – Tiết niệu, Value: 1",
+    "pass": true,
+    "url": "http://127.0.0.1:4173/healthcare.html#ChuyenKhoa_than-tiet-nieu.html%3Flang%3Den%26branch%3DTTH%2BH%25C3%25A0%2BT%25C4%25A9nh"
+  }
+]

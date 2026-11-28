@@ -14,12 +14,33 @@ function subject(el){
  return title?.slice(0,180)||config.title;
 }
 function contract(el){
- const raw=el.getAttribute('data-nav-original')??el.getAttribute('href')??el.dataset.href??el.dataset.route??'';
+ // The approved runtime enriches generic service/article links with item JSON.
+ // Keep that object identity even when the first scan saw the generic template.
+ const current=el.getAttribute('href')||'';
+ const raw=/Demo_ChiTiet\.html\?/.test(current)&&new URLSearchParams(current.split('?')[1]).has('item')?current:el.getAttribute('data-nav-original')??el.getAttribute('href')??el.dataset.href??el.dataset.route??'';
  const text=fold(el.textContent||el.getAttribute('aria-label'));
  if(/^(?:←\s*|‹\s*)?(quay lai|back)$/.test(text))return {action:'back',status:'configured'};
  if(/^(gui gop y|gui yeu cau( tu van| ho tro)?|send feedback|send request|submit feedback|submit request)$/.test(text))return {action:'unavailable',status:'unavailable',object:'unconnected-enquiry'};
  if(/Web_TroLy\.html/.test(raw)||/^hoi tro ly|tro ly tth|information assistant/.test(text))return {action:'assistant',status:'illustrative',unit:branch()||'healthcare'};
  let target=raw;const q=query(),ctx=new URLSearchParams();
+ const pathBefore=raw.split(/[?#]/)[0];
+ if(pathBefore==='ChuyenKhoa_TimMach.html'||pathBefore==='BacSi_HoSo.html'){
+  const doctor=pathBefore==='BacSi_HoSo.html';
+  const entities=(config.entities||[]).filter(x=>doctor?/^BacSi_HoSo_/.test(x.page):/^ChuyenKhoa_/.test(x.page));
+  const card=el.closest('article,.card');
+  const contexts=[clean(el.querySelector?.('h2,h3,h4,strong,b')?.textContent),clean(el.innerText||el.textContent),clean(card?.querySelector('h2,h3,h4')?.textContent),clean(card?.innerText||card?.textContent),clean(el.parentElement?.innerText||el.parentElement?.textContent)].filter(Boolean);
+  const aliases={'mat mo phaco':'Mắt','than nhan tao':'Thận – Tiết niệu','chan thuong chinh hinh':'Chấn thương chỉnh hình – Y học thể thao','tieu hoa':'Tiêu hóa – Thần kinh','than kinh':'Tiêu hóa – Thần kinh','phuc hoi chuc nang':'Y học cổ truyền – Phục hồi chức năng'};
+  let found;
+  for(const context of contexts){const text=fold(context).replace(/[–—−-]/g,' ').replace(/\s+/g,' ').trim();
+   const normalize=s=>fold(s).replace(/[–—−-]/g,' ').replace(/\s+/g,' ').trim();
+   const alias=aliases[text]||Object.entries(aliases).find(([key])=>text.startsWith(key+' '))?.[1];
+   const matches=entities.filter(x=>alias?normalize(x.title)===normalize(alias):text===normalize(x.title)||text.includes(normalize(x.title)));
+   const specific=matches.filter(x=>!matches.some(y=>y!==x&&normalize(y.title).includes(normalize(x.title))));
+   if(specific.length===1){found=specific[0];break;}
+  }
+  if(found)target=found.page+(raw.includes('?')?'?'+raw.split('?')[1]:'');
+  else return {action:'unavailable',status:'unavailable',object:subject(el)};
+ }
  const combined=/^(?:vi|vn)\s*[|/]\s*en$/i.test(clean(el.textContent))||el.getAttribute('aria-label')==='Chuyển ngôn ngữ';
  const isLanguage=combined||/^(vn|vi|en|english|tiếng việt)$/.test(clean(el.textContent).toLowerCase())||raw.split('?')[0]==='EN_TrangChu.html';
  if(isLanguage){const lang=combined?(locale()==='en'?'vi':'en'):/^(vn|vi|tiếng việt)$/.test(clean(el.textContent).toLowerCase())?'vi':'en';
@@ -50,6 +71,7 @@ function contract(el){
  const path=target.split(/[?#]/)[0].split('/').pop();if(!config.known.includes(path))return null;
  const params=new URLSearchParams(target.includes('?')?target.split('?')[1].split('#')[0]:'');
  if(!params.has('lang'))params.set('lang',locale());
+ if(branch()&&!params.has('branch')&&!['Main.html','EN_TrangChu.html'].includes(path))params.set('branch',branch());
  if(path==='HuongDan_LienHe.html'){if(branch()&&!params.has('branch'))params.set('branch',branch());params.set('nav_from',source());if(!params.has('nav_object'))params.set('nav_object',q.get('nav_object')||source());}
  const dest=path+(params.size?'?'+params:'');
  return {brand:'healthcare',unit:branch()||'healthcare',facility:branch(),from:source(),to:dest,object:params.get('nav_object')||path,action:booking?'booking':/lien he|hop tac|contact/.test(text)?'contact':'page',context:Object.fromEntries(params),language:params.get('lang'),status:booking?'illustrative':'configured',back:'browser-history'};
@@ -75,7 +97,9 @@ function scan(){
  for(const el of document.querySelectorAll('a[href],[data-nav-original],button[data-href],button[data-route]')){
   const r=resolve(el);if(!r)continue;
   if(el.tagName==='A'&&!el.hasAttribute('data-nav-original'))el.dataset.navOriginal=el.getAttribute('href');
-  if(el.tagName==='A'&&['booking','language'].includes(r.action)&&r.to&&el.getAttribute('href')!==r.to)el.setAttribute('href',r.to);
+  // Legacy menu setup selects its unchanged parent hrefs. Only replace native
+  // URLs whose object identity or booking/language context actually needs repair.
+  if(el.tagName==='A'&&r.to&&(['booking','language'].includes(r.action)||/^(ChuyenKhoa_TimMach|BacSi_HoSo)\.html(?:[?#]|$)/.test(el.dataset.navOriginal||''))&&el.getAttribute('href')!==r.to)el.setAttribute('href',r.to);
   if(r.status==='unavailable'&&el.hasAttribute('href')){el.removeAttribute('href');el.setAttribute('role','button');el.tabIndex=0;el.setAttribute('aria-disabled','true');el.title=query().get('lang')==='en'?'Not connected':'Chưa kết nối';}
   if(r.status==='partial-translation')el.title='English navigation; full English content is not yet available for this page.';
   el.dataset.navAction=r.action;el.dataset.navStatus=r.status;el.dataset.navUnit=r.unit||branch()||'healthcare';

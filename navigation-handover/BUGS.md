@@ -2,6 +2,8 @@
 
 | Mã | Trạng thái | Nguyên nhân | Hiệu chỉnh và bằng chứng |
 |---|---|---|---|
+| NAV-14 | Đã sửa trong nguồn kế tiếp 6c85df8 | Thẻ chuyên khoa dùng chung href Tim mạch; kiểm kê tồn tại đích không phát hiện sai nội dung | Đăng ký 21 chuyên khoa từ h1 của trang đã duyệt; phân giải theo danh tính/alias, giữ cơ sở; chưa có hồ sơ thì báo chưa kết nối |
+| NAV-15 | Đã sửa trong nguồn kế tiếp 6c85df8 | Capture trung tâm chạy trước bộ chọn hồ sơ bác sĩ cũ; href gốc có thể che query item được runtime bổ sung | Phân giải 24 bác sĩ theo tên đã có; giữ item của gói/dịch vụ/bài viết. Không chọn hồ sơ khác cho thẻ chưa công bố danh tính |
 | NAV-01 | Đã sửa | Nút hotline Group bị bắt bởi handler mở liên hệ | Chuẩn hóa tel:19002675; browser xác nhận href của thanh cố định |
 | NAV-02 | Đã sửa | request(n) suy diễn hành vi theo trang, bỏ ý định hợp tác trên nhãn nút | Intent hợp tác độc lập với field; thử các trang topic và đối tác |
 | NAV-03 | Đã sửa | Contact intent và booking preferences chỉ lưu trong bộ nhớ | URL mang context công khai; reload/back/forward khôi phục đúng đối tượng |
