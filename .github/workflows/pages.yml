@@ -456,6 +456,8 @@ jobs:
           python3 scripts/reconstruct_approved_final_2027.py _site
       - name: Khoa phat hanh FINAL da duyet va kiem thu hai website
         run: python3 scripts/website_final_approved_gate_2027.py _site
+      - name: Cap nhat website kien truc theo ban FINAL 28-11 va doi chieu checksum
+        run: node pages-overrides/catalog/kien-truc-thuong-hieu-final/build.mjs _site/kien-truc-thuong-hieu
       - name: Luu ho so nghiem thu FINAL
         if: always()
         uses: actions/upload-artifact@v4

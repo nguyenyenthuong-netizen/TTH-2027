@@ -1,0 +1,7 @@
+{
+  "name": "tth-website-kien-truc",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}

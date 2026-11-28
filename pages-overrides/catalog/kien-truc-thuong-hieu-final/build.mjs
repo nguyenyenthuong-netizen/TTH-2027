@@ -1,0 +1,13 @@
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { createHash } from 'node:crypto';
+const base=dirname(new URL(import.meta.url).pathname);
+const manifest=JSON.parse(readFileSync(join(base,'manifest.json'),'utf8'));
+const names=readdirSync(join(base,'parts')).filter(n=>n.startsWith('part-')).sort();
+if(names.length!==manifest.parts)throw Error(`Expected ${manifest.parts} parts, got ${names.length}`);
+const data=Buffer.concat(names.map(n=>readFileSync(join(base,'parts',n))));
+const digest=createHash('sha256').update(data).digest('hex');
+if(data.length!==manifest.size||digest!==manifest.sha256)throw Error('Website release checksum mismatch');
+const destination=process.argv[2]||join(base,'dist');
+mkdirSync(destination,{recursive:true});writeFileSync(join(destination,'index.html'),data);
+console.log(`Published ${data.length} bytes; sha256 ${digest}`);
