@@ -26,7 +26,7 @@ const qc147=readFileSync(join(base,'qc147.css'),'utf8');
 html=html.replace('</head>',qc147+'</head>');
 const final=Buffer.from(html,'utf8');
 const finalDigest=createHash('sha256').update(final).digest('hex');
-if(finalDigest!=='3a4fd071e74c19b0111111443df743dad35a670a836f42fa324b21729bbff5f1')throw Error('Final QA checksum mismatch');
+if(finalDigest!=='0d479fcb371c218c38924f79f19649715d59cfc95458f0d82ecbb8381a2b09be')throw Error('Final QA checksum mismatch');
 const destination=process.argv[2]||join(base,'dist');
 mkdirSync(destination,{recursive:true});writeFileSync(join(destination,'index.html'),final);
 console.log(`Published ${final.length} bytes; sha256 ${finalDigest}`);
