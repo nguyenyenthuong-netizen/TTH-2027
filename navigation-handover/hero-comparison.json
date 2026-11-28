@@ -1,0 +1,23 @@
+{
+  "before_size": [
+    1348,
+    926
+  ],
+  "after_size": [
+    1348,
+    926
+  ],
+  "hero_comparison_box": [
+    94,
+    193,
+    1239,
+    658
+  ],
+  "mean_absolute_channel_difference": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "changed_bbox": null,
+  "result": "PASS"
+}

@@ -1,0 +1,43 @@
+name: TTH navigation release gate
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'pages-overrides/catalog/kien-truc-thuong-hieu-final/**'
+      - 'tth-healthcare-release/**'
+      - 'scripts/tth_navigation*'
+      - 'scripts/tth_healthcare_navigation_test.mjs'
+      - '.github/workflows/tth-navigation-gate.yml'
+  pull_request:
+    paths:
+      - 'pages-overrides/catalog/kien-truc-thuong-hieu-final/**'
+      - 'tth-healthcare-release/**'
+      - 'scripts/tth_navigation*'
+      - 'scripts/tth_healthcare_navigation_test.mjs'
+permissions:
+  contents: read
+jobs:
+  navigation-contract-and-design:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check independent business contracts
+        run: |
+          node scripts/tth_navigation_contract_test.mjs
+          node scripts/tth_healthcare_navigation_test.mjs
+      - name: Build existing catalogue and Healthcare source
+        run: |
+          node pages-overrides/catalog/kien-truc-thuong-hieu-final/build.mjs /tmp/tth-catalog
+          node tth-healthcare-release/build-navigation.mjs /tmp/tth-healthcare
+      - name: Protect approved page, hero and image content; validate compiled scripts
+        run: python scripts/tth_navigation_build_gate.py /tmp/tth-catalog/index.html /tmp/tth-healthcare/index.html > /tmp/navigation-build-gate.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: navigation-build-gate
+          path: /tmp/navigation-build-gate.json

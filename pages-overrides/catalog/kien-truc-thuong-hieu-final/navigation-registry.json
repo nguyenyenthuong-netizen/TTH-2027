@@ -1,0 +1,538 @@
+{
+  "bach": {
+    "services": [
+      {
+        "id": "bach-DV-01",
+        "name": "Nội soi Tai Mũi Họng"
+      },
+      {
+        "id": "bach-DV-02",
+        "name": "Đo khúc xạ"
+      },
+      {
+        "id": "bach-DV-03",
+        "name": "Khám răng và nha chu"
+      },
+      {
+        "id": "bach-DV-04",
+        "name": "Khám Y học cổ truyền"
+      },
+      {
+        "id": "bach-DV-05",
+        "name": "Tư vấn thẩm mỹ"
+      }
+    ],
+    "packages": [
+      {
+        "id": "bach-GK-01",
+        "name": "Kiểm tra sức khỏe tai và mắt"
+      },
+      {
+        "id": "bach-GK-02",
+        "name": "Chăm sóc răng miệng định kỳ"
+      },
+      {
+        "id": "bach-GK-03",
+        "name": "Chăm sóc vận động và phục hồi"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "bach-BS-01",
+        "name": "BS. Nguyễn Minh An · Nhân vật giả lập"
+      },
+      {
+        "id": "bach-BS-02",
+        "name": "BS. Trần Thanh Hà · Nhân vật giả lập"
+      },
+      {
+        "id": "bach-BS-03",
+        "name": "BS. Lê Hoàng Nam · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Bách – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Bách – Hà Tĩnh"
+      },
+      {
+        "id": "med-facility-2",
+        "name": "Bệnh viện Nguyên Bách – Đồng Hới"
+      }
+    ],
+    "programs": [
+      {
+        "id": "bach-CT-01",
+        "name": "Ngày hội chăm sóc sức khỏe gia đình"
+      },
+      {
+        "id": "bach-CT-02",
+        "name": "Hội thảo chăm sóc thị lực và thính lực"
+      },
+      {
+        "id": "bach-CT-03",
+        "name": "Lớp học vận động và chăm sóc dài hạn"
+      }
+    ]
+  },
+  "tri": {
+    "services": [
+      {
+        "id": "tri-DV-01",
+        "name": "Nội soi Tai Mũi Họng"
+      },
+      {
+        "id": "tri-DV-02",
+        "name": "Đo thính lực"
+      },
+      {
+        "id": "tri-DV-03",
+        "name": "Khám mũi xoang"
+      }
+    ],
+    "packages": [
+      {
+        "id": "tri-GK-01",
+        "name": "Khám tai và thính lực"
+      },
+      {
+        "id": "tri-GK-02",
+        "name": "Khám mũi xoang"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "tri-BS-01",
+        "name": "BS. Phạm Đức Huy · Nhân vật giả lập"
+      },
+      {
+        "id": "tri-BS-02",
+        "name": "BS. Nguyễn Thu Giang · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Trí – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Trí – Hà Tĩnh"
+      }
+    ],
+    "programs": [
+      {
+        "id": "tri-CT-01",
+        "name": "Lớp học chăm sóc Tai Mũi Họng trẻ em"
+      },
+      {
+        "id": "tri-CT-02",
+        "name": "Hội thảo bảo vệ thính lực"
+      },
+      {
+        "id": "tri-CT-03",
+        "name": "Ngày hội sàng lọc Tai Mũi Họng"
+      },
+      {
+        "id": "tri-CT-04",
+        "name": "Livestream hỏi đáp: bảo vệ thính lực"
+      },
+      {
+        "id": "tri-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "tri-CT-06",
+        "name": "Chương trình cộng đồng: bảo vệ thính lực"
+      },
+      {
+        "id": "tri-CT-07",
+        "name": "Câu lạc bộ sức khỏe: bảo vệ thính lực"
+      }
+    ]
+  },
+  "chau": {
+    "services": [
+      {
+        "id": "chau-DV-01",
+        "name": "Đo khúc xạ"
+      },
+      {
+        "id": "chau-DV-02",
+        "name": "Khám mắt toàn diện"
+      },
+      {
+        "id": "chau-DV-03",
+        "name": "Khám đáy mắt"
+      }
+    ],
+    "packages": [
+      {
+        "id": "chau-GK-01",
+        "name": "Kiểm tra thị lực học đường"
+      },
+      {
+        "id": "chau-GK-02",
+        "name": "Khám mắt người trưởng thành"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "chau-BS-01",
+        "name": "BS. Trần Quang Minh · Nhân vật giả lập"
+      },
+      {
+        "id": "chau-BS-02",
+        "name": "BS. Lê Hải Yến · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Châu – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Châu – Hà Tĩnh"
+      }
+    ],
+    "programs": [
+      {
+        "id": "chau-CT-01",
+        "name": "Lớp học bảo vệ mắt"
+      },
+      {
+        "id": "chau-CT-02",
+        "name": "Hội thảo mắt và bệnh mạn tính"
+      },
+      {
+        "id": "chau-CT-03",
+        "name": "Ngày hội kiểm tra thị lực"
+      },
+      {
+        "id": "chau-CT-04",
+        "name": "Livestream hỏi đáp: chăm sóc thị lực"
+      },
+      {
+        "id": "chau-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "chau-CT-06",
+        "name": "Chương trình cộng đồng: chăm sóc thị lực"
+      },
+      {
+        "id": "chau-CT-07",
+        "name": "Câu lạc bộ sức khỏe: chăm sóc thị lực"
+      }
+    ]
+  },
+  "thao": {
+    "services": [
+      {
+        "id": "thao-DV-01",
+        "name": "Khám răng và nha chu"
+      },
+      {
+        "id": "thao-DV-02",
+        "name": "Chụp X-quang nha khoa"
+      },
+      {
+        "id": "thao-DV-03",
+        "name": "Tư vấn chỉnh nha"
+      }
+    ],
+    "packages": [
+      {
+        "id": "thao-GK-01",
+        "name": "Chăm sóc răng miệng định kỳ"
+      },
+      {
+        "id": "thao-GK-02",
+        "name": "Khám chỉnh nha ban đầu"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "thao-BS-01",
+        "name": "BS. Võ Thành Long · Nhân vật giả lập"
+      },
+      {
+        "id": "thao-BS-02",
+        "name": "BS. Phan Mai Anh · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Thảo – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Thảo – Hà Tĩnh"
+      }
+    ],
+    "programs": [
+      {
+        "id": "thao-CT-01",
+        "name": "Lớp học chải răng đúng cách"
+      },
+      {
+        "id": "thao-CT-02",
+        "name": "Hội thảo chỉnh nha"
+      },
+      {
+        "id": "thao-CT-03",
+        "name": "Ngày hội nha khoa học đường"
+      },
+      {
+        "id": "thao-CT-04",
+        "name": "Livestream hỏi đáp: chăm sóc răng miệng"
+      },
+      {
+        "id": "thao-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "thao-CT-06",
+        "name": "Chương trình cộng đồng: chăm sóc răng miệng"
+      },
+      {
+        "id": "thao-CT-07",
+        "name": "Câu lạc bộ sức khỏe: chăm sóc răng miệng"
+      }
+    ]
+  },
+  "phuc": {
+    "services": [
+      {
+        "id": "phuc-DV-01",
+        "name": "Khám y học cổ truyền"
+      },
+      {
+        "id": "phuc-DV-02",
+        "name": "Đánh giá phục hồi chức năng"
+      },
+      {
+        "id": "phuc-DV-03",
+        "name": "Tư vấn châm cứu"
+      }
+    ],
+    "packages": [
+      {
+        "id": "phuc-GK-01",
+        "name": "Đánh giá vận động ban đầu"
+      },
+      {
+        "id": "phuc-GK-02",
+        "name": "Khám y học cổ truyền tổng quát"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "phuc-BS-01",
+        "name": "BS. Đặng Quốc Bình · Nhân vật giả lập"
+      },
+      {
+        "id": "phuc-BS-02",
+        "name": "BS. Hoàng Ngọc Lan · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Phúc – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Phúc – Hà Tĩnh"
+      }
+    ],
+    "programs": [
+      {
+        "id": "phuc-CT-01",
+        "name": "Câu lạc bộ Dưỡng sinh Nguyên Phúc"
+      },
+      {
+        "id": "phuc-CT-02",
+        "name": "Lớp học vận động an toàn"
+      },
+      {
+        "id": "phuc-CT-03",
+        "name": "Hội thảo chăm sóc người cao tuổi"
+      },
+      {
+        "id": "phuc-CT-04",
+        "name": "Livestream hỏi đáp: vận động và dưỡng sinh"
+      },
+      {
+        "id": "phuc-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "phuc-CT-06",
+        "name": "Chương trình cộng đồng: vận động và dưỡng sinh"
+      },
+      {
+        "id": "phuc-CT-07",
+        "name": "Câu lạc bộ sức khỏe: vận động và dưỡng sinh"
+      }
+    ]
+  },
+  "tam": {
+    "services": [
+      {
+        "id": "tam-DV-01",
+        "name": "Khám và tư vấn thẩm mỹ"
+      },
+      {
+        "id": "tam-DV-02",
+        "name": "Tư vấn chăm sóc da"
+      },
+      {
+        "id": "tam-DV-03",
+        "name": "Tư vấn phẫu thuật tạo hình"
+      },
+      {
+        "id": "tam-DV-04",
+        "name": "Khám răng và nha chu"
+      }
+    ],
+    "packages": [
+      {
+        "id": "tam-GK-01",
+        "name": "Khám và tư vấn thẩm mỹ"
+      },
+      {
+        "id": "tam-GK-02",
+        "name": "Đánh giá trước tư vấn tạo hình"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "tam-BS-01",
+        "name": "BS. Bùi Anh Tuấn · Nhân vật giả lập"
+      },
+      {
+        "id": "tam-BS-02",
+        "name": "BS. Đỗ Khánh Linh · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility-0",
+        "name": "Bệnh viện Nguyên Tâm – Vinh"
+      },
+      {
+        "id": "med-facility-1",
+        "name": "Bệnh viện Nguyên Tâm – Hà Tĩnh"
+      }
+    ],
+    "programs": [
+      {
+        "id": "tam-CT-01",
+        "name": "Hội thảo thẩm mỹ an toàn"
+      },
+      {
+        "id": "tam-CT-02",
+        "name": "Lớp học chăm sóc sau điều trị"
+      },
+      {
+        "id": "tam-CT-03",
+        "name": "Hospital tour – tìm hiểu quy trình an toàn"
+      },
+      {
+        "id": "tam-CT-04",
+        "name": "Livestream hỏi đáp: thẩm mỹ an toàn và chăm sóc sau can thiệp"
+      },
+      {
+        "id": "tam-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "tam-CT-06",
+        "name": "Chương trình cộng đồng: thẩm mỹ an toàn và chăm sóc sau can thiệp"
+      },
+      {
+        "id": "tam-CT-07",
+        "name": "Câu lạc bộ sức khỏe: thẩm mỹ an toàn và chăm sóc sau can thiệp"
+      }
+    ]
+  },
+  "tth": {
+    "services": [
+      {
+        "id": "tth-DV-01",
+        "name": "Khám và tư vấn phục hình răng"
+      },
+      {
+        "id": "tth-DV-02",
+        "name": "Tư vấn Implant"
+      },
+      {
+        "id": "tth-DV-03",
+        "name": "Tư vấn phẫu thuật tạo hình"
+      }
+    ],
+    "packages": [
+      {
+        "id": "tth-GK-01",
+        "name": "Khám và tư vấn răng hàm mặt"
+      },
+      {
+        "id": "tth-GK-02",
+        "name": "Đánh giá trước tư vấn tạo hình"
+      }
+    ],
+    "doctors": [
+      {
+        "id": "tth-BS-01",
+        "name": "BS. Lê Đức Thành · Nhân vật giả lập"
+      },
+      {
+        "id": "tth-BS-02",
+        "name": "BS. Nguyễn Phương Thảo · Nhân vật giả lập"
+      }
+    ],
+    "facilities": [
+      {
+        "id": "med-facility",
+        "name": "Bệnh viện Răng hàm mặt và Phẫu thuật tạo hình thẩm mỹ Thái Thượng Hoàng"
+      }
+    ],
+    "programs": [
+      {
+        "id": "tth-CT-01",
+        "name": "Hội thảo phục hình răng"
+      },
+      {
+        "id": "tth-CT-02",
+        "name": "Lớp học chăm sóc sau điều trị"
+      },
+      {
+        "id": "tth-CT-03",
+        "name": "Hospital tour – tìm hiểu quy trình an toàn"
+      },
+      {
+        "id": "tth-CT-04",
+        "name": "Livestream hỏi đáp: phục hình răng và chăm sóc sau can thiệp"
+      },
+      {
+        "id": "tth-CT-05",
+        "name": "Tham quan bệnh viện: trải nghiệm hành trình khám"
+      },
+      {
+        "id": "tth-CT-06",
+        "name": "Chương trình cộng đồng: phục hình răng và chăm sóc sau can thiệp"
+      },
+      {
+        "id": "tth-CT-07",
+        "name": "Câu lạc bộ sức khỏe: phục hình răng và chăm sóc sau can thiệp"
+      }
+    ]
+  }
+}

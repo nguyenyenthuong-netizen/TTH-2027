@@ -1,0 +1,11 @@
+(function(){const run=document.createElement('button');run.id='run-programs';run.textContent='Run programme acceptance';document.body.prepend(run);const wait=()=>new Promise(r=>setTimeout(r,200));run.onclick=async()=>{
+const report={at:new Date().toISOString(),cases:[]};const check=(name,expected,actual)=>report.cases.push({name,expected,actual,result:JSON.stringify(expected)===JSON.stringify(actual)?'PASS':'FAIL'});
+try{for(const site of ['tri','chau','thao','phuc','tam','tth','bach'])for(const lang of ['vi','en'])for(let i=0;i<NORMALIZED[site].programs.length;i++){
+ tthRestoreState({site,route:'#med-program-'+i,lang});await wait();const b=[...document.querySelectorAll('#app a,#app button')].find(e=>TTHNavigation.resolve(e)?.action==='programme');if(!b){check(site+'/'+lang+'/programme/'+i+' CTA',true,false);continue;}b.click();await wait();const q=new URL(location.href).searchParams;
+ check(site+'/'+lang+'/programme/'+i+' target',[site,'med-program-register','med-program-'+i,lang],['site','page','nav_object','lang'].map(k=>q.get(k)));
+ check(site+'/'+lang+'/programme/'+i+' selection',String(i),document.querySelector('#demo-program-form select')?.value);tthRestoreURL();await wait();check(site+'/'+lang+'/programme/'+i+' restore',String(i),document.querySelector('#demo-program-form select')?.value);
+}
+tthRestoreState({site:'group',route:'#home',lang:'vi'});await wait();for(const route of ['about','ecosystem','capacity','partners','sustainability','media','careers']){const a=document.querySelector('header .tth-menu-primary[href="#'+route+'"]');if(!a){check('Parent menu '+route,true,false);continue;}a.click();await wait();check('Parent menu '+route,route,new URL(location.href).searchParams.get('page'));}
+}catch(e){report.cases.push({name:'Runner exception',result:'FAIL',error:String(e)})}
+report.failed=report.cases.filter(c=>c.result==='FAIL').length;const out=document.createElement('script');out.id='programme-results';out.type='application/json';out.textContent=JSON.stringify(report);document.body.append(out);const p=document.createElement('pre');p.id='programme-summary';p.textContent=JSON.stringify({cases:report.cases.length,failed:report.failed});document.body.prepend(p);
+};})();

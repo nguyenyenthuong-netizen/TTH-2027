@@ -1,0 +1,21 @@
+{
+  "catalog_states": 1092,
+  "catalog_interactions": 69548,
+  "catalog_structural_errors": 0,
+  "healthcare_states": 230,
+  "healthcare_links": 14574,
+  "healthcare_structural_errors": 0,
+  "business_assertions": 675,
+  "business_failed": 0,
+  "matrix_rows": 84797,
+  "build_gate": {
+    "result": "PASS",
+    "healthcare_pages_preserved": 126,
+    "image_payload_unchanged": true,
+    "executable_scripts_checked": 70,
+    "sha256": {
+      "catalog": "2b51e16b26c9477c369c7901360712a5bf3417ba5ed23c849470b2d10e2ec3a4",
+      "healthcare": "b618883b085e38585b42caca939b01e0ae7e398c418bd8e5be75654aef625423"
+    }
+  }
+}

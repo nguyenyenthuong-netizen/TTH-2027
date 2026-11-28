@@ -1,0 +1,19 @@
+"""Prepare browser-only acceptance pages outside the production repository output."""
+from pathlib import Path
+import json,re,sys
+out=Path(sys.argv[1]);hc=Path(sys.argv[2]).read_text()
+match=re.search(r'(<script id="pagesData" type="application/json">)(.*?)(</script>)',hc,re.S)
+pages=json.loads(match[2])
+probe=r'''<script>(function(){function report(){const links=[...document.querySelectorAll('a[href],[data-nav-original]')].filter(e=>e.getClientRects().length).map(e=>({label:(e.textContent||'').trim().replace(/\s+/g,' ').slice(0,120),raw:e.getAttribute('href'),original:e.dataset.navOriginal,contract:window.TTHNavigation?.resolve(e)}));parent.postMessage({type:'TTH_QA_REPORT',page:window.__TTH_WEBSITE_PAGE_NAME__,lang:new URLSearchParams(window.__TTH_OFFLINE_ROUTE_QUERY__).get('lang')||'vi',title:document.title,heading:document.querySelector('main h1,#app h1,main h2')?.textContent,links},'*')}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(report,150),{once:true});else setTimeout(report,150)})();</script>'''
+for key,doc in pages.items():pages[key]=doc.replace('</body>',probe+'</body>')
+known=[key for key in pages if key!='TienIch_Hotline.html' and not re.match(r'^(CMS_|HeThong_|ThanhPhan_|PhapLy_CanCu|DatLich_LuongHIS)',key)]
+runner=r'''<script>(function(){const names=KNOWN,report={pages:[],errors:[]};let queue=[],expected=null;const frame=document.getElementById('frame');const b=document.createElement('button');b.id='hc-run';b.textContent='Run Healthcare audit';b.style.cssText='position:fixed;top:0;left:0;z-index:99999';document.body.append(b);
+function next(){if(!queue.length){const x=document.createElement('script');x.type='application/json';x.id='hc-results';x.textContent=JSON.stringify(report);document.body.append(x);document.documentElement.dataset.hcDone='true';return;}expected=queue.shift();history.replaceState({},'','#'+encodeURIComponent(expected.page+'?lang='+expected.lang));dispatchEvent(new PopStateEvent('popstate'));document.documentElement.dataset.hcProgress=expected.page+'/'+expected.lang;}
+window.addEventListener('message',e=>{if(e.source!==frame.contentWindow||e.data?.type!=='TTH_QA_REPORT'||!expected)return;const r=e.data;if(r.page!==expected.page||r.lang!==expected.lang)return;report.pages.push(r);for(const a of r.links){const raw=a.raw||'';const path=raw.split(/[?#]/)[0];if(/^[\w-]+\.html$/.test(path)&&!ALL.includes(path))report.errors.push({page:r.page,lang:r.lang,type:'missing-target',...a});if(raw==='#')report.errors.push({page:r.page,lang:r.lang,type:'empty-link',...a});}next();});b.onclick=()=>{b.remove();queue=names.flatMap(page=>['vi','en'].map(lang=>({page,lang})));next();};})();</script>'''.replace('KNOWN',json.dumps(known)).replace('ALL',json.dumps(list(pages)))
+jsondata=json.dumps(pages,ensure_ascii=False,separators=(',',':')).replace('<',r'\u003c').replace('>',r'\u003e')
+hc=hc[:match.start(2)]+jsondata+hc[match.end(2):]
+(out/'healthcare-qa.html').write_text(hc[:hc.rindex('</body>')]+runner+hc[hc.rindex('</body>'):])
+(out/'healthcare.html').write_text(Path(sys.argv[2]).read_text())
+responsive='''<!doctype html><meta charset="utf-8"><title>TTH responsive acceptance</title><style>html,body{margin:0}iframe{display:block;border:0}</style><iframe id="screen"></iframe><script>const q=new URLSearchParams(location.search),f=document.getElementById('screen');f.style.width=(Number(q.get('width'))||390)+'px';f.style.height=(Number(q.get('height'))||844)+'px';f.src=(q.get('healthcare')==='1'?'healthcare.html':'after.html')+'?site='+(q.get('site')||'group')+'&page='+(q.get('page')||'home')+'&lang='+(q.get('lang')||'vi');</script>'''
+(out/'responsive.html').write_text(responsive)
+print('Prepared Healthcare',len(known)*2,'page/language cases and responsive QA wrapper')
