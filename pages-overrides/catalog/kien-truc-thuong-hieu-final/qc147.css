@@ -1,0 +1,18 @@
+<style id="qc147-package-card-final">
+@media(min-width:1051px){
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count],
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count]:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(min-width:641px) and (max-width:1050px){
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count],
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count]:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:640px){
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count],
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media[data-count]:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:minmax(0,1fr)!important}
+}
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media>.pkg-final-card.qc-photo-card{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;max-width:100%!important}
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media>.pkg-final-card.qc-photo-card>figure{display:block!important;width:100%!important;max-width:none!important;height:270px!important;max-height:none!important;overflow:hidden!important;background:#edf2f6}
+html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media>.pkg-final-card.qc-photo-card>figure>img{display:block!important;width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important}
+@media(max-width:640px){html body.portal-site:not(:has(.g-footer)) #app .pkg-final-grid.qc103-required-media>.pkg-final-card.qc-photo-card>figure{height:250px!important}}
+</style>
