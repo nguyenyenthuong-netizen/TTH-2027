@@ -26,5 +26,6 @@
   "missing_targets": 0,
   "design_gate": "126 original page bodies and image payload unchanged; Group compiled SHA256 unchanged",
   "acceptance_scope": "Additional semantic identity correction verified; historical 675 assertions do not certify all possible semantic destinations. Demo/unconnected functions and incomplete Healthcare English content remain explicit limitations.",
-  "code_storage": "Complete source is the GitHub commit above; fetch main and read FOLLOWUP.md before takeover."
+  "code_storage": "Complete source is the GitHub commit above; fetch main and read FOLLOWUP.md before takeover.",
+  "outside_navigation_review": "See NGOAI_PHAM_VI_DIEU_HUONG.md: specialty illustration, header spacing, legacy QĐ control. Existing approved image/layout not modified."
 }
