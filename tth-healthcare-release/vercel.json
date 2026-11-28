@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "buildCommand": "mkdir -p public && unzip -o website.zip -d public",
+  "outputDirectory": "public",
+  "cleanUrls": true
+}
